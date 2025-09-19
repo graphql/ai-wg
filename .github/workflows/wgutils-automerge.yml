@@ -2,9 +2,9 @@ name: Agenda auto-merge
 
 # First, enable branch protections, and in particular ensure the EasyCLA check is required.
 # Then, uncomment the next 3 lines:
-#on:
-#  pull_request_target:
-#    types: [synchronize, opened, reopened]
+on:
+  pull_request_target:
+    types: [synchronize, opened, reopened]
 
 permissions:
   contents: write
