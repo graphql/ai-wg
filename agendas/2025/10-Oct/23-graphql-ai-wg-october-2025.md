@@ -22,6 +22,8 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
+| Kewei Qu (host)  | @Keweiqu      | Meta               | Menlo Park, CA, US    |
+| Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
 | Benjie Gillam    | @benjie       | Graphile           | Chandler's Ford, UK   |
 
 
