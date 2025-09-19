@@ -2,17 +2,17 @@
 
 /** @type {import('wgutils').Config} */
 const config = {
-  name: "NAME OF WG",
-  repoUrl: "https://github.com/graphql/...",
-  videoConferenceDetails: `https://zoom.us/j/...
-  - _Password:_ ...`,
-  liveNotesUrl: "https://docs.google.com/document/d/...",
-  timezone: "US/Pacific",
+  name: "GraphQL AI WG",
+  repoUrl: "https://github.com/graphql/ai-wg",
+  videoConferenceDetails: `https://zoom.us/j/92302442188
+  - _Password:_ aiwg`,
+  liveNotesUrl: "https://docs.google.com/document/d/1tJqUC9UI4EzY7U0sSqfsOuUDF6Q8LBcsSBwbgsE33sM/edit?usp=sharing",
+  timezone: "US/Eastern",
   frequency: "monthly",
   // For "last" set nth to -1
-  nth: 1,
+  nth: 4,
   weekday: "Th", // M, Tu, W, Th, F, Sa, Su
-  time: "10:30-12:00", // 24-hour clock, range
+  time: "13:30-14:30", // 24-hour clock, range
   attendeesTemplate: `\
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |

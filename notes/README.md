@@ -10,10 +10,11 @@ Notes files mirror the file structure of the agendas; namely they should be in
 All notes files should begin with the following format:
 
 ```md
-# GraphQL (NAME) WG Notes - <Month> <Year>
+# GraphQL AI WG Notes - <Month> <Year>
 
 **Watch the replay:**
-[GraphQL Working Group Meetings on YouTube](https://www.youtube.com/channel/UCERcwLeheOXp_u61jEXxHMA/videos)
+[GraphQL AI WG Meetings](https://www.youtube.com/playlist?list=PLP1igyLx8foE8opM3o3PA_OcJWd-jQYRt)
+on [@GraphQLFoundation YouTube](https://www.youtube.com/channel/UCERcwLeheOXp_u61jEXxHMA/videos)
 
 ## Agenda
 
