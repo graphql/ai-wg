@@ -24,7 +24,7 @@
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Benjie Gillam    | @benjie       | Graphile           | Chandler's Ford, UK   |
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
-
+| Michael Watson   | @michael-watson | Apollo GraphQL   | California, USA       |
 
 ## Agenda
 
