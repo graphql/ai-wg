@@ -28,6 +28,7 @@
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 | Michael Watson   | @michael-watson | Apollo GraphQL   | California, USA       |
 | Emily Goodwin    | @egoodwinx    | Independent        | Toronto, ON, CA       |
+| Rudra Srivastava | @rudrasrivastava | Block           | New York, USA         |
 
 ## Agenda
 
