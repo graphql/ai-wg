@@ -28,8 +28,7 @@
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 | Michael Watson   | @michael-watson | Apollo GraphQL   | California, USA       |
 | Emily Goodwin    | @egoodwinx    | Independent        | Toronto, ON, CA       |
-| Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, Germany      |
-
+| Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, DE           |
 
 ## Agenda
 
