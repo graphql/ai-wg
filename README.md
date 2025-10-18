@@ -1,4 +1,4 @@
-# GraphQL AI Working Group
+# GraphQL AI Working Group -
 
 This working group is a subcommittee of the
 [GraphQL Working Group](https://github.com/graphql/graphql-wg) with the
