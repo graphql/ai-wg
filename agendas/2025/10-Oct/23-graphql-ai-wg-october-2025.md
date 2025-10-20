@@ -29,6 +29,7 @@
 | Michael Watson   | @michael-watson | Apollo GraphQL   | California, USA       |
 | Emily Goodwin    | @egoodwinx    | Independent        | Toronto, ON, CA       |
 | Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
+| Troy Kohler      | @trkohler     | Zalando            | Berlin, DE            |
 
 ## Agenda
 
