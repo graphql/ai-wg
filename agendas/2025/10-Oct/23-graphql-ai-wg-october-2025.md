@@ -31,6 +31,7 @@
 | Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, DE           |
 | Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
 | Troy Kohler      | @trkohler     | Zalando            | Berlin, DE            |
+| Alexandre Dias   | @alexdias     | Meta               | London, UK            |
 
 ## Agenda
 
