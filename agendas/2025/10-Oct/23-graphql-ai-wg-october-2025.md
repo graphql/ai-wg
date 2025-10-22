@@ -29,6 +29,11 @@
 | Michael Watson   | @michael-watson | Apollo GraphQL   | California, USA       |
 | Emily Goodwin    | @egoodwinx    | Independent        | Toronto, ON, CA       |
 | Rudra Srivastava | @rudrasrivastava | Block           | New York, US          |
+| Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, DE           |
+| Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
+| Troy Kohler      | @trkohler     | Zalando            | Berlin, DE            |
+| Alexandre Dias   | @alexdias     | Meta               | London, UK            |
+| Andrei Bocan     | @abocan-atl   | Atlassian          | San Francisco, CA, US |
 
 ## Agenda
 
@@ -41,5 +46,8 @@
 1. Introduction of attendees (5m, Host)
 1. Determine volunteers for note taking (1m, Host)
 1. Review agenda (2m, Host)
+1. [Kewei, 10min] Brainstome deliverables from this working group 
+  1. Review open community call discussion items
+1. [Alexandre/ Kewei, 15min] Benchmark analysis of different LLMs capabilities at writing GraphQL operations. 
 1. Check for [ready for review agenda items](https://github.com/graphql/ai-wg/issues?q=is%3Aissue+is%3Aopen+label%3A%22Ready+for+review+%F0%9F%99%8C%22+sort%3Aupdated-desc) (5m, Host)
 1. Reminder: [grants available for key initiatives](https://graphql.org/community/foundation/community-grant/) (1m, Host)
