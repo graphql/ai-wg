@@ -28,7 +28,7 @@
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 | Michael Watson   | @michael-watson | Apollo GraphQL   | California, USA       |
 | Emily Goodwin    | @egoodwinx    | Independent        | Toronto, ON, CA       |
-| Akhil Sai        | @akhilsai25   | Expedia            | Austin, TX, USA       |
+| Akhil Sai        | @akhilsai25   | Independent        | Austin, TX, USA       |
 
 ## Agenda
 
