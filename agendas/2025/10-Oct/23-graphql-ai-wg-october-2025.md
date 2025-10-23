@@ -34,6 +34,7 @@
 | Alexandre Dias   | @alexdias     | Meta               | London, UK            |
 | Andrei Bocan     | @abocan-atl   | Atlassian          | San Francisco, CA, US |
 | Abhinand C       | @abhinand-c   | Strollby           | Kerala, India IN      |
+| Uri Goldshtein   | @urigo        | The Guild          | Tel Aviv, IL          |
 
 ## Agenda
 
