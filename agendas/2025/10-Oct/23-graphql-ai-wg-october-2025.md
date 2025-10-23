@@ -34,6 +34,7 @@
 | Alexandre Dias   | @alexdias     | Meta               | London, UK            |
 | Andrei Bocan     | @abocan-atl   | Atlassian          | San Francisco, CA, US |
 | Abhinand C       | @abhinand-c   | Strollby           | Kerala, India IN      |
+| Jens Neuse       | @jensneuse    | WunderGraph        | Karlsruhe, DE         |
 | Uri Goldshtein   | @urigo        | The Guild          | Tel Aviv, IL          |
 | Ariana Eed       | @ariana0699   | Independent        | Amsterdam, NL         |
 | Mark Larah       | @magicmark    | Yelp Inc           | Austin, TX, US        |
