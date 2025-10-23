@@ -56,12 +56,9 @@
 1. Introduction of attendees (5m, Host)
 1. Determine volunteers for note taking (1m, Host)
 1. Review agenda (2m, Host)
-1. Brainstorm deliverables from this working group (10min, Kewei)
-    - Review open community call discussion
-    - Propose deliverables: Examples - GraphQL writer agent reference implementation, MCP reference implementation/Spec
-1. Benchmark analysis of different LLMs capabilities at writing GraphQL operations. (15m, Alexandre/ Kewei)
 1. Check for [ready for review agenda items](https://github.com/graphql/ai-wg/issues?q=is%3Aissue+is%3Aopen+label%3A%22Ready+for+review+%F0%9F%99%8C%22+sort%3Aupdated-desc) (5m, Host)
 1. Reminder: [grants available for key initiatives](https://graphql.org/community/foundation/community-grant/) (1m, Host)
 1. Brainstorm deliverables from this working group (10min, Kewei)
    - Review [open community call discussions](https://docs.google.com/document/d/1TEBvCZbUUqtcypKanqXv4FWXPp7pZ2ZT9K6Zu4hg5iE/edit?tab=t.0)
-1. Benchmark analysis of different LLMs capabilities at writing GraphQL operations. (15min, Alexandre)
+   - Propose deliverables: Examples - GraphQL writer agent reference implementation, MCP reference implementation/Spec
+1. Benchmark analysis of different LLMs capabilities at writing GraphQL operations. (15m, Alexandre)
