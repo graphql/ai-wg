@@ -28,15 +28,20 @@
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 | Michael Watson   | @michael-watson | Apollo GraphQL   | California, USA       |
 | Emily Goodwin    | @egoodwinx    | Independent        | Toronto, ON, CA       |
+| Dale Seo         | @DaleSeo      | Apollo             | Toronto, ON, CA       |
 | Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, DE           |
 | Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
+| Kenny Hammerlund | @pinkmarlin   | Independent        | Houston, TX, US       |
+| Joanna Roy       | @joannaroy    | trail              | Munich, Germany       |
 | Troy Kohler      | @trkohler     | Zalando            | Berlin, DE            |
 | Alexandre Dias   | @alexdias     | Meta               | London, UK            |
 | Andrei Bocan     | @abocan-atl   | Atlassian          | San Francisco, CA, US |
 | Abhinand C       | @abhinand-c   | Strollby           | Kerala, India IN      |
 | Ahmet Soormally  | @asoorm       | WunderGraph        | London, UK            |
+| Jens Neuse       | @jensneuse    | WunderGraph        | Karlsruhe, DE         |
 | Uri Goldshtein   | @urigo        | The Guild          | Tel Aviv, IL          |
 | Ariana Eed       | @ariana0699   | Independent        | Amsterdam, NL         |
+| Mark Larah       | @magicmark    | Yelp Inc           | Austin, TX, US        |
 
 ## Agenda
 
