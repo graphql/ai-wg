@@ -28,6 +28,7 @@
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 | Michael Watson   | @michael-watson | Apollo GraphQL   | California, USA       |
 | Emily Goodwin    | @egoodwinx    | Independent        | Toronto, ON, CA       |
+| Rudra Srivastava | @rudrasrivastava | Block           | New York, US          |
 | Dale Seo         | @DaleSeo      | Apollo             | Toronto, ON, CA       |
 | Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, DE           |
 | Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
