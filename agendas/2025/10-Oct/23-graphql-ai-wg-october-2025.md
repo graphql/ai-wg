@@ -31,6 +31,7 @@
 | Dale Seo         | @DaleSeo      | Apollo             | Toronto, ON, CA       |
 | Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, DE           |
 | Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
+| Joanna Roy       | @joannaroy    | trail              | Munich, Germany       |
 | Troy Kohler      | @trkohler     | Zalando            | Berlin, DE            |
 | Alexandre Dias   | @alexdias     | Meta               | London, UK            |
 | Andrei Bocan     | @abocan-atl   | Atlassian          | San Francisco, CA, US |
