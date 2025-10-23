@@ -34,6 +34,7 @@
 | Alexandre Dias   | @alexdias     | Meta               | London, UK            |
 | Andrei Bocan     | @abocan-atl   | Atlassian          | San Francisco, CA, US |
 | Abhinand C       | @abhinand-c   | Strollby           | Kerala, India IN      |
+| Ahmet Soormally  | @asoorm       | WunderGraph        | London, UK            |
 
 ## Agenda
 
