@@ -45,6 +45,7 @@
 | Ariana Eed       | @ariana0699   | Independent        | Amsterdam, NL         |
 | Mark Larah       | @magicmark    | Yelp Inc           | Austin, TX, US        |
 | Christian Ernst  | @cernst11     | Booking.com        | Amsterdam, NL         |
+| Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
 
 ## Agenda
 
