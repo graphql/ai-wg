@@ -22,6 +22,8 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
+| Roy Derks        | [royderks](https://github.com/royderks) | IBM | San Jose, CA, USA |
+
 
 
 ## Agenda
