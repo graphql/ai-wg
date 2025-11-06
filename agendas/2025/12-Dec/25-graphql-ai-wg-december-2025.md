@@ -1,1 +1,1 @@
-Meeting cancelled due to the winter break.
+Meeting cancelled due to winter break. 
