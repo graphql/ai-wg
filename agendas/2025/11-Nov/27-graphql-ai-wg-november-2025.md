@@ -1,1 +1,1 @@
-Meeting [rescheduled to 20th November](./20-graphql-ai-wg-november-2025.md) due to Thanksgiving.
+Meeting [rescheduled to 11th December](./11-graphql-ai-wg-decemeber-2025.md) due to Thanksgiving.
