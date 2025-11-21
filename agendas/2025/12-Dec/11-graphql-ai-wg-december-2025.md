@@ -24,7 +24,7 @@
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Roy Derks        | [royderks](https://github.com/royderks) | IBM | San Jose, CA, USA |
-
+| Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, DE           |
 
 
 ## Agenda
