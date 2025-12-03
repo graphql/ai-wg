@@ -21,11 +21,12 @@
 ## Attendees
 
 <!-- prettier-ignore -->
-| Name             | GitHub          | Organization       | Location              |
-| :--------------- | :-------------- | :----------------- | :-------------------- |
-| Roy Derks        | @royderks]      | IBM                | San Jose, CA, USA     |
-| Thore Koritzius  | @ThoreKoritzius | Independent        | Cologne, DE           |
+| Name             | GitHub        | Organization       | Location              |
+| :--------------- | :------------ | :----------------- | :-------------------- |
+| Roy Derks        | @royderks     | IBM                | San Jose, CA, USA     |
+| Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, DE           |
 | Mark Larah       | @magicmark      | Yelp               | Austin, TX, USA       |
+| Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 
 
 ## Agenda
