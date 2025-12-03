@@ -27,6 +27,7 @@
 | Thore Koritzius  | @ThoreKoritzius | Independent      | Cologne, DE           |
 | Mark Larah       | @magicmark      | Yelp               | Austin, TX, USA       |
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
+| Erik Wrede       | @erikwrede    | Self               | Cologne, Germany      |
 
 
 ## Agenda
