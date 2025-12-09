@@ -29,6 +29,7 @@
 | Mark Larah       | @magicmark      | Yelp               | Austin, TX, USA       |
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 | Erik Wrede       | @erikwrede    | Self               | Cologne, Germany      |
+| Hugh Nguyen      | @HieuNguyen202| Meta               | Chicago, IL, USA      |
 
 
 
