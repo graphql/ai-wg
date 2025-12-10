@@ -32,6 +32,7 @@
 | Hugh Nguyen      | @HieuNguyen202| Meta               | Chicago, IL, USA      |
 | Dale Seo         | @DaleSeo      | Apollo             | Toronto, ON, CA       |
 | Alexandre Dias   | @alexdias       Meta               | London, UK            |
+| Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, USA       |
 
 
 
