@@ -31,6 +31,7 @@
 | Erik Wrede       | @erikwrede    | Self               | Cologne, Germany      |
 | Hugh Nguyen      | @HieuNguyen202| Meta               | Chicago, IL, USA      |
 | Dale Seo         | @DaleSeo      | Apollo             | Toronto, ON, CA       |
+| Raymie Stata     | @rstata       | Airbnb             | Boston, MA, US        |
 | Alexandre Dias   | @alexdias       Meta               | London, UK            |
 | Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, USA       |
 
