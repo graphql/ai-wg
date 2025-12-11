@@ -51,4 +51,3 @@
 1. Reminder: [grants available for key initiatives](https://graphql.org/community/foundation/community-grant/) (1m, Host)
 1. Similarity Search to navigate a schema (10m, Thore)
 2. @require_subschema to introduce gradual reveal of a large schema issue [#54](https://github.com/graphql/ai-wg/issues/54) (10m, Hugh)
-3. Update on benchmarks introduced in last meeting (5m, Alex)
