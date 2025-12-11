@@ -1,6 +1,9 @@
 # Semantic Introspection
 
 **Status:**   
+**Author:** 
+  - Pascal Senn, ChilliCream
+  - Michael Staib, ChilliCream
 **Champion:**   
 
 ---
