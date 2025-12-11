@@ -310,7 +310,7 @@ type __Prompt {
 
 ## Open Questions
 
-1. **Effectiveness**:
+1. **Effectiveness**: Is this approach effective for LLMs in practice? 
 2. **Security considerations**: Should there be guidance on rate limiting or access control for semantic search?
 3. `capabilities` might collide with the existing RFC in the main repo Semantic Introspection
 
