@@ -33,6 +33,7 @@
 | Dale Seo         | @DaleSeo      | Apollo             | Toronto, ON, CA       |
 | Alexandre Dias   | @alexdias       Meta               | London, UK            |
 | Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, USA       |
+| Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
 
 
 
