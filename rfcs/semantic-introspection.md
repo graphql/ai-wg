@@ -116,6 +116,17 @@ type __SearchResult {
   The matched schema member.
   """
   member: __SchemaMember!
+
+  """
+  Paths from the matched member to a root type, aiding query construction.
+
+  Each path is a sequence of schema coordinates, starting from the matched member and ending at a
+  root type.
+
+  Implementations MAY return multiple paths if the member is reachable via different routes. This 
+  list is not guaranteed to be exhaustive.
+  """
+  pathsToRoot: [String!]!
   
   """
   Relevance score for the match.
@@ -125,6 +136,10 @@ type __SearchResult {
   score: Float
 }
 ```
+
+> **Editor's Note:** The `pathsToRoot` field is placed on `__SearchResult`, but it 
+> arguably belongs on the schema member types themselves (e.g., `__Field`, `__Type`). 
+> This placement warrants further discussion.
 
 #### Schema Member Union
 
@@ -290,8 +305,9 @@ type __Prompt {
 
 ## Open Questions
 
-1. **Security considerations**: Should there be guidance on rate limiting or access control for semantic search?
-2. `capabilities` might collide with the existing RFC in the main repo Semantic Introspection
+1. **Effectiveness**:
+2. **Security considerations**: Should there be guidance on rate limiting or access control for semantic search?
+3. `capabilities` might collide with the existing RFC in the main repo Semantic Introspection
 
 ---
 
