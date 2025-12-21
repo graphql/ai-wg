@@ -1,0 +1,281 @@
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Iterable, List, Sequence
+
+import numpy as np
+from graphql import GraphQLList, GraphQLNonNull, GraphQLObjectType, build_schema
+from openai import OpenAI
+from dotenv import load_dotenv
+load_dotenv()
+DEFAULT_DATA_DIR = Path(__file__).parent / "data"
+DEFAULT_SCHEMA_PATH = Path(__file__).parent / "schema.graphql"
+DEFAULT_EMBED_MODEL = "text-embedding-3-small"
+
+
+@dataclass
+class TypeField:
+    type_name: str
+    field_name: str
+    summary: str
+
+
+def describe_type(graphql_type) -> str:
+    if isinstance(graphql_type, GraphQLNonNull):
+        return f"{describe_type(graphql_type.of_type)}!"
+    if isinstance(graphql_type, GraphQLList):
+        return f"[{describe_type(graphql_type.of_type)}]"
+    return str(graphql_type)
+
+
+def flatten_schema(schema_text: str) -> List[TypeField]:
+    schema = build_schema(schema_text)
+    type_fields: List[TypeField] = []
+
+    for type_name, gql_type in sorted(schema.type_map.items()):
+        if type_name.startswith("__"):
+            continue
+        if not isinstance(gql_type, GraphQLObjectType):
+            continue
+
+        for field_name, field in sorted(gql_type.fields.items()):
+            arg_parts = [
+                f"{arg_name}: {describe_type(arg.type)}"
+                for arg_name, arg in field.args.items()
+            ]
+            arg_list = ", ".join(arg_parts)
+            return_type = describe_type(field.type)
+            signature = (
+                f"{type_name}.{field_name}({arg_list}) -> {return_type}"
+                if arg_list
+                else f"{type_name}.{field_name} -> {return_type}"
+            )
+
+            summary_parts = [signature]
+            if field.description:
+                summary_parts.append(f"desc: {field.description}")
+
+            type_fields.append(
+                TypeField(
+                    type_name=type_name,
+                    field_name=field_name,
+                    summary=" | ".join(summary_parts),
+                )
+            )
+
+    return type_fields
+
+
+class OpenAIEmbedder:
+    def __init__(self, model: str = DEFAULT_EMBED_MODEL):
+        self.client = OpenAI()
+        self.model = model
+
+    def embed_many(self, texts: Sequence[str]) -> np.ndarray:
+        if not texts:
+            return np.zeros((0, 0), dtype=np.float32)
+
+        response = self.client.embeddings.create(model=self.model, input=list(texts))
+        vectors = np.array([item.embedding for item in response.data], dtype=np.float32)
+        return self._normalize(vectors)
+
+    def embed_one(self, text: str) -> np.ndarray:
+        return self.embed_many([text])[0]
+
+    @staticmethod
+    def _normalize(vectors: np.ndarray) -> np.ndarray:
+        norms = np.linalg.norm(vectors, axis=1, keepdims=True)
+        norms[norms == 0] = 1.0
+        return vectors / norms
+
+
+class EmbeddingStore:
+    def __init__(self, data_dir: Path, embedding_model: str):
+        self.data_dir = data_dir
+        self.embedding_model = embedding_model
+        self.meta_path = data_dir / "metadata.json"
+        self.vectors_path = data_dir / "vectors.npz"
+
+        self._vectors: np.ndarray | None = None
+        self._items: list[dict] | None = None
+        self._meta: dict | None = None
+
+    def is_ready(self) -> bool:
+        return self.meta_path.exists() and self.vectors_path.exists()
+
+    def load(self) -> dict:
+        if self._meta and self._vectors is not None and self._items is not None:
+            return self._meta
+
+        if not self.is_ready():
+            raise FileNotFoundError(
+                f"Index not found in {self.data_dir}. Run the indexer first."
+            )
+
+        self._meta = json.loads(self.meta_path.read_text())
+        if self._meta.get("embedding_model") != self.embedding_model:
+            raise ValueError(
+                "Embedding model mismatch: "
+                f"{self._meta.get('embedding_model')} vs {self.embedding_model}"
+            )
+
+        self._items = self._meta["items"]
+        self._vectors = np.load(self.vectors_path)["vectors"]
+        return self._meta
+
+    def save(self, vectors: np.ndarray, items: list[dict], schema_sha: str) -> dict:
+        self.data_dir.mkdir(parents=True, exist_ok=True)
+
+        meta = {
+            "embedding_model": self.embedding_model,
+            "schema_sha": schema_sha,
+            "items": items,
+        }
+
+        np.savez_compressed(self.vectors_path, vectors=vectors)
+        self.meta_path.write_text(json.dumps(meta, indent=2))
+
+        self._vectors = vectors
+        self._items = items
+        self._meta = meta
+        return meta
+
+    def search(self, query_vector: np.ndarray, limit: int = 5) -> list[dict]:
+        if self._vectors is None or self._items is None:
+            self.load()
+
+        assert self._vectors is not None and self._items is not None
+
+        limit = max(1, min(limit, len(self._items)))
+        scores = self._vectors @ query_vector
+        top_indices = np.argsort(scores)[::-1][:limit]
+
+        return [
+            {
+                "type": self._items[idx]["type_name"],
+                "field": self._items[idx]["field_name"],
+                "summary": self._items[idx]["summary"],
+                "score": float(scores[idx]),
+            }
+            for idx in top_indices
+        ]
+
+
+def index_schema(
+    schema_path: Path = DEFAULT_SCHEMA_PATH,
+    data_dir: Path = DEFAULT_DATA_DIR,
+    embed_model: str = DEFAULT_EMBED_MODEL,
+    embedder: OpenAIEmbedder | None = None,
+) -> dict:
+    schema_text = schema_path.read_text()
+    items = flatten_schema(schema_text)
+    summaries = [item.summary for item in items]
+    embedder = embedder or OpenAIEmbedder(model=embed_model)
+    vectors = embedder.embed_many(summaries)
+
+    schema_sha = hashlib.sha256(schema_text.encode("utf-8")).hexdigest()
+    store = EmbeddingStore(data_dir=data_dir, embedding_model=embedder.model)
+    meta = store.save(vectors, [asdict(item) for item in items], schema_sha=schema_sha)
+    meta["count"] = len(items)
+    return meta
+
+
+def search_index(
+    query: str,
+    data_dir: Path = DEFAULT_DATA_DIR,
+    embed_model: str = DEFAULT_EMBED_MODEL,
+    embedder: OpenAIEmbedder | None = None,
+    limit: int = 5,
+) -> list[dict]:
+    embedder = embedder or OpenAIEmbedder(model=embed_model)
+    store = EmbeddingStore(data_dir=data_dir, embedding_model=embedder.model)
+    meta = store.load()
+
+    query_vector = embedder.embed_one(query)
+    results = store.search(query_vector, limit=limit)
+    for item in results:
+        item["schema_sha"] = meta.get("schema_sha")
+    return results
+
+
+def cli(argv: Iterable[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Index a GraphQL schema and search persisted embeddings."
+    )
+    parser.set_defaults(command="index")
+
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument(
+        "--data-dir",
+        type=Path,
+        default=DEFAULT_DATA_DIR,
+        help="Directory for the embedding index (default: data/).",
+    )
+    common.add_argument(
+        "--model",
+        default=DEFAULT_EMBED_MODEL,
+        help="OpenAI embedding model name (default: text-embedding-3-small).",
+    )
+
+    sub = parser.add_subparsers(dest="command")
+
+    p_index = sub.add_parser(
+        "index",
+        parents=[common],
+        help="Index the schema into persistent embeddings.",
+    )
+    p_index.add_argument(
+        "--schema",
+        type=Path,
+        default=DEFAULT_SCHEMA_PATH,
+        help="Path to the GraphQL schema file.",
+    )
+
+    p_search = sub.add_parser(
+        "search",
+        parents=[common],
+        help="Search the persisted index with a natural language query.",
+    )
+    p_search.add_argument("query", help="Search query text.")
+    p_search.add_argument(
+        "--limit",
+        type=int,
+        default=5,
+        help="Maximum number of results (default: 5, max: 20).",
+    )
+
+    args = parser.parse_args(argv)
+
+    embedder = OpenAIEmbedder(model=args.model)
+
+    if args.command == "search":
+        limit = max(1, min(args.limit, 20))
+        results = search_index(
+            query=args.query,
+            data_dir=args.data_dir,
+            embed_model=args.model,
+            embedder=embedder,
+            limit=limit,
+        )
+        print(json.dumps(results, indent=2))
+        return 0
+
+    meta = index_schema(
+        schema_path=args.schema,
+        data_dir=args.data_dir,
+        embed_model=args.model,
+        embedder=embedder,
+    )
+    print(
+        f"Indexed {meta['count']} fields from {args.schema} "
+        f"using {meta['embedding_model']} (schema sha {meta['schema_sha']})."
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(cli())

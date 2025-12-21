@@ -1,0 +1,65 @@
+# Sample GraphQL schema for indexing experiments.
+
+type Query {
+  user(id: ID!): User
+  order(id: ID!): Order
+  searchProducts(term: String!, limit: Int = 10): [Product!]!
+}
+
+type Mutation {
+  placeOrder(input: PlaceOrderInput!): OrderConfirmation!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  orders: [Order!]!
+}
+
+type Product {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+  inStock: Boolean!
+  tags: [String!]!
+}
+
+type Order {
+  id: ID!
+  status: OrderStatus!
+  items: [OrderItem!]!
+  total: Float!
+  placedAt: String!
+}
+
+type OrderItem {
+  product: Product!
+  quantity: Int!
+  subtotal: Float!
+}
+
+input PlaceOrderInput {
+  userId: ID!
+  items: [PlaceOrderItemInput!]!
+  note: String
+}
+
+input PlaceOrderItemInput {
+  productId: ID!
+  quantity: Int!
+}
+
+type OrderConfirmation {
+  id: ID!
+  estimatedDelivery: String!
+  message: String
+}
+
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
