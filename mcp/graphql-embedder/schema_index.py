@@ -13,7 +13,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 load_dotenv()
 DEFAULT_DATA_DIR = Path(__file__).parent / "data"
-DEFAULT_SCHEMA_PATH = Path(__file__).parent / "schema.graphql"
+DEFAULT_SCHEMA_PATH = Path("schema.graphql")
 DEFAULT_EMBED_MODEL = "text-embedding-3-small"
 
 
@@ -203,63 +203,39 @@ def search_index(
 
 
 def cli(argv: Iterable[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Index a GraphQL schema and search persisted embeddings."
-    )
-    parser.set_defaults(command="index")
+    embedder = OpenAIEmbedder(model=DEFAULT_EMBED_MODEL)
 
-    common = argparse.ArgumentParser(add_help=False)
-    common.add_argument(
-        "--data-dir",
-        type=Path,
-        default=DEFAULT_DATA_DIR,
-        help="Directory for the embedding index (default: data/).",
-    )
-    common.add_argument(
-        "--model",
-        default=DEFAULT_EMBED_MODEL,
-        help="OpenAI embedding model name (default: text-embedding-3-small).",
-    )
-
-    sub = parser.add_subparsers(dest="command")
-
-    p_index = sub.add_parser(
-        "index",
-        parents=[common],
-        help="Index the schema into persistent embeddings.",
-    )
-    p_index.add_argument(
-        "--schema",
-        type=Path,
-        default=DEFAULT_SCHEMA_PATH,
-        help="Path to the GraphQL schema file.",
-    )
-
-    p_search = sub.add_parser(
-        "search",
-        parents=[common],
-        help="Search the persisted index with a natural language query.",
-    )
-    p_search.add_argument("query", help="Search query text.")
-    p_search.add_argument(
-        "--limit",
-        type=int,
-        default=5,
-        help="Maximum number of results (default: 5, max: 20).",
-    )
-
+    # Parse arguments and set defaults properly
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", default=DEFAULT_EMBED_MODEL, help="Embedding model to use")
+    parser.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA_PATH, help="Path to the GraphQL schema file")
+    parser.add_argument("--data-dir", type=Path, default=DEFAULT_DATA_DIR, help="Path to store data files")
+    
+    subparsers = parser.add_subparsers(dest="command", help="Subcommands")
+    
+    # Index subcommand
+    index_parser = subparsers.add_parser("index", help="Index the schema into persistent embeddings")
+    index_parser.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA_PATH, help="Path to the GraphQL schema file")
+    
+    # Search subcommand  
+    search_parser = subparsers.add_parser("search", help="Search the persisted index with a natural language query")
+    search_parser.add_argument("query", help="Search query text")
+    search_parser.add_argument("--limit", type=int, default=5, help="Maximum number of results")
+    
     args = parser.parse_args(argv)
-
-    embedder = OpenAIEmbedder(model=args.model)
-
+    
+    # Get the selected model (either from --model or default)
+    model_arg = getattr(args, 'model', DEFAULT_EMBED_MODEL)
+    embedder = OpenAIEmbedder(model=model_arg)
+    
     if args.command == "search":
-        limit = max(1, min(args.limit, 20))
+        limit = max(1, min(getattr(args, 'limit', 5), 20))
         results = search_index(
             query=args.query,
-            data_dir=args.data_dir,
-            embed_model=args.model,
+            data_dir=getattr(args, 'data_dir', DEFAULT_DATA_DIR),
+            embed_model=model_arg,
             embedder=embedder,
-            limit=limit,
+            limit=limit
         )
         print(json.dumps(results, indent=2))
         return 0
@@ -267,7 +243,7 @@ def cli(argv: Iterable[str] | None = None) -> int:
     meta = index_schema(
         schema_path=args.schema,
         data_dir=args.data_dir,
-        embed_model=args.model,
+        embed_model=model_arg,
         embedder=embedder,
     )
     print(
