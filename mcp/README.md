@@ -68,6 +68,30 @@ Tools:
 - `run_query(query)` – if `--endpoint` is set, proxies the query to the endpoint; otherwise validates/runs against the local schema (no resolvers; primarily for validation/shape checking, data resolves to null).
 Both indexing and querying use the same embedding model (`text-embedding-3-small` by default).
 
+Example `list_types` output:
+```json
+[
+  {
+    "type": "Query",
+    "field": "users",
+    "summary": "Query.users(limit: Int = 10, offset: Int = 0) -> [User!]!",
+    "query_template": "query { users(limit: <Int = 10>, offset: <Int = 0>) { id name email profile { joinedAt preferences { newsletter } } orders { id status total } } }"
+  },
+  {
+    "type": "User",
+    "field": "orders",
+    "summary": "User.orders -> [Order!]!",
+    "selection_hint": "orders { id status total items { quantity subtotal } }"
+  },
+  {
+    "type": "Product",
+    "field": "reviews",
+    "summary": "Product.reviews -> [Review!]!",
+    "selection_hint": "reviews { id rating title author { id name } }"
+  }
+]
+```
+
 Notes:
 - `python3 server.py` defaults to the `sse` transport; pass `--transport streamable-http` if you want HTTP instead.
 - You can also set env vars prefixed with `FASTMCP_` (e.g., `FASTMCP_HOST`, `FASTMCP_PORT`, `FASTMCP_LOG_LEVEL`) to override defaults.
