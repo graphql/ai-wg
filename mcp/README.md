@@ -1,12 +1,14 @@
 # GraphQL schema embedder MCP server
 
-Minimal Python MCP server that indexes a GraphQL schema once, stores OpenAI embeddings for each `type->field`, and serves fast lookup for relevant fields.
+Dockerized Python MCP server for LLMs that indexes a GraphQL schema, stores OpenAI embeddings per `type->field`, and enables fast lookup plus `run_query` execution once relevant types are identified to fetch data from your GraphQL endpoint.
 
 ## Architecture
 - GraphQL schema: `schema.graphql` is a small e-commerce example to exercise parsing and indexing.
 - Indexer: `schema_indexer.py` flattens the schema into `type.field` signatures (with arguments and return types), embeds each summary via OpenAI, and persists to `data/metadata.json` + `data/vectors.npz` (normalized embeddings for cosine search).
 - Server: `server.py` exposes MCP tools `list_types` and `run_query`. The server ensures the schema index exists on startup; it only touches OpenAI when reindexing or embedding a new query.
 - Persistence: `data/` is `.gitignore`'d so you can regenerate locally without polluting the repo.
+
+![Architecture diagram](docs/architecture.svg)
 
 ## Setup
 1st create a `.env` file with `OPENAI_API_KEY`.
