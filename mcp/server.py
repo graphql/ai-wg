@@ -1,3 +1,10 @@
+"""
+GraphQL MCP server that exposes search + query tools for an underlying schema or endpoint.
+
+This server is intended as an abstraction layer: clients should use list_types to find
+relevant entry points and run_query to execute a single valid query.
+"""
+
 import os
 import json
 import threading
@@ -47,28 +54,6 @@ _REMOTE_HEADERS: dict[str, str] = {}
 _REMOTE_TIMEOUT_S: float = 30.0
 _INDEX_LOCK = threading.Lock()
 _SCALAR_TYPES = {"String", "Int", "Float", "Boolean", "ID"}
-_STOPWORDS = {
-    "a",
-    "an",
-    "the",
-    "of",
-    "to",
-    "for",
-    "with",
-    "and",
-    "or",
-    "in",
-    "on",
-    "by",
-    "from",
-    "about",
-    "show",
-    "list",
-    "all",
-    "get",
-    "fetch",
-    "find",
-}
 
 mcp = FastMCP(APP_NAME, instructions=MCP_INSTRUCTIONS)
 mcp.dependencies = ["graphql-core", "openai", "numpy"]
@@ -205,12 +190,12 @@ def _tokenize(text: str) -> list[str]:
         else:
             if current:
                 token = "".join(current)
-                if token and token not in _STOPWORDS:
+                if token:
                     tokens.append(token)
                 current = []
     if current:
         token = "".join(current)
-        if token and token not in _STOPWORDS:
+        if token:
             tokens.append(token)
     return tokens
 
