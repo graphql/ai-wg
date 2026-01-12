@@ -13,7 +13,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 load_dotenv()
 DEFAULT_DATA_DIR = Path(__file__).parent / "data"
-DEFAULT_SCHEMA_PATH = Path("schema.graphql")
+DEFAULT_SCHEMA_PATH = Path(__file__).parent / "schema.graphql"
 DEFAULT_EMBED_MODEL = "text-embedding-3-small"
 
 
@@ -127,7 +127,13 @@ class EmbeddingStore:
         self._vectors = np.load(self.vectors_path)["vectors"]
         return self._meta
 
-    def save(self, vectors: np.ndarray, items: list[dict], schema_sha: str) -> dict:
+    def save(
+        self,
+        vectors: np.ndarray,
+        items: list[dict],
+        schema_sha: str,
+        schema_source: dict | None = None,
+    ) -> dict:
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
         meta = {
@@ -135,6 +141,8 @@ class EmbeddingStore:
             "schema_sha": schema_sha,
             "items": items,
         }
+        if schema_source is not None:
+            meta["schema_source"] = schema_source
 
         np.savez_compressed(self.vectors_path, vectors=vectors)
         self.meta_path.write_text(json.dumps(meta, indent=2))
@@ -164,24 +172,154 @@ class EmbeddingStore:
             for idx in top_indices
         ]
 
+def compute_schema_sha(schema_text: str) -> str:
+    return hashlib.sha256(schema_text.encode("utf-8")).hexdigest()
+
+def index_schema_text(
+    schema_text: str,
+    *,
+    data_dir: Path = DEFAULT_DATA_DIR,
+    embed_model: str = DEFAULT_EMBED_MODEL,
+    embedder: OpenAIEmbedder | None = None,
+    store: EmbeddingStore | None = None,
+    schema_source: dict | None = None,
+) -> dict:
+    items = flatten_schema(schema_text)
+    summaries = [item.summary for item in items]
+    embedder = embedder or OpenAIEmbedder(model=embed_model)
+    vectors = embedder.embed_many(summaries)
+
+    schema_sha = compute_schema_sha(schema_text)
+    store = store or EmbeddingStore(data_dir=data_dir, embedding_model=embedder.model)
+    meta = store.save(
+        vectors,
+        [asdict(item) for item in items],
+        schema_sha=schema_sha,
+        schema_source=schema_source,
+    )
+    meta["count"] = len(items)
+    return meta
+
 
 def index_schema(
     schema_path: Path = DEFAULT_SCHEMA_PATH,
     data_dir: Path = DEFAULT_DATA_DIR,
     embed_model: str = DEFAULT_EMBED_MODEL,
     embedder: OpenAIEmbedder | None = None,
+    store: EmbeddingStore | None = None,
+    schema_source: dict | None = None,
 ) -> dict:
-    schema_text = schema_path.read_text()
-    items = flatten_schema(schema_text)
-    summaries = [item.summary for item in items]
-    embedder = embedder or OpenAIEmbedder(model=embed_model)
-    vectors = embedder.embed_many(summaries)
+    resolved_source = schema_source
+    if resolved_source is None:
+        try:
+            resolved_source = {"kind": "file", "path": str(schema_path.resolve())}
+        except Exception:
+            resolved_source = {"kind": "file", "path": str(schema_path)}
+    return index_schema_text(
+        schema_path.read_text(),
+        data_dir=data_dir,
+        embed_model=embed_model,
+        embedder=embedder,
+        store=store,
+        schema_source=resolved_source,
+    )
 
-    schema_sha = hashlib.sha256(schema_text.encode("utf-8")).hexdigest()
-    store = EmbeddingStore(data_dir=data_dir, embedding_model=embedder.model)
-    meta = store.save(vectors, [asdict(item) for item in items], schema_sha=schema_sha)
-    meta["count"] = len(items)
-    return meta
+
+def ensure_index_text(
+    schema_text: str,
+    *,
+    schema_source: dict,
+    data_dir: Path = DEFAULT_DATA_DIR,
+    embed_model: str = DEFAULT_EMBED_MODEL,
+    embedder: OpenAIEmbedder | None = None,
+    store: EmbeddingStore | None = None,
+    force: bool = False,
+) -> dict:
+    """
+    Ensure a persisted embedding index exists for a given schema text.
+
+    Rebuilds the index if missing, corrupt, model-mismatched, schema changed, or schema source changed.
+    """
+    embedder = embedder or OpenAIEmbedder(model=embed_model)
+    store = store or EmbeddingStore(data_dir=data_dir, embedding_model=embedder.model)
+
+    if not force and store.is_ready():
+        schema_sha = compute_schema_sha(schema_text)
+        try:
+            meta = store.load()
+        except Exception:
+            return index_schema_text(
+                schema_text,
+                data_dir=data_dir,
+                embed_model=embedder.model,
+                embedder=embedder,
+                store=store,
+                schema_source=schema_source,
+            )
+
+        stored_source = meta.get("schema_source")
+        if meta.get("schema_sha") == schema_sha and (stored_source is None or stored_source == schema_source):
+            meta["count"] = len(meta.get("items", []))
+            return meta
+
+    return index_schema_text(
+        schema_text,
+        data_dir=data_dir,
+        embed_model=embedder.model,
+        embedder=embedder,
+        store=store,
+        schema_source=schema_source,
+    )
+
+
+def ensure_index(
+    schema_path: Path = DEFAULT_SCHEMA_PATH,
+    data_dir: Path = DEFAULT_DATA_DIR,
+    embed_model: str = DEFAULT_EMBED_MODEL,
+    embedder: OpenAIEmbedder | None = None,
+    store: EmbeddingStore | None = None,
+    force: bool = False,
+) -> dict:
+    """
+    Ensure a persisted embedding index exists for the given schema.
+
+    Rebuilds the index if missing, corrupt, model-mismatched, or if the schema file changed.
+    """
+    embedder = embedder or OpenAIEmbedder(model=embed_model)
+    store = store or EmbeddingStore(data_dir=data_dir, embedding_model=embedder.model)
+    try:
+        schema_source = {"kind": "file", "path": str(schema_path.resolve())}
+    except Exception:
+        schema_source = {"kind": "file", "path": str(schema_path)}
+
+    if not force and store.is_ready():
+        schema_text = schema_path.read_text()
+        schema_sha = compute_schema_sha(schema_text)
+        try:
+            meta = store.load()
+        except Exception:
+            return index_schema(
+                schema_path=schema_path,
+                data_dir=data_dir,
+                embed_model=embedder.model,
+                embedder=embedder,
+                store=store,
+                schema_source=schema_source,
+            )
+
+        stored_source = meta.get("schema_source")
+        if meta.get("schema_sha") == schema_sha and (stored_source is None or stored_source == schema_source):
+            meta["count"] = len(meta.get("items", []))
+            return meta
+
+    return index_schema(
+        schema_path=schema_path,
+        data_dir=data_dir,
+        embed_model=embedder.model,
+        embedder=embedder,
+        store=store,
+        schema_source=schema_source,
+    )
 
 
 def search_index(
@@ -203,8 +341,6 @@ def search_index(
 
 
 def cli(argv: Iterable[str] | None = None) -> int:
-    embedder = OpenAIEmbedder(model=DEFAULT_EMBED_MODEL)
-
     # Parse arguments and set defaults properly
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default=DEFAULT_EMBED_MODEL, help="Embedding model to use")
@@ -230,6 +366,13 @@ def cli(argv: Iterable[str] | None = None) -> int:
     
     if args.command == "search":
         limit = max(1, min(getattr(args, 'limit', 5), 20))
+        ensure_index(
+            schema_path=getattr(args, 'schema', DEFAULT_SCHEMA_PATH),
+            data_dir=getattr(args, 'data_dir', DEFAULT_DATA_DIR),
+            embed_model=model_arg,
+            embedder=embedder,
+            force=False,
+        )
         results = search_index(
             query=args.query,
             data_dir=getattr(args, 'data_dir', DEFAULT_DATA_DIR),

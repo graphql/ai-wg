@@ -2,3 +2,4 @@ mcp>=0.1.1
 openai>=1.12.0
 graphql-core>=3.2.3
 numpy>=1.26.4
+python-dotenv>=1.0.1
