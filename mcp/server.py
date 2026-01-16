@@ -1,8 +1,24 @@
 """
-GraphQL MCP server that exposes search + query tools for an underlying schema or endpoint.
+GraphQL MCP server exposing `list_types` and `run_query` tools over a schema file or live endpoint.
 
-This server is intended as an abstraction layer: clients should use list_types to find
-relevant entry points and run_query to execute a single valid query.
+What it does:
+- Builds and caches an embedding index of `type.field` signatures for fuzzy search.
+- Exposes `list_types` for discovery and `run_query` for validation/execution.
+
+How `list_types` works:
+- Embed the user query and search the persisted index.
+- Re-rank hits: Query fields first; if the query looks like aggregation, prefer count/aggregate fields;
+  then fall back to embedding similarity.
+- Parse each signature to build a ready-to-run `query_template`.
+- Generate selection sets for object returns and add hints for connection pagination or aggregate fields.
+
+How `run_query` works:
+- Local mode: validates against the SDL schema (no resolvers, so data is null-only).
+- Endpoint mode: proxies the query to the remote URL using introspection-derived SDL for indexing.
+
+Startup notes:
+- Can auto-index in a background thread.
+- Supports stdio/SSE/HTTP transports configured via env or CLI flags.
 """
 
 import os
@@ -54,6 +70,8 @@ _REMOTE_HEADERS: dict[str, str] = {}
 _REMOTE_TIMEOUT_S: float = 30.0
 _INDEX_LOCK = threading.Lock()
 _SCALAR_TYPES = {"String", "Int", "Float", "Boolean", "ID"}
+_AGGREGATE_KEYWORDS = {"count", "total", "sum", "avg", "average", "how many", "number of"}
+_AGGREGATE_FIELD_PATTERNS = {"count", "total", "sum", "avg", "aggregate"}
 
 mcp = FastMCP(APP_NAME, instructions=MCP_INSTRUCTIONS)
 mcp.dependencies = ["graphql-core", "openai", "numpy"]
@@ -209,6 +227,23 @@ def _token_score(tokens: list[str], *values: str) -> int:
     return score
 
 
+def _is_aggregate_query(query: str) -> bool:
+    """Check if the query is asking for aggregate/count operations."""
+    query_lower = query.lower()
+    return any(kw in query_lower for kw in _AGGREGATE_KEYWORDS)
+
+
+def _is_aggregate_field(field_name: str) -> bool:
+    """Check if a field name looks like an aggregate operation."""
+    field_lower = field_name.lower()
+    return any(pattern in field_lower for pattern in _AGGREGATE_FIELD_PATTERNS)
+
+
+def _is_connection_field(field_name: str) -> bool:
+    """Check if a field name is a Connection (cursor-based pagination) field."""
+    return field_name.lower().endswith("connection")
+
+
 def _parse_field_info(meta: dict) -> dict[str, list[dict]]:
     fields_by_type: dict[str, list[dict]] = {}
     for item in meta.get("items", []):
@@ -311,7 +346,7 @@ def ensure_schema_indexed(*, force: bool = False) -> dict:
 
 
 @mcp.tool()
-def list_types(query: str, limit: int = 5) -> list:
+def list_types(query: str, limit: int = 20) -> list:
     """
     Fuzzy search the schema for matching type.field signatures.
     Uses the persisted embedding index (auto-builds if missing/outdated).
@@ -319,11 +354,41 @@ def list_types(query: str, limit: int = 5) -> list:
     meta = ensure_schema_indexed(force=False)
     fields_by_type = _parse_field_info(meta)
     tokens = _tokenize(query)
+    is_aggregate = _is_aggregate_query(query)
 
     capped_limit = max(1, min(limit, 20))
     query_vec = embedder.embed_one(query)
     results = store.search(query_vec, limit=capped_limit)
-    results.sort(key=lambda item: (item.get("type") != "Query", -item.get("score", 0.0)))
+
+    def sort_key(item: dict) -> tuple:
+        """
+        Sort results with smart prioritization:
+        - Query fields first
+        - For aggregate queries: count/aggregate fields first
+        - Then by embedding similarity score
+        """
+        field_name = item.get("field", "")
+        is_query_type = item.get("type") == "Query"
+        is_agg_field = _is_aggregate_field(field_name)
+        is_conn_field = _is_connection_field(field_name)
+        score = item.get("score", 0.0)
+
+        if is_aggregate:
+            # For aggregate queries: prioritize count fields, then connections
+            return (
+                not is_query_type,  # Query type first
+                not is_agg_field,   # Aggregate fields first
+                not is_conn_field,  # Connection fields second
+                -score,             # Then by score
+            )
+        else:
+            # For non-aggregate queries: standard ordering
+            return (
+                not is_query_type,
+                -score,
+            )
+
+    results.sort(key=sort_key)
 
     formatted = []
     for item in results:
@@ -339,16 +404,36 @@ def list_types(query: str, limit: int = 5) -> list:
 
         if type_name == "Query":
             selection = None
-            if _base_type(return_type) not in _SCALAR_TYPES:
+            base_return = _base_type(return_type)
+
+            # For Connection types, provide a complete pagination template
+            if _is_connection_field(field_name):
                 selection = _render_selection_set(
-                    _base_type(return_type),
+                    base_return,
+                    fields_by_type,
+                    tokens,
+                    depth=2,
+                    max_fields=8,
+                )
+                selection_part = f" {selection}" if selection else ""
+                entry["query_template"] = f"query {{ {field_name}{_format_args(args)}{selection_part} }}"
+                entry["usage_hint"] = "Use cursor-based pagination for large datasets. Pass 'after' cursor from pageInfo.endCursor."
+            elif _is_aggregate_field(field_name):
+                # Count fields return scalars, no selection needed
+                entry["query_template"] = f"query {{ {field_name}{_format_args(args)} }}"
+                entry["usage_hint"] = "O(1) count operation - efficient for large datasets."
+            elif base_return not in _SCALAR_TYPES:
+                selection = _render_selection_set(
+                    base_return,
                     fields_by_type,
                     tokens,
                     depth=2,
                     max_fields=6,
                 )
-            selection_part = f" {selection}" if selection else ""
-            entry["query_template"] = f"query {{ {field_name}{_format_args(args)}{selection_part} }}"
+                selection_part = f" {selection}" if selection else ""
+                entry["query_template"] = f"query {{ {field_name}{_format_args(args)}{selection_part} }}"
+            else:
+                entry["query_template"] = f"query {{ {field_name}{_format_args(args)} }}"
         elif _base_type(return_type) not in _SCALAR_TYPES:
             selection = _render_selection_set(
                 _base_type(return_type),

@@ -473,6 +473,94 @@ class Root:
     def categories(self, info):
         return self.category_list
 
+    # --- Count methods (O(1) operations) ---
+
+    def usersCount(self, info) -> int:
+        """Return total count of users - O(1) operation."""
+        return len(self.user_list)
+
+    def productsCount(self, info) -> int:
+        """Return total count of products - O(1) operation."""
+        return len(self.product_list)
+
+    def ordersCount(self, info, status: str | None = None) -> int:
+        """Return total count of orders, optionally filtered by status - O(1) for unfiltered."""
+        if status:
+            return sum(1 for o in self.orders.values() if o.get("status") == status)
+        return len(self.orders)
+
+    def categoriesCount(self, info) -> int:
+        """Return total count of categories - O(1) operation."""
+        return len(self.category_list)
+
+    def reviewsCount(self, info) -> int:
+        """Return total count of reviews - O(1) operation."""
+        return len(self.reviews)
+
+    # --- Cursor-based pagination (Connection pattern) ---
+
+    def _build_connection(
+        self,
+        items: list,
+        first: int = 10,
+        after: str | None = None,
+    ) -> dict:
+        """
+        Build a Connection response with cursor-based pagination.
+        Cursors are simply the item IDs for O(1) lookup.
+        """
+        total_count = len(items)
+        first = max(1, min(first, 100))  # Cap at 100 per page
+
+        # Find start index based on cursor
+        start_index = 0
+        if after:
+            for i, item in enumerate(items):
+                if item.get("id") == after:
+                    start_index = i + 1
+                    break
+
+        # Slice the items
+        end_index = start_index + first
+        page_items = items[start_index:end_index]
+
+        # Build edges with cursors
+        edges = [
+            {"cursor": item["id"], "node": item}
+            for item in page_items
+        ]
+
+        # Build page info
+        page_info = {
+            "hasNextPage": end_index < total_count,
+            "hasPreviousPage": start_index > 0,
+            "startCursor": edges[0]["cursor"] if edges else None,
+            "endCursor": edges[-1]["cursor"] if edges else None,
+        }
+
+        return {
+            "totalCount": total_count,
+            "pageInfo": page_info,
+            "edges": edges,
+        }
+
+    def usersConnection(self, info, first: int = 10, after: str | None = None) -> dict:
+        """Paginated users with cursor-based navigation."""
+        return self._build_connection(self.user_list, first=first, after=after)
+
+    def productsConnection(self, info, first: int = 10, after: str | None = None) -> dict:
+        """Paginated products with cursor-based navigation."""
+        return self._build_connection(self.product_list, first=first, after=after)
+
+    def ordersConnection(
+        self, info, first: int = 10, after: str | None = None, status: str | None = None
+    ) -> dict:
+        """Paginated orders with cursor-based navigation, optional status filter."""
+        items = list(self.orders.values())
+        if status:
+            items = [o for o in items if o.get("status") == status]
+        return self._build_connection(items, first=first, after=after)
+
     def placeOrder(self, info, input):
         user_id = input.get("userId")
         items = input.get("items") or []

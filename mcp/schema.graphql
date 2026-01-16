@@ -3,13 +3,80 @@
 type Query {
   user(id: ID!): User
   users(limit: Int = 10, offset: Int = 0): [User!]!
+  usersConnection(first: Int = 10, after: ID): UserConnection!
+  usersCount: Int!
   order(id: ID!): Order
   orders(status: OrderStatus, limit: Int = 10): [Order!]!
+  ordersConnection(first: Int = 10, after: ID, status: OrderStatus): OrderConnection!
+  ordersCount(status: OrderStatus): Int!
   product(id: ID!): Product
   products(limit: Int = 10, offset: Int = 0): [Product!]!
+  productsConnection(first: Int = 10, after: ID): ProductConnection!
+  productsCount: Int!
   searchProducts(term: String!, limit: Int = 10): [Product!]!
   category(id: ID!): Category
   categories: [Category!]!
+  categoriesCount: Int!
+  reviewsCount: Int!
+}
+
+"Pagination metadata for cursor-based navigation"
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: ID
+  endCursor: ID
+}
+
+"Connection type for paginated User queries"
+type UserConnection {
+  totalCount: Int!
+  pageInfo: PageInfo!
+  edges: [UserEdge!]!
+}
+
+"Edge type wrapping a User with its cursor"
+type UserEdge {
+  "Cursor for this user (use as 'after' parameter)"
+  cursor: ID!
+  "The user record"
+  node: User!
+}
+
+"Connection type for paginated Product queries"
+type ProductConnection {
+  "Total count of products matching the query"
+  totalCount: Int!
+  "Pagination metadata"
+  pageInfo: PageInfo!
+  "List of product edges"
+  edges: [ProductEdge!]!
+}
+
+"Edge type wrapping a Product with its cursor"
+type ProductEdge {
+  "Cursor for this product (use as 'after' parameter)"
+  cursor: ID!
+  "The product record"
+  node: Product!
+}
+
+"Connection type for paginated Order queries"
+type OrderConnection {
+  "Total count of orders matching the query"
+  totalCount: Int!
+  "Pagination metadata"
+  pageInfo: PageInfo!
+  "List of order edges"
+  edges: [OrderEdge!]!
+}
+
+"Edge type wrapping an Order with its cursor"
+type OrderEdge {
+  "Cursor for this order (use as 'after' parameter)"
+  cursor: ID!
+  "The order record"
+  node: Order!
 }
 
 type Mutation {
