@@ -1,0 +1,23 @@
+services:
+  graphql-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GRAPHQL_ENDPOINT_URL=${GRAPHQL_ENDPOINT_URL:-http://graphql-test:4000/graphql}
+    volumes:
+      - ./data:/app/data
+      - ./schema.graphql:/app/schema.graphql:ro
+  graphql-test:
+    build:
+      context: .
+      dockerfile: test_graphql_server/Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./schema.graphql:/app/schema.graphql:ro

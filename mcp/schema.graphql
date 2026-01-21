@@ -1,0 +1,260 @@
+# Sample GraphQL schema for richer indexing experiments.
+
+type Query {
+  user(id: ID!): User
+  users(limit: Int = 10, offset: Int = 0): [User!]!
+  usersConnection(first: Int = 10, after: ID): UserConnection!
+  usersCount: Int!
+  order(id: ID!): Order
+  orders(status: OrderStatus, limit: Int = 10): [Order!]!
+  ordersConnection(first: Int = 10, after: ID, status: OrderStatus): OrderConnection!
+  ordersCount(status: OrderStatus): Int!
+  product(id: ID!): Product
+  products(limit: Int = 10, offset: Int = 0): [Product!]!
+  productsConnection(first: Int = 10, after: ID): ProductConnection!
+  productsCount: Int!
+  searchProducts(term: String!, limit: Int = 10): [Product!]!
+  category(id: ID!): Category
+  categories: [Category!]!
+  categoriesCount: Int!
+  reviewsCount: Int!
+}
+
+"Pagination metadata for cursor-based navigation"
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: ID
+  endCursor: ID
+}
+
+"Connection type for paginated User queries"
+type UserConnection {
+  totalCount: Int!
+  pageInfo: PageInfo!
+  edges: [UserEdge!]!
+}
+
+"Edge type wrapping a User with its cursor"
+type UserEdge {
+  "Cursor for this user (use as 'after' parameter)"
+  cursor: ID!
+  "The user record"
+  node: User!
+}
+
+"Connection type for paginated Product queries"
+type ProductConnection {
+  "Total count of products matching the query"
+  totalCount: Int!
+  "Pagination metadata"
+  pageInfo: PageInfo!
+  "List of product edges"
+  edges: [ProductEdge!]!
+}
+
+"Edge type wrapping a Product with its cursor"
+type ProductEdge {
+  "Cursor for this product (use as 'after' parameter)"
+  cursor: ID!
+  "The product record"
+  node: Product!
+}
+
+"Connection type for paginated Order queries"
+type OrderConnection {
+  "Total count of orders matching the query"
+  totalCount: Int!
+  "Pagination metadata"
+  pageInfo: PageInfo!
+  "List of order edges"
+  edges: [OrderEdge!]!
+}
+
+"Edge type wrapping an Order with its cursor"
+type OrderEdge {
+  "Cursor for this order (use as 'after' parameter)"
+  cursor: ID!
+  "The order record"
+  node: Order!
+}
+
+type Mutation {
+  placeOrder(input: PlaceOrderInput!): OrderConfirmation!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  profile: UserProfile
+  address: Address
+  company: Company
+  orders: [Order!]!
+  wishlist: [Product!]!
+  reviews: [Review!]!
+}
+
+type UserProfile {
+  bio: String
+  joinedAt: String!
+  preferences: Preferences
+}
+
+type Preferences {
+  newsletter: Boolean!
+  favoriteCategories: [Category!]!
+}
+
+type Company {
+  id: ID!
+  name: String!
+  address: Address
+}
+
+type Address {
+  id: ID!
+  line1: String!
+  line2: String
+  city: String!
+  region: String
+  postalCode: String!
+  country: String!
+}
+
+type Product {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+  inStock: Boolean!
+  tags: [String!]!
+  category: Category
+  reviews: [Review!]!
+  related: [Product!]!
+  inventory: [InventoryLocation!]!
+}
+
+type Review {
+  id: ID!
+  rating: Int!
+  title: String
+  body: String
+  author: User!
+  product: Product!
+  createdAt: String!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  parent: Category
+  children: [Category!]!
+  products: [Product!]!
+}
+
+type Order {
+  id: ID!
+  status: OrderStatus!
+  items: [OrderItem!]!
+  total: Float!
+  placedAt: String!
+  shipment: Shipment
+  payment: Payment
+  discounts: [Discount!]!
+  notes: [String!]!
+}
+
+type OrderItem {
+  product: Product!
+  quantity: Int!
+  subtotal: Float!
+  appliedDiscounts: [Discount!]!
+}
+
+type Shipment {
+  carrier: Carrier!
+  trackingNumber: String!
+  address: Address!
+  trackingEvents: [TrackingEvent!]!
+}
+
+type Carrier {
+  id: ID!
+  name: String!
+  phone: String
+}
+
+type TrackingEvent {
+  status: String!
+  timestamp: String!
+  location: String
+}
+
+type Payment {
+  id: ID!
+  method: PaymentMethod!
+  status: PaymentStatus!
+  amount: Float!
+  processedAt: String
+  billingAddress: Address
+}
+
+type Discount {
+  code: String!
+  amount: Float!
+  description: String
+}
+
+type InventoryLocation {
+  id: ID!
+  name: String!
+  status: InventoryStatus!
+  quantity: Int!
+  address: Address
+}
+
+input PlaceOrderInput {
+  userId: ID!
+  items: [PlaceOrderItemInput!]!
+  note: String
+  couponCode: String
+}
+
+input PlaceOrderItemInput {
+  productId: ID!
+  quantity: Int!
+}
+
+type OrderConfirmation {
+  id: ID!
+  estimatedDelivery: String!
+  message: String
+  order: Order
+}
+
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CARD
+  PAYPAL
+  BANK_TRANSFER
+}
+
+enum InventoryStatus {
+  IN_STOCK
+  LOW_STOCK
+  OUT_OF_STOCK
+}

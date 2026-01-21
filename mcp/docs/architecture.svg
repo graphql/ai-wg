@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="240" viewBox="0 0 920 240">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#1f2937" />
+    </marker>
+    <style>
+      .box { fill: #f8fafc; stroke: #1f2937; stroke-width: 1.5; rx: 10; ry: 10; }
+      .label { font-family: Arial, sans-serif; font-size: 13px; fill: #111827; }
+      .arrow { stroke: #1f2937; stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+      .note { font-family: Arial, sans-serif; font-size: 11px; fill: #4b5563; }
+    </style>
+  </defs>
+
+  <rect class="box" x="40" y="70" width="170" height="70" />
+  <text class="label" x="55" y="105">External LLM Client</text>
+
+  <rect class="box" x="260" y="60" width="200" height="90" />
+  <text class="label" x="275" y="98">GraphQL MCP Server</text>
+  <text class="note" x="275" y="118">list_types • run_query</text>
+
+  <rect class="box" x="520" y="40" width="180" height="70" />
+  <text class="label" x="535" y="75">OpenAI</text>
+  <text class="note" x="535" y="93">Embeddings</text>
+
+  <rect class="box" x="520" y="130" width="180" height="70" />
+  <text class="label" x="535" y="165">GraphQL Endpoint</text>
+
+  <rect class="box" x="740" y="85" width="150" height="70" />
+  <text class="label" x="755" y="120">Index Store</text>
+  <text class="note" x="755" y="138">data/ vectors</text>
+
+  <line class="arrow" x1="210" y1="105" x2="260" y2="105" />
+  <line class="arrow" x1="460" y1="85" x2="520" y2="75" />
+  <line class="arrow" x1="460" y1="125" x2="520" y2="145" />
+  <line class="arrow" x1="700" y1="110" x2="740" y2="120" />
+  <line class="arrow" x1="460" y1="105" x2="700" y2="110" />
+</svg>
