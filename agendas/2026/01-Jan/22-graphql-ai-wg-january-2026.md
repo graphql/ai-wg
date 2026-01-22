@@ -26,6 +26,7 @@
 | Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
 | Mark Larah       | @magicmark    | Yelp               | Austin, TX, USA       |
 | Michael Watson   | @michael-watson | Self             | Granite Bay, CA, USA |
+| Erik Wrede       | @erikwrede    | Self               | Cologne, Germany |
 
 ## Agenda
 
