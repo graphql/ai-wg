@@ -25,6 +25,7 @@
 | Kewei Qu (host)  | @Keweiqu      | Meta               | Menlo Park, CA, USA   |
 | Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
 | Mark Larah       | @magicmark    | Yelp               | Austin, TX, USA       |
+| Michael Watson   | @michael-watson | Self             | Granite Bay, CA, USA |
 
 ## Agenda
 
@@ -41,3 +42,4 @@
 1. Reminder: [grants available for key initiatives](https://graphql.org/community/foundation/community-grant/) (1m, Host)
 1. Let's discuss [semantic-introspection](https://github.com/graphql/ai-wg/blob/main/rfcs/semantic-introspection.md) (10m, Pascal)
 1. AI-powered mocking - https://public.larah.me/~mark/MockSpec.html (10m, Mark)
+1. GraphQL embeddings for dynamic opertions (10m, Michael)
