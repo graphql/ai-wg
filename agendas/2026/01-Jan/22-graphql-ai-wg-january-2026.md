@@ -27,6 +27,7 @@
 | Mark Larah       | @magicmark    | Yelp               | Austin, TX, USA       |
 | Michael Watson   | @michael-watson | Self             | Granite Bay, CA, USA |
 | Erik Wrede       | @erikwrede    | Self               | Cologne, Germany |
+| Thore Koritzius  | @ThoreKoritzius | Self               | Cologne, Germany |
 
 ## Agenda
 
