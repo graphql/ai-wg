@@ -30,6 +30,7 @@
 | Thore Koritzius  | @ThoreKoritzius | Self               | Cologne, Germany |
 | Raymie Stata     | @rstata       | Airbnb             | Atlanta, GA, USA   |
 | Benjie Gillam    | @benjie       | Graphile           | Chandler's Ford, UK   |
+| Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 
 ## Agenda
 
