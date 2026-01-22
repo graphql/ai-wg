@@ -24,6 +24,7 @@
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Kewei Qu (host)  | @Keweiqu      | Meta               | Menlo Park, CA, USA   |
 | Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
+| Mark Larah       | @magicmark    | Yelp               | Austin, TX, USA       |
 
 ## Agenda
 
@@ -39,3 +40,4 @@
 1. Check for [ready for review agenda items](https://github.com/graphql/ai-wg/issues?q=is%3Aissue+is%3Aopen+label%3A%22Ready+for+review+%F0%9F%99%8C%22+sort%3Aupdated-desc) (5m, Host)
 1. Reminder: [grants available for key initiatives](https://graphql.org/community/foundation/community-grant/) (1m, Host)
 1. Let's discuss [semantic-introspection](https://github.com/graphql/ai-wg/blob/main/rfcs/semantic-introspection.md) (10m, Pascal)
+1. AI-powered mocking - https://public.larah.me/~mark/MockSpec.html (10m, Mark)
