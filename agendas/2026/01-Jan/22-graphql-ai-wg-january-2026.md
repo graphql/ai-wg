@@ -29,6 +29,7 @@
 | Erik Wrede       | @erikwrede    | Self               | Cologne, Germany |
 | Thore Koritzius  | @ThoreKoritzius | Self               | Cologne, Germany |
 | Raymie Stata     | @rstata       | Airbnb             | Atlanta, GA, USA   |
+| Benjie Gillam    | @benjie       | Graphile           | Chandler's Ford, UK   |
 
 ## Agenda
 
