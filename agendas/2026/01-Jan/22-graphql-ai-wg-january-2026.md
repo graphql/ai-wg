@@ -28,6 +28,7 @@
 | Michael Watson   | @michael-watson | Self             | Granite Bay, CA, USA |
 | Erik Wrede       | @erikwrede    | Self               | Cologne, Germany |
 | Thore Koritzius  | @ThoreKoritzius | Self               | Cologne, Germany |
+| Benjie Gillam    | @benjie       | Graphile           | Chandler's Ford, UK   |
 
 ## Agenda
 
