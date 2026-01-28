@@ -22,6 +22,7 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
+| Kewei Qu (Host)	 | @Keweiqu	     | Meta Platforms	    | Menlo Park, CA, USA   |
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Michael Rebello  | @rebello95    | Airbnb	            | San Diego, CA, USA    |
 
