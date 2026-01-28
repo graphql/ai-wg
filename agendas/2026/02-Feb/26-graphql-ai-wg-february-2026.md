@@ -23,6 +23,7 @@
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
+| Michael Rebello  | @rebello95    | Airbnb	            | San Diego, CA, USA    |
 
 
 ## Agenda
