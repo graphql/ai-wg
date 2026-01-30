@@ -97,6 +97,13 @@ extend type Query {
     
     """Maximum number of results to return."""
     first: Int! = 10
+
+    """
+    Optional minimum score required for a result to be included.
+
+    When provided, all returned results MUST have score >= score_threshold.
+    """
+    min_score: Float
   ): [__SearchResult!]!
 }
 ```
