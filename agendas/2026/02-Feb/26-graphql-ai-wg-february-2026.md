@@ -26,6 +26,7 @@
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Michael Rebello  | @rebello95    | Airbnb	            | San Diego, CA, USA    |
 | Alexandre Dias   | @alexdias     | Meta Platforms	    | Menlo Park, CA, USA   |
+| Mark Larah       | @magicmark    | Yelp         	    | Austin, TX, USA       |
 
 
 ## Agenda
