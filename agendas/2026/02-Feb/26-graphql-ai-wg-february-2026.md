@@ -31,6 +31,7 @@
 | Martin Bonnin    | @martinbonnin | Apollo             | Paris, FR             |
 | Thore Koritzius  | @ThoreKoritzius | Self             | Cologne, DE           |
 | Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, USA       |
+| Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
 
 
 ## Agenda
