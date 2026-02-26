@@ -168,7 +168,136 @@ union __SchemaMember =
   | __Directive
 ```
 
-### 2. Indexing Requirements
+### 2. Coordinate Lookup Introspection
+
+Schema coordinates (e.g. `Query.user`, `User.email`, `@deprecated(reason:)`) are the natural way to
+reference specific members of a GraphQL schema. Today, resolving a coordinate to its full definition
+requires traversing the introspection graph via `__schema`, `__type`, and so forth.
+
+The `__coordinates` field provides direct lookup by schema coordinate, eliminating this traversal.
+While it naturally complements `__search` for agentic workflows, coordinate lookup is independently
+useful for any tool or client that works with schema coordinates.
+
+```graphql
+extend type Query {
+  """
+  Resolves schema members by their schema coordinates.
+
+  Returns the resolved members in the same order as the input coordinates.
+  """
+  __coordinates(
+    """
+    List of schema coordinates to resolve.
+    """
+    coordinates: [String!]!
+  ): [__SchemaMember!]!
+}
+```
+
+#### Example Usage
+
+An agent resolving coordinates discovered via `__search`, or a developer tool
+inspecting specific schema members:
+
+```graphql
+query {
+  __coordinates(coordinates: ["Query.userByEmail", "User"]) {
+    ... on __Type {
+      name
+      kind
+      fields {
+        name
+        type {
+          name
+          kind
+          ofType {
+            name
+          }
+        }
+      }
+    }
+    ... on __Field {
+      name
+      description
+      type {
+        name
+        kind
+        ofType {
+          name
+        }
+      }
+      args {
+        name
+        type {
+          name
+          kind
+        }
+        defaultValue
+      }
+    }
+  }
+}
+```
+
+Example response:
+
+```json
+{
+  "data": {
+    "__coordinates": [
+      {
+        "name": "userByEmail",
+        "description": "Retrieve a user by their email address",
+        "type": {
+          "name": null,
+          "kind": "NON_NULL",
+          "ofType": { "name": "User" }
+        },
+        "args": [
+          {
+            "name": "email",
+            "type": { "name": "String", "kind": "SCALAR" },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "User",
+        "kind": "OBJECT",
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "name": null,
+              "kind": "NON_NULL",
+              "ofType": { "name": "ID" }
+            }
+          },
+          {
+            "name": "email",
+            "type": {
+              "name": null,
+              "kind": "NON_NULL",
+              "ofType": { "name": "String" }
+            }
+          },
+          {
+            "name": "displayName",
+            "type": { "name": "String", "kind": "SCALAR", "ofType": null }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+> **Editor's Note:** While `__coordinates` naturally pairs with `__search` in a two-step
+> discover-then-resolve workflow for AI agents, it stands on its own as a general-purpose
+> introspection primitive. Any tool that works with schema coordinates benefits from direct
+> resolution without full introspection traversal.
+
+### 3. Indexing Requirements
 
 Implementations adhering to this specification:
 
@@ -178,7 +307,7 @@ Implementations adhering to this specification:
 
 The indexing strategy is intentionally left to the implementation. 
 
-### 3. Example Usage
+### 4. Example Usage
 
 ```graphql
 # An LLM trying to find how to look up a user by email
