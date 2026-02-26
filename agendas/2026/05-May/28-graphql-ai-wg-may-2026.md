@@ -1,9 +1,9 @@
 | This is an open meeting: To attend, edit and PR this file. (Edit: ✎ above, or press "e") |
 | ---------------------------------------------------------------------------------------- |
 
-# GraphQL AI WG — January 2026
+# GraphQL AI WG — May 2026
 
-- **Date & Time**: [January 22, 2026, 1:30 – 2:30 PM EST](https://www.timeanddate.com/worldclock/converter.html?iso=20260122T183000&p1=224&p2=179&p3=136&p4=268&p5=367&p6=438&p7=248&p8=240)
+- **Date & Time**: [May 28, 2026, 1:30 – 2:30 PM EDT](https://www.timeanddate.com/worldclock/converter.html?iso=20260528T173000&p1=224&p2=179&p3=136&p4=268&p5=367&p6=438&p7=248&p8=240)
   - View the [calendar][], or subscribe ([Google Calendar][], [ical file][]).
   - _Please Note:_ The date or time may change. Please check this agenda the
     week of the meeting to confirm. While we try to keep all calendars accurate,
@@ -22,15 +22,7 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
-| Kewei Qu (host)  | @Keweiqu      | Meta               | Menlo Park, CA, USA   |
-| Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
-| Mark Larah       | @magicmark    | Yelp               | Austin, TX, USA       |
-| Michael Watson   | @michael-watson | Self             | Granite Bay, CA, USA |
-| Erik Wrede       | @erikwrede    | Self               | Cologne, Germany |
-| Thore Koritzius  | @ThoreKoritzius | Self               | Cologne, Germany |
-| Raymie Stata     | @rstata       | Airbnb             | Atlanta, GA, USA   |
-| Benjie Gillam    | @benjie       | Graphile           | Chandler's Ford, UK   |
-| Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
+
 
 ## Agenda
 
@@ -45,7 +37,3 @@
 1. Review agenda (2m, Host)
 1. Check for [ready for review agenda items](https://github.com/graphql/ai-wg/issues?q=is%3Aissue+is%3Aopen+label%3A%22Ready+for+review+%F0%9F%99%8C%22+sort%3Aupdated-desc) (5m, Host)
 1. Reminder: [grants available for key initiatives](https://graphql.org/community/foundation/community-grant/) (1m, Host)
-2. GraphQL Conf 2026 [CFP](https://sessionize.com/graphqlconf-2026/) open
-1. Let's discuss [semantic-introspection](https://github.com/graphql/ai-wg/blob/main/rfcs/semantic-introspection.md) (10m, Pascal)
-1. AI-powered mocking - https://public.larah.me/~mark/MockSpec.html (10m, Mark)
-1. GraphQL embeddings for dynamic opertions (10m, Michael)
