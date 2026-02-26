@@ -29,6 +29,7 @@
 | Mark Larah       | @magicmark    | Yelp         	    | Austin, TX, USA       |
 | Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
 | Martin Bonnin    | @martinbonnin | Apollo             | Paris, FR             |
+| Thore Koritzius  | @ThoreKoritzius | Self             | Cologne, DE           |
 
 
 ## Agenda
