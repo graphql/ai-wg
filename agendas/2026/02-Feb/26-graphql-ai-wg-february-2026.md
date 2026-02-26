@@ -28,6 +28,7 @@
 | Alexandre Dias   | @alexdias     | Meta Platforms	    | Menlo Park, CA, USA   |
 | Mark Larah       | @magicmark    | Yelp         	    | Austin, TX, USA       |
 | Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
+| Martin Bonnin    | @martinbonnin | Apollo             | Paris, FR             |
 
 
 ## Agenda
