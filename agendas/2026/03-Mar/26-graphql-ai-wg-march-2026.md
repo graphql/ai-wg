@@ -23,7 +23,7 @@
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
-| Mark Larah       | @magicmark  	 | Apollo	            | Austin, TX, USA       |
+| Mark Larah       | @magicmark  	 | Yelp 	            | Austin, TX, USA       |
 
 
 ## Agenda
