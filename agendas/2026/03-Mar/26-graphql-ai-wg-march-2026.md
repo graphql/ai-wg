@@ -25,6 +25,7 @@
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Mark Larah       | @magicmark  	 | Yelp 	            | Austin, TX, USA       |
 | Martin Bonnin    | @martinbonnin | Apollo	            | Paris, FR             |
+| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 
 
 ## Agenda
