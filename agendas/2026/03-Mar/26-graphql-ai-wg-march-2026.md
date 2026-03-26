@@ -22,6 +22,7 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
+| Kewei Qu	       | @Keweiqu	     | Meta  	            | Menlo Park, CA, USA   |
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Mark Larah       | @magicmark  	 | Yelp 	            | Austin, TX, USA       |
 | Martin Bonnin    | @martinbonnin | Apollo	            | Paris, FR             |
@@ -48,3 +49,6 @@
    - Aim: getting feedback and/or approvals.
 1. GAP-10: `@mock` spec (20m, Mark)
    - https://github.com/graphql/gaps/pull/10
+3. GraphQL schema RAG improvements (10m, Kewei, Jose)
+   - Different embedding models (DragonRoBERTa, OAI, Qwen3)
+   - Custom reranking based on traffic
