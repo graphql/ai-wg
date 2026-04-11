@@ -78,7 +78,7 @@ providing a standardized discovery mechanism that works across all conforming im
 
 ### 1. Semantic Search Introspection
 
-A new introspection field that enables semantic search over schema members:
+A new introspection field that enables semantic search over schema definitions:
 
 ```graphql
 extend type Query {
@@ -115,27 +115,27 @@ extend type Query {
 
 ```graphql
 """
-Represents a schema member matched by semantic search.
+Represents a schema definition matched by semantic search.
 """
 type __SearchResult {
   """
-  Schema coordinate identifying the matched member.
+  Schema coordinate identifying the matched definition.
   For example: "Query.user" or "Mutation.createPost(input: )"
   """
   coordinate: String!
   
   """
-  The matched schema member.
+  The matched schema definition.
   """
-  member: __SchemaMember!
+  definition: __SchemaDefinition!
 
   """
-  Paths from the matched member to a root type, aiding query construction.
+  Paths from the matched definition to a root type, aiding query construction.
 
-  Each path is a sequence of schema coordinates, starting from the matched member and ending at a
+  Each path is a sequence of schema coordinates, starting from the matched definition and ending at a
   root type.
 
-  Implementations MAY return multiple paths if the member is reachable via different routes. This 
+  Implementations MAY return multiple paths if the definition is reachable via different routes. This 
   list is not guaranteed to be exhaustive.
   """
   pathsToRoot: [String!]!
@@ -150,17 +150,17 @@ type __SearchResult {
 ```
 
 > **Editor's Note:** The `pathsToRoot` field is placed on `__SearchResult`, but it 
-> arguably belongs on the schema member types themselves (e.g., `__Field`, `__Type`). 
+> arguably belongs on the schema definition types themselves (e.g., `__Field`, `__Type`). 
 > This placement warrants further discussion.
 
-#### Schema Member Union
+#### Schema Definition Union
 
 ```graphql
 """
-Union of all introspectable schema members that can be discovered
+Union of all introspectable schema definitions that can be discovered
 through semantic search.
 """
-union __SchemaMember = 
+union __SchemaDefinition = 
   | __Type 
   | __Field 
   | __InputValue 
@@ -171,37 +171,37 @@ union __SchemaMember =
 ### 2. Coordinate Lookup Introspection
 
 Schema coordinates (e.g. `Query.user`, `User.email`, `@deprecated(reason:)`) are the natural way to
-reference specific members of a GraphQL schema. Today, resolving a coordinate to its full definition
+reference specific definitions of a GraphQL schema. Today, resolving a coordinate to its full definition
 requires traversing the introspection graph via `__schema`, `__type`, and so forth.
 
-The `__coordinates` field provides direct lookup by schema coordinate, eliminating this traversal.
+The `__definitions` field provides direct lookup by schema coordinate, eliminating this traversal.
 While it naturally complements `__search` for agentic workflows, coordinate lookup is independently
 useful for any tool or client that works with schema coordinates.
 
 ```graphql
 extend type Query {
   """
-  Resolves schema members by their schema coordinates.
+  Resolves schema definitions by their schema coordinates.
 
-  Returns the resolved members in the same order as the input coordinates.
+  Returns the resolved definitions in the same order as the input coordinates.
   """
-  __coordinates(
+  __definitions(
     """
     List of schema coordinates to resolve.
     """
     coordinates: [String!]!
-  ): [__SchemaMember!]!
+  ): [__SchemaDefinition!]!
 }
 ```
 
 #### Example Usage
 
 An agent resolving coordinates discovered via `__search`, or a developer tool
-inspecting specific schema members:
+inspecting specific schema definitions:
 
 ```graphql
 query {
-  __coordinates(coordinates: ["Query.userByEmail", "User"]) {
+  __definitions(coordinates: ["Query.userByEmail", "User"]) {
     ... on __Type {
       name
       kind
@@ -244,7 +244,7 @@ Example response:
 ```json
 {
   "data": {
-    "__coordinates": [
+    "__definitions": [
       {
         "name": "userByEmail",
         "description": "Retrieve a user by their email address",
@@ -292,7 +292,7 @@ Example response:
 }
 ```
 
-> **Editor's Note:** While `__coordinates` naturally pairs with `__search` in a two-step
+> **Editor's Note:** While `__definitions` naturally pairs with `__search` in a two-step
 > discover-then-resolve workflow for AI agents, it stands on its own as a general-purpose
 > introspection primitive. Any tool that works with schema coordinates benefits from direct
 > resolution without full introspection traversal.
@@ -315,7 +315,7 @@ query {
   __search(query: "Find a user by their email address") {
     coordinate
     score
-    member {
+    definition {
       ... on __Field {
         name
         description
@@ -338,7 +338,7 @@ Example response:
       {
         "coordinate": "Query.userByEmail",
         "score": 0.92,
-        "member": {
+        "definition": {
           "name": "userByEmail",
           "description": "Retrieve a user by their email address",
           "args": [
@@ -349,7 +349,7 @@ Example response:
       {
         "coordinate": "Query.users",
         "score": 0.71,
-        "member": {
+        "definition": {
           "name": "users",
           "description": "List all users, optionally filtered by email domain",
           "args": []
@@ -374,7 +374,7 @@ This could also be helpful for human developers exploring unfamiliar APIs.
 
 ```graphql
 """
-An example demonstrating how to use a schema member.
+An example demonstrating how to use a schema definition.
 """
 type __Example {
   """
