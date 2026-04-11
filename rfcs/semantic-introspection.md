@@ -115,6 +115,15 @@ extend type Query {
     first: Int! = 10
 
     """
+    Opaque cursor for forward pagination.
+
+    When provided, results MUST start after the position indicated by this
+    cursor. The cursor value SHOULD be obtained from the `cursor` field of a
+    previous `__SearchResult`.
+    """
+    after: String
+
+    """
     Optional minimum score required for a result to be included.
 
     When provided, all returned results MUST have score >= score_threshold.
@@ -124,7 +133,9 @@ extend type Query {
 }
 ```
 
-> **Editor's Note:** We may need to add pagination support for `__search`
+Pagination follows a simple fast-forward model: pass the `cursor` of the last
+result as the `after` argument to retrieve the next page. When fewer than
+`first` results are returned, there are no further pages.
 
 #### Search Result Type
 
@@ -161,6 +172,14 @@ type __SearchResult {
   where 1.0 indicates highest relevance.
   """
   score: Float
+
+  """
+  Opaque pagination cursor for this result.
+
+  Pass this value as the `after` argument to `__search` to retrieve
+  the next page of results starting after this item.
+  """
+  cursor: String!
 }
 ```
 
