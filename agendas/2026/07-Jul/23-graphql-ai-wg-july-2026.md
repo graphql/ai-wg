@@ -1,9 +1,9 @@
 | This is an open meeting: To attend, edit and PR this file. (Edit: ✎ above, or press "e") |
 | ---------------------------------------------------------------------------------------- |
 
-# GraphQL AI WG — April 2026
+# GraphQL AI WG — July 2026
 
-- **Date & Time**: [April 23, 2026, 1:30 – 2:30 PM EDT](https://www.timeanddate.com/worldclock/converter.html?iso=20260423T173000&p1=224&p2=179&p3=136&p4=268&p5=367&p6=438&p7=248&p8=240)
+- **Date & Time**: [July 23, 2026, 1:30 – 2:30 PM EDT](https://www.timeanddate.com/worldclock/converter.html?iso=20260723T173000&p1=224&p2=179&p3=136&p4=268&p5=367&p6=438&p7=248&p8=240)
   - View the [calendar][], or subscribe ([Google Calendar][], [ical file][]).
   - _Please Note:_ The date or time may change. Please check this agenda the
     week of the meeting to confirm. While we try to keep all calendars accurate,
@@ -22,7 +22,7 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
-| Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
+
 
 ## Agenda
 
