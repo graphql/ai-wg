@@ -118,7 +118,7 @@ extend type Query {
     Opaque cursor for forward pagination.
 
     When provided, results MUST start after the position indicated by this
-    cursor. The cursor value SHOULD be obtained from the `cursor` field of a
+    cursor. The cursor value MUST be obtained from the `cursor` field of a
     previous `__SearchResult`.
     """
     after: String
