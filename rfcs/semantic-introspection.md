@@ -164,7 +164,7 @@ type __SearchResult {
   Implementations MAY return multiple paths if the definition is reachable via different routes. This
   list is not guaranteed to be exhaustive.
   """
-  pathsToRoot: [String!]!
+  pathsToRoot: [[String!]!]!
 
   """
   Relevance score for the match.
@@ -349,6 +349,7 @@ query {
   __search(query: "Find a user by their email address") {
     coordinate
     score
+    pathsToRoot
     definition {
       ... on __Field {
         name
@@ -374,6 +375,7 @@ Example response:
       {
         "coordinate": "Query.userByEmail",
         "score": 0.92,
+        "pathsToRoot": [["Query.userByEmail"]],
         "definition": {
           "name": "userByEmail",
           "description": "Retrieve a user by their email address",
@@ -383,6 +385,7 @@ Example response:
       {
         "coordinate": "Query.users",
         "score": 0.71,
+        "pathsToRoot": [["Query.users"]],
         "definition": {
           "name": "users",
           "description": "List all users, optionally filtered by email domain",
