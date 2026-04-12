@@ -156,10 +156,10 @@ type __SearchResult {
   definition: __SchemaDefinition!
 
   """
-  Paths from the matched definition to a root type, aiding query construction.
+  Paths from a root field to the matched definition, aiding query construction.
 
-  Each path is a sequence of schema coordinates, starting from the matched definition and ending at a
-  root type.
+  Each path is a sequence of schema coordinates, starting from the root ending
+  at the matched definition.
 
   Implementations MAY return multiple paths if the definition is reachable via different routes. This
   list is not guaranteed to be exhaustive.
@@ -186,6 +186,45 @@ type __SearchResult {
 > **Editor's Note:** The `pathsToRoot` field is placed on `__SearchResult`, but it
 > arguably belongs on the schema definition types themselves (e.g., `__Field`, `__Type`).
 > This placement warrants further discussion.
+
+#### Paths to Root
+
+The `pathsToRoot` field provides a list of paths that lead from a root field to the matched
+definition. Each path is a list of field coordinates ordered from the root to the matched
+definition.
+
+For example, given the following schema:
+
+```graphql
+type Query {
+  userByEmail(email: String!): User
+}
+
+type User {
+  email: String!
+}
+```
+
+A search result matching `User.email` would return:
+
+```json
+{
+  "pathsToRoot": [["Query.userByEmail", "User.email"]]
+}
+```
+
+Where `Query.userByEmail` is the root field and `User.email` is the matched definition.
+
+If the definition is reachable via multiple root fields, each path is listed separately.
+Implementations are not required to return all possible paths.
+
+If the matched definition is itself a root field, the path contains a single element:
+
+```json
+{
+  "pathsToRoot": [["Query.userByEmail"]]
+}
+```
 
 #### Schema Definition Union
 
@@ -383,12 +422,15 @@ Example response:
         }
       },
       {
-        "coordinate": "Query.users",
+        "coordinate": "User.email",
         "score": 0.71,
-        "pathsToRoot": [["Query.users"]],
+        "pathsToRoot": [
+          ["Query.userByEmail", "User.email"],
+          ["Query.users", "User.email"]
+        ],
         "definition": {
-          "name": "users",
-          "description": "List all users, optionally filtered by email domain",
+          "name": "email",
+          "description": "The user's email address",
           "args": []
         }
       }
