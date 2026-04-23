@@ -1,76 +1,88 @@
 # Semantic Introspection
 
-**Status:**   
+**Status:**
 
-**Author:** 
-  - Pascal Senn, ChilliCream
-  - Michael Staib, ChilliCream
+**Author:**
 
-**Champion:**   
+- Pascal Senn, ChilliCream
+- Michael Staib, ChilliCream
+
+**Champion:**
 
 ---
 
 ## Abstract
 
-This document proposes an extension to GraphQL introspection that enables semantic search over
-schema capabilities. By introducing a standardized `__search` endpoint and related types, AI agents
-and LLMs could discover relevant API capabilities using natural language queries rather than
-traversing the full schema graph.
+This document proposes an extension to GraphQL introspection that enables
+semantic search over schema capabilities. By introducing a standardized
+`__search` endpoint and related types, AI agents and LLMs could discover
+relevant API capabilities using natural language queries rather than traversing
+the full schema graph.
 
 ---
 
 ## Background & Motivation
 
-### Prelude 
+### Prelude
 
-The Model Context Protocol has emerged as the de facto standard (for now) for exposing capabilities
-to AI agents. It provides a structured way to describe tools, prompts, and resources that LLMs can
-discover and invoke.
+The Model Context Protocol has emerged as the de facto standard (for now) for
+exposing capabilities to AI agents. It provides a structured way to describe
+tools, prompts, and resources that LLMs can discover and invoke.
 
-When examining MCP's tool abstraction, the parallels to GraphQL are striking. An MCP tool that reads
-data is functionally equivalent to a field on GraphQL's Query type; a tool that mutates data mirrors
-a field on the Mutation type. MCP defines tool inputs and outputs using JSON Schema - GraphQL achieves
-the same with its type system. 
+When examining MCP's tool abstraction, the parallels to GraphQL are striking. An
+MCP tool that reads data is functionally equivalent to a field on GraphQL's
+Query type; a tool that mutates data mirrors a field on the Mutation type. MCP
+defines tool inputs and outputs using JSON Schema - GraphQL achieves the same
+with its type system.
 
-At its core, an MCP tool is essentially a callable operation with typed inputs and outputs -
-precisely what GraphQL has provided since its inception. 
+At its core, an MCP tool is essentially a callable operation with typed inputs
+and outputs - precisely what GraphQL has provided since its inception.
 
-The key differences are largely cosmetic: MCP uses JSON Schema for type definitions, while GraphQL
-uses its own type system; MCP tools are flat, while GraphQL fields compose into a graph.
+The key differences are largely cosmetic: MCP uses JSON Schema for type
+definitions, while GraphQL uses its own type system; MCP tools are flat, while
+GraphQL fields compose into a graph.
 
-This raises an interesting question: rather than treating GraphQL and MCP as separate ecosystems,
-could GraphQL's existing schema and introspection capabilities be extended to serve as a first - class
-tool provider for AI agents? What about prompts? 
+This raises an interesting question: rather than treating GraphQL and MCP as
+separate ecosystems, could GraphQL's existing schema and introspection
+capabilities be extended to serve as a first - class tool provider for AI
+agents? What about prompts?
 
-This analogy suggests that GraphQL may already contain most of the structural foundations required
-for AI-driven capability discovery - it simply lacks a semantic layer.
+This analogy suggests that GraphQL may already contain most of the structural
+foundations required for AI-driven capability discovery - it simply lacks a
+semantic layer.
 
 ### The Problem
 
 Today, when an LLM interacts with a GraphQL API, it must either:
 
-1. **Traverse the entire schema** via introspection or schema - expensive and impractical for large schemas
-2. **Rely on pre-trained knowledge** of specific APIs - brittle and not generalizable
+1. **Traverse the entire schema** via introspection or schema - expensive and
+   impractical for large schemas
+2. **Rely on pre-trained knowledge** of specific APIs - brittle and not
+   generalizable
 3. **Receive hand-crafted tool descriptions** - requires manual effort per API
 
-This creates friction for AI-driven API consumption. Each new GraphQL API requires custom tooling or
-extensive context windows to make the schema comprehensible to an LLM.
+This creates friction for AI-driven API consumption. Each new GraphQL API
+requires custom tooling or extensive context windows to make the schema
+comprehensible to an LLM.
 
 ### The Opportunity
 
-GraphQL's introspection system already provides a foundation for self-describing APIs. By extending
-this foundation with semantic search capabilities, we could enable a **"learn once, use anywhere"**
-pattern for AI agents:
+GraphQL's introspection system already provides a foundation for self-describing
+APIs. By extending this foundation with semantic search capabilities, we could
+enable a **"learn once, use anywhere"** pattern for AI agents:
 
-- LLMs learn the GraphQL specification and semantic introspection protocol **once**
-- From that point forward, they can discover and use **any** GraphQL API that implements this specification
+- LLMs learn the GraphQL specification and semantic introspection protocol
+  **once**
+- From that point forward, they can discover and use **any** GraphQL API that
+  implements this specification
 - API providers index their schema **once**
 - No per-API training or custom tool definitions required
 
 ### Alignment with AI Working Group Goals
 
-This proposal directly addresses the question of how GraphQL can better support AI/ML use cases by
-providing a standardized discovery mechanism that works across all conforming implementations.
+This proposal directly addresses the question of how GraphQL can better support
+AI/ML use cases by providing a standardized discovery mechanism that works
+across all conforming implementations.
 
 ---
 
@@ -78,25 +90,38 @@ providing a standardized discovery mechanism that works across all conforming im
 
 ### 1. Semantic Search Introspection
 
-A new introspection field that enables semantic search over schema members:
+A new introspection field that enables semantic search over schema definitions:
 
 ```graphql
 extend type Query {
   """
   Search the schema for capabilities matching the provided query.
-  
+
   The query SHOULD be interpreted as natural language describing
-  the desired capability. 
+  the desired capability.
 
   The results SHOULD be ordered by their score descending, with the most relevant
   results appearing first.
   """
   __search(
-    """Natural language query or search term."""
+    """
+    Natural language query or search term.
+    """
     query: String!
-    
-    """Maximum number of results to return."""
+
+    """
+    Maximum number of results to return.
+    """
     first: Int! = 10
+
+    """
+    Opaque cursor for forward pagination.
+
+    When provided, results MUST start after the position indicated by this
+    cursor. The cursor value MUST be obtained from the `cursor` field of a
+    previous `__SearchResult`.
+    """
+    after: String
 
     """
     Optional minimum score required for a result to be included.
@@ -108,67 +133,244 @@ extend type Query {
 }
 ```
 
-> **Editor's Note:** 
-> We may need to add pagination support for `__search`
+Pagination follows a simple fast-forward model: pass the `cursor` of the last
+result as the `after` argument to retrieve the next page. When fewer than
+`first` results are returned, there are no further pages.
 
 #### Search Result Type
 
 ```graphql
 """
-Represents a schema member matched by semantic search.
+Represents a schema definition matched by semantic search.
 """
 type __SearchResult {
   """
-  Schema coordinate identifying the matched member.
+  Schema coordinate identifying the matched definition.
   For example: "Query.user" or "Mutation.createPost(input: )"
   """
   coordinate: String!
-  
-  """
-  The matched schema member.
-  """
-  member: __SchemaMember!
 
   """
-  Paths from the matched member to a root type, aiding query construction.
+  The matched schema definition.
+  """
+  definition: __SchemaDefinition!
 
-  Each path is a sequence of schema coordinates, starting from the matched member and ending at a
-  root type.
+  """
+  Paths from a root field to the matched definition, aiding query construction.
 
-  Implementations MAY return multiple paths if the member is reachable via different routes. This 
+  Each path is a sequence of schema coordinates, starting from the root ending
+  at the matched definition.
+
+  Implementations MAY return multiple paths if the definition is reachable via different routes. This
   list is not guaranteed to be exhaustive.
   """
-  pathsToRoot: [String!]!
-  
+  pathsToRoot: [[String!]!]!
+
   """
   Relevance score for the match.
   Implementations SHOULD return scores in the range [0.0, 1.0],
   where 1.0 indicates highest relevance.
   """
   score: Float
+
+  """
+  Opaque pagination cursor for this result.
+
+  Pass this value as the `after` argument to `__search` to retrieve
+  the next page of results starting after this item.
+  """
+  cursor: String!
 }
 ```
 
-> **Editor's Note:** The `pathsToRoot` field is placed on `__SearchResult`, but it 
-> arguably belongs on the schema member types themselves (e.g., `__Field`, `__Type`). 
+> **Editor's Note:** The `pathsToRoot` field is placed on `__SearchResult`, but it
+> arguably belongs on the schema definition types themselves (e.g., `__Field`, `__Type`).
 > This placement warrants further discussion.
 
-#### Schema Member Union
+#### Paths to Root
+
+The `pathsToRoot` field provides a list of paths that lead from a root field to the matched
+definition. Each path is a list of field coordinates ordered from the root to the matched
+definition.
+
+For example, given the following schema:
+
+```graphql
+type Query {
+  userByEmail(email: String!): User
+}
+
+type User {
+  email: String!
+}
+```
+
+A search result matching `User.email` would return:
+
+```json
+{
+  "pathsToRoot": [["Query.userByEmail", "User.email"]]
+}
+```
+
+Where `Query.userByEmail` is the root field and `User.email` is the matched definition.
+
+If the definition is reachable via multiple root fields, each path is listed separately.
+Implementations are not required to return all possible paths.
+
+If the matched definition is itself a root field, the path contains a single element:
+
+```json
+{
+  "pathsToRoot": [["Query.userByEmail"]]
+}
+```
+
+#### Schema Definition Union
 
 ```graphql
 """
-Union of all introspectable schema members that can be discovered
+Union of all introspectable schema definitions that can be discovered
 through semantic search.
 """
-union __SchemaMember = 
-  | __Type 
-  | __Field 
-  | __InputValue 
-  | __EnumValue 
+union __SchemaDefinition =
+  | __Type
+  | __Field
+  | __InputValue
+  | __EnumValue
   | __Directive
 ```
 
-### 2. Indexing Requirements
+### 2. Coordinate Lookup Introspection
+
+Schema coordinates (e.g. `Query.user`, `User.email`, `@deprecated(reason:)`) are the natural way to
+reference specific definitions of a GraphQL schema. Today, resolving a coordinate to its full definition
+requires traversing the introspection graph via `__schema`, `__type`, and so forth.
+
+The `__definitions` field provides direct lookup by schema coordinate, eliminating this traversal.
+While it naturally complements `__search` for agentic workflows, coordinate lookup is independently
+useful for any tool or client that works with schema coordinates.
+
+```graphql
+extend type Query {
+  """
+  Resolves schema definitions by their schema coordinates.
+
+  Returns the resolved definitions in the same order as the input coordinates.
+  """
+  __definitions(
+    """
+    List of schema coordinates to resolve.
+    """
+    coordinates: [String!]!
+  ): [__SchemaDefinition!]!
+}
+```
+
+#### Example Usage
+
+An agent resolving coordinates discovered via `__search`, or a developer tool
+inspecting specific schema definitions:
+
+```graphql
+query {
+  __definitions(coordinates: ["Query.userByEmail", "User"]) {
+    ... on __Type {
+      name
+      kind
+      fields {
+        name
+        type {
+          name
+          kind
+          ofType {
+            name
+          }
+        }
+      }
+    }
+    ... on __Field {
+      name
+      description
+      type {
+        name
+        kind
+        ofType {
+          name
+        }
+      }
+      args {
+        name
+        type {
+          name
+          kind
+        }
+        defaultValue
+      }
+    }
+  }
+}
+```
+
+Example response:
+
+```json
+{
+  "data": {
+    "__definitions": [
+      {
+        "name": "userByEmail",
+        "description": "Retrieve a user by their email address",
+        "type": {
+          "name": null,
+          "kind": "NON_NULL",
+          "ofType": { "name": "User" }
+        },
+        "args": [
+          {
+            "name": "email",
+            "type": { "name": "String", "kind": "SCALAR" },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "User",
+        "kind": "OBJECT",
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "name": null,
+              "kind": "NON_NULL",
+              "ofType": { "name": "ID" }
+            }
+          },
+          {
+            "name": "email",
+            "type": {
+              "name": null,
+              "kind": "NON_NULL",
+              "ofType": { "name": "String" }
+            }
+          },
+          {
+            "name": "displayName",
+            "type": { "name": "String", "kind": "SCALAR", "ofType": null }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+> **Editor's Note:** While `__definitions` naturally pairs with `__search` in a two-step
+> discover-then-resolve workflow for AI agents, it stands on its own as a general-purpose
+> introspection primitive. Any tool that works with schema coordinates benefits from direct
+> resolution without full introspection traversal.
+
+### 3. Indexing Requirements
 
 Implementations adhering to this specification:
 
@@ -176,9 +378,9 @@ Implementations adhering to this specification:
 - **MAY** use any vectorization or indexing strategy internally
 - **SHOULD** index at minimum: type names, field names, and descriptions
 
-The indexing strategy is intentionally left to the implementation. 
+The indexing strategy is intentionally left to the implementation.
 
-### 3. Example Usage
+### 4. Example Usage
 
 ```graphql
 # An LLM trying to find how to look up a user by email
@@ -186,13 +388,16 @@ query {
   __search(query: "Find a user by their email address") {
     coordinate
     score
-    member {
+    pathsToRoot
+    definition {
       ... on __Field {
         name
         description
         args {
           name
-          type { name }
+          type {
+            name
+          }
         }
       }
     }
@@ -209,20 +414,23 @@ Example response:
       {
         "coordinate": "Query.userByEmail",
         "score": 0.92,
-        "member": {
+        "pathsToRoot": [["Query.userByEmail"]],
+        "definition": {
           "name": "userByEmail",
           "description": "Retrieve a user by their email address",
-          "args": [
-            { "name": "email", "type": { "name": "String" } }
-          ]
+          "args": [{ "name": "email", "type": { "name": "String" } }]
         }
       },
       {
-        "coordinate": "Query.users",
+        "coordinate": "User.email",
         "score": 0.71,
-        "member": {
-          "name": "users",
-          "description": "List all users, optionally filtered by email domain",
+        "pathsToRoot": [
+          ["Query.userByEmail", "User.email"],
+          ["Query.users", "User.email"]
+        ],
+        "definition": {
+          "name": "email",
+          "description": "The user's email address",
           "args": []
         }
       }
@@ -237,22 +445,21 @@ Example response:
 
 ### A. Usage Examples
 
-To further assist AI agents in understanding how to use discovered capabilities, schemas could
-provide (optional) usage examples.
+To further assist AI agents in understanding how to use discovered capabilities,
+schemas could provide (optional) usage examples.
 
 This could also be helpful for human developers exploring unfamiliar APIs.
 
-
 ```graphql
 """
-An example demonstrating how to use a schema member.
+An example demonstrating how to use a schema definition.
 """
 type __Example {
   """
   Example GraphQL operation demonstrating usage.
   """
   operation: String!
-  
+
   """
   Human-readable description of what this example demonstrates.
   """
@@ -260,34 +467,45 @@ type __Example {
 }
 
 extend type __Type {
-  """Usage examples for this type."""
+  """
+  Usage examples for this type.
+  """
   examples: [__Example!]
 }
 
 extend type __Field {
-  """Usage examples for this field."""
+  """
+  Usage examples for this field.
+  """
   examples: [__Example!]
 }
 
 extend type __InputValue {
-  """Usage examples for this input."""
+  """
+  Usage examples for this input.
+  """
   examples: [__Example!]
 }
 
 extend type __EnumValue {
-  """Usage examples for this enum value."""
+  """
+  Usage examples for this enum value.
+  """
   examples: [__Example!]
 }
 
 extend type __Directive {
-  """Usage examples for this directive."""
+  """
+  Usage examples for this directive.
+  """
   examples: [__Example!]
 }
 ```
 
 ### B. MCP-Style Prompts
 
-For richer AI integration, schemas could expose prompt templates (inspired by MCP):
+For richer AI integration, schemas could expose prompt templates (inspired by
+MCP):
 
 ```graphql
 extend type Query {
@@ -302,13 +520,19 @@ extend type Query {
 A prompt template that guides AI agent interaction with the API.
 """
 type __Prompt {
-  """Unique identifier for this prompt."""
+  """
+  Unique identifier for this prompt.
+  """
   name: String!
-  
-  """Human-readable description of what this prompt accomplishes."""
+
+  """
+  Human-readable description of what this prompt accomplishes.
+  """
   description: String
-  
-  """Arguments that can be passed to customize the prompt."""
+
+  """
+  Arguments that can be passed to customize the prompt.
+  """
   arguments: [__InputValue!]!
 }
 ```
@@ -317,15 +541,18 @@ type __Prompt {
 
 ## Open Questions
 
-1. **Effectiveness**: Is this approach effective for LLMs in practice? 
-2. **Security considerations**: Should there be guidance on rate limiting or access control for semantic search?
-3. `capabilities` might collide with the existing RFC in the main repo Semantic Introspection
+1. **Effectiveness**: Is this approach effective for LLMs in practice?
+2. **Security considerations**: Should there be guidance on rate limiting or
+   access control for semantic search?
+3. `capabilities` might collide with the existing RFC in the main repo Semantic
+   Introspection
 
 ---
 
 ## Feedback Requested
 
 - Does this address a real need you've encountered?
-- Does this fit as an extension to GraphQL introspection, or should it be a separate mechanism?
+- Does this fit as an extension to GraphQL introspection, or should it be a
+  separate mechanism?
 - Does this approach of discovery work with LLMs?
 - What concerns do you have about implementation complexity?
