@@ -27,6 +27,7 @@
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    | 
 | Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
+| Mark Larah       | @magicmark    | Yelp               | Austin, TX            |
 
 
 ## Agenda
