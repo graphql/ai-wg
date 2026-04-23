@@ -28,6 +28,7 @@
 | Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 | Mark Larah       | @magicmark    | Yelp               | Austin, TX            |
+| Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
 
 
 ## Agenda
