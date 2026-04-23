@@ -24,11 +24,14 @@
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Kewei Qu         | @Keweiqu      | Meta Platforms     | San Francisco, CA, USA|
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
+| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
+
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    | 
 | Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
 | Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 | Mark Larah       | @magicmark    | Yelp               | Austin, TX            |
 | Jeff Auriemma (Host)   | @bignimbus    | Apollo             | Monroe, CT, US        |
+| Thore Koritzius  | @ThoreKoritzius | Self             | Cologne, Germany      |
 
 
 ## Agenda
