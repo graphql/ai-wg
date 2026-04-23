@@ -22,9 +22,17 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
+| Kewei Qu         | @Keweiqu      | Meta Platforms     | San Francisco, CA, USA|
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
+
+| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    | 
+| Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
+| Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
+| Mark Larah       | @magicmark    | Yelp               | Austin, TX            |
+| Jeff Auriemma (Host)   | @bignimbus    | Apollo             | Monroe, CT, US        |
 | Thore Koritzius  | @ThoreKoritzius | Self             | Cologne, Germany      |
+
 
 ## Agenda
 
@@ -35,7 +43,11 @@
    - [Code of Conduct](https://github.com/graphql/foundation/blob/master/CODE-OF-CONDUCT.md)
    - Meetings are [published to YouTube](https://www.youtube.com/@GraphQLFoundation/videos) and we may use LLM/AI summary tools
 1. Introduction of attendees (5m, Host)
-1. Determine volunteers for note taking (1m, Host)
+1. Determine volunteers for hosting and note taking (1m, Host)
 1. Review agenda (2m, Host)
 1. Check for [ready for review agenda items](https://github.com/graphql/ai-wg/issues?q=is%3Aissue+is%3Aopen+label%3A%22Ready+for+review+%F0%9F%99%8C%22+sort%3Aupdated-desc) (5m, Host)
 1. Reminder: [grants available for key initiatives](https://graphql.org/community/foundation/community-grant/) (1m, Host)
+2. Key community progress updates:
+   * [Custom embedding model](https://huggingface.co/xthor/Qwen3-Embedding-0.6B-GraphQL) launched by @xthor optimized for GraphQL semantic search
+   * Chilicream introduced [semantic introspection](https://chillicream.com/blog/2026/04/22/semantic-introspection/)
+1. Semantic Introspection Is Alive (10m, Pascal)
