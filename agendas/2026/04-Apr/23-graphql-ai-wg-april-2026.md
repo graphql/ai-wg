@@ -22,9 +22,11 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
+| Kewei Qu         | @Keweiqu      | Meta Platforms     | San Francisco, CA, USA|
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
-| Kewei Qu         | @Keweiqu      | Meta Platforms     | San Francisco, CA, USA|
+| Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
+
 
 ## Agenda
 
