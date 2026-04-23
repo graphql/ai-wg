@@ -25,6 +25,7 @@
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 | Kewei Qu         | @Keweiqu      | Meta Platforms     | San Francisco, CA, USA|
+| Pascal Senn      | @pascalsenn   | ChilliCream        | Zurich, CH            |
 
 ## Agenda
 
@@ -42,3 +43,4 @@
 2. Key community progress updates:
    * [Custom embedding model](https://huggingface.co/xthor/Qwen3-Embedding-0.6B-GraphQL) launched by @xthor optimized for GraphQL semantic search
    * Chilicream introduced [semantic introspection](https://chillicream.com/blog/2026/04/22/semantic-introspection/)
+1. Semantic Introspection Is Alive (10m, Pascal)
