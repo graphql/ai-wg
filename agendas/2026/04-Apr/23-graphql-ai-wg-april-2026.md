@@ -30,6 +30,7 @@
 | Mark Larah       | @magicmark    | Yelp               | Austin, TX            |
 | Jeff Auriemma (Host)   | @bignimbus    | Apollo             | Monroe, CT, US        |
 | Thore Koritzius  | @ThoreKoritzius | Self             | Cologne, Germany      |
+| Raymie Stata     | @rstata       | Airbnb             | San Francisco, CA, US |
 
 
 ## Agenda
