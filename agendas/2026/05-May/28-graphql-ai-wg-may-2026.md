@@ -23,6 +23,7 @@
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
+| Young Min Kim	   | @aprilrd	     | The Trade Desk     | San Francisco, CA     |
 
 
 ## Agenda
