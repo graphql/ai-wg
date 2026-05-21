@@ -126,9 +126,9 @@ extend type Query {
     """
     Optional minimum score required for a result to be included.
 
-    When provided, all returned results MUST have score >= score_threshold.
+    When provided, all returned results MUST have score >= minScore.
     """
-    min_score: Float
+    minScore: Float
   ): [__SearchResult!]!
 }
 ```
