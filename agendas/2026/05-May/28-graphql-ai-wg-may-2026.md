@@ -27,6 +27,7 @@
 | Pascal Senn      | @pascalsenn	 | ChilliCream        | Zurich, CH            |
 | Mark Larah       | @magicmark  	 | Yelp               | Austin, TX            |
 | Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
+| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 
 ## Agenda
 
