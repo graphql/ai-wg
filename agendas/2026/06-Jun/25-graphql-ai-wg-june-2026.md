@@ -22,6 +22,7 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
+| Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 
 
 ## Agenda
