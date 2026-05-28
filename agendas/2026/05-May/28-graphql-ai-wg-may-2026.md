@@ -32,6 +32,7 @@
 | Martin Bonnin    | @martinbonnin | Apollo             | Paris, FR             |
 | Benjie Gillam    | @benjie       | Graphile           | Chandler's Ford, UK   |
 | Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
+| Michael Staib    | @michaelstaib | ChilliCream        | Zurich, CH            |
 
 ## Agenda
 
