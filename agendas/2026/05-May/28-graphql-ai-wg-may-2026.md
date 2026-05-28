@@ -22,11 +22,11 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
-| Kewei Qu (Host)	 | @Keweiqu	     | Meta  	            | Menlo Park, CA, USA   |
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Young Min Kim	   | @aprilrd	     | The Trade Desk     | San Francisco, CA     |
 | Pascal Senn      | @pascalsenn	 | ChilliCream        | Zurich, CH            |
 | Mark Larah       | @magicmark  	 | Yelp               | Austin, TX            |
+| Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 | Martin Bonnin    | @martinbonnin | Apollo             | Paris, FR             |
 
