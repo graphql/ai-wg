@@ -22,11 +22,11 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
+| Kewei Qu (Host)	 | @Keweiqu	     | Meta  	            | Menlo Park, CA, USA   |
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Young Min Kim	   | @aprilrd	     | The Trade Desk     | San Francisco, CA     |
 | Pascal Senn      | @pascalsenn	 | ChilliCream        | Zurich, CH            |
 | Mark Larah       | @magicmark  	 | Yelp               | Austin, TX            |
-
 ## Agenda
 
 1. Agree to Membership Agreement, Participation & Contribution Guidelines and Code of Conduct (1m, Host)
