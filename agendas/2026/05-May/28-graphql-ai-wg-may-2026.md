@@ -27,6 +27,8 @@
 | Young Min Kim	   | @aprilrd	     | The Trade Desk     | San Francisco, CA     |
 | Pascal Senn      | @pascalsenn	 | ChilliCream        | Zurich, CH            |
 | Mark Larah       | @magicmark  	 | Yelp               | Austin, TX            |
+| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
+
 ## Agenda
 
 1. Agree to Membership Agreement, Participation & Contribution Guidelines and Code of Conduct (1m, Host)
