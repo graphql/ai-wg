@@ -25,6 +25,7 @@
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Young Min Kim	   | @aprilrd	     | The Trade Desk     | San Francisco, CA     |
 | Pascal Senn      | @pascalsenn	 | ChilliCream        | Zurich, CH            |
+| Mark Larah       | @magicmark  	 | Yelp               | Austin, TX            |
 
 ## Agenda
 
