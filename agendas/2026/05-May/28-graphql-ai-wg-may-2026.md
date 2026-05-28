@@ -29,6 +29,7 @@
 | Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 | Martin Bonnin    | @martinbonnin | Apollo             | Paris, FR             |
+| Benjie Gillam    | @benjie       | Graphile           | Chandler's Ford, UK   |
 
 ## Agenda
 
