@@ -1,0 +1,101 @@
+id: gh-ext-022
+schemaId: github
+query: List the deployments in the octocat/example repository. For each
+  deployment include the environment name, deployment state, creation time, and
+  the latest status state and creation time.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      deployments(first: 5) {
+        nodes {
+          environment
+          state
+          createdAt
+          latestStatus {
+            state
+            createdAt
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Deployment.environment
+  - Deployment.state
+  - Deployment.createdAt
+  - DeploymentStatus.state
+  - DeploymentStatus.createdAt
+targetTypes:
+  - Deployment
+  - DeploymentStatus
+mustInclude:
+  - Query.repository
+  - Repository.deployments
+  - Deployment.environment
+  - Deployment.state
+  - Deployment.createdAt
+  - Deployment.latestStatus
+  - DeploymentStatus.state
+  - DeploymentStatus.createdAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.deployments(first:)
+mustExclude:
+  - Mutation
+notes: List the repository's deployments with their environment, state, creation
+  time, and latest status.
+answerSchema:
+  type: object
+  properties:
+    deployments:
+      type: array
+      items:
+        type: object
+        properties:
+          environment:
+            type: string
+          state:
+            type: string
+          createdAt:
+            type: string
+          latestStatusState:
+            type: string
+          latestStatusCreatedAt:
+            type: string
+        required:
+          - environment
+          - state
+          - createdAt
+          - latestStatusState
+          - latestStatusCreatedAt
+        additionalProperties: false
+  required:
+    - deployments
+  additionalProperties: false
+answer:
+  deployments:
+    - environment: staging
+      state: ACTIVE
+      createdAt: 2025-05-27T00:00:00.000Z
+      latestStatusState: SUCCESS
+      latestStatusCreatedAt: 2025-05-28T00:00:00.000Z
+    - environment: staging
+      state: INACTIVE
+      createdAt: 2025-05-17T00:00:00.000Z
+      latestStatusState: FAILURE
+      latestStatusCreatedAt: 2025-05-18T00:00:00.000Z
+    - environment: production
+      state: ACTIVE
+      createdAt: 2025-05-29T00:00:00.000Z
+      latestStatusState: SUCCESS
+      latestStatusCreatedAt: 2025-05-30T00:00:00.000Z
+    - environment: production
+      state: INACTIVE
+      createdAt: 2025-05-12T00:00:00.000Z
+      latestStatusState: FAILURE
+      latestStatusCreatedAt: 2025-05-13T00:00:00.000Z
+    - environment: staging
+      state: ACTIVE
+      createdAt: 2025-05-24T00:00:00.000Z
+      latestStatusState: SUCCESS
+      latestStatusCreatedAt: 2025-05-25T00:00:00.000Z

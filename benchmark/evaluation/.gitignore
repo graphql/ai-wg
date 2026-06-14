@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+.embed-cache/
+.result-cache/
+runs/archive/
+runs/**/*.json
+runs/**/transcripts/
+*.log
+.DS_Store

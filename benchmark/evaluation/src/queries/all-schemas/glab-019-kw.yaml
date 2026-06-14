@@ -1,0 +1,33 @@
+id: glab-019-kw
+schemaId: gitlab
+query: approved merge requests not merged
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          approvedBy(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+          state
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.state
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.approvedBy
+  - MergeRequest.state
+  - MergeRequest.approvedBy(first:)
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-019. Maintainer: approved but unmerged MRs."

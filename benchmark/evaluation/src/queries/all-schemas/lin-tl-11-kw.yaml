@@ -1,0 +1,29 @@
+id: lin-tl-11-kw
+schemaId: linear
+query: labels available teams taxonomy
+operation: |
+  query {
+    issueLabels(first: 10) {
+      nodes {
+        name
+        team {
+          id
+        }
+        color
+      }
+    }
+  }
+targetFields:
+  - IssueLabel.name
+  - IssueLabel.color
+targetTypes:
+  - IssueLabel
+mustInclude:
+  - Query.issueLabels
+  - IssueLabel.name
+  - IssueLabel.team
+  - IssueLabel.color
+  - Query.issueLabels(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-11. Label taxonomy review.

@@ -1,0 +1,55 @@
+id: lin-cs-1
+schemaId: linear
+query: "What issues are tracked as needs for the customer with ID
+  customer-globex? List each issue ID and the body of the associated need."
+operation: |
+  query {
+    customer(id: "customer-globex") {
+      needs {
+        issue {
+          id
+        }
+        body
+      }
+    }
+  }
+targetFields:
+  - CustomerNeed.body
+targetTypes:
+  - CustomerNeed
+mustInclude:
+  - Query.customer
+  - Customer.needs
+  - CustomerNeed.issue
+  - CustomerNeed.body
+  - Query.customer(id:)
+mustExclude:
+  - Mutation
+notes: All issues tied to a specific customer.
+answer:
+  needs:
+    - issueId: issue-eng-441
+      body: Need faster login on mobile devices
+    - issueId: ENG-512
+      body: Rate limiting blocks our API integration
+answerSchema:
+  type: object
+  properties:
+    needs:
+      type: array
+      items:
+        type: object
+        properties:
+          issueId:
+            type: string
+            description: The id of the issue tracked as a customer need
+          body:
+            type: string
+            description: The body text of the customer need
+        required:
+          - issueId
+          - body
+        additionalProperties: false
+  required:
+    - needs
+  additionalProperties: false

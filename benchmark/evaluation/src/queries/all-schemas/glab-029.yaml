@@ -1,0 +1,127 @@
+id: glab-029
+schemaId: gitlab
+query: In project group/project, list merge requests with their head pipeline
+  status and discussion resolved/resolvable state.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          iid
+          title
+          headPipeline {
+            status
+          }
+          discussions(first: 10) {
+            nodes {
+              resolved
+              resolvable
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.iid
+  - MergeRequest.title
+  - Pipeline.status
+  - Discussion.resolved
+  - Discussion.resolvable
+targetTypes:
+  - Discussion
+  - Pipeline
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.headPipeline
+  - MergeRequest.discussions
+  - MergeRequest.discussions(first:)
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+  - MergeRequest.iid
+  - MergeRequest.title
+  - Pipeline.status
+  - Discussion.resolved
+  - Discussion.resolvable
+mustExclude:
+  - Mutation
+notes: "Maintainer: MRs with passing pipeline + unresolved discussions."
+answerSchema:
+  type: object
+  properties:
+    mergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          headPipelineStatus:
+            type: string
+          discussions:
+            type: array
+            items:
+              type: object
+              properties:
+                resolved:
+                  type: boolean
+                resolvable:
+                  type: boolean
+              required:
+                - resolved
+                - resolvable
+              additionalProperties: false
+        required:
+          - iid
+          - title
+          - headPipelineStatus
+          - discussions
+        additionalProperties: false
+  required:
+    - mergeRequests
+  additionalProperties: false
+answer:
+  mergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+      headPipelineStatus: SUCCESS
+      discussions:
+        - resolved: false
+          resolvable: true
+        - resolved: true
+          resolvable: true
+    - iid: "108"
+      title: "perf: reduce memory footprint of serializer"
+      headPipelineStatus: FAILED
+      discussions:
+        - resolved: false
+          resolvable: true
+        - resolved: true
+          resolvable: true
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+      headPipelineStatus: SUCCESS
+      discussions:
+        - resolved: false
+          resolvable: true
+        - resolved: true
+          resolvable: true
+    - iid: "4774"
+      title: "feat: add webhook retry mechanism"
+      headPipelineStatus: RUNNING
+      discussions:
+        - resolved: false
+          resolvable: true
+        - resolved: true
+          resolvable: true
+    - iid: "2623"
+      title: "fix: resolve race condition in cache layer"
+      headPipelineStatus: SUCCESS
+      discussions:
+        - resolved: false
+          resolvable: true
+        - resolved: true
+          resolvable: true

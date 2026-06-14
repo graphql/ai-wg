@@ -1,0 +1,92 @@
+id: lin-ad-3
+schemaId: linear
+query: "What third-party integrations are configured on our workspace, and for
+  each, what service is it, who added it, and when was it added?"
+operation: |
+  query {
+    organization {
+      integrations(first: 10) {
+        nodes {
+          service
+          creator {
+            id
+          }
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Integration.service
+  - Integration.createdAt
+targetTypes:
+  - Integration
+mustInclude:
+  - Query.organization
+  - Organization.integrations
+  - Integration.service
+  - Integration.creator
+  - Integration.createdAt
+  - Organization.integrations(first:)
+mustExclude:
+  - Mutation
+answer:
+  integrations:
+    - serviceName: github
+      addedBy: user-1
+      addedAt: 2024-11-13T00:00:00.000Z
+    - serviceName: slack
+      addedBy: user-2
+      addedAt: 2024-11-13T00:00:00.000Z
+    - serviceName: zendesk
+      addedBy: user-3
+      addedAt: 2024-11-13T00:00:00.000Z
+    - serviceName: figma
+      addedBy: user-3
+      addedAt: 2024-11-13T00:00:00.000Z
+    - serviceName: jira
+      addedBy: user-4
+      addedAt: 2024-11-13T00:00:00.000Z
+answerSchema:
+  type: object
+  properties:
+    integrations:
+      type: array
+      items:
+        type: object
+        properties:
+          serviceName:
+            type: string
+            description: The name or identifier of the third-party service
+          addedBy:
+            type: string
+            description: The id of the user who added the integration
+          addedAt:
+            type: string
+            description: When the integration was added
+        required:
+          - serviceName
+          - addedBy
+          - addedAt
+        additionalProperties: false
+  required:
+    - integrations
+  additionalProperties: false
+notes: Audit configured integrations on the workspace.
+answers:
+  - integrations:
+      - serviceName: github
+        addedBy: Alice Johnson
+        addedAt: 2024-11-13T00:00:00.000Z
+      - serviceName: slack
+        addedBy: Bob Smith
+        addedAt: 2024-11-13T00:00:00.000Z
+      - serviceName: zendesk
+        addedBy: Carol White
+        addedAt: 2024-11-13T00:00:00.000Z
+      - serviceName: figma
+        addedBy: Carol White
+        addedAt: 2024-11-13T00:00:00.000Z
+      - serviceName: jira
+        addedBy: David Lee
+        addedAt: 2024-11-13T00:00:00.000Z

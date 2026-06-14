@@ -1,0 +1,64 @@
+id: glab-016
+schemaId: gitlab
+query: List my snippets (title, createdAt, webUrl).
+operation: |
+  query {
+    currentUser {
+      snippets(first: 10) {
+        nodes {
+          title
+          createdAt
+          webUrl
+        }
+      }
+    }
+  }
+targetFields:
+  - Snippet.title
+  - Snippet.createdAt
+  - Snippet.webUrl
+targetTypes:
+  - Snippet
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.snippets
+  - CurrentUser.snippets(first:)
+  - Snippet.title
+  - Snippet.createdAt
+  - Snippet.webUrl
+mustExclude:
+  - Mutation
+notes: "Developer: my snippets."
+answerSchema:
+  type: object
+  properties:
+    snippets:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          createdAt:
+            type: string
+          webUrl:
+            type: string
+        required:
+          - title
+          - createdAt
+          - webUrl
+        additionalProperties: false
+  required:
+    - snippets
+  additionalProperties: false
+answer:
+  snippets:
+    - title: Bash script to backup PostgreSQL databases
+      createdAt: 2025-04-17T00:00:00.000Z
+      webUrl: https://gitlab.example.com/-/snippets/1
+    - title: Python helper for parsing YAML config files
+      createdAt: 2025-05-12T00:00:00.000Z
+      webUrl: https://gitlab.example.com/-/snippets/2
+    - title: GitLab CI template for Node.js projects
+      createdAt: 2025-05-22T00:00:00.000Z
+      webUrl: https://gitlab.example.com/-/snippets/3

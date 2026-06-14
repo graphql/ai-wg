@@ -1,0 +1,27 @@
+id: glab-037-kw
+schemaId: gitlab
+query: failed jobs all runners failure reason daily
+operation: |
+  query {
+    jobs(first: 10) {
+      nodes {
+        ... on CiJob {
+          status
+          failureMessage
+        }
+      }
+    }
+  }
+targetFields:
+  - CiJob.status
+  - CiJob.failureMessage
+targetTypes:
+  - CiJob
+mustInclude:
+  - Query.jobs
+  - CiJob.status
+  - CiJob.failureMessage
+  - Query.jobs(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-037. DevOps: failed jobs across runners."

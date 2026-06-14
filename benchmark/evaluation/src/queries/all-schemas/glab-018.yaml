@@ -1,0 +1,70 @@
+id: glab-018
+schemaId: gitlab
+query: >-
+  In the group/project GitLab project, show me reviewers with the highest number
+  of pending review requests across the project's open merge requests.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(state: opened, first: 10) {
+        nodes {
+          reviewers(first: 10) {
+            nodes {
+              username
+              name
+              reviewRequestedMergeRequests(state: opened) {
+                count
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    topReviewer:
+      type: object
+      properties:
+        username:
+          type: string
+        name:
+          type: string
+        reviewRequestedCount:
+          type: integer
+      required:
+        - username
+        - name
+        - reviewRequestedCount
+      additionalProperties: false
+  required:
+    - topReviewer
+  additionalProperties: false
+targetFields:
+  - MergeRequestReviewer.username
+  - MergeRequestReviewer.name
+  - MergeRequestConnection.count
+targetTypes:
+  - MergeRequestReviewer
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.reviewers
+  - MergeRequest.reviewers(first:)
+  - Project.mergeRequests(first:)
+  - Project.mergeRequests(state:)
+  - Query.project(fullPath:)
+  - MergeRequestReviewer.username
+  - MergeRequestReviewer.name
+  - MergeRequestReviewer.reviewRequestedMergeRequests
+  - MergeRequestReviewer.reviewRequestedMergeRequests(state:)
+  - MergeRequestConnection.count
+mustExclude:
+  - Mutation
+notes: "Maintainer: reviewer load bottleneck. Reviewers across MRs."
+answer:
+  topReviewer:
+    username: bmartinez
+    name: Diana Patel
+    reviewRequestedCount: 897

@@ -1,0 +1,70 @@
+id: gh-ext-090
+schemaId: github
+query: Who are the outside collaborators on private repositories in the octocat
+  organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10, privacy: PRIVATE) {
+        nodes {
+          name
+          collaborators(first: 10, affiliation: OUTSIDE) {
+            edges {
+              node {
+                login
+              }
+              permission
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.name
+  - RepositoryCollaboratorEdge.permission
+  - User.login
+targetTypes:
+  - Repository
+  - User
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.name
+  - Repository.collaborators
+  - RepositoryCollaboratorEdge.permission
+  - Organization.repositories(first:)
+  - Organization.repositories(privacy:)
+  - Query.organization(login:)
+  - Repository.collaborators(first:)
+  - Repository.collaborators(affiliation:)
+mustExclude:
+  - Mutation
+notes: Private org repos and their outside collaborator edges.
+answerSchema:
+  type: object
+  properties:
+    repositories:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          outsideCollaborators:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - outsideCollaborators
+        additionalProperties: false
+  required:
+    - repositories
+  additionalProperties: false
+answer:
+  repositories:
+    - name: private-repo
+      outsideCollaborators: []
+    - name: disabled-repo
+      outsideCollaborators: []

@@ -1,0 +1,42 @@
+id: lin-pm-14
+schemaId: linear
+query: "Find documents that mention \"incident response plan\"."
+operation: |
+  query {
+    searchDocuments(term: "incident response plan") {
+      nodes {
+        title
+      }
+    }
+  }
+targetFields:
+  - DocumentSearchResult.title
+targetTypes:
+  - DocumentSearchResult
+mustInclude:
+  - Query.searchDocuments
+  - DocumentSearchPayload.nodes
+  - DocumentSearchResult.title
+  - Query.searchDocuments(term:)
+mustExclude:
+  - Mutation
+notes: Document full-text search.
+answer:
+  documents:
+    - title: Incident Response Plan
+answerSchema:
+  type: object
+  properties:
+    documents:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - documents
+  additionalProperties: false

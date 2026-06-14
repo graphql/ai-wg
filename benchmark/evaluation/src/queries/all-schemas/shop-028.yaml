@@ -1,0 +1,223 @@
+id: shop-028
+schemaId: shopify
+query: List the first 10 product variants showing each variant's SKU and its
+  inventory quantity breakdown by location.
+operation: |
+  query {
+    productVariants(first: 10) {
+      nodes {
+        sku
+        inventoryItem {
+          inventoryLevels(first: 10) {
+            nodes {
+              location {
+                name
+              }
+              quantities(names: ["available"]) {
+                name
+                quantity
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProductVariant.sku
+  - Location.name
+  - InventoryQuantity.quantity
+targetTypes:
+  - ProductVariant
+  - InventoryLevel
+  - InventoryQuantity
+mustInclude:
+  - QueryRoot.productVariants
+  - QueryRoot.productVariants(first:)
+  - ProductVariant.sku
+  - ProductVariant.inventoryItem
+  - InventoryItem.inventoryLevels
+  - InventoryItem.inventoryLevels(first:)
+  - InventoryLevel.location
+  - InventoryLevel.quantities
+  - InventoryLevel.quantities(names:)
+  - Location.name
+  - InventoryQuantity.quantity
+mustExclude:
+  - Mutation
+notes: Lists product variants with inventory quantities broken down by location.
+answerSchema:
+  type: object
+  properties:
+    variants:
+      type: array
+      items:
+        type: object
+        properties:
+          sku:
+            type: string
+          locations:
+            type: array
+            items:
+              type: object
+              properties:
+                location:
+                  type: string
+                quantities:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      quantity:
+                        type: integer
+                    required:
+                      - name
+                      - quantity
+                    additionalProperties: false
+              required:
+                - location
+                - quantities
+              additionalProperties: false
+        required:
+          - sku
+          - locations
+        additionalProperties: false
+  required:
+    - variants
+  additionalProperties: false
+answer:
+  variants:
+    - sku: FSGH8Q38
+      locations:
+        - location: Airport Logistics
+          quantities:
+            - name: PA Facility
+              quantity: 715
+            - name: TX Storage
+              quantity: 930
+        - location: Industrial Park
+          quantities:
+            - name: IL Center
+              quantity: 848
+            - name: NV Depot
+              quantity: 532
+    - sku: 6A0QSGTS
+      locations:
+        - location: West Fulfillment
+          quantities:
+            - name: GA Warehouse
+              quantity: 289
+            - name: MO Warehouse
+              quantity: 705
+        - location: Northern Facility
+          quantities:
+            - name: AZ Storage
+              quantity: 848
+            - name: WA Hub
+              quantity: 99
+    - sku: LWL-BRN-BIF
+      locations:
+        - location: West Fulfillment
+          quantities:
+            - name: GA Warehouse
+              quantity: 289
+            - name: MO Warehouse
+              quantity: 705
+        - location: Northern Facility
+          quantities:
+            - name: AZ Storage
+              quantity: 848
+            - name: WA Hub
+              quantity: 99
+    - sku: LWL-BLK-BIF
+      locations:
+        - location: West Fulfillment
+          quantities:
+            - name: GA Warehouse
+              quantity: 289
+            - name: MO Warehouse
+              quantity: 705
+        - location: Northern Facility
+          quantities:
+            - name: AZ Storage
+              quantity: 848
+            - name: WA Hub
+              quantity: 99
+    - sku: LWL-TAN-TRI
+      locations:
+        - location: West Fulfillment
+          quantities:
+            - name: GA Warehouse
+              quantity: 289
+            - name: MO Warehouse
+              quantity: 705
+        - location: Northern Facility
+          quantities:
+            - name: AZ Storage
+              quantity: 848
+            - name: WA Hub
+              quantity: 99
+    - sku: LWL-BRN-TRI
+      locations:
+        - location: West Fulfillment
+          quantities:
+            - name: GA Warehouse
+              quantity: 289
+            - name: MO Warehouse
+              quantity: 705
+        - location: Northern Facility
+          quantities:
+            - name: AZ Storage
+              quantity: 848
+            - name: WA Hub
+              quantity: 99
+    - sku: WHP-BLK-OE
+      locations:
+        - location: West Fulfillment
+          quantities:
+            - name: GA Warehouse
+              quantity: 226
+            - name: WA Hub
+              quantity: 803
+            - name: FL Hub
+              quantity: 121
+            - name: TX Storage
+              quantity: 686
+    - sku: WHP-WHT-OE
+      locations:
+        - location: West Fulfillment
+          quantities:
+            - name: GA Warehouse
+              quantity: 226
+            - name: WA Hub
+              quantity: 803
+            - name: FL Hub
+              quantity: 121
+            - name: TX Storage
+              quantity: 686
+    - sku: WHP-BLU-OE
+      locations:
+        - location: West Fulfillment
+          quantities:
+            - name: GA Warehouse
+              quantity: 226
+            - name: WA Hub
+              quantity: 803
+            - name: FL Hub
+              quantity: 121
+            - name: TX Storage
+              quantity: 686
+    - sku: WHP-BLK-IE
+      locations:
+        - location: West Fulfillment
+          quantities:
+            - name: GA Warehouse
+              quantity: 226
+            - name: WA Hub
+              quantity: 803
+            - name: FL Hub
+              quantity: 121
+            - name: TX Storage
+              quantity: 686

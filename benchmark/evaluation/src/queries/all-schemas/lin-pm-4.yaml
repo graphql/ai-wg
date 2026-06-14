@@ -1,0 +1,124 @@
+id: lin-pm-4
+schemaId: linear
+query: "List all customers, their needs (body), and the identifier and title of
+  the issue linked to each need."
+operation: |
+  query {
+    customers {
+      nodes {
+        name
+        needs {
+          body
+          issue {
+            identifier
+            title
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.name
+  - CustomerNeed.body
+  - Issue.identifier
+  - Issue.title
+targetTypes:
+  - Customer
+  - CustomerNeed
+  - Issue
+mustInclude:
+  - Query.customers
+  - Customer.name
+  - Customer.needs
+  - CustomerNeed.body
+  - CustomerNeed.issue
+  - Issue.identifier
+  - Issue.title
+mustExclude:
+  - Mutation
+notes: List all customers and their needs with linked issue context.
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          needs:
+            type: array
+            items:
+              type: object
+              properties:
+                body:
+                  type: string
+                issue:
+                  type: object
+                  properties:
+                    identifier:
+                      type: string
+                    title:
+                      type: string
+                  required:
+                    - identifier
+                    - title
+                  additionalProperties: false
+              required:
+                - body
+                - issue
+              additionalProperties: false
+        required:
+          - name
+          - needs
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false
+answer:
+  customers:
+    - name: Globex Corporation
+      needs:
+        - body: Need faster login on mobile devices
+          issue:
+            identifier: ENG-441
+            title: Customer reported login issue on mobile
+        - body: Rate limiting blocks our API integration
+          issue:
+            identifier: ENG-512
+            title: Fix rate limit bypass vulnerability
+    - name: Initech
+      needs:
+        - body: API rate limiting causes failures in our workflow
+          issue:
+            identifier: ENG-99
+            title: Implement rate limiting on API gateway
+    - name: Widgets Inc
+      needs:
+        - body: Database migrations are too slow
+          issue:
+            identifier: ENG-200
+            title: Migrate database to PostgreSQL 16
+    - name: Acme Solutions
+      needs:
+        - body: Payment module has occasional failures
+          issue:
+            identifier: ENG-321
+            title: Add unit tests for payment module
+    - name: Startup XYZ
+      needs: []
+    - name: MegaCorp Industries
+      needs:
+        - body: Also affected by mobile login issue
+          issue:
+            identifier: ENG-441
+            title: Customer reported login issue on mobile
+    - name: TechPlus
+      needs: []
+    - name: SmallBiz LLC
+      needs: []
+    - name: EnterpriseOne
+      needs: []
+    - name: GrowthCo
+      needs: []

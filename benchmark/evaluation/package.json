@@ -1,0 +1,36 @@
+{
+    "name": "@embedder/evaluation",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Isolated evaluation harness for schema-slicing strategies.",
+    "type": "module",
+    "scripts": {
+        "eval": "tsx src/core/cli.ts",
+        "eval:strategies": "tsx src/core/cli.ts strategies",
+        "eval:templates": "tsx src/core/cli.ts templates",
+        "eval:models": "tsx src/core/cli.ts models",
+        "eval:agent": "tsx src/core/cli.ts agent",
+        "eval:list": "tsx src/core/cli.ts --list",
+        "typecheck": "tsc --noEmit",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "dependencies": {
+        "@anthropic-ai/sdk": "^0.65.0",
+        "gpt-tokenizer": "^2.9.0",
+        "graphql": "^16.9.0",
+        "openai": "^4.78.0",
+        "yaml": "^2.6.1",
+        "zod": "^3.24.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.5",
+        "prettier": "3.8.3",
+        "tsx": "^4.19.2",
+        "typescript": "^5.7.2"
+    },
+    "engines": {
+        "node": ">=20",
+        "pnpm": ">=10"
+    }
+}

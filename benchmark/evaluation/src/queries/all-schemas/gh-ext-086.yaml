@@ -1,0 +1,77 @@
+id: gh-ext-086
+schemaId: github
+query: What are the parent and child team relationships for teams in the octocat
+  organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      teams(first: 10) {
+        nodes {
+          name
+          parentTeam {
+            name
+          }
+          childTeams(first: 10) {
+            nodes {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Team.name
+targetTypes:
+  - Team
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.teams
+  - Team.parentTeam
+  - Team.childTeams
+  - Team.name
+  - Organization.teams(first:)
+  - Query.organization(login:)
+  - Team.childTeams(first:)
+mustExclude:
+  - Mutation
+notes: Team hierarchy via parentTeam and childTeams.
+answerSchema:
+  type: object
+  properties:
+    teams:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          parentTeam:
+            type: string
+          childTeams:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - parentTeam
+          - childTeams
+        additionalProperties: false
+  required:
+    - teams
+  additionalProperties: false
+answer:
+  teams:
+    - name: example
+      parentTeam: null
+      childTeams: []
+    - name: Developers
+      parentTeam: null
+      childTeams: []
+    - name: Operations
+      parentTeam: Developers
+      childTeams: []
+    - name: Security
+      parentTeam: null
+      childTeams: []

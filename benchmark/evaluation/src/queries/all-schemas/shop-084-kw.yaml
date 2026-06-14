@@ -1,0 +1,26 @@
+id: shop-084-kw
+schemaId: shopify
+query: B2B companies locations
+operation: |
+  query {
+    companies(first: 10) {
+      nodes {
+        name
+        locationsCount {
+          count
+        }
+      }
+    }
+  }
+targetFields:
+  - Company.name
+targetTypes:
+  - Company
+mustInclude:
+  - QueryRoot.companies
+  - Company.name
+  - Company.locationsCount
+  - QueryRoot.companies(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-084. B2B companies and how many locations each has.

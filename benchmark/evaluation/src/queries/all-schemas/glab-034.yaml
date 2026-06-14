@@ -1,0 +1,61 @@
+id: glab-034
+schemaId: gitlab
+query: Which CI runners are currently active (not paused) in the
+  gitlab-org/gitlab group, and when was each last contacted?
+operation: |
+  query {
+    group(fullPath: "gitlab-org/gitlab") {
+      runners(first: 10, paused: false) {
+        nodes {
+          id
+          contactedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - CiRunner.id
+  - CiRunner.contactedAt
+targetTypes:
+  - CiRunner
+mustInclude:
+  - Query.group
+  - Group.runners
+  - CiRunner.id
+  - CiRunner.contactedAt
+  - Group.runners(first:)
+  - Group.runners(paused:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+  - CiRunner.active
+notes: "DevOps: active (non-paused) runners + last-contact time for a group.
+  `active` is deprecated (GitLab 14.8); active runners are those with
+  paused=false."
+answerSchema:
+  type: object
+  properties:
+    runners:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          contactedAt:
+            type: string
+        required:
+          - id
+          - contactedAt
+        additionalProperties: false
+  required:
+    - runners
+  additionalProperties: false
+answer:
+  runners:
+    - id: gitlab-org/gitlab/CiRunner/2
+      contactedAt: 2025-05-21T00:00:00.000Z
+    - id: gitlab-org/gitlab/CiRunner/3
+      contactedAt: 2024-08-16T00:00:00.000Z
+    - id: gitlab-org/gitlab/CiRunner/4
+      contactedAt: 2024-07-18T00:00:00.000Z

@@ -1,0 +1,58 @@
+id: lin-ic-10
+schemaId: linear
+query: "What issues and projects have I favorited?"
+operation: |
+  query {
+    favorites(first: 10) {
+      nodes {
+        issue {
+          id
+          title
+        }
+        project {
+          id
+          name
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Favorite
+mustInclude:
+  - Query.favorites
+  - Favorite.issue
+  - Favorite.project
+  - Query.favorites(first:)
+mustExclude:
+  - Mutation
+notes: Pinned/favorite items for the current viewer.
+answerSchema:
+  type: object
+  properties:
+    favorites:
+      type: array
+      items:
+        type: object
+        properties:
+          issueTitle:
+            type: string
+          projectName:
+            type: string
+        required:
+          - issueTitle
+          - projectName
+        additionalProperties: false
+  required:
+    - favorites
+  additionalProperties: false
+answer:
+  favorites:
+    - issueTitle: Fix authentication token refresh
+      projectName: null
+    - issueTitle: null
+      projectName: Mobile App
+    - issueTitle: Fix rate limit bypass vulnerability
+      projectName: null
+    - issueTitle: null
+      projectName: Auth Redesign

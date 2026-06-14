@@ -1,0 +1,34 @@
+id: glab-100-kw
+schemaId: gitlab
+query: projects container registry storage limit
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      projects(first: 10) {
+        nodes {
+          containerRepositories(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+          statistics {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - ProjectStatistics
+mustInclude:
+  - Query.group
+  - Group.projects
+  - Project.containerRepositories
+  - Project.statistics
+  - Group.projects(first:)
+  - Project.containerRepositories(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-100. Admin: projects with container registry storage."

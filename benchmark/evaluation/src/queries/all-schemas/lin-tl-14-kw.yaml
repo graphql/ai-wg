@@ -1,0 +1,34 @@
+id: lin-tl-14-kw
+schemaId: linear
+query: cycle burndown open completed over time
+operation: |
+  query {
+    cycle(id: "<id>") {
+      issues(first: 10) {
+        nodes {
+          state {
+            type
+          }
+          completedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - WorkflowState.type
+  - Issue.completedAt
+targetTypes:
+  - WorkflowState
+  - Issue
+  - Cycle
+mustInclude:
+  - Query.cycle
+  - Cycle.issues
+  - Issue.state
+  - WorkflowState.type
+  - Issue.completedAt
+  - Cycle.issues(first:)
+  - Query.cycle(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-14. Burndown chart data for a cycle.

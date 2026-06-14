@@ -1,0 +1,39 @@
+id: glab-050
+schemaId: gitlab
+query: Show job execution status for runners managed by the current user.
+operation: |
+  query {
+    currentUser {
+      runners(first: 20) {
+        nodes {
+          jobExecutionStatus
+        }
+      }
+    }
+  }
+targetFields:
+  - CiRunner.jobExecutionStatus
+targetTypes:
+  - CiRunner
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.runners
+  - CiRunner.jobExecutionStatus
+  - CurrentUser.runners(first:)
+mustExclude:
+  - Mutation
+notes: "DevOps: job execution status counts per runner."
+answerSchema:
+  type: object
+  properties:
+    jobExecutionStatuses:
+      type: array
+      items:
+        type: string
+  required:
+    - jobExecutionStatuses
+  additionalProperties: false
+answer:
+  jobExecutionStatuses:
+    - IDLE
+    - ACTIVE

@@ -1,0 +1,62 @@
+id: lin-em-6
+schemaId: linear
+query: Show me the latest health update for every active project.
+operation: |
+  query {
+    projects(first: 10, filter: { status: { type: { eq: "started" } } }) {
+      nodes {
+        health
+        lastUpdate {
+          body
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.health
+  - ProjectUpdate.body
+targetTypes:
+  - Project
+  - ProjectUpdate
+mustInclude:
+  - Query.projects
+  - Project.health
+  - Project.lastUpdate
+  - ProjectUpdate.body
+  - Query.projects(first:)
+  - Query.projects(filter:)
+mustExclude:
+  - Mutation
+notes: EM scans most recent project health updates.
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: object
+        properties:
+          health:
+            type: string
+          latestUpdate:
+            type: string
+            description: body of the most recent health update
+        required:
+          - health
+          - latestUpdate
+        additionalProperties: false
+  required:
+    - projects
+  additionalProperties: false
+answer:
+  projects:
+    - health: onTrack
+      latestUpdate: UI components 70% done. Some delays in testing.
+    - health: onTrack
+      latestUpdate: Auth redesign started. OAuth integration in progress.
+    - health: onTrack
+      latestUpdate: null
+    - health: onTrack
+      latestUpdate: null
+    - health: offTrack
+      latestUpdate: null

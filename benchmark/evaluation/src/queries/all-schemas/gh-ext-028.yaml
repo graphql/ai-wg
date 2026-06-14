@@ -1,0 +1,69 @@
+id: gh-ext-028
+schemaId: github
+query: What environments are configured in the octocat/example repository and
+  what are their protection rule types, wait timeouts, and reviewer
+  requirements?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      environments(first: 10) {
+        nodes {
+          name
+          protectionRules(first: 10) {
+            nodes {
+              type
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Environment.name
+  - DeploymentProtectionRule.type
+targetTypes:
+  - Environment
+  - DeploymentProtectionRule
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.environments
+  - Environment.name
+  - Environment.protectionRules
+  - DeploymentProtectionRule.type
+  - Environment.protectionRules(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.environments(first:)
+mustExclude:
+  - Mutation
+notes: List environments and their protection rules.
+answerSchema:
+  type: object
+  properties:
+    environments:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          protectionRuleTypes:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - protectionRuleTypes
+        additionalProperties: false
+  required:
+    - environments
+  additionalProperties: false
+answer:
+  environments:
+    - name: staging
+      protectionRuleTypes:
+        - REQUIRED_REVIEWERS
+    - name: production
+      protectionRuleTypes:
+        - REQUIRED_REVIEWERS

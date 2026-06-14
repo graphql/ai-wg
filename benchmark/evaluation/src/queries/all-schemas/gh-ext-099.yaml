@@ -1,0 +1,29 @@
+id: gh-ext-099
+schemaId: github
+query: What is the cost of the most recent GraphQL query I ran?
+operation: |
+  query {
+    rateLimit {
+      cost
+    }
+  }
+targetFields:
+  - RateLimit.cost
+targetTypes:
+  - RateLimit
+mustInclude:
+  - Query.rateLimit
+  - RateLimit.cost
+mustExclude:
+  - Mutation
+answer:
+  cost: 862
+answerSchema:
+  type: object
+  properties:
+    cost:
+      type: number
+  required:
+    - cost
+  additionalProperties: false
+notes: Cost of the current GraphQL query.

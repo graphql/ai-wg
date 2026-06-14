@@ -1,0 +1,22 @@
+id: shop-078-kw
+schemaId: shopify
+query: collection-targeted automatic discount
+operation: |
+  query {
+    automaticDiscountNodes(first: 10) {
+      edges {
+        cursor
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.automaticDiscountNodes
+  - DiscountAutomaticBasic.customerGets
+  - DiscountCustomerGets.items
+  - DiscountCollections.collections
+  - QueryRoot.automaticDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-078. Automatic discounts that apply only when adding a specific collection.

@@ -1,0 +1,72 @@
+id: gh-ext-013
+schemaId: github
+query: Which issues in the octocat/example repository currently have no assignee?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10) {
+        nodes {
+          number
+          title
+          assignees(first: 1) {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.number
+  - Issue.title
+  - Issue.assignees
+targetTypes:
+  - Issue
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.number
+  - Issue.title
+  - Issue.assignees
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+mustExclude:
+  - Mutation
+notes: Fetch all issues with assignee counts; issues with assignees.totalCount
+  === 0 have no assignee.
+answerSchema:
+  type: object
+  properties:
+    unassignedIssues:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+        required:
+          - number
+          - title
+        additionalProperties: false
+  required:
+    - unassignedIssues
+  additionalProperties: false
+answer:
+  unassignedIssues:
+    - number: 2
+      title: "Feature request: dark mode"
+    - number: 5
+      title: Security vulnerability
+    - number: 6
+      title: Fix broken tests
+    - number: 7
+      title: API documentation
+    - number: 8
+      title: Memory leak in worker
+    - number: 9
+      title: Improve error messages
+    - number: 10
+      title: Update README

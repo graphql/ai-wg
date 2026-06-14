@@ -1,0 +1,30 @@
+id: glab-024-kw
+schemaId: gitlab
+query: project boards lists platform team
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      boards(first: 10) {
+        nodes {
+          lists(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - BoardList
+mustInclude:
+  - Query.project
+  - Project.boards
+  - Board.lists
+  - Board.lists(first:)
+  - Project.boards(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-024. Maintainer: project boards and lists."

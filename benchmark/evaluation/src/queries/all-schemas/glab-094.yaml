@@ -1,0 +1,66 @@
+id: glab-094
+schemaId: gitlab
+query: Show the CI runners registered to group/project with their tag lists and
+  status.
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      runners(first: 10) {
+        nodes {
+          tagList
+          status
+        }
+      }
+    }
+  }
+targetFields:
+  - CiRunner.tagList
+  - CiRunner.status
+targetTypes:
+  - CiRunner
+mustInclude:
+  - Query.group
+  - Group.runners
+  - CiRunner.tagList
+  - CiRunner.status
+  - Group.runners(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Admin: group runners + tags + status."
+answerSchema:
+  type: object
+  properties:
+    runners:
+      type: array
+      items:
+        type: object
+        properties:
+          tagList:
+            type: array
+            items:
+              type: string
+          status:
+            type: string
+        required:
+          - tagList
+          - status
+        additionalProperties: false
+  required:
+    - runners
+  additionalProperties: false
+answer:
+  runners:
+    - tagList:
+        - ruby
+      status: OFFLINE
+    - tagList:
+        - node
+      status: OFFLINE
+    - tagList:
+        - docker
+        - linux
+      status: ONLINE
+    - tagList:
+        - shell
+      status: ONLINE

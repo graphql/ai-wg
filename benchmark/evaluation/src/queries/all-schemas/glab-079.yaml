@@ -1,0 +1,43 @@
+id: glab-079
+schemaId: gitlab
+query: Show me upcoming releases for the group/project project with their
+  planned tag names.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      releases(first: 10) {
+        nodes {
+          tagName
+          upcomingRelease
+        }
+      }
+    }
+  }
+targetFields:
+  - Release.tagName
+  - Release.upcomingRelease
+targetTypes:
+  - Release
+mustInclude:
+  - Query.project
+  - Project.releases
+  - Release.tagName
+  - Release.upcomingRelease
+  - Project.releases(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "PM: upcoming releases + tag names."
+answerSchema:
+  type: object
+  properties:
+    upcomingReleaseTags:
+      type: array
+      items:
+        type: string
+  required:
+    - upcomingReleaseTags
+  additionalProperties: false
+answer:
+  upcomingReleaseTags:
+    - v2.0.0

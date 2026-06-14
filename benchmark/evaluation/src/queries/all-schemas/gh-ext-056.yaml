@@ -1,0 +1,63 @@
+id: gh-ext-056
+schemaId: github
+query: Search GitHub for repositories matching "example" (first 5 results) and
+  list each repository's full name and whether it is archived.
+operation: |
+  query {
+    search(query: "example", type: REPOSITORY, first: 5) {
+      nodes {
+        ... on Repository {
+          nameWithOwner
+          isArchived
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.isArchived
+  - Repository.nameWithOwner
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.search
+  - SearchResultItemConnection.nodes
+  - Repository.isArchived
+  - Repository.nameWithOwner
+  - Query.search(first:)
+  - Query.search(query:)
+  - Query.search(type:)
+mustExclude:
+  - Mutation
+answer:
+  repositories:
+    - fullName: octocat/example
+      isArchived: false
+    - fullName: octocat/Hello-World
+      isArchived: false
+    - fullName: user1/example
+      isArchived: false
+    - fullName: octocat/mirror-of-linux
+      isArchived: false
+    - fullName: octocat/archived-old
+      isArchived: true
+answerSchema:
+  type: object
+  properties:
+    repositories:
+      type: array
+      items:
+        type: object
+        properties:
+          fullName:
+            type: string
+          isArchived:
+            type: boolean
+        required:
+          - fullName
+          - isArchived
+        additionalProperties: false
+  required:
+    - repositories
+  additionalProperties: false
+notes: Search for repositories (not issues) so the Repository inline fragment
+  matches the mock's returned nodes.

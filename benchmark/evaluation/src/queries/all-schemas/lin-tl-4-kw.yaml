@@ -1,0 +1,38 @@
+id: lin-tl-4-kw
+schemaId: linear
+query: team blocked issues blocking relations
+operation: |
+  query {
+    team(id: "<id>") {
+      issues(first: 10) {
+        nodes {
+          relations(first: 10) {
+            nodes {
+              type
+              relatedIssue {
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueRelation.type
+targetTypes:
+  - IssueRelation
+  - Team
+  - Issue
+mustInclude:
+  - Query.team
+  - Team.issues
+  - Issue.relations
+  - IssueRelation.type
+  - IssueRelation.relatedIssue
+  - Issue.relations(first:)
+  - Query.team(id:)
+  - Team.issues(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-tl-4. Blocked-work view: surfaces issues that are blocked by other issues via IssueRelation."

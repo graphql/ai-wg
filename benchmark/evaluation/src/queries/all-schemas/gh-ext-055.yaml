@@ -1,0 +1,87 @@
+id: gh-ext-055
+schemaId: github
+query: What labels are defined in the octocat/example repository and how many
+  issues and pull requests use each one?
+queries:
+  - labels defined in the octocat/example repository
+  - issues using each label in the octocat/example repository
+  - pull requests using each label in the octocat/example repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      labels(first: 10) {
+        nodes {
+          name
+          issues(first: 0) {
+            totalCount
+          }
+          pullRequests(first: 0) {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Label.name
+  - IssueConnection.totalCount
+  - PullRequestConnection.totalCount
+targetTypes:
+  - Label
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.labels
+  - LabelConnection.nodes
+  - Label.name
+  - Label.issues
+  - Label.pullRequests
+  - Label.issues(first:)
+  - Label.pullRequests(first:)
+  - IssueConnection.totalCount
+  - PullRequestConnection.totalCount
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.labels(first:)
+mustExclude:
+  - Mutation
+notes: Labels and the issue/PR connections that imply usage frequency.
+answerSchema:
+  type: object
+  properties:
+    labels:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          issueCount:
+            type: number
+          pullRequestCount:
+            type: number
+        required:
+          - name
+          - issueCount
+          - pullRequestCount
+        additionalProperties: false
+  required:
+    - labels
+  additionalProperties: false
+answer:
+  labels:
+    - name: bug
+      issueCount: 2
+      pullRequestCount: 1
+    - name: feature
+      issueCount: 2
+      pullRequestCount: 2
+    - name: documentation
+      issueCount: 1
+      pullRequestCount: 0
+    - name: security
+      issueCount: 1
+      pullRequestCount: 0
+    - name: performance
+      issueCount: 1
+      pullRequestCount: 0

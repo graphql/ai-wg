@@ -1,0 +1,25 @@
+id: glab-027-kw
+schemaId: gitlab
+query: protected branches push rules project
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      protectableBranches
+      pushRules {
+        __typename
+      }
+    }
+  }
+targetFields:
+  - Project.protectableBranches
+targetTypes:
+  - Project
+  - PushRules
+mustInclude:
+  - Query.project
+  - Project.protectableBranches
+  - Project.pushRules
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-027. Maintainer: protected branches + push rules."

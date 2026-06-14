@@ -1,0 +1,61 @@
+id: shop-094
+schemaId: shopify
+query: List the most recent in-progress inventory transfers, including their
+  status, total quantity, and creation date.
+operation: |
+  query {
+    inventoryTransfers(first: 10) {
+      nodes {
+        id
+        status
+        totalQuantity
+        dateCreated
+      }
+    }
+  }
+targetFields:
+  - InventoryTransfer.status
+  - InventoryTransfer.totalQuantity
+  - InventoryTransfer.dateCreated
+targetTypes:
+  - InventoryTransfer
+mustInclude:
+  - QueryRoot.inventoryTransfers
+  - QueryRoot.inventoryTransfers(first:)
+  - InventoryTransfer.id
+  - InventoryTransfer.status
+  - InventoryTransfer.totalQuantity
+mustExclude:
+  - Mutation
+answer:
+  transfers:
+    - status: IN_PROGRESS
+      totalQuantity: 625
+      dateCreated: 2024-07-06T00:00:00.000Z
+    - status: IN_PROGRESS
+      totalQuantity: 369
+      dateCreated: 2024-06-25T00:00:00.000Z
+answerSchema:
+  type: object
+  properties:
+    transfers:
+      type: array
+      items:
+        type: object
+        properties:
+          status:
+            type: string
+          totalQuantity:
+            type: integer
+          dateCreated:
+            type: string
+        required:
+          - status
+          - totalQuantity
+          - dateCreated
+        additionalProperties: false
+  required:
+    - transfers
+  additionalProperties: false
+notes: Removed status:DRAFT filter that was silently ignored by mock; rewrote
+  question to match what mock returns (IN_PROGRESS transfers).

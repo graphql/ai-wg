@@ -1,0 +1,46 @@
+id: shop-047
+schemaId: shopify
+query: What addresses does customer gid://shopify/Customer/1 have saved, and
+  which is the default?
+operation: |
+  query {
+    customer(id: "gid://shopify/Customer/1") {
+      addressesV2(first: 10) {
+        nodes {
+          address1
+        }
+      }
+      defaultAddress {
+        address1
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.customer
+  - Customer.addressesV2
+  - Customer.defaultAddress
+  - Customer.addressesV2(first:)
+  - QueryRoot.customer(id:)
+mustExclude:
+  - Mutation
+notes: Saved addresses on a customer with the default flagged.
+answerSchema:
+  type: object
+  properties:
+    addresses:
+      type: array
+      items:
+        type: string
+    defaultAddress:
+      type: string
+  required:
+    - addresses
+    - defaultAddress
+  additionalProperties: false
+answer:
+  addresses:
+    - 357 Seventh Road
+    - 648 Sixth Avenue
+  defaultAddress: 482 Eighth Way

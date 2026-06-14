@@ -1,0 +1,33 @@
+id: lin-pm-15-kw
+schemaId: linear
+query: project updates timeline history
+operation: |
+  query {
+    project(id: "<id>") {
+      projectUpdates(first: 10) {
+        nodes {
+          body
+          health
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectUpdate.body
+  - ProjectUpdate.health
+  - ProjectUpdate.createdAt
+targetTypes:
+  - ProjectUpdate
+  - Project
+mustInclude:
+  - Query.project
+  - Project.projectUpdates
+  - ProjectUpdate.body
+  - ProjectUpdate.health
+  - ProjectUpdate.createdAt
+  - Project.projectUpdates(first:)
+  - Query.project(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-15. Project update timeline.

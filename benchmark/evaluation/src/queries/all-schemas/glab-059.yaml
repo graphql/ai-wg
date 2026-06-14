@@ -1,0 +1,49 @@
+id: glab-059
+schemaId: gitlab
+query: Which vulnerabilities in the group/project project have an available
+  auto-remediation?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 5) {
+        nodes {
+          id
+          title
+          hasRemediations
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.id
+  - Vulnerability.title
+  - Vulnerability.hasRemediations
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.id
+  - Vulnerability.title
+  - Vulnerability.hasRemediations
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    vulnerabilities:
+      type: array
+      items:
+        type: string
+  required:
+    - vulnerabilities
+  additionalProperties: false
+notes: "Security: of the first 5 vulnerabilities in group/project, only those
+  whose per-node hasRemediations is true have an available auto-remediation
+  patch (nodes 3 and 4)."
+answer:
+  vulnerabilities:
+    - Missing authentication on admin endpoints
+    - Cross-Site Scripting vulnerability in comments

@@ -1,0 +1,35 @@
+id: lin-tl-5-kw
+schemaId: linear
+query: recent cycle velocity completed history
+operation: |
+  query {
+    cycles(first: 10) {
+      nodes {
+        completedAt
+        progress
+        team {
+          id
+        }
+        startsAt
+        endsAt
+      }
+    }
+  }
+targetFields:
+  - Cycle.completedAt
+  - Cycle.progress
+  - Cycle.startsAt
+  - Cycle.endsAt
+targetTypes:
+  - Cycle
+mustInclude:
+  - Query.cycles
+  - Cycle.completedAt
+  - Cycle.progress
+  - Cycle.team
+  - Cycle.startsAt
+  - Cycle.endsAt
+  - Query.cycles(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-5. Multi-cycle velocity trend across recent cycles.

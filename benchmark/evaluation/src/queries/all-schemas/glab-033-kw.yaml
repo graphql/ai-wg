@@ -1,0 +1,29 @@
+id: glab-033-kw
+schemaId: gitlab
+query: pipelines main branch last day
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(first: 10) {
+        nodes {
+          ref
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Pipeline.ref
+  - Pipeline.createdAt
+targetTypes:
+  - Pipeline
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.ref
+  - Pipeline.createdAt
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-033. DevOps: pipelines on a branch in recent window."

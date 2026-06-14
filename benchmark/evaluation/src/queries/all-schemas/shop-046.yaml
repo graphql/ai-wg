@@ -1,0 +1,150 @@
+id: shop-046
+schemaId: shopify
+query: List the most recent abandoned checkouts that include high-value items.
+operation: |
+  query {
+    abandonedCheckouts(first: 10, sortKey: CREATED_AT, reverse: true) {
+      nodes {
+        createdAt
+        totalPriceSet {
+          presentmentMoney {
+            amount
+            currencyCode
+          }
+        }
+        lineItems(first: 5) {
+          nodes {
+            title
+            quantity
+            originalTotalPriceSet {
+              presentmentMoney {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.abandonedCheckouts
+  - QueryRoot.abandonedCheckouts(first:)
+  - QueryRoot.abandonedCheckouts(sortKey:)
+  - QueryRoot.abandonedCheckouts(reverse:)
+  - AbandonedCheckout.createdAt
+  - AbandonedCheckout.totalPriceSet
+  - AbandonedCheckout.lineItems
+  - AbandonedCheckout.lineItems(first:)
+  - AbandonedCheckoutLineItem.title
+  - AbandonedCheckoutLineItem.quantity
+  - AbandonedCheckoutLineItem.originalTotalPriceSet
+mustExclude:
+  - Mutation
+notes: Recent abandoned checkouts that include high-value items.
+answerSchema:
+  type: object
+  properties:
+    abandonedCheckouts:
+      type: array
+      items:
+        type: object
+        properties:
+          createdAt:
+            type: string
+          totalPrice:
+            type: string
+          currencyCode:
+            type: string
+          lineItems:
+            type: array
+            items:
+              type: object
+              properties:
+                title:
+                  type: string
+                quantity:
+                  type: integer
+                totalPrice:
+                  type: string
+                currencyCode:
+                  type: string
+              required:
+                - title
+                - quantity
+                - totalPrice
+                - currencyCode
+              additionalProperties: false
+        required:
+          - createdAt
+          - totalPrice
+          - currencyCode
+          - lineItems
+        additionalProperties: false
+  required:
+    - abandonedCheckouts
+  additionalProperties: false
+answer:
+  abandonedCheckouts:
+    - createdAt: "2024-07-14T00:00:00.000Z"
+      totalPrice: "18.50"
+      currencyCode: VUV
+      lineItems:
+        - title: Ceramic Mug Collection
+          quantity: 959
+          totalPrice: "27.99"
+          currencyCode: CVE
+        - title: Bamboo Cutting Board Set
+          quantity: 790
+          totalPrice: "195.50"
+          currencyCode: BYN
+    - createdAt: "2024-12-18T00:00:00.000Z"
+      totalPrice: "51.50"
+      currencyCode: HTG
+      lineItems:
+        - title: Yoga Mat Pro
+          quantity: 173
+          totalPrice: "129.00"
+          currencyCode: KES
+        - title: Vintage Leather Journal
+          quantity: 0
+          totalPrice: "13.99"
+          currencyCode: GMD
+    - createdAt: "2025-02-22T00:00:00.000Z"
+      totalPrice: "98.00"
+      currencyCode: RON
+      lineItems:
+        - title: Premium Wireless Headphones
+          quantity: 962
+          totalPrice: "33.75"
+          currencyCode: RWF
+        - title: Stainless Steel Water Bottle
+          quantity: 115
+          totalPrice: "74.99"
+          currencyCode: PKR
+    - createdAt: "2025-04-05T00:00:00.000Z"
+      totalPrice: "8.50"
+      currencyCode: SOS
+      lineItems:
+        - title: Organic Cotton T-Shirt
+          quantity: 291
+          totalPrice: "17.00"
+          currencyCode: AED
+        - title: Hiking Boot Waterproof
+          quantity: 160
+          totalPrice: "46.99"
+          currencyCode: MXN
+    - createdAt: "2025-05-24T00:00:00.000Z"
+      totalPrice: "175.99"
+      currencyCode: TTD
+      lineItems:
+        - title: Natural Soap Bar Set
+          quantity: 802
+          totalPrice: "278.25"
+          currencyCode: ARS
+        - title: Solar Powered Charger
+          quantity: 771
+          totalPrice: "48.00"
+          currencyCode: SSP

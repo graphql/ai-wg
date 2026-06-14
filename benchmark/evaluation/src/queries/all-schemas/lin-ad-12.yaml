@@ -1,0 +1,40 @@
+id: lin-ad-12
+schemaId: linear
+query: "What is our organization's URL slug and release channel?"
+operation: |
+  query {
+    organization {
+      releaseChannel
+      urlKey
+      name
+    }
+  }
+targetFields:
+  - Organization.releaseChannel
+  - Organization.urlKey
+  - Organization.name
+targetTypes:
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.releaseChannel
+  - Organization.urlKey
+  - Organization.name
+mustExclude:
+  - Mutation
+notes: Org-level branding/release channel.
+answer:
+  urlSlug: acme
+  releaseChannel: public
+answerSchema:
+  type: object
+  properties:
+    urlSlug:
+      type: string
+      description: The organization's URL key / slug
+    releaseChannel:
+      type: string
+  required:
+    - urlSlug
+    - releaseChannel
+  additionalProperties: false

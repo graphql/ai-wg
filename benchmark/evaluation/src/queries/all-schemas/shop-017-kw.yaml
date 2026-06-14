@@ -1,0 +1,35 @@
+id: shop-017-kw
+schemaId: shopify
+query: orders multiple shipping addresses split fulfillment
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        shippingLines(first: 10) {
+          edges {
+            cursor
+          }
+        }
+        fulfillmentOrders(first: 10) {
+          nodes {
+            destination {
+              address1
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.shippingLines
+  - Order.fulfillmentOrders
+  - FulfillmentOrder.destination
+  - Order.fulfillmentOrders(first:)
+  - Order.shippingLines(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-017. Orders with multiple shipping destinations so fulfillment can be split.

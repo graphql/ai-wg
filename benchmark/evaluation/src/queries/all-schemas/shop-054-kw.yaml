@@ -1,0 +1,27 @@
+id: shop-054-kw
+schemaId: shopify
+query: customer segments membership
+operation: |
+  query {
+    customerSegmentMembership(segmentIds: ["gid://shopify/Object/1"], customerId: "gid://shopify/Object/1") {
+      memberships {
+        isMember
+        segmentId
+      }
+    }
+  }
+targetFields:
+  - SegmentMembership.isMember
+  - SegmentMembership.segmentId
+targetTypes:
+  - SegmentMembership
+mustInclude:
+  - QueryRoot.customerSegmentMembership
+  - SegmentMembershipResponse.memberships
+  - SegmentMembership.isMember
+  - SegmentMembership.segmentId
+  - QueryRoot.customerSegmentMembership(customerId:)
+  - QueryRoot.customerSegmentMembership(segmentIds:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-054. Segment memberships for a particular customer.

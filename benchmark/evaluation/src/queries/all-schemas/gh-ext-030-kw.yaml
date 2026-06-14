@@ -1,0 +1,38 @@
+id: gh-ext-030-kw
+schemaId: github
+query: neutral skipped check runs latest
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object {
+        ... on Commit {
+          checkSuites(first: 10) {
+            nodes {
+              checkRuns(first: 10) {
+                nodes {
+                  conclusion
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CheckRun.conclusion
+targetTypes:
+  - CheckRun
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Commit.checkSuites
+  - CheckSuite.checkRuns
+  - CheckRun.conclusion
+  - CheckSuite.checkRuns(first:)
+  - Commit.checkSuites(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-030. Inspect check runs on the latest commit and filter NEUTRAL or SKIPPED conclusions.

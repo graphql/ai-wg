@@ -1,0 +1,28 @@
+id: gh-ext-051-kw
+schemaId: github
+query: funding configuration repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      fundingLinks {
+        platform
+        url
+      }
+    }
+  }
+targetFields:
+  - FundingLink.platform
+  - FundingLink.url
+targetTypes:
+  - FundingLink
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.fundingLinks
+  - FundingLink.platform
+  - FundingLink.url
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-051. Funding links configured on the repo.

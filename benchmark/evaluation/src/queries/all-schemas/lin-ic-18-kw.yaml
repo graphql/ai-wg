@@ -1,0 +1,27 @@
+id: lin-ic-18-kw
+schemaId: linear
+query: my issue drafts unfinished
+operation: |
+  query {
+    viewer {
+      drafts(first: 10) {
+        nodes {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueDraft.title
+  - IssueDraft.updatedAt
+targetTypes:
+  - IssueDraft
+mustInclude:
+  - Query.viewer
+  - User.drafts
+  - IssueDraft.title
+  - IssueDraft.updatedAt
+  - User.drafts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-18. Drafts I started but never submitted.

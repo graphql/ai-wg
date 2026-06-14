@@ -1,0 +1,32 @@
+id: shop-083-kw
+schemaId: shopify
+query: shipping zones rates standard delivery
+operation: |
+  query {
+    deliveryProfile(id: "gid://shopify/Object/1") {
+      profileLocationGroups {
+        locationGroupZones(first: 10) {
+          nodes {
+            methodDefinitions(first: 10) {
+              edges {
+                cursor
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.deliveryProfile
+  - DeliveryProfile.profileLocationGroups
+  - DeliveryProfileLocationGroup.locationGroupZones
+  - DeliveryLocationGroupZone.methodDefinitions
+  - DeliveryLocationGroupZone.methodDefinitions(first:)
+  - DeliveryProfileLocationGroup.locationGroupZones(first:)
+  - QueryRoot.deliveryProfile(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-083. Shipping zones and per-zone rates on a delivery profile.

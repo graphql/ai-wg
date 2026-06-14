@@ -1,0 +1,33 @@
+id: gh-ext-092-kw
+schemaId: github
+query: org admins repository
+operation: |
+  query {
+    organization(login: "octocat") {
+      membersWithRole(first: 10) {
+        __typename
+      }
+      repositories(first: 10) {
+        nodes {
+          viewerPermission
+        }
+      }
+    }
+  }
+targetFields:
+  - OrganizationMemberEdge.role
+  - Repository.viewerPermission
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.membersWithRole
+  - OrganizationMemberEdge.role
+  - Organization.repositories
+  - Repository.viewerPermission
+  - Organization.membersWithRole(first:)
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-092. Org members with role admin or repos where they have admin permission.

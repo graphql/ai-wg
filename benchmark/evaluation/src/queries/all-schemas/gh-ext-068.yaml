@@ -1,0 +1,51 @@
+id: gh-ext-068
+schemaId: github
+query: What packages are listed in the dependency graph manifests of the
+  octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      dependencyGraphManifests(first: 10) {
+        nodes {
+          dependencies(first: 10) {
+            nodes {
+              packageName
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DependencyGraphDependency.packageName
+targetTypes:
+  - DependencyGraphDependency
+  - Package
+mustInclude:
+  - Query.repository
+  - Repository.dependencyGraphManifests
+  - DependencyGraphManifest.dependencies
+  - DependencyGraphDependency.packageName
+  - DependencyGraphManifest.dependencies(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.dependencyGraphManifests(first:)
+mustExclude:
+  - Mutation
+notes: Walk dependency graph manifests of a repo and filter by package name.
+answerSchema:
+  type: object
+  properties:
+    packages:
+      type: array
+      items:
+        type: string
+  required:
+    - packages
+  additionalProperties: false
+answer:
+  packages:
+    - lodash
+    - react
+    - express
+    - axios

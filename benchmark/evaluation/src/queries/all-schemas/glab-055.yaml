@@ -1,0 +1,60 @@
+id: glab-055
+schemaId: gitlab
+query: List the confirmed security vulnerabilities in the group/project project,
+  showing each one's severity and title.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 20, state: [CONFIRMED]) {
+        nodes {
+          severity
+          title
+        }
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    vulnerabilities:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          severity: *a1
+        required:
+          - title
+          - severity
+        additionalProperties: false
+  required:
+    - vulnerabilities
+  additionalProperties: false
+targetFields:
+  - Vulnerability.severity
+  - Vulnerability.title
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.severity
+  - Vulnerability.title
+  - Project.vulnerabilities(first:)
+  - Project.vulnerabilities(state:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Security: confirmed vulnerabilities listed with severity and title. The
+  mock honors the state filter on Project.vulnerabilities (and severity) but
+  ignores reportType and sort, so the question filters by state rather than
+  report type, and lists results rather than grouping/sorting by severity."
+answer:
+  vulnerabilities:
+    - title: Weak password hashing algorithm detected
+      severity: CRITICAL
+    - title: SQL Injection in user input validation
+      severity: UNKNOWN
+    - title: Missing authentication on admin endpoints
+      severity: UNKNOWN

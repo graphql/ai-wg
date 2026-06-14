@@ -1,0 +1,1362 @@
+schema {
+  query: Query
+}
+
+type Query {
+  """
+  Returns every MOH-licensed clinic currently loaded by the subgraph.
+
+
+  **Returns:**
+
+  A read-only list of every known Clinic. The list is empty
+  when the upstream dataset could not be fetched and no cache is present.
+  """
+  allClinics: [Clinic!]!
+  """
+  Returns every currently active dengue cluster reported by the NEA,
+  regardless of locality or area.
+
+
+  **Returns:**
+
+  A snapshot list of DengueCluster records, one per active
+  NEA cluster. Empty if the upstream dataset could not be loaded.
+  """
+  allDengueClusters: [DengueCluster!]!
+  """
+  Returns every hawker centre known to the subgraph, with no filtering or pagination applied.
+
+
+  **Returns:**
+
+  A read-only list of HawkerCentre values. The list is empty when the upstream
+  download failed and no cached dataset is present on disk.
+  """
+  allHawkerCentres: [HawkerCentre!]!
+  """
+  Returns every MOE school known to the subgraph, flattened across all
+  planning areas. The dataset covers MOE-funded primary, secondary,
+  junior college and mixed-level schools.
+
+
+  **Returns:**
+
+  A snapshot of all schools, materialised as an in-memory list. The
+  returned collection is not sorted.
+  """
+  allSchools: [School!]!
+  """
+  Looks up a single Area by its canonical NEA name. Marked with
+  [Lookup] so Fusion can resolve Area entities by name
+  across federated subgraphs.
+
+
+  **Returns:**
+
+  The matching Area, or null if no area with that name
+  exists in the NEA catalogue.
+  """
+  areaByName(
+    """
+    The canonical NEA area name to look up (case-insensitive, e.g. "Tampines",
+    "ang mo kio").
+    """
+    name: String!
+  ): Area
+  """
+  Returns every Area defined by NEA, each hydrated with its
+  current 2-hour forecast text where available.
+
+
+  **Returns:**
+
+  A read-only list of all NEA areas (currently around 47 sub-zones spanning
+  the five Singapore regions). Never null; may have missing forecast
+  text for individual areas if the upstream NEA payload omits them.
+  """
+  areas: [Area!]!
+  """
+  Encodes an ad-hoc address into a stable id without persisting anything.
+  Useful for clients that want to test how the subgraph will enrich a
+  hypothetical address before pulling it through a real source subgraph.
+  """
+  encodeAddress(
+    "Optional block identifier."
+    block: String
+    "Optional named building."
+    buildingName: String
+    "Optional 6-digit postal code."
+    postalCode: String
+    "Street component, e.g. \"Orchard Road\"."
+    streetName: String!
+  ): Address!
+  """
+  Returns the National Environment Agency's (NEA) 4-day weather outlook for
+  Singapore, with one DayForecast entry per upcoming day.
+
+
+  **Returns:**
+
+  A read-only list of four day-by-day forecasts (temperature in °C, humidity
+  in %, wind speed as a "low-high km/h" string, wind direction as a
+  cardinal label). Returns an empty list if the upstream NEA payload is
+  missing or empty.
+  """
+  fourDayForecast: [DayForecast!]!
+  """
+  Looks up a single Region by its RegionName.
+  Marked with [Lookup] so Fusion can resolve Region
+  entities by name across federated subgraphs.
+
+
+  **Returns:**
+
+  A newly constructed Region wrapping name.
+  Always non-null for any valid enum value.
+  """
+  regionByName(
+    "The compass-style region identifier to resolve."
+    name: RegionName!
+  ): Region
+  """
+  Returns the full set of Singapore NEA regions: north, south, east, west and
+  central.
+
+
+  **Returns:**
+
+  A read-only list of five Region instances, one per
+  RegionName value, in a fixed order.
+  """
+  regions: [Region!]!
+  """
+  Returns the enriched view of an address given its opaque id. Always
+  succeeds — unknown or malformed ids fall back to a sensible
+  central-Singapore placeholder so clients never see null from
+  this entry point.
+  """
+  resolveAddress("The address id to resolve." id: String!): Address!
+  """
+  Returns the count of taxis currently reporting availability anywhere
+  in Singapore, taken from the data.gov.sg taxi-availability
+  GeoJSON feed.
+
+
+  **Returns:**
+
+  Number of available taxis recorded by the most recent poll, or
+  0 if the upstream call fails.
+  """
+  totalAvailableTaxis: Int!
+  """
+  Returns the total resident population of Singapore, computed as the
+  sum of resident headcounts across every planning area known to the
+  subgraph (with the central City area aggregated as described
+  on Population).
+
+
+  **Returns:**
+
+  The total resident headcount (Singapore citizens and permanent
+  residents) across all planning areas. Excludes the non-resident
+  workforce. Returns 0 if the underlying dataset has not yet
+  been populated.
+  """
+  totalPopulation: Int!
+  """
+  Returns every active traffic camera island-wide, refreshed from the
+  data.gov.sg traffic-images dataset and cached in memory for a
+  short window to avoid hammering the upstream API.
+
+
+  **Returns:**
+
+  All cameras the most recent poll returned, in arbitrary order. The
+  list is empty if the upstream call fails.
+  """
+  trafficCameras: [TrafficCamera!]!
+  """
+  Returns the latest island-wide UV-index reading published by NEA via
+  data.gov.sg.
+
+
+  **Returns:**
+
+  The most recent UvIndex, or null when
+  no reading is currently available. The UV value is dimensionless and
+  typically ranges from 0 to 11+.
+  """
+  uvIndex: UvIndex
+}
+
+"""
+A structured Singapore address. The entity is owned by the Addresses subgraph
+and federated into other subgraphs via the Id key — any subgraph that
+returns an Address only has to populate Id; the gateway
+will fetch the remaining fields from this subgraph through the
+String) lookup.
+"""
+type Address {
+  """
+  HDB / building block identifier when the address is part of a public
+  housing estate or numbered development (e.g. "123", "4A").
+  """
+  block: String
+  """
+  Optional building or development name (e.g. "The Shoppes at Marina Bay Sands",
+  "Tampines Mall"). Returns null for residential or unnamed addresses.
+  """
+  buildingName: String
+  """
+  Country, always "Singapore" for this subgraph — provided so clients
+  can render fully-qualified international-style addresses without special casing.
+  """
+  country: String!
+  """
+  Singapore planning district / town derived from the postal sector
+  (first two digits of the postal code) or, when missing, from the
+  coordinates' nearest area centroid (e.g. "Ang Mo Kio").
+  """
+  district: String!
+  """
+  Full single-line postal representation suitable for display, e.g.
+  "Block 123 Ang Mo Kio Avenue 6, Singapore 560123".
+  """
+  formatted: String!
+  """
+  Opaque, deterministic identifier for the address. Two addresses with identical
+  normalised components produce the same Id.
+  """
+  id: String!
+  """
+  The first line of the postal address — typically the block number followed
+  by the street (e.g. "Block 123 Ang Mo Kio Avenue 6"). Falls back to
+  the street alone when no block is known.
+  """
+  line1: String!
+  """
+  Optional secondary line — currently reserved for unit / floor information
+  (e.g. "#04-12"). Returns null when not applicable.
+  """
+  line2: String
+  """
+  Geographic point for the address in WGS84. Coordinates are either the
+  caller-supplied lat/lng (when the source subgraph had them) or derived
+  from the postal sector centroid with a deterministic per-id jitter so
+  distinct addresses inside the same sector spread realistically.
+  """
+  location: Location!
+  """
+  Singapore 6-digit postal code (e.g. "560123"). May be an empty
+  string when the source data did not supply one.
+  """
+  postalCode: String!
+  "The street name component (e.g. \"Ang Mo Kio Avenue 6\")."
+  streetName: String!
+}
+
+"""
+A composite air-quality snapshot for a single NEA reporting region,
+combining the latest PM2.5, PSI (24-hour) and UV-index figures published by
+data.gov.sg.
+"""
+type AirQualityReading {
+  """
+  The carbon monoxide (CO) PSI sub-index for the region. Dimensionless.
+  Sourced from readings.co_sub_index in the data.gov.sg PSI
+  dataset.
+  """
+  coSubIndex: Int!
+  """
+  The pollutant whose PSI sub-index is currently highest, and therefore
+  the dominant driver of overall air quality for the region.
+  """
+  dominantPollutant: String!
+  """
+  The categorical hazard bucket derived from
+  PsiTwentyFourHourly using the NEA PSI bands. See
+  HazardLevel for thresholds.
+  """
+  hazardLevel: HazardLevel!
+  """
+  The nitrogen dioxide (NO2) one-hour-max sub-index for the region.
+  Dimensionless. Sourced from readings.no2_one_hour_max in the
+  data.gov.sg PSI dataset.
+  """
+  no2SubIndex: Int!
+  """
+  The ozone (O3) PSI sub-index for the region. Dimensionless. Sourced
+  from readings.o3_sub_index in the data.gov.sg PSI dataset.
+  """
+  o3SubIndex: Int!
+  """
+  A convenience flag indicating whether outdoor activity is broadly
+  considered safe given the current 24-hour PSI and UV reading. Returns
+  true when PSI is below 100 (Good or Moderate) and
+  the UV index is below 8 (below the Very High band).
+  """
+  outdoorActivitySafe: Boolean!
+  """
+  The PM10 PSI sub-index for the region. Dimensionless. Sourced from
+  readings.pm10_sub_index in the data.gov.sg PSI dataset.
+  """
+  pm10SubIndex: Int!
+  """
+  One-hour mean PM2.5 concentration for the region, in micrograms per
+  cubic metre (μg/m³). Sourced from readings.pm25_one_hourly in
+  the data.gov.sg PM2.5 dataset.
+  """
+  pm25: Int!
+  """
+  The PM2.5 PSI sub-index for the region. Dimensionless. Sourced from
+  readings.pm25_sub_index in the data.gov.sg PSI dataset.
+  """
+  pm25SubIndex: Int!
+  """
+  The 24-hour Pollutant Standards Index (PSI) for the region. PSI is
+  dimensionless; values are interpreted via HazardLevel.
+  Sourced from readings.psi_twenty_four_hourly in the data.gov.sg
+  PSI dataset.
+  """
+  psiTwentyFourHourly: Int!
+  """
+  The sulfur dioxide (SO2) PSI sub-index for the region. Dimensionless.
+  Sourced from readings.so2_sub_index in the data.gov.sg PSI
+  dataset.
+  """
+  so2SubIndex: Int!
+  """
+  The island-wide UV index at the time of the snapshot. Dimensionless,
+  typically 0-11+. Sourced from the latest entry in items[].index[]
+  of the data.gov.sg UV-index dataset.
+  """
+  uvValue: Int!
+}
+
+"""
+A Singapore planning area as exposed by the Demographics subgraph. Acts as
+the entry point for resolving the resident Population
+breakdown for a given area.
+"""
+type Area {
+  """
+  Returns every active NEA dengue cluster whose centroid falls inside
+  this area.
+
+
+  **Returns:**
+
+  The clusters associated with Name, or an empty list if no
+  clusters are currently active in the area. Each item exposes the
+  upstream CASE_SIZE, HOMES, PUBLIC_PLACES and
+  CONSTRUCTION_SITES fields.
+  """
+  activeDengueClusters: [DengueCluster!]!
+  """
+  Counts the taxis currently reporting available within a fixed radius
+  of this area's centroid, using the data.gov.sg
+  taxi-availability GeoJSON feed.
+
+
+  **Returns:**
+
+  Number of free taxis within the configured radius of the centroid,
+  or 0 if this Name is not a known planning
+  area.
+  """
+  availableTaxis: Int!
+  """
+  Resolves every Carpark whose nearest planning-area
+  centroid matches Name.
+
+
+  **Returns:**
+
+  Carparks located in this area, with current total / available lot
+  counts from the most recent data.gov.sg poll.
+  """
+  carparks: [Carpark!]!
+  """
+  Computes an aggregated CarparkSummary across every
+  carpark in this planning area.
+
+
+  **Returns:**
+
+  A CarparkSummary with total carpark count, total
+  physical lot capacity, and currently available lots.
+  """
+  carparkSummary: CarparkSummary!
+  """
+  Returns the number of clinics located in this area.
+
+
+  **Returns:**
+
+  The count of clinics whose nearest centroid is this area. Returns
+  0 when no clinics fall under this area.
+  """
+  clinicCount: Int!
+  """
+  Returns the clinics whose nearest planning-area centroid is this area.
+
+
+  **Returns:**
+
+  A read-only list of every Clinic assigned to this area, in
+  the order they were ingested from the upstream dataset. The list is
+  empty when no clinics fall under this area.
+  """
+  clinics: [Clinic!]!
+  """
+  Computes a coarse DengueRiskLevel for this area based on
+  the largest active cluster it contains.
+
+
+  **Returns:**
+
+  NONE when no active clusters are
+  associated with the area;
+  LOW when the largest cluster reports
+  fewer than ten cases;
+  MODERATE when the largest cluster
+  reports between ten and forty-nine cases;
+  HIGH when the largest cluster reports
+  fifty or more cases.
+  """
+  dengueRiskLevel: DengueRiskLevel!
+  """
+  Gets the latest NEA 2-hour forecast phrase for this area (e.g. "Cloudy",
+  "Light Rain", "Partly Cloudy (Day)") or null when no current forecast
+  is available for the area.
+  """
+  forecast: String
+  """
+  Returns the hawker centres whose coordinates were closest to this area's centroid at index
+  build time.
+
+
+  **Returns:**
+
+  A read-only list of HawkerCentre values for this area. Returns an empty list
+  when no hawker centres were bucketed under Name.
+  """
+  hawkerCentres: [HawkerCentre!]!
+  """
+  Gets the WGS84 latitude of the area's representative point, in decimal
+  degrees. Typical Singapore values fall in the range 1.2 - 1.5.
+  """
+  latitude: Float!
+  """
+  Gets the WGS84 longitude of the area's representative point, in decimal
+  degrees. Typical Singapore values fall in the range 103.6 - 104.0.
+  """
+  longitude: Float!
+  """
+  Returns the MRT and LRT stations curated for this planning area in
+  MrtStationData.
+
+
+  **Returns:**
+
+  All stations registered against this area, or an empty list when
+  the area has none.
+  """
+  mrtStations: [MrtStation!]!
+  """
+  The planning-area name used as the federation key. Matches the
+  title-cased planning-area name from the data.gov.sg dataset, with the
+  special synthetic value "City" covering the central planning
+  areas (Downtown Core, Outram, Rochor, Museum, Singapore River and
+  Straits View) aggregated as a single area.
+  """
+  name: String!
+  """
+  Returns the NEA weather station nearest to the given Area's
+  coordinate, hydrated with the most recent live readings.
+
+
+  **Returns:**
+
+  The closest WeatherStation with its latest readings, or
+  null if no station data is currently available from NEA.
+  """
+  nearestStation: WeatherStation
+  """
+  Resolves the resident population breakdown for this planning area.
+
+
+  **Returns:**
+
+  A Population record describing the resident headcount,
+  ethnicity split and sex split for this area, or null if the
+  area name is not present in the SingStat dataset.
+  """
+  population: Population
+  """
+  Returns the most recent resale transactions for this area, ordered by
+  month descending.
+
+
+  **Returns:**
+
+  Up to limit ResaleTransaction records,
+  or an empty list if the area has no transactions in the loaded
+  dataset.
+  """
+  recentTransactions(
+    "Maximum number of transactions to return. Defaults to 10."
+    limit: Int! = 10
+  ): [ResaleTransaction!]!
+  """
+  Resolves the Region that the given Area belongs to.
+
+
+  **Returns:**
+
+  A freshly constructed Region wrapping the area's
+  RegionName.
+  """
+  region: Region!
+  """
+  Resolves the aggregate ResaleSummary for this area.
+
+
+  **Returns:**
+
+  A ResaleSummary when at least one transaction exists for
+  Name, otherwise null.
+  """
+  resaleSummary: ResaleSummary
+  """
+  Returns the number of MOE schools recorded in this area. Convenience
+  projection that avoids transferring the full school list when callers
+  only need a count.
+
+
+  **Returns:**
+
+  Count of schools in the area, or 0 when the area is not present
+  in the dataset.
+  """
+  schoolCount: Int!
+  """
+  Returns every school the dataset places inside this area.
+
+
+  **Returns:**
+
+  All schools whose dgp_code maps to Name. Empty
+  when the area has no MOE schools (for example purely industrial
+  planning areas).
+  """
+  schools: [School!]!
+  """
+  Resolves the traffic cameras that fall inside this planning area by
+  finding, for each camera, the nearest centroid in
+  AreaCentroids and keeping the ones that
+  snap to Name.
+
+
+  **Returns:**
+
+  Cameras assigned to this area by the nearest-centroid heuristic.
+  May be empty for areas that have no LTA cameras (e.g. offshore
+  islands).
+  """
+  trafficCameras: [TrafficCamera!]!
+}
+
+"""
+A single HDB / public carpark in Singapore, joined from two HDB datasets:
+the static carpark directory (number, street address, geometry, lot type)
+and the near-real-time availability feed (total / available lots refreshed
+roughly every minute).
+"""
+type Carpark {
+  """
+  Federated Address reference for the carpark's location.
+  The Parking subgraph supplies only the entity id; richer fields
+  (street, block, postal sector, geographic point) come from the
+  Addresses subgraph.
+  """
+  address: Address!
+  "Lots currently free, as reported by the most recent availability poll."
+  availableLots: Int!
+  """
+  HDB-assigned carpark identifier such as "AM2" or "TM45".
+  Unique across the country and stable over time.
+  """
+  carparkNumber: String!
+  """
+  Physical type — for example "SURFACE CAR PARK",
+  "MULTI-STOREY CAR PARK", or "BASEMENT CAR PARK".
+  """
+  carparkType: String!
+  """
+  WGS84 latitude of the carpark, converted from SVY21 northing in the
+  source CSV. Kept on Carpark for clients that need the
+  coordinate directly without traversing the address relationship.
+  """
+  latitude: Float!
+  """
+  WGS84 longitude of the carpark, converted from SVY21 easting in the
+  source CSV.
+  """
+  longitude: Float!
+  """
+  Lot category code from HDB: "C" = car, "Y" = motorcycle,
+  "H" = heavy vehicle.
+  """
+  lotType: String!
+  """
+  Total physical lots in the carpark. Includes the lot type recorded in
+  LotType; carparks with separate lot pools (e.g. C + H)
+  appear as multiple Carpark records.
+  """
+  totalLots: Int!
+}
+
+"""
+Aggregated carpark statistics for a Singapore planning Area,
+computed from the data.gov.sg HDB carpark availability feed.
+"""
+type CarparkSummary {
+  """
+  Occupancy ratio expressed as a percentage in the range 0–100. Computed
+  as (TotalLots - TotalAvailable) / TotalLots * 100; returns
+  0 when TotalLots is zero so callers do not need
+  to guard against division by zero.
+  """
+  occupancyPercent: Float!
+  """
+  Sum of AvailableLots across every contributing
+  carpark, reflecting the most recent availability poll.
+  """
+  totalAvailable: Int!
+  """
+  Number of distinct Carpark records contributing to the
+  summary. Each HDB carpark_number / lot_type combination
+  counts as one carpark, matching the granularity of the source feed.
+  """
+  totalCarparks: Int!
+  """
+  Sum of TotalLots across every contributing carpark,
+  i.e. the total physical capacity within the area.
+  """
+  totalLots: Int!
+}
+
+"""
+Represents a Ministry of Health (MOH) licensed healthcare institution in Singapore,
+sourced from the data.gov.sg "MOH Licensed Healthcare Institutions" dataset.
+"""
+type Clinic {
+  """
+  The clinic's latitude in WGS84 decimal degrees (north-positive). Together with
+  Longitude this places the clinic on the Singapore map and is
+  also used to bucket the clinic into the nearest planning Area.
+  """
+  latitude: Float!
+  """
+  The MOH licence category for this clinic (e.g. "CLINIC",
+  "MEDICAL CLINIC"), taken from the dataset's LICENCE_TYPE field.
+  """
+  licenceType: String!
+  """
+  The clinic's longitude in WGS84 decimal degrees (east-positive). Combined with
+  Latitude to locate the clinic and resolve its nearest area.
+  """
+  longitude: Float!
+  """
+  The name of the healthcare institution, taken from the dataset's
+  HCI_NAME field. May be the string "Unknown" when the upstream
+  record does not carry a name.
+  """
+  name: String!
+  """
+  The list of clinic programme codes the clinic participates in, parsed from the
+  dataset's comma-separated CLINIC_PROGRAMME_CODE field. Empty when the
+  clinic is not enrolled in any programme.
+  """
+  programmes: [String!]!
+  """
+  The clinic's main contact number, taken from the dataset's HCI_TEL field.
+  null when the upstream record has no telephone or only a
+  blank value.
+  """
+  telephone: String
+}
+
+"""
+A single day's entry in the National Environment Agency (NEA) 4-day weather
+outlook for Singapore, sourced from the data.gov.sg
+/v1/environment/4-day-weather-forecast endpoint.
+"""
+type DayForecast {
+  """
+  The calendar date the forecast applies to (Singapore local time, no time-of-day
+  component). Parsed from the NEA date field; falls back to today's date if
+  the upstream value cannot be parsed.
+  """
+  date: LocalDate!
+  """
+  Short human-readable forecast description for the day (e.g. "Thundery Showers",
+  "Partly Cloudy"). Returns "N/A" when NEA does not provide a value.
+  """
+  forecast: String!
+  "Expected daily high relative humidity, as a percentage (%)."
+  humidityHigh: Int!
+  "Expected daily low relative humidity, as a percentage (%)."
+  humidityLow: Int!
+  "Expected daily high air temperature in degrees Celsius (°C)."
+  temperatureHigh: Int!
+  "Expected daily low air temperature in degrees Celsius (°C)."
+  temperatureLow: Int!
+  """
+  Expected predominant wind direction as a cardinal/intercardinal label
+  (e.g. "N", "NE", "SSW"). Returns "N/A" if NEA does not supply a value.
+  """
+  windDirection: String!
+  """
+  Expected wind-speed range as a pre-formatted string in the form
+  "low-high km/h" (e.g. "10-20 km/h"). Returns "N/A" if NEA does not
+  supply a value.
+  """
+  windSpeed: String!
+}
+
+"""
+Represents a single active dengue cluster reported by the National
+Environment Agency (NEA) of Singapore.
+"""
+type DengueCluster {
+  """
+  Count of breeding habitats found at construction sites within the cluster,
+  sourced from the dataset's CONSTRUCTION_SITES field.
+  """
+  breedingSitesConstruction: Int!
+  """
+  Count of Aedes mosquito breeding habitats found in private homes
+  within the cluster, sourced from the dataset's HOMES field.
+  """
+  breedingSitesHomes: Int!
+  """
+  Count of breeding habitats found in public places (parks, drains, common
+  areas, etc.) within the cluster, sourced from the dataset's
+  PUBLIC_PLACES field.
+  """
+  breedingSitesPublicPlaces: Int!
+  """
+  Number of confirmed dengue cases inside the cluster, sourced from the
+  dataset's CASE_SIZE field. Used as the input to the simple
+  risk-banding heuristic in DengueDataStore).
+  """
+  caseCount: Int!
+  """
+  Human-readable name of the affected locality, sourced from the dataset's
+  LOCALITY field (for example "Aljunied Crescent / Sims Drive").
+  Defaults to "Unknown" when the upstream feature has no locality.
+  """
+  locality: String!
+}
+
+"""
+Represents a Singapore hawker centre sourced from the National Environment Agency (NEA)
+hawker centres GeoJSON dataset published on data.gov.sg.
+"""
+type HawkerCentre {
+  """
+  Number of cooked food stalls hosted at the centre as published in the dataset's
+  NUMBER_OF_COOKED_FOOD_STALLS field. Defaults to 0 when the upstream value is
+  missing or cannot be parsed.
+  """
+  cookedFoodStalls: Int!
+  """
+  WGS84 latitude in decimal degrees (positive north of the equator). For Singapore this value is
+  typically between roughly 1.20 and 1.47.
+  """
+  latitude: Float!
+  """
+  WGS84 longitude in decimal degrees (positive east of the prime meridian). For Singapore this
+  value is typically between roughly 103.6 and 104.1.
+  """
+  longitude: Float!
+  """
+  Human readable name of the hawker centre as published in the dataset's NAME field
+  (e.g. "Maxwell Food Centre"). May be the string "Unknown" when the upstream
+  dataset omits the value.
+  """
+  name: String!
+  """
+  Optional absolute URL of a representative photo as published in the dataset's PHOTOURL
+  field. null when the upstream dataset does not provide a photo.
+  """
+  photoUrl: String
+  """
+  Operational status of the hawker centre as published in the dataset's STATUS field
+  (e.g. "Existing", "Proposed", "Under Construction"). May be the string
+  "Unknown" when the upstream dataset omits the value.
+  """
+  status: String!
+}
+
+"""
+A geographic point in the WGS84 coordinate reference system, optionally
+rendered as a human-readable decimal-degree string.
+"""
+type Location {
+  """
+  The coordinates as a single human-readable string in the form
+  "1.350000, 103.849000" (six decimal places, comma-separated).
+  """
+  formatted: String!
+  """
+  WGS84 latitude in decimal degrees. Positive values are north of the equator.
+  All addresses served by this subgraph are in Singapore, so values lie
+  approximately in the range 1.16 to 1.47.
+  """
+  latitude: Float!
+  """
+  WGS84 longitude in decimal degrees. Positive values are east of the prime
+  meridian. For Singapore the range is approximately 103.6 to 104.05.
+  """
+  longitude: Float!
+}
+
+"""
+A Mass Rapid Transit (MRT) or Light Rail Transit (LRT) station served by
+SMRT or SBS Transit. The Traffic subgraph carries a curated subset of
+stations grouped by planning area so each Area can list its
+nearby rail access points.
+"""
+type MrtStation {
+  """
+  Number of street-level exits at the station, used as a rough proxy for
+  station size in the GraphQL surface.
+  """
+  exitCount: Int!
+  "WGS84 decimal degrees north for the station's primary entrance."
+  latitude: Float!
+  "WGS84 decimal degrees east for the station's primary entrance."
+  longitude: Float!
+  """
+  Short station name as commonly displayed, e.g. "Raffles Place" or
+  "Changi Airport". Not prefixed with the line code.
+  """
+  name: String!
+}
+
+"""
+Resident population breakdown for a single Singapore planning area,
+projected onto the resident-by-ethnicity and resident-by-sex categories
+published by the Singapore Department of Statistics (SingStat) via the
+data.gov.sg Resident Population dataset.
+"""
+type Population {
+  """
+  Number of residents recorded under the Chinese ethnic group in the
+  SingStat resident-by-ethnicity classification.
+  """
+  chinese: Int!
+  """
+  Human-readable density bucket derived from the resident
+  Total. Returns "High density" for 200 000 or more
+  residents, "Medium density" for 100 000-199 999 residents and
+  "Low density" otherwise.
+  """
+  densityDescription: String!
+  "Number of female residents in the planning area."
+  female: Int!
+  """
+  Number of residents recorded under the Indian ethnic group in the
+  SingStat resident-by-ethnicity classification.
+  """
+  indian: Int!
+  """
+  Number of residents recorded under the Malay ethnic group in the
+  SingStat resident-by-ethnicity classification.
+  """
+  malay: Int!
+  "Number of male residents in the planning area."
+  male: Int!
+  """
+  Number of residents recorded under the "Others" ethnic group, which
+  covers all residents not classified as Chinese, Malay or Indian.
+  """
+  others: Int!
+  """
+  Total resident headcount for the planning area. The sum of
+  Chinese, Malay, Indian and
+  Others, and equivalently of Male and
+  Female, subject to SingStat rounding.
+  """
+  total: Int!
+}
+
+"""
+Inclusive minimum and maximum resale_price values observed for a
+town/area in the data.gov.sg HDB Resale Flat Prices dataset. Both values
+are quoted in Singapore dollars.
+"""
+type PriceRange {
+  "Highest resale_price recorded in the area."
+  max: Float!
+  "Lowest resale_price recorded in the area."
+  min: Float!
+}
+
+"""
+A federated GraphQL entity representing one of the five cardinal NEA
+reporting regions of Singapore (NORTH, SOUTH, EAST, WEST, CENTRAL).
+"""
+type Region {
+  """
+  Resolves the latest composite air-quality reading (PM2.5, 24-hour PSI
+  and per-pollutant sub-indices, plus the island-wide UV value) for this
+  region.
+
+
+  **Returns:**
+
+  The latest AirQualityReading for this region, or
+  null if no data is currently available.
+  """
+  airQuality: AirQualityReading
+  """
+  Returns the list of Area sub-zones that belong to this region.
+
+
+  **Returns:**
+
+  A read-only list of every Area whose RegionName matches
+  this region. The list is built from the subgraph's static area catalogue and
+  is never null.
+  """
+  areas: [Area!]!
+  """
+  Returns the latest NEA 24-hour aggregate forecast for this region, including
+  expected temperature, humidity and wind ranges.
+
+
+  **Returns:**
+
+  A RegionForecast describing the current 24-hour outlook for this
+  region, or null if the upstream NEA service is unreachable or its
+  payload contains no usable forecast period for this region.
+  """
+  forecast: RegionForecast
+  """
+  Gets a representative WGS84 latitude (in decimal degrees) for the region's
+  approximate centre point.
+  """
+  latitude: Float!
+  """
+  Gets a representative WGS84 longitude (in decimal degrees) for the region's
+  approximate centre point.
+  """
+  longitude: Float!
+  "The cardinal region identifier. See RegionName."
+  name: RegionName!
+  """
+  Resolves the most recent UV-index reading. NEA reports UV island-wide
+  rather than per region, so the same value is exposed on every
+  Region.
+
+
+  **Returns:**
+
+  The latest UvIndex, or null if no
+  reading is available.
+  """
+  uvIndex: UvIndex
+}
+
+"""
+A snapshot of the National Environment Agency (NEA) 24-hour weather outlook for
+a single Singapore Region, sourced from the data.gov.sg
+/v1/environment/24-hour-weather-forecast endpoint.
+"""
+type RegionForecast {
+  """
+  Short human-readable forecast description for the region (e.g. "Thundery Showers",
+  "Partly Cloudy (Day)"). This is the value pulled from the NEA regions.<name>
+  entry of the first forecast period.
+  """
+  forecast: String!
+  """
+  Expected daily high relative humidity for the region, expressed as a percentage
+  (%). Maps to the NEA general.relative_humidity.high field.
+  """
+  humidityHigh: Int!
+  """
+  Expected daily low relative humidity for the region, expressed as a percentage
+  (%). Maps to the NEA general.relative_humidity.low field.
+  """
+  humidityLow: Int!
+  "Expected daily high air temperature for the region, in degrees Celsius (°C)."
+  temperatureHigh: Int!
+  "Expected daily low air temperature for the region, in degrees Celsius (°C)."
+  temperatureLow: Int!
+  """
+  Expected wind direction for the region as a cardinal/intercardinal label provided
+  by NEA (e.g. "N", "NE", "SSW"). Returns "N/A" if NEA does not provide a value.
+  """
+  windDirection: String!
+  """
+  Expected wind-speed range for the region as a pre-formatted string in the form
+  "low-high km/h" (e.g. "10-20 km/h"). Returns "N/A" if NEA does not provide
+  a usable value.
+  """
+  windSpeed: String!
+}
+
+"""
+Aggregate statistics computed over all ResaleTransaction
+records the Housing subgraph holds for a single HDB town/area, derived from
+the data.gov.sg HDB Resale Flat Prices dataset.
+"""
+type ResaleSummary {
+  """
+  Arithmetic mean of every resale_price value in the area, in Singapore
+  dollars.
+  """
+  averagePrice: Float!
+  """
+  Mean of the per-transaction resale_price / floor_area_sqm
+  ratios, expressed in Singapore dollars per square metre. Note this is the
+  average of ratios, not the ratio of averages.
+  """
+  averagePricePerSqm: Float!
+  """
+  Median of every resale_price value in the area, in Singapore dollars.
+  Robust against outliers and preferred for headline comparisons.
+  """
+  medianPrice: Float!
+  """
+  Modal value of flat_type (e.g. "4 ROOM") across the area.
+  Ties are broken by the first value encountered.
+  """
+  mostCommonFlatType: String!
+  """
+  Minimum and maximum resale_price observed in the area. See
+  PriceRange.
+  """
+  priceRange: PriceRange!
+  """
+  Number of transactions that contributed to the summary. Equal to the
+  number of resale_price rows kept after the
+  HousingDataStore month filter is applied.
+  """
+  transactionCount: Int!
+}
+
+"""
+A single HDB resale flat transaction as published by HDB Resale Flat
+Prices dataset. The dataset is keyed by month and includes one record per
+completed resale conveyance.
+"""
+type ResaleTransaction {
+  """
+  Federated Address reference for the transacted flat. The
+  Housing subgraph supplies only the entity id encoded from the dataset's
+  block + street_name columns; richer fields come from the
+  Addresses subgraph.
+  """
+  address: Address!
+  """
+  HDB flat type code (e.g. "3 ROOM", "4 ROOM", "EXECUTIVE").
+  Includes both flat and maisonette variants.
+  """
+  flatType: String!
+  "Interior floor area in square metres."
+  floorAreaSqm: Float!
+  """
+  Transaction month in YYYY-MM form (e.g. "2025-04"). Reflects
+  the month the conveyance was completed, not when the listing was created.
+  """
+  month: String!
+  """
+  Remaining lease at the date of resale, expressed as a free-text duration
+  (e.g. "61 years 02 months").
+  """
+  remainingLease: String!
+  "Recorded resale price in Singapore dollars."
+  resalePrice: Float!
+  """
+  Three-storey window the flat sits in (e.g. "04 TO 06"). HDB
+  anonymises exact floors for privacy.
+  """
+  storeyRange: String!
+}
+
+"""
+A Singapore school as published in the MOE General Information of Schools
+dataset. Covers MOE-funded primary, secondary, JC and mixed-level schools;
+excludes international, private and ITE colleges.
+"""
+type School {
+  """
+  Federated Address reference for the school's location. The
+  Education subgraph supplies only the entity id encoded from the dataset's
+  address + postal_code columns; richer fields come from the
+  Addresses subgraph.
+  """
+  address: Address!
+  "Education level offered — see SchoolLevel."
+  level: SchoolLevel!
+  "Official school name in title case (e.g. \"Ang Mo Kio Primary School\")."
+  name: String!
+  """
+  Programme tags derived from the boolean indicator columns in the source
+  data: "SAP" (Special Assistance Plan), "Autonomous",
+  "Gifted", "IP" (Integrated Programme). Empty when the school
+  participates in none.
+  """
+  specialProgrammes: [String!]!
+  """
+  MOE administrative zone code ("NORTH", "SOUTH", "EAST",
+  "WEST"). Used by MOE for cross-school programmes and not the same
+  thing as a planning area.
+  """
+  zone: String!
+}
+
+"""
+A single road traffic camera operated by the Land Transport Authority and
+published through the data.gov.sg traffic-images dataset. Each
+camera contributes one still image refreshed roughly every minute.
+"""
+type TrafficCamera {
+  """
+  LTA-assigned camera identifier matching the camera_id field on
+  data.gov.sg. Stable across polls and unique island-wide.
+  """
+  cameraId: String!
+  """
+  Absolute URL to the latest JPEG snapshot the camera produced. The URL is
+  stable for one snapshot only — the next poll returns a new URL.
+  """
+  imageUrl: String!
+  """
+  WGS84 decimal degrees north for the camera's installation point, taken
+  from the location.latitude field of the source payload.
+  """
+  latitude: Float!
+  """
+  WGS84 decimal degrees east for the camera, taken from the
+  location.longitude field of the source payload.
+  """
+  longitude: Float!
+  """
+  Capture time of the snapshot, in the time zone supplied by data.gov.sg
+  (Singapore time, +08:00). Used by callers to decide whether the
+  image is fresh enough to display.
+  """
+  timestamp: DateTime!
+}
+
+"""
+A point-in-time UV-index reading for Singapore as published by the National
+Environment Agency (NEA) via the data.gov.sg
+/v1/environment/uv-index endpoint.
+"""
+type UvIndex {
+  """
+  A human-readable descriptor of UV intensity derived from
+  Value: Low (0-2), Moderate (3-5),
+  High (6-7), Very High (8-10), Extreme (11+).
+  """
+  descriptor: String!
+  """
+  The UTC timestamp at which NEA recorded the reading. Sourced from the
+  timestamp field of the same UV-index entry.
+  """
+  timestamp: DateTime!
+  """
+  The UV index value as an integer (dimensionless, 0-11+). Sourced from the
+  value field of the latest index entry in the NEA UV-index
+  dataset.
+  """
+  value: Int!
+}
+
+"""
+A live snapshot of an NEA weather observation station in Singapore, combining
+its identity and location with the latest readings from the real-time
+data.gov.sg environment endpoints.
+"""
+type WeatherStation {
+  """
+  The latest relative humidity reading expressed as a percentage (%), or
+  null if the station does not report humidity.
+  """
+  humidity: Float
+  """
+  The NEA station identifier (e.g. "S109", "S24"). Stable across requests and
+  safe to use as a cache or join key.
+  """
+  id: String!
+  "The station's WGS84 latitude in decimal degrees."
+  latitude: Float!
+  "The station's WGS84 longitude in decimal degrees."
+  longitude: Float!
+  """
+  The station's human-readable name as published by NEA (typically the location
+  it is sited at, e.g. "Ang Mo Kio Avenue 5"). Falls back to the station id when
+  NEA does not provide a name.
+  """
+  name: String!
+  """
+  The latest rainfall reading in millimetres (mm) for the most recent NEA
+  reporting interval, or null if the station does not report rainfall.
+  """
+  rainfall: Float
+  """
+  The latest air temperature reading in degrees Celsius (°C), or null if
+  the station does not report air temperature.
+  """
+  temperature: Float
+  """
+  The latest wind direction in degrees clockwise from true north (0-359,
+  where 0 means wind blowing from the north), or null if the station does
+  not report wind direction.
+  """
+  windDirection: Int
+  """
+  The latest wind speed in knots (kn), or null if the station does not
+  report wind speed.
+  """
+  windSpeed: Float
+}
+
+"""
+Coarse risk banding for an Area based on the largest active
+dengue cluster in that area.
+"""
+enum DengueRiskLevel {
+  "The largest active cluster in the area reports fifty or more cases."
+  HIGH
+  """
+  At least one active cluster, with the largest cluster reporting fewer
+  than ten cases.
+  """
+  LOW
+  """
+  The largest active cluster in the area reports between ten and
+  forty-nine cases (inclusive).
+  """
+  MODERATE
+  "No active dengue clusters are currently associated with the area."
+  NONE
+}
+
+"""
+Categorical hazard buckets derived from the 24-hour Pollutant Standards
+Index (PSI) published by the Singapore National Environment Agency (NEA).
+"""
+enum HazardLevel {
+  """
+  PSI is 50 or lower. Air quality is considered safe for everyone,
+  including sensitive groups.
+  """
+  GOOD
+  """
+  PSI is greater than 300. Health alert: everyone may experience more
+  serious health effects and outdoor exertion should be avoided.
+  """
+  HAZARDOUS
+  """
+  PSI is between 51 and 100 inclusive. Air quality is acceptable, though
+  unusually sensitive individuals may experience minor effects.
+  """
+  MODERATE
+  """
+  PSI is between 101 and 200 inclusive. Members of sensitive groups
+  (children, the elderly, those with respiratory conditions) may
+  experience health effects.
+  """
+  UNHEALTHY
+  """
+  PSI is between 201 and 300 inclusive. Health warnings of emergency
+  conditions; the entire population is more likely to be affected.
+  """
+  VERY_UNHEALTHY
+}
+
+"""
+Enumerates the cardinal regions used by the Singapore National Environment
+Agency (NEA) to bucket environmental readings such as PM2.5 and PSI.
+"""
+enum RegionName {
+  """
+  The central NEA reporting region of Singapore. Corresponds to the
+  central key in the data.gov.sg environment payloads and is used
+  as the default fallback when a region cannot be resolved.
+  """
+  CENTRAL
+  """
+  The eastern NEA reporting region of Singapore. Corresponds to the
+  east key in the data.gov.sg environment payloads.
+  """
+  EAST
+  """
+  The northern NEA reporting region of Singapore. Corresponds to the
+  north key in the data.gov.sg environment payloads.
+  """
+  NORTH
+  """
+  The southern NEA reporting region of Singapore. Corresponds to the
+  south key in the data.gov.sg environment payloads.
+  """
+  SOUTH
+  """
+  The western NEA reporting region of Singapore. Corresponds to the
+  west key in the data.gov.sg environment payloads.
+  """
+  WEST
+}
+
+enum ScalarSerializationType {
+  BOOLEAN
+  FLOAT
+  INT
+  LIST
+  OBJECT
+  STRING
+}
+
+"""
+Education level offered by a Singapore MOE school. Derived from the
+mainlevel_code column of the data.gov.sg
+General Information of Schools dataset.
+"""
+enum SchoolLevel {
+  """
+  Junior college offering the pre-university A-Level curriculum.
+  Source value: JUNIOR COLLEGE.
+  """
+  JUNIOR_COLLEGE
+  """
+  Mixed-level institution offering multiple stages (for example a
+  through-train school covering secondary and junior college).
+  Source value: MIXED LEVELS.
+  """
+  MIXED_LEVELS
+  "Primary school (typically grades 1-6). Source value: PRIMARY."
+  PRIMARY
+  """
+  Secondary school (typically grades 7-10/11). Source value:
+  SECONDARY.
+  """
+  SECONDARY
+}
+
+"The `DateTime` scalar type represents a date and time with time zone offset information."
+scalar DateTime
+  @specifiedBy(url: "https://scalars.graphql.org/chillicream/date-time.html")
+
+"The `LocalDate` scalar type represents a date without time or time zone information."
+scalar LocalDate
+  @specifiedBy(url: "https://scalars.graphql.org/chillicream/local-date.html")

@@ -1,0 +1,30 @@
+id: glab-018-kw
+schemaId: gitlab
+query: reviewer load bottleneck pending requests
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          reviewers(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - MergeRequestReviewer
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.reviewers
+  - MergeRequest.reviewers(first:)
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-018. Maintainer: reviewer load bottleneck. Reviewers across MRs."

@@ -1,0 +1,29 @@
+{
+    "id": "ptv-lex-weighted",
+    "name": "PTV — lex-weighted scoring + pool-entry floor",
+    "description": "Per-type-variant with rebalanced scoring weights (cos×4.0, lex×1.5 instead of default 1.0/5.0) and a pool-entry type-cos floor that prevents splicing in low-cos types.",
+    "defaultConfig": {
+        "typesTopK": 15,
+        "perVariantBudget": 800,
+        "efficiencyThreshold": 0.04,
+        "cosWeight": 4.0,
+        "lexWeight": 1.5,
+        "parentCosBlend": 0.3,
+        "unwrapConnections": true,
+        "poolEntryTypeCosFloor": 0.25,
+        "variantTopK": 20,
+        "mergeMode": "relevance-gated",
+        "relevanceFloor": 0.75,
+        "mergeMaxVariants": 10,
+        "typeHitsCutoff": "kneedle",
+        "kneedleSensitivity": 0.05,
+        "maxExpandedTypes": 40,
+        "pathsToRoot": {
+            "mode": "on",
+            "maxPathsPerType": 5,
+            "maxDepth": 6,
+            "includeMutationPaths": false,
+            "expandConnectionWrappers": true
+        }
+    }
+}

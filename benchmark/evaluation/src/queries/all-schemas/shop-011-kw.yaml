@@ -1,0 +1,25 @@
+id: shop-011-kw
+schemaId: shopify
+query: draft orders not invoiced
+operation: |
+  query {
+    draftOrders(first: 10) {
+      nodes {
+        status
+        invoiceSentAt
+      }
+    }
+  }
+targetFields:
+  - DraftOrder.status
+  - DraftOrder.invoiceSentAt
+targetTypes:
+  - DraftOrder
+mustInclude:
+  - QueryRoot.draftOrders
+  - DraftOrder.status
+  - DraftOrder.invoiceSentAt
+  - QueryRoot.draftOrders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-011. Open draft orders not yet invoiced.

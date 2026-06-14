@@ -1,0 +1,53 @@
+id: lin-em-12
+schemaId: linear
+query: "How is the organization configured to remind project leads to post updates?"
+operation: |
+  query {
+    organization {
+      projectUpdateReminderFrequencyInWeeks
+      projectUpdateRemindersDay
+      projectUpdateRemindersHour
+    }
+  }
+targetFields:
+  - Organization.projectUpdateReminderFrequencyInWeeks
+  - Organization.projectUpdateRemindersDay
+  - Organization.projectUpdateRemindersHour
+targetTypes:
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.projectUpdateReminderFrequencyInWeeks
+  - Organization.projectUpdateRemindersDay
+  - Organization.projectUpdateRemindersHour
+mustExclude:
+  - Mutation
+notes: "When are project-update reminders sent (frequency, day of week, hour of day)?"
+answerSchema:
+  type: object
+  properties:
+    projectUpdateReminderConfig:
+      type: object
+      properties:
+        frequencyInWeeks:
+          type: number
+          description: how often reminders are sent, in weeks
+        day:
+          type: string
+          description: day of week reminders are sent
+        hour:
+          type: number
+          description: hour of day reminders are sent
+      required:
+        - frequencyInWeeks
+        - day
+        - hour
+      additionalProperties: false
+  required:
+    - projectUpdateReminderConfig
+  additionalProperties: false
+answer:
+  projectUpdateReminderConfig:
+    frequencyInWeeks: 2
+    day: Wednesday
+    hour: 9

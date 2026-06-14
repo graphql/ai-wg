@@ -1,0 +1,34 @@
+id: glab-049-kw
+schemaId: gitlab
+query: average deploy stage duration monthly
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(first: 10) {
+        nodes {
+          duration
+          stages(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Pipeline.duration
+targetTypes:
+  - Pipeline
+  - CiStage
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.duration
+  - Pipeline.stages
+  - Pipeline.stages(first:)
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-049. DevOps: average deploy stage duration."

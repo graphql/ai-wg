@@ -1,0 +1,30 @@
+id: lin-pm-5-kw
+schemaId: linear
+query: milestone completion progress issues
+operation: |
+  query {
+    projectMilestone(id: "<id>") {
+      issues(first: 10) {
+        nodes {
+          state {
+            id
+          }
+          completedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.completedAt
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.projectMilestone
+  - ProjectMilestone.issues
+  - Issue.state
+  - Issue.completedAt
+  - ProjectMilestone.issues(first:)
+  - Query.projectMilestone(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-5. Per-milestone completion progress.

@@ -1,0 +1,82 @@
+id: lin-em-4
+schemaId: linear
+query: "Which projects depend on other projects, and what is the relationship type?"
+operation: |
+  query {
+    projectRelations(first: 10) {
+      nodes {
+        type
+        relatedProject {
+          id
+          name
+        }
+        project {
+          id
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectRelation.type
+  - Project.name
+targetTypes:
+  - ProjectRelation
+  - Project
+mustInclude:
+  - Query.projectRelations
+  - ProjectRelation.type
+  - ProjectRelation.relatedProject
+  - ProjectRelation.project
+  - Project.name
+  - Query.projectRelations(first:)
+mustExclude:
+  - Mutation
+notes: Project-to-project dependency mapping.
+answerSchema:
+  type: object
+  properties:
+    projectRelations:
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+            description: relationship type between the two projects
+          project:
+            type: object
+            properties:
+              name:
+                type: string
+            required:
+              - name
+            additionalProperties: false
+          relatedProject:
+            type: object
+            properties:
+              name:
+                type: string
+            required:
+              - name
+            additionalProperties: false
+        required:
+          - type
+          - project
+          - relatedProject
+        additionalProperties: false
+  required:
+    - projectRelations
+  additionalProperties: false
+answer:
+  projectRelations:
+    - type: blocks
+      project:
+        name: Mobile App
+      relatedProject:
+        name: Auth Redesign
+    - type: related
+      project:
+        name: Data Pipeline
+      relatedProject:
+        name: Infrastructure Upgrade

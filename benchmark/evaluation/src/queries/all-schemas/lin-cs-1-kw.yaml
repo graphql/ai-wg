@@ -1,0 +1,28 @@
+id: lin-cs-1-kw
+schemaId: linear
+query: customer issues tracked needs
+operation: |
+  query {
+    customer(id: "<id>") {
+      needs {
+        issue {
+          id
+        }
+        body
+      }
+    }
+  }
+targetFields:
+  - CustomerNeed.body
+targetTypes:
+  - CustomerNeed
+  - Customer
+mustInclude:
+  - Query.customer
+  - Customer.needs
+  - CustomerNeed.issue
+  - CustomerNeed.body
+  - Query.customer(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-cs-1. All issues tied to a specific customer.

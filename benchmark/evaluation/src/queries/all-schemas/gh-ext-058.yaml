@@ -1,0 +1,59 @@
+id: gh-ext-058
+schemaId: github
+query: Which repositories in the octocat organization are archived?
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10, isArchived: true) {
+        nodes {
+          name
+          isArchived
+          archivedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.name
+  - Repository.isArchived
+  - Repository.archivedAt
+targetTypes:
+  - Repository
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.name
+  - Repository.isArchived
+  - Repository.archivedAt
+  - Organization.repositories(first:)
+  - Organization.repositories(isArchived:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Organization repositories filtered to archived ones.
+answerSchema:
+  type: object
+  properties:
+    archivedRepositories:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          archivedAt:
+            type: string
+        required:
+          - name
+          - archivedAt
+        additionalProperties: false
+  required:
+    - archivedRepositories
+  additionalProperties: false
+answer:
+  archivedRepositories:
+    - name: archived-old
+      archivedAt: 2025-02-21T00:00:00.000Z
+    - name: legacy-app
+      archivedAt: 2025-01-02T00:00:00.000Z

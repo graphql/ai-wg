@@ -1,0 +1,25 @@
+id: shop-036-kw
+schemaId: shopify
+query: variants missing barcode
+operation: |
+  query {
+    productVariants(first: 10) {
+      nodes {
+        barcode
+        sku
+      }
+    }
+  }
+targetFields:
+  - ProductVariant.barcode
+  - ProductVariant.sku
+targetTypes:
+  - ProductVariant
+mustInclude:
+  - QueryRoot.productVariants
+  - ProductVariant.barcode
+  - ProductVariant.sku
+  - QueryRoot.productVariants(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-036. Variants missing a barcode value.

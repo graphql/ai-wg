@@ -1,0 +1,28 @@
+id: lin-pm-17-kw
+schemaId: linear
+query: release pipelines stages
+operation: |
+  query {
+    releasePipelines(first: 10) {
+      nodes {
+        stages(first: 10) {
+          nodes {
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ReleaseStage.name
+targetTypes:
+  - ReleaseStage
+mustInclude:
+  - Query.releasePipelines
+  - ReleasePipeline.stages
+  - ReleaseStage.name
+  - Query.releasePipelines(first:)
+  - ReleasePipeline.stages(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-17. Release pipelines and their stages.

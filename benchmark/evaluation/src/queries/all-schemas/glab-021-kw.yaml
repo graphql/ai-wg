@@ -1,0 +1,29 @@
+id: glab-021-kw
+schemaId: gitlab
+query: open merge requests blocked failing pipeline
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          headPipeline {
+            status
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Pipeline.status
+targetTypes:
+  - Pipeline
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.headPipeline
+  - Pipeline.status
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-021. Maintainer: MRs blocked by failing pipeline. Head pipeline status filter."

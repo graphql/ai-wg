@@ -1,0 +1,29 @@
+id: lin-ic-26-kw
+schemaId: linear
+query: my issues current cycle backlog
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          cycle {
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Cycle.name
+targetTypes:
+  - Cycle
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.cycle
+  - Cycle.name
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-26. My issues grouped by cycle.

@@ -1,0 +1,33 @@
+id: glab-084
+schemaId: gitlab
+query: Is work item number 1 in the gitlab-org group confidential?
+operation: |
+  query {
+    group(fullPath: "gitlab-org") {
+      workItem(iid: "1") {
+        confidential
+      }
+    }
+  }
+targetFields:
+  - WorkItem.confidential
+targetTypes: []
+mustInclude:
+  - Query.group
+  - Query.group(fullPath:)
+  - Group.workItem
+  - Group.workItem(iid:)
+  - WorkItem.confidential
+mustExclude:
+  - Mutation
+notes: "PM: confidential work items."
+answerSchema:
+  type: object
+  properties:
+    isConfidential:
+      type: boolean
+  required:
+    - isConfidential
+  additionalProperties: false
+answer:
+  isConfidential: false

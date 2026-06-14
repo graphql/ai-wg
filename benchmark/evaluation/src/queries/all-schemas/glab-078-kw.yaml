@@ -1,0 +1,29 @@
+id: glab-078-kw
+schemaId: gitlab
+query: blocked issues dependencies
+operation: |
+  query {
+    issues(first: 10) {
+      nodes {
+        blocked
+        blockedByIssues(first: 10) {
+          nodes {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.blocked
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issues
+  - Issue.blocked
+  - Issue.blockedByIssues
+  - Issue.blockedByIssues(first:)
+  - Query.issues(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-078. PM: blocked issues + their blockers."

@@ -1,0 +1,25 @@
+id: glab-015-kw
+schemaId: gitlab
+query: my merged merge requests last month
+operation: |
+  query {
+    currentUser {
+      authoredMergeRequests(first: 10) {
+        nodes {
+          mergedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.mergedAt
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.authoredMergeRequests
+  - MergeRequest.mergedAt
+  - CurrentUser.authoredMergeRequests(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-015. Developer: my merged MRs in last month."

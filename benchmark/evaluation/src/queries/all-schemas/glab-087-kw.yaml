@@ -1,0 +1,30 @@
+id: glab-087-kw
+schemaId: gitlab
+query: epics blocked by other epics
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      epics(first: 10) {
+        nodes {
+          blockedByEpics(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Epic
+mustInclude:
+  - Query.group
+  - Group.epics
+  - Epic.blockedByEpics
+  - Epic.blockedByEpics(first:)
+  - Group.epics(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-087. PM: epics blocked by other epics."

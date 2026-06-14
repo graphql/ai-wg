@@ -1,0 +1,29 @@
+id: glab-065-kw
+schemaId: gitlab
+query: dismissed vulnerabilities dismissal reason
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          dismissalReason
+          dismissedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.dismissalReason
+  - Vulnerability.dismissedAt
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.dismissalReason
+  - Vulnerability.dismissedAt
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-065. Security: dismissed vulns + reason."

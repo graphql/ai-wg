@@ -1,0 +1,15 @@
+{
+    "id": "claude-sonnet-4-6",
+    "name": "Claude Sonnet 4.6",
+    "description": "Anthropic Sonnet 4.6 — balanced chat model with prompt caching.",
+    "provider": "anthropic",
+    "modelName": "claude-sonnet-4-6",
+    "maxTokens": 8192,
+    "supportsCacheControl": true,
+    "pricing": {
+        "inputPerMillion": 3.0,
+        "outputPerMillion": 15.0,
+        "cacheWritePerMillion": 3.75,
+        "cacheReadPerMillion": 0.3
+    }
+}

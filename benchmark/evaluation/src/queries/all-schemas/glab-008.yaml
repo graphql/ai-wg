@@ -1,0 +1,55 @@
+id: glab-008
+schemaId: gitlab
+query: What labels are applied to issue gid://gitlab/Issue/1?
+operation: |
+  query {
+    issue(id: "gid://gitlab/Issue/1") {
+      labels(first: 10) {
+        nodes {
+          id
+          title
+          color
+        }
+      }
+    }
+  }
+targetFields:
+  - Label.id
+  - Label.title
+  - Label.color
+targetTypes:
+  - Label
+mustInclude:
+  - Query.issue
+  - Issue.labels
+  - Issue.labels(first:)
+  - Query.issue(id:)
+  - Label.id
+  - Label.title
+  - Label.color
+mustExclude:
+  - Mutation
+notes: "Developer: labels on a specific issue."
+answerSchema:
+  type: object
+  properties:
+    labels:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          color:
+            type: string
+        required:
+          - title
+          - color
+        additionalProperties: false
+  required:
+    - labels
+  additionalProperties: false
+answer:
+  labels:
+    - title: bug
+      color: "#e74c3c"

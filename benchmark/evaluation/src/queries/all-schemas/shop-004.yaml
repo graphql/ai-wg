@@ -1,0 +1,121 @@
+id: shop-004
+schemaId: shopify
+query: List the first 10 orders in the shop with their fulfillment status and
+  each line item's name and unfulfilled quantity.
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        name
+        displayFulfillmentStatus
+        lineItems(first: 10) {
+          edges {
+            node {
+              name
+              unfulfilledQuantity
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.displayFulfillmentStatus
+  - Order.name
+  - LineItem.name
+  - LineItem.unfulfilledQuantity
+targetTypes:
+  - Order
+  - LineItem
+mustInclude:
+  - QueryRoot.orders
+  - QueryRoot.orders(first:)
+  - Order.name
+  - Order.displayFulfillmentStatus
+  - Order.lineItems
+  - Order.lineItems(first:)
+  - LineItem.name
+  - LineItem.unfulfilledQuantity
+mustExclude:
+  - Mutation
+notes: List orders with their fulfillment status and per-line unfulfilled quantities.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          fulfillmentStatus:
+            type: string
+          lineItems:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                unfulfilledQuantity:
+                  type: integer
+              required:
+                - name
+                - unfulfilledQuantity
+              additionalProperties: false
+        required:
+          - name
+          - fulfillmentStatus
+          - lineItems
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - name: Item 2920
+      fulfillmentStatus: REQUEST_DECLINED
+      lineItems: []
+    - name: Item 4129
+      fulfillmentStatus: REQUEST_DECLINED
+      lineItems:
+        - name: Set L
+          unfulfilledQuantity: 889
+        - name: Package J
+          unfulfilledQuantity: 974
+        - name: Series N
+          unfulfilledQuantity: 189
+        - name: Range O
+          unfulfilledQuantity: 47
+        - name: Package J
+          unfulfilledQuantity: 638
+    - name: Item 4665
+      fulfillmentStatus: REQUEST_DECLINED
+      lineItems:
+        - name: Bundle K
+          unfulfilledQuantity: 55
+        - name: Package J
+          unfulfilledQuantity: 181
+        - name: Package J
+          unfulfilledQuantity: 999
+        - name: Item B
+          unfulfilledQuantity: 847
+        - name: Container I
+          unfulfilledQuantity: 881
+    - name: Item 4308
+      fulfillmentStatus: PENDING_FULFILLMENT
+      lineItems:
+        - name: Stock H
+          unfulfilledQuantity: 141
+        - name: Collection M
+          unfulfilledQuantity: 419
+        - name: Range O
+          unfulfilledQuantity: 407
+        - name: Collection M
+          unfulfilledQuantity: 740
+        - name: Bundle K
+          unfulfilledQuantity: 114
+    - name: Item 7956
+      fulfillmentStatus: PARTIALLY_FULFILLED
+      lineItems: []

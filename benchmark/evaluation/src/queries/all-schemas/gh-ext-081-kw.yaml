@@ -1,0 +1,31 @@
+id: gh-ext-081-kw
+schemaId: github
+query: project items updated 24 hours
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectV2(number: 1) {
+        items(first: 10) {
+          nodes {
+            updatedAt
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectV2Item.updatedAt
+targetTypes:
+  - ProjectV2Item
+  - Project
+mustInclude:
+  - Query.organization
+  - Organization.projectV2
+  - ProjectV2.items
+  - ProjectV2Item.updatedAt
+  - Organization.projectV2(number:)
+  - ProjectV2.items(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-081. Project items ordered by updatedAt timestamp.

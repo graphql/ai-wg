@@ -1,0 +1,148 @@
+id: lin-em-3
+schemaId: linear
+query: Show me cross-team projects with their leads and target completion dates.
+operation: |
+  query {
+    projects(first: 10) {
+      nodes {
+        name
+        teams(first: 10) {
+          nodes {
+            name
+          }
+        }
+        lead {
+          name
+        }
+        targetDate
+      }
+    }
+  }
+answer:
+  projects:
+    - name: Mobile App
+      teams:
+        - name: Engineering
+        - name: Frontend
+      lead:
+        name: Carol White
+      targetDate: 2025-Q2
+    - name: Auth Redesign
+      teams:
+        - name: Engineering
+        - name: Security
+      lead:
+        name: Bob Smith
+      targetDate: 2025-Q2
+    - name: Billing Portal
+      teams:
+        - name: Engineering
+        - name: Frontend
+      lead:
+        name: David Lee
+      targetDate: 2025-Q2
+    - name: Data Pipeline
+      teams:
+        - name: Engineering
+        - name: Infrastructure
+      lead:
+        name: Alice Johnson
+      targetDate: 2025-Q3
+    - name: API Gateway
+      teams:
+        - name: Engineering
+      lead: null
+      targetDate: 2025-Q1
+    - name: Design System
+      teams:
+        - name: Design
+      lead:
+        name: Carol White
+      targetDate: 2025-Q4
+    - name: Infrastructure Upgrade
+      teams:
+        - name: Infrastructure
+        - name: Engineering
+      lead:
+        name: Eva Martinez
+      targetDate: 2025-Q1
+    - name: Security Audit
+      teams:
+        - name: Security
+        - name: Engineering
+      lead:
+        name: David Lee
+      targetDate: 2025-Q2
+    - name: Onboarding Flow
+      teams:
+        - name: Frontend
+        - name: Design
+      lead:
+        name: Alice Johnson
+      targetDate: 2025-Q1
+    - name: Reporting Dashboard
+      teams:
+        - name: Engineering
+        - name: Frontend
+      lead: null
+      targetDate: 2025-Q2
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          teams:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+              additionalProperties: false
+          lead:
+            type:
+              - object
+              - "null"
+            properties:
+              name:
+                type: string
+            required:
+              - name
+            additionalProperties: false
+          targetDate:
+            type: string
+        required:
+          - name
+          - teams
+          - lead
+          - targetDate
+        additionalProperties: false
+  required:
+    - projects
+  additionalProperties: false
+targetFields:
+  - Project.targetDate
+  - Project.lead
+  - Project.name
+targetTypes:
+  - Project
+  - User
+mustInclude:
+  - Query.projects
+  - Project.teams
+  - Project.lead
+  - Project.targetDate
+  - Project.name
+  - User.name
+  - Project.teams(first:)
+  - Query.projects(first:)
+mustExclude:
+  - Mutation
+notes: Cross-team projects with leads and dates.

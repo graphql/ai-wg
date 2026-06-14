@@ -1,0 +1,64 @@
+id: glab-054
+schemaId: gitlab
+query: What vulnerability findings are reported for the group/project project?
+  List their titles and report types.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          title
+          reportType
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.title
+  - Vulnerability.reportType
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.title
+  - Vulnerability.reportType
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    vulnerabilities:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          reportType: *a1
+        required:
+          - title
+          - reportType
+        additionalProperties: false
+  required:
+    - vulnerabilities
+  additionalProperties: false
+notes: "Security: list all vulnerability findings with their scan types."
+answer:
+  vulnerabilities:
+    - title: Weak password hashing algorithm detected
+      reportType: DEPENDENCY_SCANNING
+    - title: SQL Injection in user input validation
+      reportType: CONTAINER_SCANNING
+    - title: Missing authentication on admin endpoints
+      reportType: SARIF
+    - title: Cross-Site Scripting vulnerability in comments
+      reportType: GENERIC
+    - title: Hardcoded API credentials in source code
+      reportType: CONTAINER_SCANNING_FOR_REGISTRY
+    - title: Unvalidated redirect in OAuth flow
+      reportType: DEPENDENCY_SCANNING
+    - title: Insecure deserialization in API endpoint
+      reportType: SARIF

@@ -1,0 +1,24 @@
+id: glab-070-kw
+schemaId: gitlab
+query: scan result policies security approval merging
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      scanResultPolicies(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - ScanResultPolicy
+mustInclude:
+  - Query.project
+  - Project.scanResultPolicies
+  - Project.scanResultPolicies(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-070. Security: scan result policies + approval requirement."

@@ -1,0 +1,87 @@
+id: lin-cs-3
+schemaId: linear
+query: List all customers with their tier and revenue.
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        name
+        tier {
+          name
+        }
+        revenue
+      }
+    }
+  }
+answer:
+  customers:
+    - name: Globex Corporation
+      tierName: Enterprise
+      revenue: 120000
+    - name: Initech
+      tierName: Pro
+      revenue: 45000
+    - name: Widgets Inc
+      tierName: Pro
+      revenue: 15000
+    - name: Acme Solutions
+      tierName: Enterprise
+      revenue: 80000
+    - name: Startup XYZ
+      tierName: Free
+      revenue: 0
+    - name: MegaCorp Industries
+      tierName: Enterprise
+      revenue: 250000
+    - name: TechPlus
+      tierName: Pro
+      revenue: 30000
+    - name: SmallBiz LLC
+      tierName: Free
+      revenue: 5000
+    - name: EnterpriseOne
+      tierName: Enterprise
+      revenue: 180000
+    - name: GrowthCo
+      tierName: Pro
+      revenue: 0
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: The display name of the customer
+          tierName:
+            type: string
+            description: The name of the tier assigned to the customer
+          revenue:
+            type: number
+            description: The revenue attributed to the customer
+        required:
+          - name
+          - tierName
+          - revenue
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false
+targetFields:
+  - Customer.name
+  - Customer.revenue
+targetTypes:
+  - Customer
+mustInclude:
+  - Query.customers
+  - Customer.name
+  - Customer.tier
+  - Customer.revenue
+  - CustomerTier.name
+  - Query.customers(first:)
+mustExclude:
+  - Mutation
+notes: CS overview of all accounts by tier and revenue.

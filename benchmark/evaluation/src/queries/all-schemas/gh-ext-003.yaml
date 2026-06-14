@@ -1,0 +1,99 @@
+id: gh-ext-003
+schemaId: github
+query: List pull requests in the octocat/example repository with the files
+  changed in each.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          number
+          title
+          files(first: 10) {
+            nodes {
+              path
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequestChangedFile.path
+targetTypes:
+  - PullRequest
+  - PullRequestChangedFile
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.files
+  - PullRequestChangedFile.path
+  - PullRequest.files(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Search across PRs and filter by a specific changed file path.
+answerSchema:
+  type: object
+  properties:
+    pullRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+          changedFiles:
+            type: array
+            items:
+              type: string
+        required:
+          - number
+          - title
+          - changedFiles
+        additionalProperties: false
+  required:
+    - pullRequests
+  additionalProperties: false
+answer:
+  pullRequests:
+    - number: 1
+      title: Add GraphQL endpoint
+      changedFiles:
+        - src/auth/token.ts
+        - src/auth/middleware.ts
+    - number: 2
+      title: Fix login bug
+      changedFiles: []
+    - number: 3
+      title: Update dependencies
+      changedFiles: []
+    - number: 4
+      title: Add dark mode
+      changedFiles: []
+    - number: 5
+      title: Improve search performance
+      changedFiles: []
+    - number: 6
+      title: Fix security vulnerability
+      changedFiles: []
+    - number: 7
+      title: Add CI pipeline
+      changedFiles: []
+    - number: 8
+      title: Update documentation
+      changedFiles: []
+    - number: 9
+      title: Implement rate limiting
+      changedFiles: []
+    - number: 10
+      title: Refactor data layer
+      changedFiles: []

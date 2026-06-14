@@ -1,0 +1,38 @@
+id: gh-ext-020-kw
+schemaId: github
+query: stale merged branches
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      refs(refPrefix: "example", first: 10) {
+        nodes {
+          associatedPullRequests(first: 10) {
+            nodes {
+              merged
+            }
+          }
+        }
+      }
+      deleteBranchOnMerge
+    }
+  }
+targetFields:
+  - PullRequest.merged
+  - Repository.deleteBranchOnMerge
+targetTypes:
+  - PullRequest
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.refs
+  - Ref.associatedPullRequests
+  - PullRequest.merged
+  - Repository.deleteBranchOnMerge
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Ref.associatedPullRequests(first:)
+  - Repository.refs(first:)
+  - Repository.refs(refPrefix:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-020. Branch refs whose associated PRs are merged but the ref still exists.

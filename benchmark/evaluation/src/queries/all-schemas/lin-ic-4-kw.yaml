@@ -1,0 +1,26 @@
+id: lin-ic-4-kw
+schemaId: linear
+query: mentions notifications issues
+operation: |
+  query {
+    notifications(first: 10) {
+      nodes {
+        type
+        actor {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Notification.type
+targetTypes:
+  - Notification
+mustInclude:
+  - Query.notifications
+  - Notification.type
+  - Notification.actor
+  - Query.notifications(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-4. Mention notifications specifically.

@@ -1,0 +1,25 @@
+id: gh-ext-098-kw
+schemaId: github
+query: graphql rate limit remaining
+operation: |
+  query {
+    rateLimit {
+      limit
+      remaining
+      resetAt
+    }
+  }
+targetFields:
+  - RateLimit.limit
+  - RateLimit.remaining
+  - RateLimit.resetAt
+targetTypes:
+  - RateLimit
+mustInclude:
+  - Query.rateLimit
+  - RateLimit.limit
+  - RateLimit.remaining
+  - RateLimit.resetAt
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-098. GraphQL rate limit budget remaining.

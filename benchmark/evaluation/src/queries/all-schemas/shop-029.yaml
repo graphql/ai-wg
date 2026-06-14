@@ -1,0 +1,87 @@
+id: shop-029
+schemaId: shopify
+query: What does the compare-at price look like vs current price for all sale items?
+operation: |
+  query {
+    products(first: 10, query: "is_price_reduced:true") {
+      nodes {
+        variants(first: 10) {
+          nodes {
+            compareAtPrice
+            price
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProductVariant.compareAtPrice
+  - ProductVariant.price
+targetTypes:
+  - ProductVariant
+mustInclude:
+  - QueryRoot.products
+  - QueryRoot.products(first:)
+  - QueryRoot.products(query:)
+  - ProductVariant.compareAtPrice
+  - ProductVariant.price
+  - Product.variants(first:)
+mustExclude:
+  - Mutation
+notes: Compare-at price vs current price for sale items (is_price_reduced:true
+  filter).
+answerSchema:
+  type: object
+  properties:
+    variants:
+      type: array
+      items:
+        type: object
+        properties:
+          compareAtPrice:
+            type: string
+          price:
+            type: string
+        required:
+          - compareAtPrice
+          - price
+        additionalProperties: false
+  required:
+    - variants
+  additionalProperties: false
+answer:
+  variants:
+    - compareAtPrice: null
+      price: "19.95"
+    - compareAtPrice: null
+      price: "256.00"
+    - compareAtPrice: null
+      price: "334.69"
+    - compareAtPrice: null
+      price: "61.14"
+    - compareAtPrice: null
+      price: "360.70"
+    - compareAtPrice: null
+      price: "401.63"
+    - compareAtPrice: null
+      price: "159.99"
+    - compareAtPrice: null
+      price: "391.80"
+    - compareAtPrice: null
+      price: "437.39"
+    - compareAtPrice: null
+      price: "446.97"
+    - compareAtPrice: null
+      price: "31.12"
+    - compareAtPrice: null
+      price: "42.00"
+    - compareAtPrice: null
+      price: "447.93"
+    - compareAtPrice: null
+      price: "457.84"
+    - compareAtPrice: null
+      price: "98.25"
+    - compareAtPrice: null
+      price: "384.45"
+    - compareAtPrice: null
+      price: "119.50"

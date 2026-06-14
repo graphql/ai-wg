@@ -1,0 +1,80 @@
+id: glab-026
+schemaId: gitlab
+query: What is the merge request title regex and squash commit messages for
+  merge requests in project group/project?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequestTitleRegex
+      mergeRequests(first: 10) {
+        nodes {
+          iid
+          title
+          defaultSquashCommitMessage
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.mergeRequestTitleRegex
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.defaultSquashCommitMessage
+targetTypes:
+  - Project
+  - MergeRequest
+mustInclude:
+  - Query.project
+  - Query.project(fullPath:)
+  - Project.mergeRequestTitleRegex
+  - Project.mergeRequests
+  - Project.mergeRequests(first:)
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.defaultSquashCommitMessage
+mustExclude:
+  - Mutation
+notes: "Maintainer: MRs not matching title regex."
+answerSchema:
+  type: object
+  properties:
+    mergeRequestTitleRegex:
+      type: string
+    mergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          defaultSquashCommitMessage:
+            type: string
+        required:
+          - iid
+          - title
+          - defaultSquashCommitMessage
+        additionalProperties: false
+  required:
+    - mergeRequestTitleRegex
+    - mergeRequests
+  additionalProperties: false
+answer:
+  mergeRequestTitleRegex: "^(feat|fix|docs|style|refactor|test|chore)(\\(.+\\))?: .{1,72}"
+  mergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+      defaultSquashCommitMessage: "docs: update API documentation (#5794)"
+    - iid: "108"
+      title: "perf: reduce memory footprint of serializer"
+      defaultSquashCommitMessage: "perf: reduce memory footprint of serializer (#108)"
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+      defaultSquashCommitMessage: "refactor: consolidate validation logic (#7645)"
+    - iid: "4774"
+      title: "feat: add webhook retry mechanism"
+      defaultSquashCommitMessage: "feat: add webhook retry mechanism (#4774)"
+    - iid: "2623"
+      title: "fix: resolve race condition in cache layer"
+      defaultSquashCommitMessage: "fix: resolve race condition in cache layer (#2623)"

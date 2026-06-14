@@ -1,0 +1,29 @@
+id: lin-em-15-kw
+schemaId: linear
+query: top issue creators quarter
+operation: |
+  query {
+    users(first: 10) {
+      nodes {
+        assignedIssues(first: 10) {
+          nodes {
+            id
+          }
+        }
+        createdIssueCount
+      }
+    }
+  }
+targetFields:
+  - User.createdIssueCount
+targetTypes:
+  - User
+mustInclude:
+  - Query.users
+  - User.assignedIssues
+  - User.createdIssueCount
+  - Query.users(first:)
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-15. Issue creation volume per user.

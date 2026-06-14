@@ -1,0 +1,43 @@
+id: glab-070
+schemaId: gitlab
+query: Which approval policies are enabled for the group/project project?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      approvalPolicies(first: 10) {
+        nodes {
+          name
+          enabled
+        }
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    enabledPolicies:
+      type: array
+      items:
+        type: string
+  required:
+    - enabledPolicies
+  additionalProperties: false
+targetFields:
+  - ApprovalPolicy.name
+  - ApprovalPolicy.enabled
+targetTypes:
+  - ApprovalPolicy
+mustInclude:
+  - Query.project
+  - Project.approvalPolicies
+  - Project.approvalPolicies(first:)
+  - Query.project(fullPath:)
+  - ApprovalPolicy.name
+  - ApprovalPolicy.enabled
+mustExclude:
+  - Mutation
+notes: "Security: approval policies for a project (replaces deprecated
+  scanResultPolicies)."
+answer:
+  enabledPolicies:
+    - Security Review Required

@@ -1,0 +1,31 @@
+id: gh-ext-088-kw
+schemaId: github
+query: team admin repositories
+operation: |
+  query {
+    organization(login: "octocat") {
+      team(slug: "example") {
+        repositories(first: 10) {
+          edges {
+            permission
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - TeamRepositoryEdge.permission
+targetTypes:
+  - Team
+mustInclude:
+  - Query.organization
+  - Organization.team
+  - Team.repositories
+  - TeamRepositoryConnection.edges
+  - TeamRepositoryEdge.permission
+  - Organization.team(slug:)
+  - Query.organization(login:)
+  - Team.repositories(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-088. Team-repository edges with their permission level.
