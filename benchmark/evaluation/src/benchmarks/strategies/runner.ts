@@ -107,12 +107,14 @@ export async function runBenchmark(opts: RunOptions): Promise<RunReport> {
     const queryEmbeddings = new Map<string, Float32Array>();
     const queryEmbLists = new Map<string, Float32Array[]>();
     for (const q of opts.queries) {
-        const primary = await embedOne(opts.setup.model, opts.setup.template, q.query);
+        const primary = await embedOne(opts.setup.model, opts.setup.template, q.query, 'query');
         queryEmbeddings.set(q.id, primary);
         const subs =
             q.queries && q.queries.length > 0
                 ? await Promise.all(
-                      q.queries.map((t) => embedOne(opts.setup.model, opts.setup.template, t)),
+                      q.queries.map((t) =>
+                          embedOne(opts.setup.model, opts.setup.template, t, 'query'),
+                      ),
                   )
                 : [primary];
         queryEmbLists.set(q.id, subs);

@@ -104,7 +104,7 @@ export async function runBenchmark(opts: RunOptions): Promise<RankRunReport> {
     const queryTexts = opts.queries.map((q) => q.query);
     const queryEmbeddings = new Map<string, Float32Array>();
     await mapWithConcurrency(opts.templates, WARM_CONCURRENCY, async (tmpl) => {
-        const vecs = await embedTexts(opts.model, tmpl, queryTexts);
+        const vecs = await embedTexts(opts.model, tmpl, queryTexts, 'query');
         opts.queries.forEach((q, i) => queryEmbeddings.set(`${tmpl.id}::${q.id}`, vecs[i]!));
     });
 
