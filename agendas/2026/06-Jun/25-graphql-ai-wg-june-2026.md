@@ -23,7 +23,8 @@
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
-| Samuel Vazquez	       | @samuelAndalon	     | Expedia Group	            | Seattle, WA, US       |
+| Samuel Vazquez   | @samuelAndalon| Expedia Group	    | Seattle, WA, US       |
+| Željko Kozina    | @zkozina	     | Chronomill         | Dublin, ROI           |
 
 
 ## Agenda
