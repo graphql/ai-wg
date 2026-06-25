@@ -1,0 +1,36 @@
+id: gh-ext-067-kw
+schemaId: github
+query: pull requests co-authored commits
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        commits(first: 10) {
+          nodes {
+            commit {
+              authors(first: 10) {
+                __typename
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Commit
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.commits
+  - PullRequestCommit.commit
+  - Commit.authors
+  - Commit.authors(first:)
+  - PullRequest.commits(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-067. PR commits whose authors connection has more than one entry implies co-authoring.

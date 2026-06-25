@@ -1,0 +1,36 @@
+id: shop-004-kw
+schemaId: shopify
+query: partially fulfilled orders remaining items
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        displayFulfillmentStatus
+        fulfillmentOrders(first: 10) {
+          edges {
+            cursor
+          }
+        }
+        lineItems(first: 10) {
+          edges {
+            cursor
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.displayFulfillmentStatus
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.orders
+  - Order.displayFulfillmentStatus
+  - Order.fulfillmentOrders
+  - Order.lineItems
+  - Order.fulfillmentOrders(first:)
+  - Order.lineItems(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-004. Partially fulfilled orders — needs fulfillment status plus per-line fulfillment orders.

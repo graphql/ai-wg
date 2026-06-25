@@ -1,0 +1,88 @@
+id: shop-043
+schemaId: shopify
+query: For each of the first 3 orders in the shop, list the order name and the
+  name and status of each of its returns.
+operation: |
+  query {
+    orders(first: 3) {
+      nodes {
+        id
+        name
+        returns(first: 5) {
+          nodes {
+            id
+            name
+            status
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Return.status
+  - Return.name
+  - Order.name
+targetTypes:
+  - Return
+  - Order
+mustInclude:
+  - QueryRoot.orders
+  - Order.returns
+  - Return.status
+  - Return.name
+  - Order.name
+  - Order.returns(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+answer:
+  orders:
+    - name: Item 2920
+      returns:
+        - name: "#95949"
+          status: CLOSED
+        - name: "#46788"
+          status: CANCELED
+    - name: Item 4129
+      returns:
+        - name: "#32437"
+          status: CLOSED
+        - name: "#77002"
+          status: DECLINED
+    - name: Item 4665
+      returns:
+        - name: "#23441"
+          status: OPEN
+        - name: "#85263"
+          status: OPEN
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          returns:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                status:
+                  type: string
+              required:
+                - name
+                - status
+              additionalProperties: false
+        required:
+          - name
+          - returns
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+notes: Returns (name and status) for each of the first 3 orders.

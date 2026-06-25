@@ -1,0 +1,29 @@
+id: shop-042-kw
+schemaId: shopify
+query: abandoned carts past 48 hours
+operation: |
+  query {
+    abandonedCheckouts(first: 10) {
+      nodes {
+        abandonedCheckoutUrl
+        createdAt
+        customer {
+          canDelete
+        }
+      }
+    }
+  }
+targetFields:
+  - AbandonedCheckout.abandonedCheckoutUrl
+  - AbandonedCheckout.createdAt
+targetTypes:
+  - AbandonedCheckout
+mustInclude:
+  - QueryRoot.abandonedCheckouts
+  - AbandonedCheckout.abandonedCheckoutUrl
+  - AbandonedCheckout.createdAt
+  - AbandonedCheckout.customer
+  - QueryRoot.abandonedCheckouts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-042. Abandoned carts within the past 48 hours.

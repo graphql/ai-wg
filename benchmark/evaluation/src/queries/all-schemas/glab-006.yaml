@@ -1,0 +1,71 @@
+id: glab-006
+schemaId: gitlab
+query: How many approvals are still needed and what are the approval rules for
+  merge request gid://gitlab/MergeRequest/1?
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      approvalsLeft
+      approvalState {
+        rules {
+          name
+          approved
+          approvalsRequired
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.approvalsLeft
+  - MergeRequestApprovalState.rules
+  - ApprovalRule.name
+  - ApprovalRule.approved
+targetTypes:
+  - MergeRequest
+  - MergeRequestApprovalState
+  - ApprovalRule
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.approvalState
+  - MergeRequest.approvalsLeft
+  - Query.mergeRequest(id:)
+  - MergeRequestApprovalState.rules
+  - ApprovalRule.name
+  - ApprovalRule.approved
+mustExclude:
+  - Mutation
+notes: "Developer: missing approvals on my MR. approvalState/approvalsLeft."
+answerSchema:
+  type: object
+  properties:
+    approvalsLeft:
+      type: integer
+    approvalRules:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          approved:
+            type: boolean
+          approvalsRequired:
+            type: integer
+        required:
+          - name
+          - approved
+          - approvalsRequired
+        additionalProperties: false
+  required:
+    - approvalsLeft
+    - approvalRules
+  additionalProperties: false
+answer:
+  approvalsLeft: 917
+  approvalRules:
+    - name: Lead Developer Sign-off
+      approved: true
+      approvalsRequired: 835
+    - name: QA Verification
+      approved: true
+      approvalsRequired: 919

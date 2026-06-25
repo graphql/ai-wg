@@ -1,0 +1,37 @@
+id: gh-ext-078-kw
+schemaId: github
+query: org project boards columns items
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectsV2(first: 10) {
+        nodes {
+          items(first: 10) {
+            nodes {
+              fieldValueByName(name: "example") {
+                __typename
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectV2ItemFieldSingleSelectValue.name
+targetTypes:
+  - ProjectV2ItemFieldSingleSelectValue
+  - Project
+mustInclude:
+  - Query.organization
+  - Organization.projectsV2
+  - ProjectV2.items
+  - ProjectV2Item.fieldValueByName
+  - ProjectV2ItemFieldSingleSelectValue.name
+  - Organization.projectsV2(first:)
+  - ProjectV2.items(first:)
+  - ProjectV2Item.fieldValueByName(name:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-078. Org projects and the items grouped by their single-select status field value.

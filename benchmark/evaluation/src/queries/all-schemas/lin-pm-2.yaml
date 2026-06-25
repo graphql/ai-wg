@@ -1,0 +1,67 @@
+id: lin-pm-2
+schemaId: linear
+query: "What releases are there, and which issues does each release include?"
+operation: |
+  query {
+    releases(first: 10) {
+      nodes {
+        name
+        issues(first: 10) {
+          nodes {
+            id
+            title
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Release.name
+  - Issue.title
+targetTypes:
+  - Release
+  - Issue
+mustInclude:
+  - Query.releases
+  - Release.name
+  - Release.issues
+  - Query.releases(first:)
+  - Release.issues(first:)
+mustExclude:
+  - Mutation
+notes: Releases with their associated issues.
+answerSchema:
+  type: object
+  properties:
+    releases:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Release identifier
+          issues:
+            type: array
+            items:
+              type: string
+            description: Issue titles included in the release
+        required:
+          - name
+          - issues
+        additionalProperties: false
+  required:
+    - releases
+  additionalProperties: false
+answer:
+  releases:
+    - name: v3.0
+      issues:
+        - Refactor authentication middleware
+        - Add unit tests for payment module
+        - Fix token refresh endpoint
+    - name: v3.1
+      issues:
+        - Fix authentication token refresh
+        - Implement rate limiting on API gateway
+        - Fix rate limit bypass vulnerability

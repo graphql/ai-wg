@@ -1,0 +1,48 @@
+id: lin-ic-14
+schemaId: linear
+query: "On which teams am I the team owner?"
+operation: |
+  query {
+    viewer {
+      teamMemberships(first: 10) {
+        nodes {
+          team {
+            id
+            name
+          }
+          owner
+        }
+      }
+    }
+  }
+targetFields:
+  - Team.name
+  - TeamMembership.owner
+targetTypes:
+  - TeamMembership
+  - Team
+mustInclude:
+  - Query.viewer
+  - User.teamMemberships
+  - TeamMembership.team
+  - TeamMembership.owner
+  - Team.name
+  - User.teamMemberships(first:)
+mustExclude:
+  - Mutation
+notes: Team membership rows with ownership flag; includes team name to identify
+  which teams.
+answerSchema:
+  type: object
+  properties:
+    teams:
+      type: array
+      items:
+        type: string
+      description: Names of the teams the viewer owns
+  required:
+    - teams
+  additionalProperties: false
+answer:
+  teams:
+    - Engineering

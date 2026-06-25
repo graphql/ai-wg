@@ -1,0 +1,58 @@
+id: gh-ext-074
+schemaId: github
+query: What discussion categories are configured for the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      discussionCategories(first: 10) {
+        nodes {
+          name
+          description
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscussionCategory.name
+  - DiscussionCategory.description
+targetTypes:
+  - DiscussionCategory
+  - Discussion
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.discussionCategories
+  - DiscussionCategoryConnection.nodes
+  - DiscussionCategory.name
+  - DiscussionCategory.description
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.discussionCategories(first:)
+mustExclude:
+  - Mutation
+notes: List discussion categories in a repo.
+answerSchema:
+  type: object
+  properties:
+    discussionCategories:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+        required:
+          - name
+          - description
+        additionalProperties: false
+  required:
+    - discussionCategories
+  additionalProperties: false
+answer:
+  discussionCategories:
+    - name: General
+      description: General discussions
+    - name: Ideas
+      description: Idea discussions

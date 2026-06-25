@@ -1,0 +1,70 @@
+id: shop-071
+schemaId: shopify
+query: What discount minimum spend rules do we currently have configured?
+operation: |
+  query {
+    discountNodes(first: 10) {
+      edges {
+        node {
+          discount {
+            ... on DiscountCodeBasic {
+              title
+              minimumRequirement {
+                ... on DiscountMinimumSubtotal {
+                  greaterThanOrEqualToSubtotal {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscountCodeBasic.title
+  - DiscountCodeBasic.minimumRequirement
+  - DiscountMinimumSubtotal.greaterThanOrEqualToSubtotal
+  - MoneyV2.amount
+  - MoneyV2.currencyCode
+targetTypes: []
+mustInclude:
+  - QueryRoot.discountNodes
+  - DiscountCodeBasic.minimumRequirement
+  - DiscountMinimumSubtotal.greaterThanOrEqualToSubtotal
+  - QueryRoot.discountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Minimum-spend rules configured on current discount codes.
+answerSchema:
+  type: object
+  properties:
+    discounts:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          minimumSubtotal:
+            type: string
+          currencyCode:
+            type: string
+        required:
+          - title
+          - minimumSubtotal
+          - currencyCode
+        additionalProperties: false
+  required:
+    - discounts
+  additionalProperties: false
+answer:
+  discounts:
+    - title: New Customer Welcome
+      minimumSubtotal: "63.99"
+      currencyCode: GYD
+    - title: Clearance Discount Code
+      minimumSubtotal: "8.50"
+      currencyCode: PAB

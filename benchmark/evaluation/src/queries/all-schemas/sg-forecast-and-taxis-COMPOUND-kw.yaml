@@ -1,0 +1,34 @@
+id: sg-forecast-and-taxis-COMPOUND-kw
+schemaId: singapore
+query: forecast central region taxis available
+operation: |
+  query {
+    regionByName(name: CENTRAL) {
+      name
+      forecast {
+        forecast
+        temperatureHigh
+        temperatureLow
+        humidityHigh
+        humidityLow
+        windDirection
+        windSpeed
+      }
+    }
+    totalAvailableTaxis
+  }
+targetFields:
+  - RegionForecast.forecast
+  - Query.totalAvailableTaxis
+targetTypes:
+  - Region
+  - RegionForecast
+mustInclude:
+  - Query.regionByName
+  - Region.forecast
+  - Query.totalAvailableTaxis
+  - Query.regionByName(name:)
+mustExclude: []
+shouldInclude:
+  - RegionForecast
+notes: Keyword variant of sg-forecast-and-taxis-COMPOUND. Generated assuming LLM-as-caller without schema knowledge. Intentionally compound. The eval runner invokes the algorithm once per subQuery; results are unioned before metric calculation. Tests the caller-splits contract.

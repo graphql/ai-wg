@@ -1,0 +1,55 @@
+id: lin-ic-25
+schemaId: linear
+query: "What files or links are attached to issue ENG-321?"
+operation: |
+  query {
+    issue(id: "ENG-321") {
+      attachments(first: 10) {
+        nodes {
+          title
+          url
+        }
+      }
+    }
+  }
+targetFields:
+  - Attachment.title
+  - Attachment.url
+targetTypes:
+  - Attachment
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.attachments
+  - Attachment.title
+  - Attachment.url
+  - Issue.attachments(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Files attached to an issue.
+answerSchema:
+  type: object
+  properties:
+    attachments:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          url:
+            type: string
+        required:
+          - title
+          - url
+        additionalProperties: false
+  required:
+    - attachments
+  additionalProperties: false
+answer:
+  attachments:
+    - title: Design mockup
+      url: https://figma.com/file/abc
+    - title: "Ticket #4521"
+      url: https://zendesk.com/ticket/4521

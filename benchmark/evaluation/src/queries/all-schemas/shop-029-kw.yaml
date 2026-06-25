@@ -1,0 +1,35 @@
+id: shop-029-kw
+schemaId: shopify
+query: compare at price sale items
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        bundleComponents(first: 10) {
+          nodes {
+            componentVariants(first: 10) {
+              nodes {
+                compareAtPrice
+                price
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProductVariant.compareAtPrice
+  - ProductVariant.price
+targetTypes:
+  - ProductVariant
+mustInclude:
+  - QueryRoot.products
+  - ProductVariant.compareAtPrice
+  - ProductVariant.price
+  - Product.bundleComponents(first:)
+  - ProductBundleComponent.componentVariants(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-029. Compare-at price vs current price for sale items.

@@ -1,0 +1,52 @@
+id: shop-081
+schemaId: shopify
+query: List all carrier services configured in our shop for real-time shipping
+  rates, with their name and the URL Shopify uses to retrieve rates.
+operation: |
+  query {
+    carrierServices(first: 10) {
+      nodes {
+        name
+        callbackUrl
+      }
+    }
+  }
+targetFields:
+  - DeliveryCarrierService.name
+  - DeliveryCarrierService.callbackUrl
+targetTypes:
+  - DeliveryCarrierService
+mustInclude:
+  - QueryRoot.carrierServices
+  - DeliveryCarrierService.name
+  - DeliveryCarrierService.callbackUrl
+  - QueryRoot.carrierServices(first:)
+mustExclude:
+  - Mutation
+notes: All configured carrier services with their name and the URL Shopify uses
+  to retrieve shipping rates.
+answerSchema:
+  type: object
+  properties:
+    carrierServices:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          callbackUrl:
+            type: string
+        required:
+          - name
+          - callbackUrl
+        additionalProperties: false
+  required:
+    - carrierServices
+  additionalProperties: false
+answer:
+  carrierServices:
+    - name: Express Logistics
+      callbackUrl: https://carrier-api.example.com/callback/3284
+    - name: Worldwide Shipping Co
+      callbackUrl: https://carrier-api.example.com/callback/3596

@@ -1,0 +1,40 @@
+id: lin-ad-9
+schemaId: linear
+query: "What is our current seat count and subscription plan?"
+operation: |
+  query {
+    organization {
+      subscription {
+        seats
+        type
+      }
+    }
+  }
+targetFields:
+  - PaidSubscription.seats
+  - PaidSubscription.type
+targetTypes:
+  - Organization
+  - PaidSubscription
+mustInclude:
+  - Query.organization
+  - Organization.subscription
+  - PaidSubscription.seats
+  - PaidSubscription.type
+mustExclude:
+  - Mutation
+notes: Org-wide subscription seat count and plan type.
+answerSchema:
+  type: object
+  properties:
+    seatCount:
+      type: number
+    subscriptionPlan:
+      type: string
+  required:
+    - seatCount
+    - subscriptionPlan
+  additionalProperties: false
+answer:
+  seatCount: 50
+  subscriptionPlan: business

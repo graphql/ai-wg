@@ -1,0 +1,48 @@
+id: lin-em-7
+schemaId: linear
+query: "What was the most recent status update on the platform-refactor initiative?"
+operation: |
+  query {
+    initiative(id: "initiative-platform-refactor") {
+      lastUpdate {
+        body
+        health
+      }
+    }
+  }
+answer:
+  latestUpdate:
+    body: Platform refactor proceeding well. Key milestones met.
+    health: onTrack
+answerSchema:
+  type: object
+  properties:
+    latestUpdate:
+      type: object
+      properties:
+        body:
+          type: string
+        health:
+          type: string
+      required:
+        - body
+        - health
+      additionalProperties: false
+  required:
+    - latestUpdate
+  additionalProperties: false
+targetFields:
+  - InitiativeUpdate.body
+  - InitiativeUpdate.health
+targetTypes:
+  - InitiativeUpdate
+  - Initiative
+mustInclude:
+  - Query.initiative
+  - Initiative.lastUpdate
+  - InitiativeUpdate.body
+  - InitiativeUpdate.health
+  - Query.initiative(id:)
+mustExclude:
+  - Mutation
+notes: Initiative-level status reporting using the lastUpdate field.

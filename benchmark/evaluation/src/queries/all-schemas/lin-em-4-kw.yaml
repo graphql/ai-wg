@@ -1,0 +1,30 @@
+id: lin-em-4-kw
+schemaId: linear
+query: project dependencies blocking related
+operation: |
+  query {
+    projectRelations(first: 10) {
+      nodes {
+        type
+        relatedProject {
+          id
+        }
+        project {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectRelation.type
+targetTypes:
+  - ProjectRelation
+mustInclude:
+  - Query.projectRelations
+  - ProjectRelation.type
+  - ProjectRelation.relatedProject
+  - ProjectRelation.project
+  - Query.projectRelations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-4. Project-to-project dependency mapping.

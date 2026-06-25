@@ -1,0 +1,29 @@
+id: lin-em-6-kw
+schemaId: linear
+query: project latest update health body
+operation: |
+  query {
+    projects(first: 10) {
+      nodes {
+        health
+        lastUpdate {
+          body
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.health
+  - ProjectUpdate.body
+targetTypes:
+  - Project
+  - ProjectUpdate
+mustInclude:
+  - Query.projects
+  - Project.health
+  - Project.lastUpdate
+  - ProjectUpdate.body
+  - Query.projects(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-6. EM scans most recent project health updates.

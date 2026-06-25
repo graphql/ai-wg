@@ -1,0 +1,55 @@
+id: lin-em-15
+schemaId: linear
+query: "Who has created the most issues overall?"
+operation: |
+  query {
+    users(first: 10) {
+      nodes {
+        name
+        displayName
+        createdIssueCount
+      }
+    }
+  }
+targetFields:
+  - User.name
+  - User.displayName
+  - User.createdIssueCount
+targetTypes:
+  - User
+mustInclude:
+  - Query.users
+  - User.name
+  - User.displayName
+  - User.createdIssueCount
+  - Query.users(first:)
+mustExclude:
+  - Mutation
+notes: Issue creation volume per user; createdIssueCount is a lifetime total —
+  "this quarter" was unanswerable with the available schema.
+answerSchema:
+  type: object
+  properties:
+    topCreator:
+      type: object
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+        createdIssueCount:
+          type: integer
+          description: number of issues this person created
+      required:
+        - name
+        - displayName
+        - createdIssueCount
+      additionalProperties: false
+  required:
+    - topCreator
+  additionalProperties: false
+answer:
+  topCreator:
+    name: David Lee
+    displayName: David Lee
+    createdIssueCount: 52

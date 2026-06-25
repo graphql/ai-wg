@@ -1,0 +1,61 @@
+id: lin-em-14-kw
+schemaId: linear
+query: initiative parent children hierarchy
+operation: |
+  query {
+    initiative(id: "<id>") {
+      subInitiatives(first: 10) {
+        nodes {
+          id
+          name
+          subInitiatives(first: 10) {
+            nodes {
+              id
+              name
+            }
+          }
+          parentInitiatives(first: 10) {
+            nodes {
+              id
+              name
+            }
+          }
+        }
+      }
+      parentInitiatives(first: 10) {
+        nodes {
+          id
+          name
+          subInitiatives(first: 10) {
+            nodes {
+              id
+              name
+            }
+          }
+          parentInitiatives(first: 10) {
+            nodes {
+              id
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Initiative.id
+  - Initiative.name
+targetTypes:
+  - Initiative
+mustInclude:
+  - Query.initiative
+  - Initiative.subInitiatives
+  - Initiative.parentInitiatives
+  - InitiativeConnection.nodes
+  - Initiative.id
+  - Initiative.parentInitiatives(first:)
+  - Initiative.subInitiatives(first:)
+  - Query.initiative(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-14. Initiative hierarchy (parent/child).

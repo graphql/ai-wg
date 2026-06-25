@@ -1,0 +1,59 @@
+id: shop-021
+schemaId: shopify
+query: What is the total inventory for each of the first 5 products in the shop?
+operation: |
+  query {
+    products(first: 5) {
+      nodes {
+        id
+        title
+        totalInventory
+      }
+    }
+  }
+targetFields:
+  - Product.id
+  - Product.title
+  - Product.totalInventory
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.products
+  - Product.id
+  - Product.title
+  - Product.totalInventory
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Total inventory per product for the first 5 products.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          totalInventory:
+            type: integer
+        required:
+          - title
+          - totalInventory
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - title: Phone Case
+      totalInventory: 305
+    - title: Leather Wallet
+      totalInventory: 581
+    - title: Wireless Headphones
+      totalInventory: 754
+    - title: Yoga Mat
+      totalInventory: 720
+    - title: Smart Watch
+      totalInventory: 641

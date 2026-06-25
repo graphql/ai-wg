@@ -1,0 +1,45 @@
+id: glab-047
+schemaId: gitlab
+query: Which runners are paused or in offline state across the instance?
+operation: |
+  query {
+    runners(first: 10) {
+      nodes {
+        id
+        description
+        paused
+        status
+      }
+    }
+  }
+targetFields:
+  - CiRunner.id
+  - CiRunner.description
+  - CiRunner.paused
+  - CiRunner.status
+targetTypes:
+  - CiRunner
+mustInclude:
+  - Query.runners
+  - CiRunner.id
+  - CiRunner.description
+  - CiRunner.paused
+  - CiRunner.status
+  - Query.runners(first:)
+mustExclude:
+  - Mutation
+notes: "DevOps: paused/offline runners."
+answerSchema:
+  type: object
+  properties:
+    runners:
+      type: array
+      items:
+        type: string
+        description: The runner's description text only (no id/status/paused annotations)
+  required:
+    - runners
+  additionalProperties: false
+answer:
+  runners:
+    - Auto-scaling runner for parallel jobs

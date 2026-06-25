@@ -1,0 +1,25 @@
+id: shop-093-kw
+schemaId: shopify
+query: Shopify Payments balance transactions today
+operation: |
+  query {
+    shopifyPaymentsAccount {
+      balanceTransactions(first: 10) {
+        nodes {
+          transactionDate
+        }
+      }
+    }
+  }
+targetFields:
+  - ShopifyPaymentsBalanceTransaction.transactionDate
+targetTypes:
+  - ShopifyPaymentsBalanceTransaction
+mustInclude:
+  - QueryRoot.shopifyPaymentsAccount
+  - ShopifyPaymentsAccount.balanceTransactions
+  - ShopifyPaymentsBalanceTransaction.transactionDate
+  - ShopifyPaymentsAccount.balanceTransactions(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-093. Balance transactions on Shopify Payments today.

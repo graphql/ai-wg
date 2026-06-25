@@ -1,0 +1,31 @@
+id: shop-033-kw
+schemaId: shopify
+query: product metafields custom values
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        metafields(first: 10) {
+          nodes {
+            namespace
+            value
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Metafield.namespace
+  - Metafield.value
+targetTypes:
+  - Metafield
+mustInclude:
+  - QueryRoot.products
+  - Product.metafields
+  - Metafield.namespace
+  - Metafield.value
+  - Product.metafields(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-033. Custom metafields attached to each product with values.

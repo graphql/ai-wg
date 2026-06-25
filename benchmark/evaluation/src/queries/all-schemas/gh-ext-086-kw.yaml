@@ -1,0 +1,36 @@
+id: gh-ext-086-kw
+schemaId: github
+query: team hierarchy organization
+operation: |
+  query {
+    organization(login: "octocat") {
+      teams(first: 10) {
+        nodes {
+          parentTeam {
+            __typename
+          }
+          childTeams(first: 10) {
+            __typename
+          }
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Team.name
+targetTypes:
+  - Team
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.teams
+  - Team.parentTeam
+  - Team.childTeams
+  - Team.name
+  - Organization.teams(first:)
+  - Query.organization(login:)
+  - Team.childTeams(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-086. Team hierarchy via parentTeam and childTeams.

@@ -1,0 +1,59 @@
+id: lin-cs-5
+schemaId: linear
+query: "For the Initech account (id: customer-initech), what is the status of
+  every linked engineering issue?"
+operation: |
+  query {
+    customer(id: "customer-initech") {
+      needs {
+        issue {
+          title
+          state {
+            name
+          }
+        }
+      }
+    }
+  }
+answer:
+  issues:
+    - issueTitle: Implement rate limiting on API gateway
+      state: Todo
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          issueTitle:
+            type: string
+            description: The title of the linked engineering issue
+          state:
+            type: string
+            description: The workflow state (status) of the issue
+        required:
+          - issueTitle
+          - state
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+targetFields: []
+targetTypes:
+  - Customer
+  - CustomerNeed
+  - Issue
+  - WorkflowState
+mustInclude:
+  - Query.customer
+  - Customer.needs
+  - CustomerNeed.issue
+  - Issue.title
+  - Issue.state
+  - WorkflowState.name
+  - Query.customer(id:)
+mustExclude:
+  - Mutation
+notes: Status of work being done for a customer.

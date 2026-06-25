@@ -1,0 +1,31 @@
+id: gh-ext-017-kw
+schemaId: github
+query: comment count pull requests merged
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          totalCommentsCount
+          merged
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.totalCommentsCount
+  - PullRequest.merged
+targetTypes:
+  - PullRequest
+  - Comment
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.totalCommentsCount
+  - PullRequest.merged
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-017. Merged PRs and their cumulative comment counts.

@@ -1,0 +1,30 @@
+id: shop-086-kw
+schemaId: shopify
+query: inventory transfers in transit warehouses
+operation: |
+  query {
+    inventoryTransfers(first: 10) {
+      nodes {
+        status
+        origin {
+          name
+        }
+        destination {
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - InventoryTransfer.status
+targetTypes:
+  - InventoryTransfer
+mustInclude:
+  - QueryRoot.inventoryTransfers
+  - InventoryTransfer.status
+  - InventoryTransfer.origin
+  - InventoryTransfer.destination
+  - QueryRoot.inventoryTransfers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-086. Inventory transfers in transit between warehouses.

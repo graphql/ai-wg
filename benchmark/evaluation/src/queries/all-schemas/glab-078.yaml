@@ -1,0 +1,79 @@
+id: glab-078
+schemaId: gitlab
+query: In the gitlab-org/gitlab project, list the issues together with the
+  issues that are blocking each of them (iid, title).
+operation: |
+  query {
+    project(fullPath: "gitlab-org/gitlab") {
+      issues {
+        nodes {
+          iid
+          title
+          blockedByIssues(first: 5) {
+            nodes {
+              iid
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.iid
+  - Issue.title
+  - Issue.blockedByIssues
+targetTypes:
+  - Issue
+  - Project
+mustInclude:
+  - Query.project
+  - Project.issues
+  - Issue.iid
+  - Issue.title
+  - Issue.blockedByIssues
+  - Issue.blockedByIssues(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "PM: each issue and the issues blocking it."
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          iid: &a1
+            type: string
+          title: *a1
+          blockedByIssues:
+            type: array
+            items:
+              type: object
+              properties:
+                iid: *a1
+                title: *a1
+              required:
+                - iid
+                - title
+              additionalProperties: false
+        required:
+          - iid
+          - title
+          - blockedByIssues
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - iid: "101"
+      title: Improve CI performance
+      blockedByIssues:
+        - iid: "102"
+          title: Fix merge conflict detection
+    - iid: "102"
+      title: Fix merge conflict detection
+      blockedByIssues: []

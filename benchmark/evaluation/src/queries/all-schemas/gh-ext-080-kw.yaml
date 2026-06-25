@@ -1,0 +1,40 @@
+id: gh-ext-080-kw
+schemaId: github
+query: project custom fields values
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectV2(number: 1) {
+        fields(first: 10) {
+          __typename
+        }
+        items(first: 10) {
+          nodes {
+            fieldValues(first: 10) {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectV2Field.name
+targetTypes:
+  - ProjectV2Field
+  - Project
+mustInclude:
+  - Query.organization
+  - Organization.projectV2
+  - ProjectV2.fields
+  - ProjectV2Field.name
+  - ProjectV2.items
+  - ProjectV2Item.fieldValues
+  - Organization.projectV2(number:)
+  - ProjectV2.fields(first:)
+  - ProjectV2.items(first:)
+  - ProjectV2Item.fieldValues(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-080. Project custom fields and per-item values.

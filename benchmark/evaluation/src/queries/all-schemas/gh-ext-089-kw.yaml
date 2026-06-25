@@ -1,0 +1,27 @@
+id: gh-ext-089-kw
+schemaId: github
+query: pending org invitations
+operation: |
+  query {
+    organization(login: "octocat") {
+      pendingMembers(first: 10) {
+        nodes {
+          login
+        }
+      }
+    }
+  }
+targetFields:
+  - User.login
+targetTypes:
+  - User
+mustInclude:
+  - Query.organization
+  - Organization.pendingMembers
+  - UserConnection.nodes
+  - User.login
+  - Organization.pendingMembers(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-089. Organization pending member invitations.

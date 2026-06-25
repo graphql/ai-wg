@@ -1,0 +1,78 @@
+id: gh-ext-010
+schemaId: github
+query: What are the branch protection rule patterns and their push allowances in
+  the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      branchProtectionRules(first: 10) {
+        nodes {
+          pattern
+          pushAllowances(first: 10) {
+            nodes {
+              actor {
+                ... on User { login }
+                ... on Team { name }
+                ... on App { name }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - BranchProtectionRule.pattern
+  - User.login
+  - Team.name
+  - App.name
+targetTypes:
+  - BranchProtectionRule
+  - PushAllowance
+  - PushAllowanceActor
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.branchProtectionRules
+  - BranchProtectionRule.pattern
+  - BranchProtectionRule.pushAllowances
+  - BranchProtectionRule.pushAllowances(first:)
+  - PushAllowance.actor
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.branchProtectionRules(first:)
+mustExclude:
+  - Mutation
+notes: GraphQL does not surface protected tags directly; nearest available is
+  branch protection patterns plus push allowances on tag refs.
+answerSchema:
+  type: object
+  properties:
+    branchProtectionRules:
+      type: array
+      items:
+        type: object
+        properties:
+          pattern:
+            type: string
+          pushAllowances:
+            type: array
+            items:
+              type: string
+        required:
+          - pattern
+          - pushAllowances
+        additionalProperties: false
+  required:
+    - branchProtectionRules
+  additionalProperties: false
+answer:
+  branchProtectionRules:
+    - pattern: main
+      pushAllowances:
+        - alice
+        - devops
+        - CI Bot
+    - pattern: release/**
+      pushAllowances:
+        - alice

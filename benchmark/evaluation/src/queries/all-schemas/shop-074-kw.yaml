@@ -1,0 +1,21 @@
+id: shop-074-kw
+schemaId: shopify
+query: price rule conditions sitewide sale
+operation: |
+  query {
+    discountNodes(first: 10) {
+      edges {
+        cursor
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.discountNodes
+  - DiscountAutomaticBasic.minimumRequirement
+  - DiscountAutomaticBasic.customerGets
+  - QueryRoot.discountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-074. Price-rule / discount conditions tied to a sitewide sale.

@@ -1,0 +1,28 @@
+id: shop-064-kw
+schemaId: shopify
+query: VIP segment customer count
+operation: |
+  query {
+    segment(id: "gid://shopify/Object/1") {
+      query
+      name
+    }
+    customerSegmentMembers(first: 10) {
+      totalCount
+    }
+  }
+targetFields:
+  - Segment.query
+  - Segment.name
+targetTypes:
+  - Segment
+mustInclude:
+  - QueryRoot.segment
+  - Segment.query
+  - Segment.name
+  - QueryRoot.customerSegmentMembers
+  - QueryRoot.customerSegmentMembers(first:)
+  - QueryRoot.segment(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-064. Customer count for a named VIP segment.

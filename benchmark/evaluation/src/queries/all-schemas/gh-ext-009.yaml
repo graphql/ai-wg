@@ -1,0 +1,83 @@
+id: gh-ext-009
+schemaId: github
+query: What are the commit OIDs and signature verification states for the last
+  50 commits on the default branch of the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      defaultBranchRef {
+        target {
+          ... on Commit {
+            history(first: 50) {
+              nodes {
+                oid
+                signature {
+                  isValid
+                  state
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - GitSignature.isValid
+  - GitSignature.state
+targetTypes:
+  - GitSignature
+  - Commit
+mustInclude:
+  - Query.repository
+  - Repository.defaultBranchRef
+  - Ref.target
+  - Commit.history
+  - Commit.signature
+  - GitSignature.isValid
+  - GitSignature.state
+  - Commit.history(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Walk recent commits on main and check their signature verification.
+answerSchema:
+  type: object
+  properties:
+    commits:
+      type: array
+      items:
+        type: object
+        properties:
+          oid:
+            type: string
+          signatureValid:
+            type: boolean
+          signatureState:
+            type: string
+        required:
+          - oid
+          - signatureValid
+          - signatureState
+        additionalProperties: false
+  required:
+    - commits
+  additionalProperties: false
+answer:
+  commits:
+    - oid: abc1234def5678901234567890abcdef12345678
+      signatureValid: false
+      signatureState: INVALID
+    - oid: bcd2345ef6789012345678901bcdef234567890a
+      signatureValid: true
+      signatureState: UNSIGNED
+    - oid: cde3456f789012345678901bcdef3456789012ab
+      signatureValid: false
+      signatureState: MALFORMED_SIG
+    - oid: def4567890123456789012bcdef456789012abc3
+      signatureValid: true
+      signatureState: UNSIGNED
+    - oid: ef56789012345678901bcdef56789012abcd34de
+      signatureValid: false
+      signatureState: MALFORMED_SIG

@@ -1,0 +1,30 @@
+id: lin-pm-9-kw
+schemaId: linear
+query: customers status tier breakdown
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        status {
+          id
+        }
+        tier {
+          id
+        }
+        name
+      }
+    }
+  }
+targetFields:
+  - Customer.name
+targetTypes:
+  - Customer
+mustInclude:
+  - Query.customers
+  - Customer.status
+  - Customer.tier
+  - Customer.name
+  - Query.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-9. Customer book grouped by status and tier.

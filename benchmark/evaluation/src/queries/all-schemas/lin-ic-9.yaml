@@ -1,0 +1,54 @@
+id: lin-ic-9
+schemaId: linear
+query: "Which labels are on the issues assigned to me?"
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          labels(first: 10) {
+            nodes {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueLabel.name
+targetTypes:
+  - IssueLabel
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.labels
+  - IssueLabel.name
+  - Issue.labels(first:)
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: My work grouped by label.
+answer:
+  labels:
+    - Bug
+    - API
+    - Refactor
+    - Mobile
+    - Feature
+    - Performance
+    - Infrastructure
+    - UX
+    - Security
+answerSchema:
+  type: object
+  properties:
+    labels:
+      type: array
+      items:
+        type: string
+      description: Label names on the issues assigned to the viewer
+  required:
+    - labels
+  additionalProperties: false

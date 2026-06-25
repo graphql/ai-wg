@@ -1,0 +1,12 @@
+{
+    "id": "pure-knn",
+    "name": "Pure global cosine kNN",
+    "description": "Global top-K cosine retrieval over indexed field coords, with a paths-to-root closure so every selected leaf is structurally reachable from a root operation. No per-type filtering, no lexical re-weighting, no recursion.",
+    "defaultConfig": {
+        "K": 60,
+        "maxPathsPerType": 5,
+        "maxDepth": 6,
+        "includeMutationPaths": false,
+        "expandConnectionWrappers": true
+    }
+}

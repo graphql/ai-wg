@@ -1,0 +1,75 @@
+id: shop-093
+schemaId: shopify
+query: List the first 10 Shopify Payments balance transactions — show date,
+  type, and amount.
+operation: |
+  query {
+    shopifyPaymentsAccount {
+      balanceTransactions(first: 10) {
+        nodes {
+          transactionDate
+          type
+          amount {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ShopifyPaymentsBalanceTransaction.transactionDate
+  - ShopifyPaymentsBalanceTransaction.type
+  - ShopifyPaymentsBalanceTransaction.amount
+  - MoneyV2.amount
+  - MoneyV2.currencyCode
+targetTypes:
+  - ShopifyPaymentsBalanceTransaction
+  - MoneyV2
+mustInclude:
+  - QueryRoot.shopifyPaymentsAccount
+  - ShopifyPaymentsAccount.balanceTransactions
+  - ShopifyPaymentsBalanceTransaction.transactionDate
+  - ShopifyPaymentsBalanceTransaction.type
+  - ShopifyPaymentsBalanceTransaction.amount
+  - MoneyV2.amount
+  - MoneyV2.currencyCode
+  - ShopifyPaymentsAccount.balanceTransactions(first:)
+mustExclude:
+  - Mutation
+notes: List first 10 balance transactions on Shopify Payments account.
+answerSchema:
+  type: object
+  properties:
+    transactions:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            type: string
+          type:
+            type: string
+          amount:
+            type: string
+          currencyCode:
+            type: string
+        required:
+          - date
+          - type
+          - amount
+          - currencyCode
+        additionalProperties: false
+  required:
+    - transactions
+  additionalProperties: false
+answer:
+  transactions:
+    - date: "2024-06-18T00:00:00.000Z"
+      type: RESERVED_FUNDS
+      amount: "58.50"
+      currencyCode: RON
+    - date: "2025-05-21T00:00:00.000Z"
+      type: SHIPPING_LABEL_ADJUSTMENT
+      amount: "37.25"
+      currencyCode: UGX

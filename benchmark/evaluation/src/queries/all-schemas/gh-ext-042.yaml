@@ -1,0 +1,47 @@
+id: gh-ext-042
+schemaId: github
+query: Who are the watchers of the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      watchers(first: 10) {
+        nodes {
+          login
+        }
+      }
+    }
+  }
+answer:
+  watchers:
+    - alice
+    - bob
+    - carol
+    - dave
+    - eve
+answerSchema:
+  type: object
+  properties:
+    watchers:
+      type: array
+      items:
+        type: string
+  required:
+    - watchers
+  additionalProperties: false
+targetFields:
+  - User.login
+targetTypes:
+  - User
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.watchers
+  - UserConnection.nodes
+  - User.login
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.watchers(first:)
+mustExclude:
+  - Mutation
+notes: GraphQL does not expose subscribe timestamps; nearest is the watchers
+  connection of users.

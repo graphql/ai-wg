@@ -1,0 +1,82 @@
+id: lin-em-13
+schemaId: linear
+query: "Who owns each active initiative and when are they due?"
+operation: |
+  query {
+    initiatives(first: 10, filter: { status: { eq: "Active" } }) {
+      nodes {
+        name
+        owner {
+          id
+          name
+        }
+        targetDate
+      }
+    }
+  }
+targetFields:
+  - Initiative.targetDate
+  - Initiative.name
+targetTypes:
+  - Initiative
+mustInclude:
+  - Query.initiatives
+  - Initiative.owner
+  - Initiative.targetDate
+  - Initiative.name
+  - Query.initiatives(first:)
+  - Query.initiatives(filter:)
+mustExclude:
+  - Mutation
+notes: Initiative owners and timelines.
+answerSchema:
+  type: object
+  properties:
+    initiatives:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          owner:
+            type: object
+            properties:
+              name:
+                type: string
+            required:
+              - name
+            additionalProperties: false
+          dueDate:
+            type: string
+            description: target/due date of the initiative
+        required:
+          - name
+          - owner
+          - dueDate
+        additionalProperties: false
+  required:
+    - initiatives
+  additionalProperties: false
+answer:
+  initiatives:
+    - name: Platform Refactor
+      owner:
+        name: Alice Johnson
+      dueDate: 2025-Q4
+    - name: AI Platform
+      owner:
+        name: Bob Smith
+      dueDate: 2026-Q1
+    - name: Security Hardening
+      owner:
+        name: David Lee
+      dueDate: 2025-Q3
+    - name: MLOps Infrastructure
+      owner:
+        name: Eva Martinez
+      dueDate: 2025-Q4
+    - name: LLM Integration
+      owner:
+        name: Bob Smith
+      dueDate: 2026-Q1

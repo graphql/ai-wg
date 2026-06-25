@@ -1,0 +1,35 @@
+id: shop-028-kw
+schemaId: shopify
+query: inventory by location SKU ABC-123
+operation: |
+  query {
+    productVariants(first: 10) {
+      nodes {
+        sku
+        inventoryItem {
+          inventoryLevels(first: 10) {
+            nodes {
+              location {
+                activatable
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProductVariant.sku
+targetTypes:
+  - ProductVariant
+mustInclude:
+  - QueryRoot.productVariants
+  - ProductVariant.sku
+  - ProductVariant.inventoryItem
+  - InventoryItem.inventoryLevels
+  - InventoryLevel.location
+  - InventoryItem.inventoryLevels(first:)
+  - QueryRoot.productVariants(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-028. Inventory of a specific SKU broken out per location.

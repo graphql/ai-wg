@@ -1,0 +1,56 @@
+id: shop-059
+schemaId: shopify
+query: Which customers hold gift cards that have already expired, and on what
+  date did each of those gift cards expire?
+operation: |
+  query {
+    giftCards(first: 10) {
+      nodes {
+        expiresOn
+        customer {
+          displayName
+        }
+      }
+    }
+  }
+targetFields:
+  - GiftCard.expiresOn
+  - Customer.displayName
+targetTypes:
+  - GiftCard
+  - Customer
+mustInclude:
+  - QueryRoot.giftCards
+  - GiftCard.expiresOn
+  - GiftCard.customer
+  - Customer.displayName
+  - QueryRoot.giftCards(first:)
+mustExclude:
+  - Mutation
+notes: Customers holding gift cards whose expiry date is in the past, with each
+  card's expiry date.
+answerSchema:
+  type: object
+  properties:
+    giftCards:
+      type: array
+      items:
+        type: object
+        properties:
+          customer:
+            type: string
+          expiredOn:
+            type: string
+        required:
+          - customer
+          - expiredOn
+        additionalProperties: false
+  required:
+    - giftCards
+  additionalProperties: false
+answer:
+  giftCards:
+    - customer: Mason White
+      expiredOn: 2024-10-23T00:00:00.000Z
+    - customer: Isabella Garcia
+      expiredOn: 2024-06-11T00:00:00.000Z

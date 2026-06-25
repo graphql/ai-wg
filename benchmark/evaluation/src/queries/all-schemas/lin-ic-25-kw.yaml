@@ -1,0 +1,34 @@
+id: lin-ic-25-kw
+schemaId: linear
+query: issue attachments files links
+operation: |
+  query {
+    issue(id: "<id>") {
+      attachments(first: 10) {
+        nodes {
+          title
+          url
+          creator {
+            id
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Attachment.title
+  - Attachment.url
+targetTypes:
+  - Attachment
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.attachments
+  - Attachment.title
+  - Attachment.url
+  - Attachment.creator
+  - Issue.attachments(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-25. Files attached to an issue.

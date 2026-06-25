@@ -1,0 +1,66 @@
+id: lin-ad-11
+schemaId: linear
+query: "For team id \"team-engineering\", what GitHub automation states are
+  configured — which workflow states do they map to and what branch events
+  trigger each transition?"
+operation: |
+  query {
+    team(id: "team-engineering") {
+      gitAutomationStates(first: 10) {
+        nodes {
+          state {
+            id
+            name
+          }
+          event
+        }
+      }
+    }
+  }
+targetFields:
+  - GitAutomationState.event
+  - WorkflowState.name
+targetTypes:
+  - GitAutomationState
+  - Team
+  - WorkflowState
+mustInclude:
+  - Query.team
+  - Team.gitAutomationStates
+  - GitAutomationState.state
+  - GitAutomationState.event
+  - WorkflowState.name
+  - Query.team(id:)
+  - Team.gitAutomationStates(first:)
+mustExclude:
+  - Mutation
+notes: Git automation rules per team.
+answer:
+  gitAutomationStates:
+    - workflowState: In Progress
+      event: start
+    - workflowState: Done
+      event: merge
+    - workflowState: Canceled
+      event: review
+answerSchema:
+  type: object
+  properties:
+    gitAutomationStates:
+      type: array
+      items:
+        type: object
+        properties:
+          workflowState:
+            type: string
+            description: Name of the workflow state this rule maps to
+          event:
+            type: string
+            description: Branch event that triggers the transition
+        required:
+          - workflowState
+          - event
+        additionalProperties: false
+  required:
+    - gitAutomationStates
+  additionalProperties: false

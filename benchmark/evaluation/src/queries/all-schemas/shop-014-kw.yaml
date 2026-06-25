@@ -1,0 +1,32 @@
+id: shop-014-kw
+schemaId: shopify
+query: partial refunds on line items
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        refunds(first: 10) {
+          refundLineItems(first: 10) {
+            nodes {
+              quantity
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - RefundLineItem.quantity
+targetTypes:
+  - RefundLineItem
+mustInclude:
+  - QueryRoot.orders
+  - Order.refunds
+  - Refund.refundLineItems
+  - RefundLineItem.quantity
+  - Order.refunds(first:)
+  - QueryRoot.orders(first:)
+  - Refund.refundLineItems(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-014. Orders with partial refunds on individual line items.

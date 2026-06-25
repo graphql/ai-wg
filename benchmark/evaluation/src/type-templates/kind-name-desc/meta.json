@@ -1,0 +1,5 @@
+{
+    "id": "kind-name-desc",
+    "name": "Kind + name + description",
+    "description": "Prepends the literal kind word to the name and appends the description when present (e.g. \"object Commit — ...\")."
+}

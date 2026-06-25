@@ -1,0 +1,26 @@
+id: shop-035-kw
+schemaId: shopify
+query: product options bundle eligibility
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        options(first: 10) {
+          values
+        }
+      }
+    }
+  }
+targetFields:
+  - ProductOption.values
+targetTypes:
+  - ProductOption
+mustInclude:
+  - QueryRoot.products
+  - Product.options
+  - ProductOption.values
+  - Product.options(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-035. Product options to check bundle eligibility.

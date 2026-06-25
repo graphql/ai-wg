@@ -1,0 +1,28 @@
+id: sg-traffic-camera-locations-kw
+schemaId: singapore
+query: traffic camera images location
+operation: |
+  query {
+    trafficCameras {
+      cameraId
+      imageUrl
+      latitude
+      longitude
+      timestamp
+    }
+  }
+targetFields:
+  - TrafficCamera.imageUrl
+  - TrafficCamera.latitude
+  - TrafficCamera.longitude
+targetTypes:
+  - TrafficCamera
+mustInclude:
+  - Query.trafficCameras
+  - TrafficCamera.imageUrl
+  - TrafficCamera.latitude
+  - TrafficCamera.longitude
+mustExclude: []
+shouldInclude:
+  - TrafficCamera.cameraId
+notes: Keyword variant of sg-traffic-camera-locations. Generated assuming LLM-as-caller without schema knowledge. Multi-leaf single-root. Tests that the algorithm includes all relevant leaves, not just the top one.

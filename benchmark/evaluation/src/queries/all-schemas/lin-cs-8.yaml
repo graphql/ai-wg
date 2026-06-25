@@ -1,0 +1,44 @@
+id: lin-cs-8
+schemaId: linear
+query: "Which customers are currently in the churn-risk status bucket?"
+operation: |
+  query {
+    customers(first: 10, filter: { status: { name: { eqIgnoreCase: "Churn Risk" } } }) {
+      nodes {
+        name
+        status {
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.name
+  - CustomerStatus.name
+targetTypes:
+  - CustomerStatus
+  - Customer
+mustInclude:
+  - Query.customers
+  - Customer.name
+  - Customer.status
+  - CustomerStatus.name
+  - Query.customers(first:)
+  - Query.customers(filter:)
+mustExclude:
+  - Mutation
+notes: Churn-risk customer list.
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: string
+      description: The names of customers in the churn-risk status bucket
+  required:
+    - customers
+  additionalProperties: false
+answer:
+  customers:
+    - Widgets Inc

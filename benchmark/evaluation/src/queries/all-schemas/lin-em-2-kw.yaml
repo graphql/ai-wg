@@ -1,0 +1,32 @@
+id: lin-em-2-kw
+schemaId: linear
+query: initiatives active projects rollup
+operation: |
+  query {
+    initiatives(first: 10) {
+      nodes {
+        projects(first: 10) {
+          nodes {
+            id
+          }
+        }
+        status
+        targetDate
+      }
+    }
+  }
+targetFields:
+  - Initiative.status
+  - Initiative.targetDate
+targetTypes:
+  - Initiative
+mustInclude:
+  - Query.initiatives
+  - Initiative.projects
+  - Initiative.status
+  - Initiative.targetDate
+  - Initiative.projects(first:)
+  - Query.initiatives(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-2. Initiatives roll up multiple projects; useful for strategic reporting.

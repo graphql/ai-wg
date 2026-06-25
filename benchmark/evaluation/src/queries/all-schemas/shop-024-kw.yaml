@@ -1,0 +1,26 @@
+id: shop-024-kw
+schemaId: shopify
+query: summer collection stale products 90 days
+operation: |
+  query {
+    collectionByHandle(handle: "placeholder") {
+      products(first: 10) {
+        nodes {
+          updatedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.updatedAt
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.collectionByHandle
+  - Collection.products
+  - Product.updatedAt
+  - Collection.products(first:)
+  - QueryRoot.collectionByHandle(handle:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-024. Stale products in a named collection not updated in 90 days.

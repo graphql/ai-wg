@@ -1,0 +1,119 @@
+id: lin-ic-1
+schemaId: linear
+query: "What issues are currently assigned to me?"
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          identifier
+          title
+          priority
+          state {
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.identifier
+  - Issue.title
+  - Issue.priority
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.identifier
+  - Issue.title
+  - Issue.priority
+  - Issue.state
+  - WorkflowState.name
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: "Classic \"my open issues\" view."
+answerSchema:
+  type: object
+  properties:
+    assignedIssues:
+      type: array
+      items:
+        type: object
+        properties:
+          identifier:
+            type: string
+          title:
+            type: string
+          priority:
+            type: number
+          state:
+            type: object
+            properties:
+              name:
+                type: string
+            required:
+              - name
+            additionalProperties: false
+        required:
+          - identifier
+          - priority
+          - state
+          - title
+        additionalProperties: false
+  required:
+    - assignedIssues
+  additionalProperties: false
+answer:
+  assignedIssues:
+    - identifier: ENG-7
+      title: Fix authentication token refresh
+      priority: 2
+      state:
+        name: In Progress
+    - identifier: ENG-241
+      title: Refactor authentication middleware
+      priority: 3
+      state:
+        name: Done
+    - identifier: ENG-441
+      title: Customer reported login issue on mobile
+      priority: 1
+      state:
+        name: In Progress
+    - identifier: ENG-100
+      title: Update mobile app onboarding flow
+      priority: 2
+      state:
+        name: In Progress
+    - identifier: ENG-101
+      title: Resolve webpack bundle size issue
+      priority: 3
+      state:
+        name: Todo
+    - identifier: ENG-102
+      title: Add dark mode support
+      priority: 4
+      state:
+        name: In Progress
+    - identifier: ENG-103
+      title: Fix CI pipeline flakiness
+      priority: 2
+      state:
+        name: Todo
+    - identifier: ENG-104
+      title: Implement audit logging
+      priority: 1
+      state:
+        name: Todo
+    - identifier: ENG-105
+      title: Upgrade dependencies to latest LTS
+      priority: 3
+      state:
+        name: In Progress
+    - identifier: ENG-106
+      title: Write integration tests for auth service
+      priority: 2
+      state:
+        name: Todo

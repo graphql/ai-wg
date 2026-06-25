@@ -1,0 +1,29 @@
+id: gh-ext-040-kw
+schemaId: github
+query: active forks last month
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      forks(first: 10) {
+        __typename
+      }
+      pushedAt
+      forkCount
+    }
+  }
+targetFields:
+  - Repository.pushedAt
+  - Repository.forkCount
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.forks
+  - Repository.pushedAt
+  - Repository.forkCount
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.forks(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-040. Fork repositories ordered by recent push activity.

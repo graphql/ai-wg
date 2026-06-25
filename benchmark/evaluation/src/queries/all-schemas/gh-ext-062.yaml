@@ -1,0 +1,69 @@
+id: gh-ext-062
+schemaId: github
+query: For each issue in the octocat/example repository, show the single most
+  recently posted comment (the one with the latest creation date among that
+  issue's comments), with its creation timestamp and body text.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10) {
+        nodes {
+          comments(first: 10) {
+            nodes {
+              createdAt
+              body
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueComment.createdAt
+  - IssueComment.body
+targetTypes:
+  - IssueComment
+  - Comment
+  - Issue
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.comments
+  - IssueComment.createdAt
+  - IssueComment.body
+  - Issue.comments(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+mustExclude:
+  - Mutation
+answer:
+  latestComments:
+    - createdAt: 2025-05-28T00:00:00.000Z
+      body: Working on a fix.
+    - createdAt: 2025-05-29T00:00:00.000Z
+      body: This would be nice to have.
+answerSchema:
+  type: object
+  properties:
+    latestComments:
+      type: array
+      items:
+        type: object
+        properties:
+          createdAt:
+            type: string
+          body:
+            type: string
+        required:
+          - createdAt
+          - body
+        additionalProperties: false
+  required:
+    - latestComments
+  additionalProperties: false
+notes: Per issue, the most recently created comment (max createdAt among that
+  issue's comments). The mock does not honor comment orderBy, so recency is
+  determined by comparing the createdAt values of the comments returned, not by
+  an ordered query.

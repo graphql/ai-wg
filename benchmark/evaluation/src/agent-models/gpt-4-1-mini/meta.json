@@ -1,0 +1,15 @@
+{
+    "id": "gpt-4-1-mini",
+    "name": "GPT-4.1 mini",
+    "description": "OpenAI GPT-4.1 mini — low-tier chat model with tool calling + automatic prompt caching.",
+    "provider": "openai",
+    "modelName": "gpt-4.1-mini",
+    "maxTokens": 8192,
+    "supportsCacheControl": false,
+    "pricing": {
+        "inputPerMillion": 0.4,
+        "outputPerMillion": 1.6,
+        "cacheWritePerMillion": 0.0,
+        "cacheReadPerMillion": 0.1
+    }
+}

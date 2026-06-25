@@ -1,0 +1,59 @@
+id: glab-081
+schemaId: gitlab
+query: List the first 10 time log entries, showing the logging user's username
+  and the time spent in seconds for each entry.
+operation: |
+  query {
+    timelogs(first: 10) {
+      nodes {
+        user {
+          username
+        }
+        timeSpent
+      }
+    }
+  }
+targetFields:
+  - Timelog.timeSpent
+  - UserCore.username
+targetTypes:
+  - Timelog
+mustInclude:
+  - Query.timelogs
+  - Timelog.user
+  - Timelog.timeSpent
+  - UserCore.username
+  - Query.timelogs(first:)
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    timelogs:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+          timeSpentSeconds:
+            type: integer
+        required:
+          - username
+          - timeSpentSeconds
+        additionalProperties: false
+  required:
+    - timelogs
+  additionalProperties: false
+answer:
+  timelogs:
+    - username: alice
+      timeSpentSeconds: 3600
+    - username: bob
+      timeSpentSeconds: 7200
+    - username: carol
+      timeSpentSeconds: 1800
+    - username: david
+      timeSpentSeconds: 5400
+    - username: eva
+      timeSpentSeconds: 900

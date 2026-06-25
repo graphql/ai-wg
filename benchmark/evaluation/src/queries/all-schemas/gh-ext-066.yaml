@@ -1,0 +1,69 @@
+id: gh-ext-066
+schemaId: github
+query: What issues are linked as fixes to pull request Nr. 1 in the
+  octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        closingIssuesReferences(first: 10) {
+          nodes {
+            number
+            title
+            state
+            url
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.number
+  - Issue.title
+  - Issue.state
+  - Issue.url
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.closingIssuesReferences
+  - IssueConnection.nodes
+  - Issue.number
+  - Issue.title
+  - Issue.state
+  - Issue.url
+  - PullRequest.closingIssuesReferences(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+mustExclude:
+  - Mutation
+notes: Issues linked to a PR as the closing reference.
+answerSchema:
+  type: object
+  properties:
+    linkedIssues:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: number
+          title:
+            type: string
+          state:
+            type: string
+          url:
+            type: string
+        required:
+          - number
+          - title
+          - state
+          - url
+        additionalProperties: false
+  required:
+    - linkedIssues
+  additionalProperties: false
+answer:
+  linkedIssues: []

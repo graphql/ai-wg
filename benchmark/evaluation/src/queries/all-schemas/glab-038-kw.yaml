@@ -1,0 +1,30 @@
+id: glab-038-kw
+schemaId: gitlab
+query: stuck runners long jobs
+operation: |
+  query {
+    runners(first: 10) {
+      nodes {
+        jobs(first: 10) {
+          nodes {
+            ... on CiJob {
+              duration
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CiJob.duration
+targetTypes:
+  - CiJob
+mustInclude:
+  - Query.runners
+  - CiRunner.jobs
+  - CiJob.duration
+  - CiRunner.jobs(first:)
+  - Query.runners(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-038. DevOps: runners with long-running jobs."

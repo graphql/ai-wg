@@ -1,0 +1,60 @@
+id: lin-ad-6
+schemaId: linear
+query: "What OAuth applications have been created in our workspace?"
+operation: |
+  query {
+    oauthApplications {
+      name
+      developer
+      redirectUris
+    }
+  }
+targetFields:
+  - OAuthApplication.name
+  - OAuthApplication.developer
+  - OAuthApplication.redirectUris
+targetTypes:
+  - OAuthApplication
+mustInclude:
+  - Query.oauthApplications
+  - OAuthApplication.name
+  - OAuthApplication.developer
+  - OAuthApplication.redirectUris
+mustExclude:
+  - Mutation
+notes: OAuth app inventory.
+answerSchema:
+  type: object
+  properties:
+    oauthApplications:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          developer:
+            type: string
+          redirectUris:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - developer
+          - redirectUris
+        additionalProperties: false
+  required:
+    - oauthApplications
+  additionalProperties: false
+answer:
+  oauthApplications:
+    - name: CI Integration Bot
+      developer: Acme Corp Engineering
+      redirectUris:
+        - https://ci.example.com/callback
+        - https://ci.example.com/auth
+    - name: Analytics Dashboard
+      developer: Acme Corp Analytics
+      redirectUris:
+        - https://analytics.example.com/oauth/callback

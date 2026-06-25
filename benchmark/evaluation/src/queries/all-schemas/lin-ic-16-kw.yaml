@@ -1,0 +1,26 @@
+id: lin-ic-16-kw
+schemaId: linear
+query: issue branch name url
+operation: |
+  query {
+    issue(id: "<id>") {
+      identifier
+      branchName
+      url
+    }
+  }
+targetFields:
+  - Issue.identifier
+  - Issue.branchName
+  - Issue.url
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.identifier
+  - Issue.branchName
+  - Issue.url
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-16. Get the git-branch name + url for an issue.

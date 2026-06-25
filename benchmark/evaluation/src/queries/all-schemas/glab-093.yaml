@@ -1,0 +1,111 @@
+id: glab-093
+schemaId: gitlab
+query: Which projects in group/project have inherited CI/CD variables, and what
+  are the variable keys and source group names?
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      projects(first: 10) {
+        nodes {
+          name
+          fullPath
+          inheritedCiVariables(first: 10) {
+            nodes {
+              key
+              groupName
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.name
+  - Project.fullPath
+  - InheritedCiVariable.key
+  - InheritedCiVariable.groupName
+targetTypes:
+  - InheritedCiVariable
+mustInclude:
+  - Query.group
+  - Group.projects
+  - Project.inheritedCiVariables
+  - Project.name
+  - Project.fullPath
+  - InheritedCiVariable.key
+  - Group.projects(first:)
+  - Project.inheritedCiVariables(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Admin: projects with inherited CI vars."
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: object
+        properties:
+          name: &a1
+            type: string
+          inheritedVariables:
+            type: array
+            items:
+              type: object
+              properties:
+                key: *a1
+                groupName: *a1
+              required:
+                - key
+                - groupName
+              additionalProperties: false
+        required:
+          - name
+          - inheritedVariables
+        additionalProperties: false
+  required:
+    - projects
+  additionalProperties: false
+answer:
+  projects:
+    - name: data-analytics
+      inheritedVariables:
+        - key: GROUP_TOKEN
+          groupName: parent-group
+        - key: SHARED_CONFIG
+          groupName: parent-group
+        - key: ORG_SECRET
+          groupName: root-group
+    - name: testing-framework
+      inheritedVariables:
+        - key: GROUP_TOKEN
+          groupName: parent-group
+        - key: SHARED_CONFIG
+          groupName: parent-group
+        - key: ORG_SECRET
+          groupName: root-group
+    - name: mobile-app
+      inheritedVariables:
+        - key: GROUP_TOKEN
+          groupName: parent-group
+        - key: SHARED_CONFIG
+          groupName: parent-group
+        - key: ORG_SECRET
+          groupName: root-group
+    - name: notification-system
+      inheritedVariables:
+        - key: GROUP_TOKEN
+          groupName: parent-group
+        - key: SHARED_CONFIG
+          groupName: parent-group
+        - key: ORG_SECRET
+          groupName: root-group
+    - name: web-frontend
+      inheritedVariables:
+        - key: GROUP_TOKEN
+          groupName: parent-group
+        - key: SHARED_CONFIG
+          groupName: parent-group
+        - key: ORG_SECRET
+          groupName: root-group

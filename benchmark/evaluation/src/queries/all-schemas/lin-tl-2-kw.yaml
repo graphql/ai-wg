@@ -1,0 +1,35 @@
+id: lin-tl-2-kw
+schemaId: linear
+query: cycle estimate per assignee state
+operation: |
+  query {
+    cycle(id: "<id>") {
+      issues(first: 10) {
+        nodes {
+          estimate
+          state {
+            id
+          }
+          assignee {
+            id
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.estimate
+targetTypes:
+  - Issue
+  - Cycle
+mustInclude:
+  - Query.cycle
+  - Cycle.issues
+  - Issue.estimate
+  - Issue.state
+  - Issue.assignee
+  - Cycle.issues(first:)
+  - Query.cycle(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-2. Sprint-planning load-by-assignee within a cycle; needs estimate + state + assignee.

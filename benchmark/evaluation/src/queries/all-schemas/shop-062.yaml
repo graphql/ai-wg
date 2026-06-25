@@ -1,0 +1,84 @@
+id: shop-062
+schemaId: shopify
+query: List all automatic discounts in the store, showing their title, status,
+  and start date.
+operation: |
+  query {
+    discountNodes(first: 10) {
+      edges {
+        node {
+          discount {
+            ... on DiscountAutomaticBasic {
+              title
+              status
+              startsAt
+            }
+            ... on DiscountAutomaticBxgy {
+              title
+              status
+              startsAt
+            }
+            ... on DiscountAutomaticFreeShipping {
+              title
+              status
+              startsAt
+            }
+            ... on DiscountAutomaticApp {
+              title
+              status
+              startsAt
+            }
+          }
+        }
+      }
+    }
+  }
+answer:
+  discounts:
+    - title: Loyalty Reward
+      status: ACTIVE
+      startsAt: 2024-10-25T00:00:00.000Z
+    - title: New Customer Welcome
+      status: EXPIRED
+      startsAt: 2025-05-16T00:00:00.000Z
+answerSchema:
+  type: object
+  properties:
+    discounts:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          status:
+            type: string
+          startsAt:
+            type: string
+        required:
+          - title
+          - status
+          - startsAt
+        additionalProperties: false
+  required:
+    - discounts
+  additionalProperties: false
+targetFields:
+  - DiscountAutomaticBasic.title
+  - DiscountAutomaticBasic.status
+  - DiscountAutomaticBasic.startsAt
+targetTypes:
+  - DiscountAutomaticBasic
+mustInclude:
+  - QueryRoot.discountNodes
+  - DiscountNode.discount
+  - DiscountAutomaticBasic.title
+  - DiscountAutomaticBasic.status
+  - DiscountAutomaticBasic.startsAt
+  - QueryRoot.discountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Automatic discounts in the store via the non-deprecated discountNodes
+  field. Scope to automatic discounts comes from selecting only the
+  DiscountAutomatic* union members on DiscountNode.discount, not from a filter
+  argument.

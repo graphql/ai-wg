@@ -1,0 +1,42 @@
+id: gh-ext-062-kw
+schemaId: github
+query: recent issue comments
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10) {
+        nodes {
+          comments(first: 10) {
+            nodes {
+              createdAt
+              body
+              author {
+                __typename
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueComment.createdAt
+  - IssueComment.body
+targetTypes:
+  - IssueComment
+  - Issue
+  - Comment
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.comments
+  - IssueComment.createdAt
+  - IssueComment.body
+  - IssueComment.author
+  - Issue.comments(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-062. Recent issue comments ordered by creation timestamp.

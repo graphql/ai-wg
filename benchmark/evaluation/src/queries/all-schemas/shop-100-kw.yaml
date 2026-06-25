@@ -1,0 +1,25 @@
+id: shop-100-kw
+schemaId: shopify
+query: Shopify Functions deployed references
+operation: |
+  query {
+    shopifyFunctions(first: 10) {
+      nodes {
+        apiType
+        title
+      }
+    }
+  }
+targetFields:
+  - ShopifyFunction.apiType
+  - ShopifyFunction.title
+targetTypes:
+  - ShopifyFunction
+mustInclude:
+  - QueryRoot.shopifyFunctions
+  - ShopifyFunction.apiType
+  - ShopifyFunction.title
+  - QueryRoot.shopifyFunctions(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-100. Deployed Shopify Functions and where they're referenced.

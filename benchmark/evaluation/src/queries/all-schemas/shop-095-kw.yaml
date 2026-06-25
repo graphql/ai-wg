@@ -1,0 +1,61 @@
+id: shop-095-kw
+schemaId: shopify
+query: incoming inventory back in stock date
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        bundleComponents(first: 10) {
+          nodes {
+            componentVariants(first: 10) {
+              nodes {
+                inventoryItem {
+                  inventoryLevels(first: 10) {
+                    edges {
+                      __typename
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    abandonment(id: "gid://shopify/Object/1") {
+      abandonedCheckoutPayload {
+        customer {
+          companyContactProfiles {
+            company {
+              draftOrders(first: 10) {
+                nodes {
+                  lineItems(first: 10) {
+                    edges {
+                      __typename
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.products
+  - ProductVariant.inventoryItem
+  - InventoryItem.inventoryLevels
+  - InventoryLevel.quantities
+  - Company.draftOrders(first:)
+  - DraftOrder.lineItems(first:)
+  - InventoryItem.inventoryLevels(first:)
+  - Product.bundleComponents(first:)
+  - ProductBundleComponent.componentVariants(first:)
+  - QueryRoot.abandonment(id:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-095. Products with a back-in-stock date via incoming inventory.

@@ -1,0 +1,25 @@
+id: glab-001-kw
+schemaId: gitlab
+query: my open assigned merge requests
+operation: |
+  query {
+    currentUser {
+      assignedMergeRequests(first: 10) {
+        nodes {
+          state
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.state
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.assignedMergeRequests
+  - MergeRequest.state
+  - CurrentUser.assignedMergeRequests(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-001. Developer: my open assigned MRs. Needs current-user MR entry + state."

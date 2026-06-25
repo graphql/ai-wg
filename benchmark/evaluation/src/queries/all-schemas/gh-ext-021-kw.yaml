@@ -1,0 +1,37 @@
+id: gh-ext-021-kw
+schemaId: github
+query: workflows triggers events repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object {
+        ... on Blob {
+          text
+        }
+        ... on Tree {
+          entries {
+            path
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - TreeEntry.path
+  - Blob.text
+targetTypes:
+  - TreeEntry
+  - Blob
+  - Workflow
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Tree.entries
+  - TreeEntry.path
+  - Blob.text
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-021. GraphQL does not list workflows directly; read .github/workflows tree entries and their YAML contents.

@@ -1,0 +1,30 @@
+id: gh-ext-066-kw
+schemaId: github
+query: issues linked pr fixes
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        closingIssuesReferences(first: 10) {
+          nodes {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.closingIssuesReferences
+  - IssueConnection.nodes
+  - PullRequest.closingIssuesReferences(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-066. Issues linked to a PR as the closing reference.

@@ -1,0 +1,25 @@
+id: shop-063-kw
+schemaId: shopify
+query: upcoming marketing events two weeks
+operation: |
+  query {
+    marketingEvents(first: 10) {
+      nodes {
+        startedAt
+        scheduledToEndAt
+      }
+    }
+  }
+targetFields:
+  - MarketingEvent.startedAt
+  - MarketingEvent.scheduledToEndAt
+targetTypes:
+  - MarketingEvent
+mustInclude:
+  - QueryRoot.marketingEvents
+  - MarketingEvent.startedAt
+  - MarketingEvent.scheduledToEndAt
+  - QueryRoot.marketingEvents(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-063. Marketing events starting within the next two weeks.

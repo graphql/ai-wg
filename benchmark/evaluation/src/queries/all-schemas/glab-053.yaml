@@ -1,0 +1,48 @@
+id: glab-053
+schemaId: gitlab
+query: List CRITICAL vulnerabilities in group/project with state DETECTED or
+  CONFIRMED (title, severity, state).
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10, severity: [CRITICAL], state: [DETECTED, CONFIRMED]) {
+        nodes {
+          title
+          severity
+          state
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.title
+  - Vulnerability.severity
+  - Vulnerability.state
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.title
+  - Vulnerability.severity
+  - Vulnerability.state
+  - Project.vulnerabilities(first:)
+  - Project.vulnerabilities(severity:)
+  - Project.vulnerabilities(state:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Security: critical unresolved vulns."
+answerSchema:
+  type: object
+  properties:
+    vulnerabilities:
+      type: array
+      items:
+        type: string
+  required:
+    - vulnerabilities
+  additionalProperties: false
+answer:
+  vulnerabilities:
+    - Weak password hashing algorithm detected

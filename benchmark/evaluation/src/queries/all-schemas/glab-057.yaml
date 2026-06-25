@@ -1,0 +1,60 @@
+id: glab-057
+schemaId: gitlab
+query: Show DAST profile configurations (id, name, description) for group/project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      dastProfiles(first: 10) {
+        nodes {
+          id
+          name
+          description
+        }
+      }
+    }
+  }
+targetFields:
+  - DastProfile.id
+  - DastProfile.name
+  - DastProfile.description
+targetTypes:
+  - DastProfile
+mustInclude:
+  - Query.project
+  - Project.dastProfiles
+  - Project.dastProfiles(first:)
+  - Query.project(fullPath:)
+  - DastProfile.id
+  - DastProfile.name
+  - DastProfile.description
+mustExclude:
+  - Mutation
+notes: "Security: DAST profile configurations."
+answerSchema:
+  type: object
+  properties:
+    dastProfiles:
+      type: array
+      items:
+        type: object
+        properties:
+          id: &a1
+            type: string
+          name: *a1
+          description: *a1
+        required:
+          - id
+          - name
+          - description
+        additionalProperties: false
+  required:
+    - dastProfiles
+  additionalProperties: false
+answer:
+  dastProfiles:
+    - id: gid://gitlab/DastProfile/1
+      name: Full scan
+      description: Complete DAST scan
+    - id: gid://gitlab/DastProfile/2
+      name: Baseline scan
+      description: Quick baseline scan

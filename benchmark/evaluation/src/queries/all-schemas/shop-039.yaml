@@ -1,0 +1,48 @@
+id: shop-039
+schemaId: shopify
+query: Which products have inventory tracking turned off so we can clean those up?
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        id
+        title
+        tracksInventory
+      }
+    }
+  }
+targetFields:
+  - Product.id
+  - Product.title
+  - Product.tracksInventory
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.products
+  - Product.id
+  - Product.title
+  - Product.tracksInventory
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Products with inventory tracking turned off.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - title: Wireless Headphones
+    - title: Yoga Mat

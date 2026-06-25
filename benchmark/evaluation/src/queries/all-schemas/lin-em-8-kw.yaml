@@ -1,0 +1,26 @@
+id: lin-em-8-kw
+schemaId: linear
+query: teams cycles enabled cadence duration
+operation: |
+  query {
+    team(id: "<id>") {
+      cyclesEnabled
+      cycleDuration
+      cycleStartDay
+    }
+  }
+targetFields:
+  - Team.cyclesEnabled
+  - Team.cycleDuration
+  - Team.cycleStartDay
+targetTypes:
+  - Team
+mustInclude:
+  - Query.team
+  - Team.cyclesEnabled
+  - Team.cycleDuration
+  - Team.cycleStartDay
+  - Query.team(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-8. Cycle cadence configuration audit.

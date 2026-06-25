@@ -1,0 +1,38 @@
+id: shop-058
+schemaId: shopify
+query: List the timeline event messages recorded on order gid://shopify/Order/1.
+operation: |
+  query {
+    order(id: "gid://shopify/Order/1") {
+      events(first: 10) {
+        nodes {
+          message
+        }
+      }
+    }
+  }
+targetFields:
+  - Event.message
+targetTypes:
+  - Event
+mustInclude:
+  - QueryRoot.order(id:)
+  - Order.events(first:)
+  - Event.message
+mustExclude:
+  - Mutation
+notes: The human-readable messages of the events on an order's timeline.
+answerSchema:
+  type: object
+  properties:
+    eventMessages:
+      type: array
+      items:
+        type: string
+  required:
+    - eventMessages
+  additionalProperties: false
+answer:
+  eventMessages:
+    - Inventory level updated to 45 units
+    - New customer signup completed

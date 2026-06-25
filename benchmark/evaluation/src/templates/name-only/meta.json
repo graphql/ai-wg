@@ -1,0 +1,6 @@
+{
+    "id": "name-only",
+    "name": "Field name only",
+    "description": "Just the field name string. Tests minimal signal.",
+    "applies": ["field"]
+}

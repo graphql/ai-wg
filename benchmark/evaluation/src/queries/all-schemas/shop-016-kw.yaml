@@ -1,0 +1,31 @@
+id: shop-016-kw
+schemaId: shopify
+query: tax collected per state last month
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        taxLines {
+          priceSet {
+            presentmentMoney {
+              amount
+            }
+          }
+        }
+        shippingAddress {
+          address1
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.taxLines
+  - TaxLine.priceSet
+  - Order.shippingAddress
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-016. Tax collected per state for last month's orders.

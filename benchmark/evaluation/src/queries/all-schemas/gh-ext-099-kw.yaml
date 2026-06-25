@@ -1,0 +1,22 @@
+id: gh-ext-099-kw
+schemaId: github
+query: last graphql query cost
+operation: |
+  query {
+    rateLimit {
+      cost
+      nodeCount
+    }
+  }
+targetFields:
+  - RateLimit.cost
+  - RateLimit.nodeCount
+targetTypes:
+  - RateLimit
+mustInclude:
+  - Query.rateLimit
+  - RateLimit.cost
+  - RateLimit.nodeCount
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-099. Cost of the current GraphQL query.

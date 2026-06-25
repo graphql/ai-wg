@@ -1,0 +1,23 @@
+{
+    "id": "slicer",
+    "name": "slicer — type-anchored schema slicer (consolidated)",
+    "description": "Find the best-matching types, build a budgeted greedy field-expansion per type, merge the relevant ones, then add paths-to-root, connection traversal, and root-collection entries. Single code path; numeric tunables only.",
+    "defaultConfig": {
+        "typesTopK": 15,
+        "kneedleSensitivity": 0.05,
+        "perVariantBudget": 800,
+        "efficiencyThreshold": 0.04,
+        "maxExpandedTypes": 40,
+        "poolEntryTypeCosFloor": 0.25,
+        "cosWeight": 4.0,
+        "lexWeight": 1.5,
+        "parentCosBlend": 0.3,
+        "variantTopK": 20,
+        "relevanceFloor": 0.75,
+        "mergeMaxVariants": 10,
+        "rootFamilyDepth": 1,
+        "pathsMaxPerType": 5,
+        "pathsMaxDepth": 6,
+        "coldPruneTau": 0.0
+    }
+}

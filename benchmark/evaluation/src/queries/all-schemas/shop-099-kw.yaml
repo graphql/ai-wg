@@ -1,0 +1,22 @@
+id: shop-099-kw
+schemaId: shopify
+query: API access scopes private app
+operation: |
+  query {
+    currentAppInstallation {
+      accessScopes {
+        handle
+      }
+    }
+  }
+targetFields:
+  - AccessScope.handle
+targetTypes:
+  - AccessScope
+mustInclude:
+  - QueryRoot.currentAppInstallation
+  - AppInstallation.accessScopes
+  - AccessScope.handle
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-099. Access scopes granted to the current private app.

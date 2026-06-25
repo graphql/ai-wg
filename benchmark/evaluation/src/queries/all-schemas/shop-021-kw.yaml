@@ -1,0 +1,25 @@
+id: shop-021-kw
+schemaId: shopify
+query: out of stock products all locations
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        totalInventory
+        tracksInventory
+      }
+    }
+  }
+targetFields:
+  - Product.totalInventory
+  - Product.tracksInventory
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.products
+  - Product.totalInventory
+  - Product.tracksInventory
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-021. Products currently out of stock across all locations.

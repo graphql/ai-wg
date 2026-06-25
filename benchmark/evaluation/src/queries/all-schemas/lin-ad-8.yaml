@@ -1,0 +1,57 @@
+id: lin-ad-8
+schemaId: linear
+query: "Which outstanding workspace invitations have not been accepted yet?"
+operation: |
+  query {
+    organizationInvites(first: 10) {
+      nodes {
+        email
+        invitee {
+          id
+        }
+        acceptedAt
+      }
+    }
+  }
+targetFields:
+  - OrganizationInvite.email
+  - OrganizationInvite.acceptedAt
+targetTypes:
+  - OrganizationInvite
+mustInclude:
+  - Query.organizationInvites
+  - OrganizationInvite.email
+  - OrganizationInvite.invitee
+  - OrganizationInvite.acceptedAt
+  - Query.organizationInvites(first:)
+mustExclude:
+  - Mutation
+notes: Pending invite cleanup.
+answer:
+  pendingInvitations:
+    - email: newmember1@example.com
+      inviteeId: null
+    - email: newmember3@example.com
+      inviteeId: null
+    - email: contractor@partner.com
+      inviteeId: null
+answerSchema:
+  type: object
+  properties:
+    pendingInvitations:
+      type: array
+      items:
+        type: object
+        properties:
+          email:
+            type: string
+          inviteeId:
+            type: string
+            description: Id of the invited user, if resolved
+        required:
+          - email
+          - inviteeId
+        additionalProperties: false
+  required:
+    - pendingInvitations
+  additionalProperties: false

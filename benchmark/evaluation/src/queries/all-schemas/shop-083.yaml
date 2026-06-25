@@ -1,0 +1,107 @@
+id: shop-083
+schemaId: shopify
+query: What are the shipping zones and per-zone rates for delivery profile
+  gid://shopify/DeliveryProfile/1?
+operation: |
+  query {
+    deliveryProfile(id: "gid://shopify/Object/1") {
+      profileLocationGroups {
+        locationGroupZones(first: 10) {
+          nodes {
+            zone {
+              name
+            }
+            methodDefinitions(first: 10) {
+              nodes {
+                name
+                rateProvider {
+                  ... on DeliveryRateDefinition {
+                    price {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DeliveryZone.name
+  - DeliveryMethodDefinition.name
+  - DeliveryRateDefinition.price
+  - MoneyV2.amount
+  - MoneyV2.currencyCode
+targetTypes: []
+mustInclude:
+  - QueryRoot.deliveryProfile
+  - QueryRoot.deliveryProfile(id:)
+  - DeliveryProfile.profileLocationGroups
+  - DeliveryProfileLocationGroup.locationGroupZones
+  - DeliveryProfileLocationGroup.locationGroupZones(first:)
+  - DeliveryLocationGroupZone.zone
+  - DeliveryZone.name
+  - DeliveryLocationGroupZone.methodDefinitions
+  - DeliveryLocationGroupZone.methodDefinitions(first:)
+  - DeliveryMethodDefinition.name
+  - DeliveryMethodDefinition.rateProvider
+  - DeliveryRateDefinition.price
+  - MoneyV2.amount
+  - MoneyV2.currencyCode
+mustExclude:
+  - Mutation
+notes: Shipping zones and per-zone rates on a delivery profile.
+answerSchema:
+  type: object
+  properties:
+    zones:
+      type: array
+      items:
+        type: object
+        properties:
+          zone:
+            type: string
+          rates:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                amount:
+                  type: string
+                currencyCode:
+                  type: string
+              required:
+                - name
+                - amount
+                - currencyCode
+              additionalProperties: false
+        required:
+          - zone
+          - rates
+        additionalProperties: false
+  required:
+    - zones
+  additionalProperties: false
+answer:
+  zones:
+    - zone: Europe Zone
+      rates:
+        - name: Regional Delivery
+          amount: "189.99"
+          currencyCode: SDG
+        - name: Priority Mail
+          amount: "15.00"
+          currencyCode: KGS
+    - zone: North America Zone
+      rates:
+        - name: Expedited Overnight
+          amount: "89.99"
+          currencyCode: EUR
+        - name: Two-Day Delivery
+          amount: "85.00"
+          currencyCode: AED

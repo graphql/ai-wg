@@ -1,0 +1,67 @@
+id: shop-051
+schemaId: shopify
+query: "Which customers have placed more than 5 orders? Show their display name,
+  city, and order count. (filter: orders_count:>5)"
+operation: |
+  query {
+    customers(first: 10, query: "orders_count:>5") {
+      nodes {
+        displayName
+        defaultAddress {
+          city
+        }
+        numberOfOrders
+      }
+    }
+  }
+targetFields:
+  - Customer.displayName
+  - Customer.numberOfOrders
+  - MailingAddress.city
+targetTypes:
+  - Customer
+  - MailingAddress
+mustInclude:
+  - QueryRoot.customers
+  - Customer.displayName
+  - Customer.defaultAddress
+  - Customer.numberOfOrders
+  - MailingAddress.city
+  - QueryRoot.customers(first:)
+  - QueryRoot.customers(query:)
+mustExclude:
+  - Mutation
+notes: Customers from a specific city with > 5 orders.
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          displayName:
+            type: string
+          city:
+            type: string
+          orderCount:
+            type: string
+        required:
+          - displayName
+          - city
+          - orderCount
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false
+answer:
+  customers:
+    - displayName: Amelia Lopez
+      city: San Antonio
+      orderCount: "12"
+    - displayName: Michael Chen
+      city: Los Angeles
+      orderCount: "15"
+    - displayName: Benjamin Clark
+      city: Dallas
+      orderCount: "23"

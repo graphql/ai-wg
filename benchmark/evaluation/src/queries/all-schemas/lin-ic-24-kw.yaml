@@ -1,0 +1,31 @@
+id: lin-ic-24-kw
+schemaId: linear
+query: issue relations linked duplicates blocks
+operation: |
+  query {
+    issue(id: "<id>") {
+      relations(first: 10) {
+        nodes {
+          type
+          relatedIssue {
+            id
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueRelation.type
+targetTypes:
+  - IssueRelation
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.relations
+  - IssueRelation.type
+  - IssueRelation.relatedIssue
+  - Issue.relations(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-ic-24. Issue relationships (duplicates, blocks)."

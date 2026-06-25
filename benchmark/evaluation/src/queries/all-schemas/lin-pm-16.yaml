@@ -1,0 +1,65 @@
+id: lin-pm-16
+schemaId: linear
+query: "Across all projects, which milestones are due this quarter?"
+operation: |
+  query {
+    projectMilestones(first: 10) {
+      nodes {
+        id
+        name
+        targetDate
+        project {
+          id
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectMilestone.name
+  - ProjectMilestone.targetDate
+targetTypes:
+  - ProjectMilestone
+mustInclude:
+  - Query.projectMilestones
+  - ProjectMilestone.name
+  - ProjectMilestone.targetDate
+  - ProjectMilestone.project
+  - Query.projectMilestones(first:)
+mustExclude:
+  - Mutation
+notes: All upcoming milestones across projects.
+answerSchema:
+  type: object
+  properties:
+    milestones:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          targetDate:
+            type: string
+          project:
+            type: string
+            description: Owning project name
+        required:
+          - name
+          - targetDate
+          - project
+        additionalProperties: false
+  required:
+    - milestones
+  additionalProperties: false
+answer:
+  milestones:
+    - name: v2 Beta Launch
+      targetDate: 2025-05-15
+      project: Mobile App
+    - name: v2 General Availability
+      targetDate: 2025-06-15
+      project: Mobile App
+    - name: OAuth Integration
+      targetDate: 2025-06-30
+      project: Auth Redesign

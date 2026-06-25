@@ -1,0 +1,31 @@
+id: glab-032-kw
+schemaId: gitlab
+query: merge request commenters last note
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      commenters(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+      notes(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Note
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.commenters
+  - MergeRequest.notes
+  - MergeRequest.commenters(first:)
+  - MergeRequest.notes(first:)
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-032. Maintainer: top commenters + last note on MR."

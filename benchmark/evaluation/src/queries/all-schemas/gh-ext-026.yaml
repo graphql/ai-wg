@@ -1,0 +1,83 @@
+id: gh-ext-026
+schemaId: github
+query: What are the run number, creation time, and trigger event for each
+  workflow run associated with check suites on the HEAD commit of the
+  octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object {
+        ... on Commit {
+          checkSuites(first: 10) {
+            nodes {
+              workflowRun {
+                runNumber
+                createdAt
+                event
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - WorkflowRun.runNumber
+  - WorkflowRun.createdAt
+  - WorkflowRun.event
+targetTypes:
+  - WorkflowRun
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Commit.checkSuites
+  - CheckSuite.workflowRun
+  - WorkflowRun.runNumber
+  - WorkflowRun.createdAt
+  - WorkflowRun.event
+  - Commit.checkSuites(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Fetches all check suites on the HEAD commit and extracts workflow run
+  metadata. The question avoids ordering semantics that the mock cannot honor.
+answerSchema:
+  type: object
+  properties:
+    workflowRuns:
+      type: array
+      items:
+        type: object
+        properties:
+          runNumber:
+            type: integer
+          createdAt:
+            type: string
+          event:
+            type: string
+        required:
+          - runNumber
+          - createdAt
+          - event
+        additionalProperties: false
+  required:
+    - workflowRuns
+  additionalProperties: false
+answer:
+  workflowRuns:
+    - runNumber: 42
+      createdAt: 2025-05-29T00:00:00.000Z
+      event: push
+    - runNumber: 43
+      createdAt: 2025-05-30T00:00:00.000Z
+      event: pull_request
+    - runNumber: 44
+      createdAt: 2025-05-31T00:00:00.000Z
+      event: push
+    - runNumber: 41
+      createdAt: 2025-05-22T00:00:00.000Z
+      event: push
+    - runNumber: 45
+      createdAt: 2025-06-01T00:00:00.000Z
+      event: push
