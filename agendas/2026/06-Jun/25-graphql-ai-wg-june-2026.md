@@ -27,6 +27,7 @@
 | Michael Rebello  | @rebello95      | Airbnb             | San Diego, CA, USA    |
 | Jeff Auriemma    | @bignimbus      | Apollo             | Monroe, CT, US        |
 | Thore Koritzius  | @ThoreKoritzius | Self               | Cologne, Germany      |
+| Raymie Stata     | @rstata         | Airbnb             | San Francisco, CA, US |
 
 
 ## Agenda
