@@ -24,6 +24,7 @@
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
 | Samuel Vazquez	       | @samuelAndalon	     | Expedia Group	            | Seattle, WA, US       |
+| Thore Koritzius  | @ThoreKoritzius | Self             | Cologne, Germany      |
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 
 
