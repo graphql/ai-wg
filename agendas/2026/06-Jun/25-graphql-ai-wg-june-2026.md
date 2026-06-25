@@ -28,6 +28,7 @@
 | Jeff Auriemma    | @bignimbus      | Apollo             | Monroe, CT, US        |
 | Thore Koritzius  | @ThoreKoritzius | Self               | Cologne, Germany      |
 | Željko Kozina    | @zkozina	       | Chronomill         | Dublin, ROI           |
+| Raymie Stata     | @rstata         | Airbnb             | San Francisco, CA, US |
 
 
 ## Agenda
