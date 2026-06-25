@@ -20,11 +20,12 @@
 ## Attendees
 
 <!-- prettier-ignore -->
-| Name             | GitHub        | Organization       | Location              |
-| :--------------- | :------------ | :----------------- | :-------------------- |
-| Dale Seo	       | @DaleSeo	     | Apollo	            | Toronto, ON, CA       |
-| Samuel Vazquez	       | @samuelAndalon	     | Expedia Group	            | Seattle, WA, US       |
-| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
+| Name             | GitHub         | Organization       | Location              |
+| :--------------- | :------------- | :----------------- | :-------------------- |
+| Dale Seo	       | @DaleSeo	      | Apollo	           | Toronto, ON, CA       |
+| Samuel Vazquez	 | @samuelAndalon	| Expedia Group      | Seattle, WA, US       |
+| Michael Rebello  | @rebello95     | Airbnb             | San Diego, CA, USA    |
+| Jeff Auriemma    | @bignimbus     | Apollo             | Monroe, CT, US        |
 
 
 ## Agenda
