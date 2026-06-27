@@ -1,0 +1,9 @@
+{
+    "id": "qwen3-emb-graphql",
+    "name": "Qwen3-Embedding-0.6B-GraphQL (xthor)",
+    "description": "Self-hosted sentence-transformers fine-tune of Qwen3-Embedding-0.6B for GraphQL. Served by the embed-server sidecar.",
+    "provider": "http",
+    "modelName": "xthor/Qwen3-Embedding-0.6B-GraphQL",
+    "dims": 1024,
+    "endpoint": "http://127.0.0.1:8765/embed"
+}
