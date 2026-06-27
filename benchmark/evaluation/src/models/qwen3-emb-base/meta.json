@@ -1,0 +1,9 @@
+{
+    "id": "qwen3-emb-base",
+    "name": "Qwen3-Embedding-0.6B (base)",
+    "description": "Base checkpoint from which qwen3-emb-graphql is fine-tuned. Same architecture, same query/document prompts; no GraphQL-specific training.",
+    "provider": "http",
+    "modelName": "Qwen/Qwen3-Embedding-0.6B",
+    "dims": 1024,
+    "endpoint": "http://127.0.0.1:8766/embed"
+}
