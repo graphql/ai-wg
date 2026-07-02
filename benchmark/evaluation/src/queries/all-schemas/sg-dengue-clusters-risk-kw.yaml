@@ -1,0 +1,24 @@
+id: sg-dengue-clusters-risk-kw
+schemaId: singapore
+query: dengue clusters risk level
+operation: |
+  query {
+    allDengueClusters {
+      locality
+      caseCount
+      breedingSitesHomes
+      breedingSitesPublicPlaces
+      breedingSitesConstruction
+    }
+  }
+targetFields:
+  - DengueCluster.caseCount
+  - DengueCluster.locality
+targetTypes:
+  - DengueCluster
+mustInclude:
+  - Query.allDengueClusters
+mustExclude: []
+shouldInclude:
+  - DengueCluster
+notes: Keyword variant of sg-dengue-clusters-risk. Generated assuming LLM-as-caller without schema knowledge. The schema models clusters via DengueCluster + risk fields. Loose 'must' since the exact risk field name varies.

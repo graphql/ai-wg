@@ -1,0 +1,72 @@
+id: glab-025
+schemaId: gitlab
+query: List merge requests in project group/project and whether they conflict
+  with their target branch.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          iid
+          title
+          conflicts
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.conflicts
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.conflicts
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Maintainer: conflicting MRs."
+answerSchema:
+  type: object
+  properties:
+    mergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          conflicts:
+            type: boolean
+        required:
+          - iid
+          - title
+          - conflicts
+        additionalProperties: false
+  required:
+    - mergeRequests
+  additionalProperties: false
+answer:
+  mergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+      conflicts: true
+    - iid: "108"
+      title: "perf: reduce memory footprint of serializer"
+      conflicts: true
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+      conflicts: false
+    - iid: "4774"
+      title: "feat: add webhook retry mechanism"
+      conflicts: true
+    - iid: "2623"
+      title: "fix: resolve race condition in cache layer"
+      conflicts: false

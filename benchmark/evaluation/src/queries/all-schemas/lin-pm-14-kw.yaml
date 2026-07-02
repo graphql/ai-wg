@@ -1,0 +1,23 @@
+id: lin-pm-14-kw
+schemaId: linear
+query: search documents keyword
+operation: |
+  query {
+    searchDocuments(term: "<id>") {
+      nodes {
+        title
+      }
+    }
+  }
+targetFields:
+  - DocumentSearchResult.title
+targetTypes:
+  - DocumentSearchResult
+mustInclude:
+  - Query.searchDocuments
+  - DocumentSearchPayload.nodes
+  - DocumentSearchResult.title
+  - Query.searchDocuments(term:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-14. Document full-text search.

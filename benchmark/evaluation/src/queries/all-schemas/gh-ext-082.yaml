@@ -1,0 +1,105 @@
+id: gh-ext-082
+schemaId: github
+query: What are the iteration configurations and item assignments for the
+  "example" field in project Nr. 1 of the octocat organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectV2(number: 1) {
+        field(name: "example") {
+          ... on ProjectV2IterationField {
+            configuration {
+              iterations {
+                id
+                title
+                startDate
+                duration
+              }
+            }
+          }
+        }
+        items(first: 10) {
+          nodes {
+            id
+            type
+            fieldValueByName(name: "example") {
+              ... on ProjectV2ItemFieldIterationValue {
+                iterationId
+                title
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectV2IterationFieldIteration.id
+  - ProjectV2IterationFieldIteration.title
+  - ProjectV2IterationFieldIteration.startDate
+  - ProjectV2ItemFieldIterationValue.iterationId
+  - ProjectV2ItemFieldIterationValue.title
+targetTypes:
+  - Project
+mustInclude:
+  - Query.organization
+  - Organization.projectV2
+  - ProjectV2.field
+  - ProjectV2IterationField.configuration
+  - ProjectV2IterationFieldConfiguration.iterations
+  - ProjectV2.items
+  - ProjectV2ItemFieldIterationValue.iterationId
+  - ProjectV2ItemFieldIterationValue.title
+  - Organization.projectV2(number:)
+  - ProjectV2.field(name:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Iteration field config and iterations for the project.
+answerSchema:
+  type: object
+  properties:
+    iterations:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          startDate:
+            type: string
+          duration:
+            type: number
+        required:
+          - title
+          - startDate
+          - duration
+        additionalProperties: false
+    itemAssignments:
+      type: array
+      items:
+        type: object
+        properties:
+          iterationTitle:
+            type: string
+        required:
+          - iterationTitle
+        additionalProperties: false
+  required:
+    - iterations
+    - itemAssignments
+  additionalProperties: false
+answer:
+  iterations:
+    - title: Critical Bug Fixes Iteration
+      startDate: 2025-04-13T00:00:00.000Z
+      duration: 38
+    - title: Q2 2026 Sprint Planning
+      startDate: 2024-07-02T00:00:00.000Z
+      duration: 504
+  itemAssignments:
+    - iterationTitle: Sprint 4 - Polish & Testing
+    - iterationTitle: Sprint 1 - Foundation
+    - iterationTitle: "Milestone: Beta Launch"
+    - iterationTitle: Sprint 1 - Foundation
+    - iterationTitle: Sprint 1 - Foundation

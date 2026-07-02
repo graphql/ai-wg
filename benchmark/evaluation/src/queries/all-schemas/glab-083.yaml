@@ -1,0 +1,71 @@
+id: glab-083
+schemaId: gitlab
+query: For the board with id "gid://gitlab/Board/1" in the group whose fullPath
+  is "gitlab-org/gitlab", show the health status (issuesAtRisk,
+  issuesNeedingAttention, issuesOnTrack) for each epic associated with that
+  board.
+operation: |
+  query {
+    group(fullPath: "gitlab-org/gitlab") {
+      board(id: "gid://gitlab/Board/1") {
+        epics(first: 10) {
+          nodes {
+            healthStatus {
+              issuesAtRisk
+              issuesNeedingAttention
+              issuesOnTrack
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - EpicHealthStatus.issuesAtRisk
+  - EpicHealthStatus.issuesNeedingAttention
+  - EpicHealthStatus.issuesOnTrack
+targetTypes:
+  - EpicHealthStatus
+mustInclude:
+  - Query.group
+  - Query.group(fullPath:)
+  - Group.board
+  - Group.board(id:)
+  - Board.epics
+  - Board.epics(first:)
+  - BoardEpic.healthStatus
+  - EpicHealthStatus.issuesAtRisk
+  - EpicHealthStatus.issuesNeedingAttention
+  - EpicHealthStatus.issuesOnTrack
+mustExclude:
+  - Mutation
+notes: "PM: epic health status on a board (non-deprecated board path;
+  Group.epics is deprecated)."
+answerSchema:
+  type: object
+  properties:
+    epics:
+      type: array
+      items:
+        type: object
+        properties:
+          issuesAtRisk: &a1
+            type: integer
+          issuesNeedingAttention: *a1
+          issuesOnTrack: *a1
+        required:
+          - issuesAtRisk
+          - issuesNeedingAttention
+          - issuesOnTrack
+        additionalProperties: false
+  required:
+    - epics
+  additionalProperties: false
+answer:
+  epics:
+    - issuesAtRisk: 188
+      issuesNeedingAttention: 864
+      issuesOnTrack: 846
+    - issuesAtRisk: 705
+      issuesNeedingAttention: 597
+      issuesOnTrack: 875

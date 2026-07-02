@@ -1,0 +1,24 @@
+id: glab-020-kw
+schemaId: gitlab
+query: merge train activity default branch
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeTrains(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - MergeTrain
+mustInclude:
+  - Query.project
+  - Project.mergeTrains
+  - Project.mergeTrains(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-020. Maintainer: merge train activity for default branch."

@@ -1,0 +1,133 @@
+id: shop-018
+schemaId: shopify
+query: What additional fees and total duties are recorded on each order — show
+  additionalFees and currentTotalDutiesSet?
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        additionalFees {
+          id
+          name
+          price {
+            presentmentMoney {
+              amount
+              currencyCode
+            }
+          }
+        }
+        currentTotalDutiesSet {
+          presentmentMoney {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.additionalFees
+  - Order.currentTotalDutiesSet
+  - QueryRoot.orders(first:)
+  - AdditionalFee.name
+  - AdditionalFee.price
+mustExclude:
+  - Mutation
+notes: Duty and import fees on international orders this quarter.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          additionalFees:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                amount:
+                  type: string
+                currencyCode:
+                  type: string
+              required:
+                - name
+                - amount
+                - currencyCode
+              additionalProperties: false
+          totalDuties:
+            type: object
+            properties:
+              amount:
+                type: string
+              currencyCode:
+                type: string
+            required:
+              - amount
+              - currencyCode
+            additionalProperties: false
+        required:
+          - additionalFees
+          - totalDuties
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - additionalFees:
+        - name: Insurance Charge
+          amount: "44.50"
+          currencyCode: AUD
+        - name: Expedited Shipping
+          amount: "22.99"
+          currencyCode: FJD
+      totalDuties:
+        amount: "220.00"
+        currencyCode: ARS
+    - additionalFees:
+        - name: Handling Fee
+          amount: "175.50"
+          currencyCode: SSP
+        - name: Signature Required
+          amount: "165.00"
+          currencyCode: OMR
+      totalDuties:
+        amount: "135.75"
+        currencyCode: TJS
+    - additionalFees:
+        - name: Gift Message Card
+          amount: "34.50"
+          currencyCode: ILS
+        - name: Assembly Fee
+          amount: "49.99"
+          currencyCode: DJF
+      totalDuties:
+        amount: "44.99"
+        currencyCode: INR
+    - additionalFees:
+        - name: Rush Processing
+          amount: "32.50"
+          currencyCode: ARS
+        - name: Eco-Friendly Packaging
+          amount: "86.99"
+          currencyCode: PHP
+      totalDuties:
+        amount: "59.99"
+        currencyCode: SRD
+    - additionalFees:
+        - name: Service Charge
+          amount: "214.00"
+          currencyCode: NOK
+        - name: Gift Wrapping
+          amount: "12.00"
+          currencyCode: SOS
+      totalDuties:
+        amount: "41.50"
+        currencyCode: NPR

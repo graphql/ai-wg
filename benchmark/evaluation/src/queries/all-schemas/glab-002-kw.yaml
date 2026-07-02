@@ -1,0 +1,25 @@
+id: glab-002-kw
+schemaId: gitlab
+query: merge requests review requested this week
+operation: |
+  query {
+    currentUser {
+      reviewRequestedMergeRequests(first: 10) {
+        nodes {
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.createdAt
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.reviewRequestedMergeRequests
+  - MergeRequest.createdAt
+  - CurrentUser.reviewRequestedMergeRequests(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-002. Developer: MRs awaiting my review. Needs review-requested list + creation/age signal."

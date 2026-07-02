@@ -1,0 +1,66 @@
+id: glab-062
+schemaId: gitlab
+query: What are the security report findings on the latest pipeline in the
+  group/project project? List the title, report type, and description for each.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipeline {
+        securityReportFindings(first: 10) {
+          nodes {
+            title
+            reportType
+            description
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PipelineSecurityReportFinding.title
+  - PipelineSecurityReportFinding.reportType
+  - PipelineSecurityReportFinding.description
+targetTypes:
+  - PipelineSecurityReportFinding
+mustInclude:
+  - Query.project
+  - Project.pipeline
+  - Pipeline.securityReportFindings
+  - PipelineSecurityReportFinding.title
+  - PipelineSecurityReportFinding.reportType
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    findings:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          reportType: *a1
+          description: *a1
+        required:
+          - title
+          - reportType
+          - description
+        additionalProperties: false
+  required:
+    - findings
+  additionalProperties: false
+notes: "Security: pipeline security report findings without report type filter."
+answer:
+  findings:
+    - title: Reflected XSS via unsanitized query parameter
+      reportType: SARIF
+      description: User-supplied input from the search query parameter is reflected in
+        the response without proper encoding, enabling reflected cross-site
+        scripting attacks.
+    - title: Prototype pollution in lodash merge utility
+      reportType: DEPENDENCY_SCANNING
+      description: The lodash merge function is vulnerable to prototype pollution,
+        allowing an attacker to inject properties into Object.prototype via
+        crafted input.

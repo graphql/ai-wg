@@ -1,0 +1,25 @@
+id: shop-044-kw
+schemaId: shopify
+query: customers opted out marketing emails
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        emailMarketingConsent {
+          marketingState
+        }
+      }
+    }
+  }
+targetFields:
+  - CustomerEmailMarketingConsentState.marketingState
+targetTypes:
+  - CustomerEmailMarketingConsentState
+mustInclude:
+  - QueryRoot.customers
+  - Customer.emailMarketingConsent
+  - CustomerEmailMarketingConsentState.marketingState
+  - QueryRoot.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-044. Customers who have opted out of marketing emails.

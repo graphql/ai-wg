@@ -1,0 +1,55 @@
+id: lin-ad-2
+schemaId: linear
+query: "As of June 1 2025, which users have not logged in for more than 90 days?
+  List their email addresses and last-seen timestamps."
+operation: |
+  query {
+    users(first: 10) {
+      nodes {
+        email
+        lastSeen
+      }
+    }
+  }
+answer:
+  inactiveUsers:
+    - email: frank@acme.com
+      lastSeen: 2024-09-06T00:00:00.000Z
+    - email: grace@acme.com
+      lastSeen: 2024-11-22T00:00:00.000Z
+answerSchema:
+  type: object
+  properties:
+    inactiveUsers:
+      type: array
+      items:
+        type: object
+        properties:
+          email:
+            type: string
+            description: Email address of the inactive user
+          lastSeen:
+            type: string
+            description: ISO timestamp of the user's last login
+        required:
+          - email
+          - lastSeen
+        additionalProperties: false
+  required:
+    - inactiveUsers
+  additionalProperties: false
+targetFields:
+  - User.lastSeen
+  - User.email
+targetTypes:
+  - User
+mustInclude:
+  - Query.users
+  - User.lastSeen
+  - User.email
+  - Query.users(first:)
+mustExclude:
+  - Mutation
+notes: Identify inactive seats for clean-up. Reference date 2025-06-01; 90-day
+  cutoff is 2025-03-03. User.email-6555 (lastSeen 2025-03-31, 62 days) is
+  excluded.

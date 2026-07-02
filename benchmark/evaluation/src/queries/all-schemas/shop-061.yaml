@@ -1,0 +1,72 @@
+id: shop-061
+schemaId: shopify
+query: List all active code-based discount nodes and how many times each has
+  been used.
+operation: |
+  query {
+    discountNodes(first: 10, query: "status:active method:code") {
+      edges {
+        node {
+          discount {
+            ... on DiscountCodeBasic {
+              asyncUsageCount
+              codes(first: 5) {
+                edges {
+                  node {
+                    code
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscountCodeBasic.asyncUsageCount
+  - DiscountRedeemCode.code
+targetTypes:
+  - DiscountCodeBasic
+  - DiscountRedeemCode
+mustInclude:
+  - QueryRoot.discountNodes
+  - QueryRoot.discountNodes(first:)
+  - QueryRoot.discountNodes(query:)
+  - DiscountCodeBasic.asyncUsageCount
+  - DiscountCodeBasic.codes
+  - DiscountRedeemCode.code
+mustExclude:
+  - Mutation
+notes: Active code-based discount nodes and how many times each has been used.
+answerSchema:
+  type: object
+  properties:
+    discounts:
+      type: array
+      items:
+        type: object
+        properties:
+          usageCount:
+            type: integer
+          codes:
+            type: array
+            items:
+              type: string
+        required:
+          - usageCount
+          - codes
+        additionalProperties: false
+  required:
+    - discounts
+  additionalProperties: false
+answer:
+  discounts:
+    - usageCount: 410
+      codes:
+        - NEWYEAR20
+        - HOLIDAY35
+    - usageCount: 612
+      codes:
+        - PROMO10
+        - FREESHIP

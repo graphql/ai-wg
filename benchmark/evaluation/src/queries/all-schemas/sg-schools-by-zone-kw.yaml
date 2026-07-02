@@ -1,0 +1,25 @@
+id: sg-schools-by-zone-kw
+schemaId: singapore
+query: schools east zone
+operation: |
+  query {
+    allSchools {
+      name
+      zone
+      level
+    }
+  }
+targetFields:
+  - School.zone
+  - School.name
+  - School.level
+targetTypes:
+  - School
+mustInclude:
+  - Query.allSchools
+  - School.zone
+mustExclude: []
+shouldInclude:
+  - School.name
+  - School.level
+notes: Keyword variant of sg-schools-by-zone. Generated assuming LLM-as-caller without schema knowledge. Filter-like phrasing implies an arg but the schema only exposes the field. Tests that filter-arg coords aren't required when not present.

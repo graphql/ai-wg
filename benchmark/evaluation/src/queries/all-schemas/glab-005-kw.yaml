@@ -1,0 +1,26 @@
+id: glab-005-kw
+schemaId: gitlab
+query: unresolved discussion threads merge request
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      discussions(first: 10) {
+        nodes {
+          resolved
+        }
+      }
+    }
+  }
+targetFields:
+  - Discussion.resolved
+targetTypes:
+  - Discussion
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.discussions
+  - Discussion.resolved
+  - MergeRequest.discussions(first:)
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-005. Developer: unresolved discussions on an MR."

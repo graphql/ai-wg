@@ -1,0 +1,24 @@
+id: glab-085-kw
+schemaId: gitlab
+query: iteration report past iteration
+operation: |
+  query {
+    iteration(id: "gid://gitlab/Iteration/1") {
+      report {
+        __typename
+      }
+      state
+    }
+  }
+targetFields:
+  - Iteration.state
+targetTypes:
+  - Iteration
+mustInclude:
+  - Query.iteration
+  - Iteration.report
+  - Iteration.state
+  - Query.iteration(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-085. PM: past iteration report."

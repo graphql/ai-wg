@@ -1,0 +1,73 @@
+id: lin-ic-20
+schemaId: linear
+query: Show me the full comment thread on issue ENG-7.
+operation: |
+  query {
+    issue(id: "ENG-7") {
+      comments(first: 10) {
+        nodes {
+          body
+          user {
+            id
+          }
+          parent {
+            body
+            user {
+              id
+            }
+            parent {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+answer:
+  comments:
+    - body: This needs to be fixed urgently, affecting production users.
+      author: user-2
+    - body: I can reproduce it locally. Working on a fix.
+      author: user-1
+answerSchema:
+  type: object
+  properties:
+    comments:
+      type: array
+      items:
+        type: object
+        properties:
+          body:
+            type: string
+          author:
+            type: string
+            description: comment author user id
+        required:
+          - body
+          - author
+        additionalProperties: false
+  required:
+    - comments
+  additionalProperties: false
+targetFields:
+  - Comment.body
+targetTypes:
+  - Comment
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.comments
+  - Comment.body
+  - Comment.user
+  - Comment.parent
+  - Issue.comments(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Threaded comments on an issue.
+answers:
+  - comments:
+      - body: This needs to be fixed urgently, affecting production users.
+        author: Bob Smith
+      - body: I can reproduce it locally. Working on a fix.
+        author: Alice Johnson

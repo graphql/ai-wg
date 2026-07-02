@@ -1,0 +1,32 @@
+id: shop-069-kw
+schemaId: shopify
+query: email campaign converted customers orders
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        customerJourneySummary {
+          moments(first: 10) {
+            edges {
+              cursor
+            }
+          }
+        }
+        customer {
+          canDelete
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.customerJourneySummary
+  - CustomerJourneySummary.moments
+  - Order.customer
+  - CustomerJourneySummary.moments(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-069. Customers who converted from a recent email campaign.

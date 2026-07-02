@@ -1,0 +1,49 @@
+id: lin-em-14
+schemaId: linear
+query: "What initiatives live under the AI-Platform parent initiative?"
+operation: |
+  query {
+    initiative(id: "AI-Platform") {
+      subInitiatives(first: 10) {
+        nodes {
+          id
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Initiative.id
+  - Initiative.name
+targetTypes:
+  - Initiative
+mustInclude:
+  - Query.initiative
+  - Initiative.subInitiatives
+  - InitiativeConnection.nodes
+  - Initiative.id
+  - Initiative.subInitiatives(first:)
+  - Query.initiative(id:)
+mustExclude:
+  - Mutation
+notes: Initiative hierarchy (parent/child).
+answerSchema:
+  type: object
+  properties:
+    subInitiatives:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+        required:
+          - name
+        additionalProperties: false
+  required:
+    - subInitiatives
+  additionalProperties: false
+answer:
+  subInitiatives:
+    - name: MLOps Infrastructure
+    - name: LLM Integration

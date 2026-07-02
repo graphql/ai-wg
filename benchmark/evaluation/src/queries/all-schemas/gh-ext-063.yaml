@@ -1,0 +1,63 @@
+id: gh-ext-063
+schemaId: github
+query: What issue comments has the user octocat made?
+operation: |
+  query {
+    user(login: "octocat") {
+      issueComments(first: 10) {
+        nodes {
+          body
+          issue {
+            title
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueComment.body
+  - Issue.title
+targetTypes:
+  - IssueComment
+  - Issue
+  - Comment
+  - User
+mustInclude:
+  - Query.user
+  - User.issueComments
+  - IssueCommentConnection.nodes
+  - IssueComment.body
+  - IssueComment.issue
+  - Issue.title
+  - Query.user(login:)
+  - User.issueComments(first:)
+mustExclude:
+  - Mutation
+notes: Issue comments for a user; mentions are matched in the body text.
+answerSchema:
+  type: object
+  properties:
+    issueComments:
+      type: array
+      items:
+        type: object
+        properties:
+          issueTitle:
+            type: string
+          body:
+            type: string
+        required:
+          - issueTitle
+          - body
+        additionalProperties: false
+  required:
+    - issueComments
+  additionalProperties: false
+answer:
+  issueComments:
+    - issueTitle: Bug in login flow
+      body: I can reproduce this.
+    - issueTitle: Bug in login flow
+      body: Working on a fix.
+    - issueTitle: "Feature request: dark mode"
+      body: This would be nice to have.

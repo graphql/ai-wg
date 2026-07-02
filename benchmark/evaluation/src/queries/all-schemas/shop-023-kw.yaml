@@ -1,0 +1,29 @@
+id: shop-023-kw
+schemaId: shopify
+query: draft unpublished products sales channels
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        status
+        resourcePublications(first: 10) {
+          edges {
+            cursor
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.status
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.products
+  - Product.status
+  - Product.resourcePublications
+  - Product.resourcePublications(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-023. Draft / unpublished products not on any sales channel.

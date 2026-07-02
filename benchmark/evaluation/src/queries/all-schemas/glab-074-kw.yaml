@@ -1,0 +1,28 @@
+id: glab-074-kw
+schemaId: gitlab
+query: time tracking milestone issues
+operation: |
+  query {
+    milestone(id: "gid://gitlab/Milestone/1") {
+      report {
+        __typename
+      }
+    }
+    timelogs(first: 10) {
+      nodes {
+        __typename
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Timelog
+mustInclude:
+  - Query.milestone
+  - Milestone.report
+  - Query.timelogs
+  - Query.milestone(id:)
+  - Query.timelogs(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-074. PM: time logged on milestone issues."

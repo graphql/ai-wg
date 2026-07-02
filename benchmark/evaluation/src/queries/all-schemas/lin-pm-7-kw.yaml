@@ -1,0 +1,29 @@
+id: lin-pm-7-kw
+schemaId: linear
+query: projects target date slipped overdue
+operation: |
+  query {
+    projects(first: 10) {
+      nodes {
+        startDate
+        targetDate
+        lead {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.startDate
+  - Project.targetDate
+targetTypes:
+  - Project
+mustInclude:
+  - Query.projects
+  - Project.startDate
+  - Project.targetDate
+  - Project.lead
+  - Query.projects(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-7. PM monitors target-date slippage across the portfolio.

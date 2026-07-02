@@ -1,0 +1,36 @@
+id: glab-040-kw
+schemaId: gitlab
+query: artifacts last successful pipeline deploy
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(first: 10) {
+        nodes {
+          jobs(first: 10) {
+            nodes {
+              artifacts(first: 10) {
+                nodes {
+                  __typename
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - CiJobArtifact
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.jobs
+  - CiJob.artifacts
+  - CiJob.artifacts(first:)
+  - Pipeline.jobs(first:)
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-040. DevOps: deploy-stage artifacts on last pipeline."

@@ -1,0 +1,32 @@
+id: shop-018-kw
+schemaId: shopify
+query: duties import fees international orders quarter
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        additionalFees {
+          id
+        }
+        shippingAddress {
+          address1
+        }
+        currentTotalDutiesSet {
+          presentmentMoney {
+            amount
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.additionalFees
+  - Order.shippingAddress
+  - Order.currentTotalDutiesSet
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-018. Duty and import fees on international orders this quarter.

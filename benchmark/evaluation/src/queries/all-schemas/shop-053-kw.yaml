@@ -1,0 +1,25 @@
+id: shop-053-kw
+schemaId: shopify
+query: tax exemption B2B customers
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        taxExempt
+        taxExemptions
+      }
+    }
+  }
+targetFields:
+  - Customer.taxExempt
+  - Customer.taxExemptions
+targetTypes:
+  - Customer
+mustInclude:
+  - QueryRoot.customers
+  - Customer.taxExempt
+  - Customer.taxExemptions
+  - QueryRoot.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-053. Tax-exempt status and exemption reasons for B2B customers.

@@ -1,0 +1,56 @@
+id: gh-ext-059
+schemaId: github
+query: Which repositories in the octocat organization are mirrors of external sources?
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          nameWithOwner
+          isMirror
+          mirrorUrl
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.isMirror
+  - Repository.mirrorUrl
+  - Repository.nameWithOwner
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.isMirror
+  - Repository.mirrorUrl
+  - Repository.nameWithOwner
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Repositories in the octocat organization where isMirror is true and their
+  mirror URL.
+answerSchema:
+  type: object
+  properties:
+    mirrorRepositories:
+      type: array
+      items:
+        type: object
+        properties:
+          fullName:
+            type: string
+          mirrorUrl:
+            type: string
+        required:
+          - fullName
+          - mirrorUrl
+        additionalProperties: false
+  required:
+    - mirrorRepositories
+  additionalProperties: false
+answer:
+  mirrorRepositories:
+    - fullName: octocat/mirror-of-linux
+      mirrorUrl: https://github.com/torvalds/linux

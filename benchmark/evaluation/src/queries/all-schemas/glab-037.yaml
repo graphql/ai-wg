@@ -1,0 +1,50 @@
+id: glab-037
+schemaId: gitlab
+query: "In the gitlab-org/gitlab project, list the first 5 failed CI jobs
+  (statuses: FAILED) in the first pipeline, returning each job's status and
+  failure message."
+operation: |
+  query {
+    project(fullPath: "gitlab-org/gitlab") {
+      pipelines(first: 1) {
+        nodes {
+          jobs(first: 5, statuses: [FAILED]) {
+            nodes {
+              status
+              failureMessage
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CiJob.status
+  - CiJob.failureMessage
+targetTypes:
+  - CiJob
+mustInclude:
+  - Query.project
+  - Query.project(fullPath:)
+  - Project.pipelines
+  - Project.pipelines(first:)
+  - Pipeline.jobs
+  - Pipeline.jobs(first:)
+  - Pipeline.jobs(statuses:)
+  - CiJob.status
+  - CiJob.failureMessage
+mustExclude:
+  - Mutation
+notes: "DevOps: failed jobs in a project pipeline."
+answerSchema:
+  type: object
+  properties:
+    failedJobs:
+      type: array
+      items:
+        type: string
+  required:
+    - failedJobs
+  additionalProperties: false
+answer:
+  failedJobs: []

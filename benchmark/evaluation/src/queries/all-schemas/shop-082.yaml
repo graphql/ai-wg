@@ -1,0 +1,66 @@
+id: shop-082
+schemaId: shopify
+query: What delivery profiles are configured and which products do they cover?
+operation: |
+  query {
+    deliveryProfiles(first: 10) {
+      nodes {
+        name
+        profileItems(first: 5) {
+          nodes {
+            product {
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DeliveryProfile.name
+  - Product.title
+targetTypes:
+  - DeliveryProfile
+  - DeliveryProfileItem
+  - Product
+mustInclude:
+  - QueryRoot.deliveryProfiles
+  - DeliveryProfile.name
+  - DeliveryProfile.profileItems
+  - DeliveryProfileItem.product
+  - Product.title
+  - QueryRoot.deliveryProfiles(first:)
+mustExclude:
+  - Mutation
+notes: Configured delivery profiles and the products they cover.
+answerSchema:
+  type: object
+  properties:
+    deliveryProfiles:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          products:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - products
+        additionalProperties: false
+  required:
+    - deliveryProfiles
+  additionalProperties: false
+answer:
+  deliveryProfiles:
+    - name: International Shipping Profile
+      products:
+        - Wireless Headphones
+        - Yoga Mat
+    - name: Domestic Shipping Profile
+      products:
+        - Smart Watch
+        - Leather Wallet

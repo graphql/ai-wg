@@ -1,0 +1,71 @@
+id: lin-tl-9
+schemaId: linear
+query: "For the team with id \"team-t1\", what are the priority and estimate
+  values of each of its issues?"
+operation: |
+  query {
+    team(id: "team-t1") {
+      issues(first: 50) {
+        nodes {
+          priority
+          estimate
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.priority
+  - Issue.estimate
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.team
+  - Team.issues
+  - Issue.priority
+  - Issue.estimate
+  - Query.team(id:)
+  - Team.issues(first:)
+mustExclude:
+  - Mutation
+answer:
+  issues:
+    - priority: 1
+      estimate: 5
+    - priority: 2
+      estimate: null
+    - priority: 0
+      estimate: null
+    - priority: 3
+      estimate: 13
+    - priority: 1
+      estimate: null
+    - priority: 1
+      estimate: null
+    - priority: 2
+      estimate: 13
+    - priority: 0
+      estimate: null
+    - priority: 4
+      estimate: null
+    - priority: 2
+      estimate: 5
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          priority: &a1
+            type: number
+          estimate: *a1
+        required:
+          - priority
+          - estimate
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+notes: "Team.issues filter args are inert against the mock; the question asks
+  for all of the team's issues, not a state-filtered subset."

@@ -1,0 +1,33 @@
+id: sg-region-forecast-kw
+schemaId: singapore
+query: forecast central region tomorrow
+operation: |
+  query {
+    regionByName(name: CENTRAL) {
+      name
+      forecast {
+        forecast
+        temperatureHigh
+        temperatureLow
+        humidityHigh
+        humidityLow
+        windDirection
+        windSpeed
+      }
+    }
+  }
+targetFields:
+  - RegionForecast.forecast
+targetTypes:
+  - Region
+  - RegionForecast
+mustInclude:
+  - Query.regionByName
+  - Region.forecast
+  - Query.regionByName(name:)
+mustExclude: []
+shouldInclude:
+  - Query.regionByName(name:)
+  - RegionForecast
+  - Region.name
+notes: Keyword variant of sg-region-forecast. Generated assuming LLM-as-caller without schema knowledge. Single-question multi-hop. Tests entity-anchored entry-point selection on a small schema.

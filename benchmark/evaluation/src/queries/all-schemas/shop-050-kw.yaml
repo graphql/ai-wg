@@ -1,0 +1,30 @@
+id: shop-050-kw
+schemaId: shopify
+query: refund line items per order
+operation: |
+  query {
+    order(id: "gid://shopify/Object/1") {
+      refunds(first: 10) {
+        refundLineItems(first: 10) {
+          nodes {
+            lineItem {
+              canRestock
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.order
+  - Order.refunds
+  - Refund.refundLineItems
+  - RefundLineItem.lineItem
+  - Order.refunds(first:)
+  - QueryRoot.order(id:)
+  - Refund.refundLineItems(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-050. All refund line items for a single order.

@@ -1,0 +1,29 @@
+id: lin-ic-14-kw
+schemaId: linear
+query: team membership owner role
+operation: |
+  query {
+    viewer {
+      teamMemberships(first: 10) {
+        nodes {
+          team {
+            id
+          }
+          owner
+        }
+      }
+    }
+  }
+targetFields:
+  - TeamMembership.owner
+targetTypes:
+  - TeamMembership
+mustInclude:
+  - Query.viewer
+  - User.teamMemberships
+  - TeamMembership.team
+  - TeamMembership.owner
+  - User.teamMemberships(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-14. Team membership rows with ownership flag.

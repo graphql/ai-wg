@@ -1,0 +1,72 @@
+id: shop-052
+schemaId: shopify
+query: Which customers have abandoned checkouts that still have recovery URLs we
+  can email?
+operation: |
+  query {
+    abandonedCheckouts(first: 10) {
+      nodes {
+        abandonedCheckoutUrl
+        customer {
+          displayName
+          email
+        }
+      }
+    }
+  }
+targetFields:
+  - AbandonedCheckout.abandonedCheckoutUrl
+  - Customer.displayName
+  - Customer.email
+targetTypes:
+  - AbandonedCheckout
+  - Customer
+mustInclude:
+  - QueryRoot.abandonedCheckouts
+  - AbandonedCheckout.abandonedCheckoutUrl
+  - AbandonedCheckout.customer
+  - QueryRoot.abandonedCheckouts(first:)
+  - Customer.displayName
+  - Customer.email
+mustExclude:
+  - Mutation
+notes: Abandoned checkouts with recovery URLs to email customers.
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          displayName:
+            type: string
+          email:
+            type: string
+          recoveryUrl:
+            type: string
+        required:
+          - displayName
+          - email
+          - recoveryUrl
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false
+answer:
+  customers:
+    - displayName: Emma Williams
+      email: emma.w.shopping@example.com
+      recoveryUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzA=?key=1064
+    - displayName: Evelyn Scott
+      email: olivia.m.buyer@example.com
+      recoveryUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzQ=?key=9209
+    - displayName: Noah Davis
+      email: sophia.a.client@example.com
+      recoveryUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzM=?key=7526
+    - displayName: Liam Green
+      email: david.t.shopper@example.com
+      recoveryUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzI=?key=6521
+    - displayName: Sophia Anderson
+      email: james.r.customer@example.com
+      recoveryUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzE=?key=5517

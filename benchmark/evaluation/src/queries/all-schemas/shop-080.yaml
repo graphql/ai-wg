@@ -1,0 +1,50 @@
+id: shop-080
+schemaId: shopify
+query: Which third-party fulfillment services are connected to our store?
+operation: |
+  query {
+    shop {
+      fulfillmentServices {
+        serviceName
+        type
+      }
+    }
+  }
+targetFields:
+  - FulfillmentService.serviceName
+  - FulfillmentService.type
+targetTypes:
+  - FulfillmentService
+mustInclude:
+  - QueryRoot.shop
+  - Shop.fulfillmentServices
+  - FulfillmentService.serviceName
+  - FulfillmentService.type
+mustExclude:
+  - Mutation
+notes: Third-party fulfillment services connected to the store.
+answerSchema:
+  type: object
+  properties:
+    fulfillmentServices:
+      type: array
+      items:
+        type: object
+        properties:
+          serviceName:
+            type: string
+          type:
+            type: string
+        required:
+          - serviceName
+          - type
+        additionalProperties: false
+  required:
+    - fulfillmentServices
+  additionalProperties: false
+answer:
+  fulfillmentServices:
+    - serviceName: UPS Standard
+      type: MANUAL
+    - serviceName: FedEx Ground
+      type: MANUAL

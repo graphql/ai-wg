@@ -1,0 +1,48 @@
+id: shop-003
+schemaId: shopify
+query: "What is the financial status and total price of order #1042 (gid://shopify/Order/1042)?"
+operation: |
+  query {
+    order(id: "gid://shopify/Order/1042") {
+      name
+      displayFinancialStatus
+      totalPriceSet {
+        presentmentMoney {
+          amount
+          currencyCode
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.name
+  - Order.displayFinancialStatus
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.order
+  - Order.name
+  - Order.displayFinancialStatus
+  - Order.totalPriceSet
+  - QueryRoot.order(id:)
+mustExclude:
+  - Mutation
+notes: Lookup of a single order by GID — financial status plus total price.
+answerSchema:
+  type: object
+  properties:
+    financialStatus:
+      type: string
+    totalPrice:
+      type: string
+    currencyCode:
+      type: string
+  required:
+    - financialStatus
+    - totalPrice
+    - currencyCode
+  additionalProperties: false
+answer:
+  financialStatus: PAID
+  totalPrice: "34.99"
+  currencyCode: UGX

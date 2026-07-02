@@ -1,0 +1,83 @@
+id: shop-073
+schemaId: shopify
+query: Which discount codes are limited to first-time buyers only?
+operation: |
+  query {
+    codeDiscountNodes(first: 10) {
+      edges {
+        node {
+          id
+          codeDiscount {
+            ... on DiscountCodeBasic {
+              title
+              customerSelection {
+                __typename
+                ... on DiscountCustomerSegments {
+                  segments {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscountCodeBasic.title
+  - DiscountCodeBasic.customerSelection
+  - DiscountCustomerSegments.segments
+  - Segment.name
+targetTypes: []
+mustInclude:
+  - QueryRoot.codeDiscountNodes
+  - DiscountCodeBasic.customerSelection
+  - QueryRoot.codeDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Discount codes limited to first-time buyers only; fetches title and
+  customerSelection to identify segment-restricted codes.
+answer:
+  discounts:
+    - title: Black Friday Special 2024
+      segments:
+        - International customers
+        - Cart abandoners last 30 days
+    - title: Birthday Special Offer
+      segments:
+        - Inactive accounts 90+ days
+        - Bulk order customers
+    - title: Customer Loyalty Discount
+      segments:
+        - Mobile-only users
+        - Returns requesters
+    - title: Summer Sale 15% Off
+      segments:
+        - VIP loyalty members
+        - Seasonal shoppers Q4 2024
+    - title: Holiday Gift Set Deal
+      segments:
+        - High-value repeat customers
+        - First-time buyers
+answerSchema:
+  type: object
+  properties:
+    discounts:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          segments:
+            type: array
+            items:
+              type: string
+        required:
+          - title
+          - segments
+        additionalProperties: false
+  required:
+    - discounts
+  additionalProperties: false

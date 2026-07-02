@@ -1,0 +1,74 @@
+id: gh-ext-030
+schemaId: github
+query: What are the status and conclusion of each check suite on the HEAD commit
+  of the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object(expression: "HEAD") {
+        ... on Commit {
+          checkSuites(first: 10) {
+            nodes {
+              status
+              conclusion
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CheckSuite.status
+  - CheckSuite.conclusion
+targetTypes:
+  - CheckSuite
+  - Commit
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Commit.checkSuites
+  - CheckSuite.status
+  - CheckSuite.conclusion
+  - Commit.checkSuites(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.object(expression:)
+mustExclude:
+  - Mutation
+answer:
+  checkSuites:
+    - status: QUEUED
+      conclusion: null
+    - status: QUEUED
+      conclusion: null
+    - status: REQUESTED
+      conclusion: null
+    - status: COMPLETED
+      conclusion: SUCCESS
+    - status: WAITING
+      conclusion: null
+answerSchema:
+  type: object
+  properties:
+    checkSuites:
+      type: array
+      items:
+        type: object
+        properties:
+          status:
+            type: string
+          conclusion:
+            type: string
+        required:
+          - status
+          - conclusion
+        additionalProperties: false
+  required:
+    - checkSuites
+  additionalProperties: false
+notes: Fetches the check suites on the HEAD commit of octocat/example, listing
+  the status and conclusion of each. The checkSuites connection is fully
+  enumerable (totalCount 5, hasNextPage false), so all suites are covered.
+  Reframed from check runs because CheckSuite.checkRuns in the mock returns only
+  2 nodes per suite regardless of first while reporting hundreds in totalCount,
+  making any "all check runs" claim structurally unsatisfiable.

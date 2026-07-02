@@ -1,0 +1,37 @@
+id: glab-064
+schemaId: gitlab
+query: Show the enabled security scanners for project group/project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      securityScanners {
+        enabled
+      }
+    }
+  }
+targetFields:
+  - SecurityScanners.enabled
+targetTypes:
+  - SecurityScanners
+mustInclude:
+  - Query.project
+  - Project.securityScanners
+  - SecurityScanners.enabled
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Security: enabled scanners + report types."
+answerSchema:
+  type: object
+  properties:
+    enabledScanners:
+      type: array
+      items:
+        type: string
+  required:
+    - enabledScanners
+  additionalProperties: false
+answer:
+  enabledScanners:
+    - SECRET_DETECTION
+    - DEPENDENCY_SCANNING

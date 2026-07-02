@@ -1,0 +1,83 @@
+id: gh-ext-014
+schemaId: github
+query: In the octocat/example repository, for each closed issue, what is its
+  number, title, and how many linked closing pull request references does it
+  have?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10, states: [CLOSED]) {
+        nodes {
+          number
+          title
+          state
+          closedByPullRequestsReferences(first: 10) {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.number
+  - Issue.title
+  - Issue.state
+  - PullRequestConnection.totalCount
+targetTypes:
+  - Issue
+  - PullRequestConnection
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Repository.issues(states:)
+  - Issue.number
+  - Issue.title
+  - Issue.state
+  - Issue.closedByPullRequestsReferences
+  - Issue.closedByPullRequestsReferences(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+mustExclude:
+  - Mutation
+answer:
+  closedIssues:
+    - number: 6
+      title: Fix broken tests
+      closingPullRequestReferenceCount: 1
+    - number: 7
+      title: API documentation
+      closingPullRequestReferenceCount: 0
+    - number: 8
+      title: Memory leak in worker
+      closingPullRequestReferenceCount: 0
+    - number: 9
+      title: Improve error messages
+      closingPullRequestReferenceCount: 0
+    - number: 10
+      title: Update README
+      closingPullRequestReferenceCount: 0
+answerSchema:
+  type: object
+  properties:
+    closedIssues:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+          closingPullRequestReferenceCount:
+            type: integer
+        required:
+          - number
+          - title
+          - closingPullRequestReferenceCount
+        additionalProperties: false
+  required:
+    - closedIssues
+  additionalProperties: false
+notes: Lists all closed issues in the named repository with their linked closing
+  pull request reference counts.

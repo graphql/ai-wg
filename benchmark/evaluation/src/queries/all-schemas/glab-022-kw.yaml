@@ -1,0 +1,27 @@
+id: glab-022-kw
+schemaId: gitlab
+query: merge requests scan result policy approvals required
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          approvalState {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - MergeRequestApprovalState
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.approvalState
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-022. Maintainer: MRs with scan-result policy approvals."

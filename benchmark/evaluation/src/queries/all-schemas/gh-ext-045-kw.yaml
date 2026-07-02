@@ -1,0 +1,24 @@
+id: gh-ext-045-kw
+schemaId: github
+query: pinned repositories descriptions
+operation: |
+  query {
+    viewer {
+      pinnedItems(first: 10) {
+        __typename
+      }
+    }
+  }
+targetFields:
+  - Repository.description
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.viewer
+  - User.pinnedItems
+  - PinnableItem
+  - Repository.description
+  - User.pinnedItems(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-045. Pinned items of the viewer and their descriptions.

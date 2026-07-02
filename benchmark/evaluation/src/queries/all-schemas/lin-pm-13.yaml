@@ -1,0 +1,42 @@
+id: lin-pm-13
+schemaId: linear
+query: "Search projects by name for anything matching \"billing\"."
+operation: |
+  query {
+    searchProjects(term: "billing") {
+      nodes {
+        name
+      }
+    }
+  }
+targetFields:
+  - ProjectSearchResult.name
+targetTypes:
+  - ProjectSearchResult
+mustInclude:
+  - Query.searchProjects
+  - ProjectSearchPayload.nodes
+  - ProjectSearchResult.name
+  - Query.searchProjects(term:)
+mustExclude:
+  - Mutation
+notes: Project full-text search.
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+        required:
+          - name
+        additionalProperties: false
+  required:
+    - projects
+  additionalProperties: false
+answer:
+  projects:
+    - name: Billing Portal

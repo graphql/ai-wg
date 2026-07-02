@@ -1,0 +1,61 @@
+id: glab-086
+schemaId: gitlab
+query: What are the titles, start dates, and due dates of the milestones in the
+  "group/project" group?
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      milestones(first: 10) {
+        nodes {
+          title
+          startDate
+          dueDate
+        }
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    milestones:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          startDate: *a1
+          dueDate: *a1
+        required:
+          - title
+          - startDate
+          - dueDate
+        additionalProperties: false
+  required:
+    - milestones
+  additionalProperties: false
+targetFields:
+  - Milestone.title
+  - Milestone.startDate
+  - Milestone.dueDate
+targetTypes:
+  - Milestone
+mustInclude:
+  - Query.group
+  - Group.milestones
+  - Milestone.title
+  - Milestone.startDate
+  - Milestone.dueDate
+  - Group.milestones(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "PM: milestone schedule for the group."
+answer:
+  milestones:
+    - title: Security Hardening Sprint
+      startDate: 2026-06-01
+      dueDate: 2026-10-30
+    - title: Q3 Performance Improvements
+      startDate: 2026-07-20
+      dueDate: 2026-09-15

@@ -1,0 +1,59 @@
+id: glab-031
+schemaId: gitlab
+query: List the change requesters on open merge requests in project group/project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10, state: opened) {
+        nodes {
+          changeRequesters(first: 10) {
+            nodes {
+              username
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - UserCore.username
+  - UserCore.name
+targetTypes:
+  - UserCore
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.changeRequesters
+  - MergeRequest.changeRequesters(first:)
+  - Project.mergeRequests(first:)
+  - Project.mergeRequests(state:)
+  - Query.project(fullPath:)
+  - UserCore.username
+  - UserCore.name
+mustExclude:
+  - Mutation
+notes: "Maintainer: change requesters on open MRs."
+answerSchema:
+  type: object
+  properties:
+    changeRequesters:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+          name:
+            type: string
+        required:
+          - username
+          - name
+        additionalProperties: false
+  required:
+    - changeRequesters
+  additionalProperties: false
+answer:
+  changeRequesters:
+    - username: fwilson
+      name: Iris Anderson

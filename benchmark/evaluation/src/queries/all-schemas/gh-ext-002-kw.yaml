@@ -1,0 +1,32 @@
+id: gh-ext-002-kw
+schemaId: github
+query: files changed latest commit
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      defaultBranchRef {
+        target {
+          ... on Commit {
+            changedFilesIfAvailable
+            oid
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Commit.changedFilesIfAvailable
+  - Commit.oid
+targetTypes:
+  - Commit
+mustInclude:
+  - Query.repository
+  - Repository.defaultBranchRef
+  - Ref.target
+  - Commit.changedFilesIfAvailable
+  - Commit.oid
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-002. Most recent commit on the repository plus its changed files count.

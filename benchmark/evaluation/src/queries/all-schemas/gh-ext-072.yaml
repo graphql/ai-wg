@@ -1,0 +1,61 @@
+id: gh-ext-072
+schemaId: github
+query: Which discussions in the octocat/example repository have been marked as
+  answered?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      discussions(first: 10, answered: true) {
+        nodes {
+          number
+          title
+          isAnswered
+        }
+      }
+    }
+  }
+targetFields:
+  - Discussion.isAnswered
+targetTypes:
+  - Discussion
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.discussions
+  - Discussion.number
+  - Discussion.title
+  - Discussion.isAnswered
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.discussions(first:)
+  - Repository.discussions(answered:)
+mustExclude:
+  - Mutation
+notes: Discussions filtered to those that have been marked as answered.
+answerSchema:
+  type: object
+  properties:
+    answeredDiscussions:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: number
+          title:
+            type: string
+        required:
+          - number
+          - title
+        additionalProperties: false
+  required:
+    - answeredDiscussions
+  additionalProperties: false
+answer:
+  answeredDiscussions:
+    - number: 1
+      title: Documentation improvement suggestions
+    - number: 2
+      title: How do I configure the API client?
+    - number: 3
+      title: Question about authentication flow

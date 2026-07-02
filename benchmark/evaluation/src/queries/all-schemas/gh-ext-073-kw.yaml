@@ -1,0 +1,34 @@
+id: gh-ext-073-kw
+schemaId: github
+query: top discussion category upvotes
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      discussions(first: 10) {
+        nodes {
+          category {
+            name
+          }
+          upvoteCount
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscussionCategory.name
+  - Discussion.upvoteCount
+targetTypes:
+  - DiscussionCategory
+  - Discussion
+mustInclude:
+  - Query.repository
+  - Repository.discussions
+  - Discussion.category
+  - DiscussionCategory.name
+  - Discussion.upvoteCount
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.discussions(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-073. Discussions in a category sorted by upvote count.

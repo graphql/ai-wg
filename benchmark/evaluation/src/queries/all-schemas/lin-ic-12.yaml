@@ -1,0 +1,64 @@
+id: lin-ic-12
+schemaId: linear
+query: List each comment along with the emoji reactions it received.
+operation: |
+  query {
+    comments(first: 10) {
+      nodes {
+        id
+        reactions {
+          emoji
+        }
+      }
+    }
+  }
+targetFields:
+  - Reaction.emoji
+targetTypes:
+  - Reaction
+  - Comment
+mustInclude:
+  - Query.comments
+  - Comment.id
+  - Comment.reactions
+  - Reaction.emoji
+  - Query.comments(first:)
+mustExclude:
+  - Mutation
+notes: Reactions on individual comments, identified by comment id.
+answerSchema:
+  type: object
+  properties:
+    comments:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          reactions:
+            type: array
+            items:
+              type: string
+            description: Emoji of each reaction on the comment
+        required:
+          - id
+          - reactions
+        additionalProperties: false
+  required:
+    - comments
+  additionalProperties: false
+answer:
+  comments:
+    - id: comment-eng7-1
+      reactions:
+        - 👍
+    - id: comment-eng7-2
+      reactions: []
+    - id: comment-viewer-1
+      reactions: []
+    - id: comment-viewer-2
+      reactions:
+        - 🎉
+    - id: comment-other-1
+      reactions: []

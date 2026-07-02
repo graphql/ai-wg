@@ -1,0 +1,30 @@
+id: lin-ic-6-kw
+schemaId: linear
+query: my recent comments issues
+operation: |
+  query {
+    comments(first: 10) {
+      nodes {
+        user {
+          id
+        }
+        body
+        issue {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Comment.body
+targetTypes:
+  - Comment
+mustInclude:
+  - Query.comments
+  - Comment.user
+  - Comment.body
+  - Comment.issue
+  - Query.comments(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-6. My recent comment activity across issues.

@@ -1,0 +1,27 @@
+id: gh-ext-064-kw
+schemaId: github
+query: pull requests title keyword
+operation: |
+  query {
+    search(query: "example", type: DISCUSSION, first: 10) {
+      nodes {
+        __typename
+      }
+    }
+  }
+targetFields:
+  - PullRequest.title
+  - PullRequest.url
+targetTypes:
+  - PullRequest
+mustInclude:
+  - Query.search
+  - SearchResultItemConnection.nodes
+  - PullRequest.title
+  - PullRequest.url
+  - Query.search(first:)
+  - Query.search(query:)
+  - Query.search(type:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-064. Use the search type with a query string against PR titles.

@@ -1,0 +1,83 @@
+id: lin-tl-11
+schemaId: linear
+query: "What labels are available across our teams?"
+operation: |
+  query {
+    issueLabels(first: 10) {
+      nodes {
+        name
+        color
+        team {
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueLabel.name
+  - IssueLabel.color
+targetTypes:
+  - IssueLabel
+mustInclude:
+  - Query.issueLabels
+  - IssueLabel.name
+  - IssueLabel.team
+  - IssueLabel.color
+  - Query.issueLabels(first:)
+mustExclude:
+  - Mutation
+notes: Label taxonomy review.
+answerSchema:
+  type: object
+  properties:
+    labels:
+      type: array
+      items:
+        type: object
+        properties:
+          name: &a1
+            type: string
+          color: *a1
+          team:
+            type: string
+            description: Team that owns the label
+        required:
+          - name
+          - color
+          - team
+        additionalProperties: false
+  required:
+    - labels
+  additionalProperties: false
+answer:
+  labels:
+    - name: Bug
+      color: "#e74c3c"
+      team: Engineering
+    - name: Feature
+      color: "#3498db"
+      team: Engineering
+    - name: UX
+      color: "#9b59b6"
+      team: Design
+    - name: Performance
+      color: "#f39c12"
+      team: Engineering
+    - name: Security
+      color: "#e74c3c"
+      team: Security
+    - name: Infrastructure
+      color: "#1abc9c"
+      team: Infrastructure
+    - name: Documentation
+      color: "#7f8c8d"
+      team: Engineering
+    - name: API
+      color: "#2ecc71"
+      team: Engineering
+    - name: Mobile
+      color: "#00b894"
+      team: Engineering
+    - name: Refactor
+      color: "#a29bfe"
+      team: Engineering

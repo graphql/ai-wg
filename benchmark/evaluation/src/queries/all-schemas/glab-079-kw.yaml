@@ -1,0 +1,29 @@
+id: glab-079-kw
+schemaId: gitlab
+query: upcoming releases tag names
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      releases(first: 10) {
+        nodes {
+          tagName
+          upcomingRelease
+        }
+      }
+    }
+  }
+targetFields:
+  - Release.tagName
+  - Release.upcomingRelease
+targetTypes:
+  - Release
+mustInclude:
+  - Query.project
+  - Project.releases
+  - Release.tagName
+  - Release.upcomingRelease
+  - Project.releases(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-079. PM: upcoming releases + tag names."

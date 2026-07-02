@@ -1,0 +1,101 @@
+id: gh-ext-018
+schemaId: github
+query: What is the status check rollup state for each pull request in the
+  octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          number
+          title
+          statusCheckRollup {
+            state
+          }
+          baseRef {
+            branchProtectionRule {
+              requiredStatusCheckContexts
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.number
+  - PullRequest.title
+  - StatusCheckRollup.state
+  - BranchProtectionRule.requiredStatusCheckContexts
+targetTypes:
+  - StatusCheckRollup
+  - BranchProtectionRule
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.statusCheckRollup
+  - StatusCheckRollup.state
+  - PullRequest.baseRef
+  - Ref.branchProtectionRule
+  - BranchProtectionRule.requiredStatusCheckContexts
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Cross-reference required status check contexts with the rollup state of PRs.
+answerSchema:
+  type: object
+  properties:
+    pullRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+          statusCheckRollupState:
+            type: string
+        required:
+          - number
+          - title
+          - statusCheckRollupState
+        additionalProperties: false
+  required:
+    - pullRequests
+  additionalProperties: false
+answer:
+  pullRequests:
+    - number: 1
+      title: Add GraphQL endpoint
+      statusCheckRollupState: PENDING
+    - number: 2
+      title: Fix login bug
+      statusCheckRollupState: PENDING
+    - number: 3
+      title: Update dependencies
+      statusCheckRollupState: PENDING
+    - number: 4
+      title: Add dark mode
+      statusCheckRollupState: PENDING
+    - number: 5
+      title: Improve search performance
+      statusCheckRollupState: PENDING
+    - number: 6
+      title: Fix security vulnerability
+      statusCheckRollupState: PENDING
+    - number: 7
+      title: Add CI pipeline
+      statusCheckRollupState: PENDING
+    - number: 8
+      title: Update documentation
+      statusCheckRollupState: PENDING
+    - number: 9
+      title: Implement rate limiting
+      statusCheckRollupState: PENDING
+    - number: 10
+      title: Refactor data layer
+      statusCheckRollupState: PENDING

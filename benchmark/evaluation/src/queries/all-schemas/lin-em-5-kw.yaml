@@ -1,0 +1,29 @@
+id: lin-em-5-kw
+schemaId: linear
+query: teams headcount issue count members
+operation: |
+  query {
+    teams(first: 10) {
+      nodes {
+        members(first: 10) {
+          nodes {
+            id
+          }
+        }
+        issueCount
+      }
+    }
+  }
+targetFields:
+  - Team.issueCount
+targetTypes:
+  - Team
+mustInclude:
+  - Query.teams
+  - Team.members
+  - Team.issueCount
+  - Query.teams(first:)
+  - Team.members(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-5. Org-wide head-count and issue volume per team.

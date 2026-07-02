@@ -1,0 +1,20 @@
+id: glab-098-kw
+schemaId: gitlab
+query: group member roles permissions
+operation: |
+  query {
+    memberRoles(first: 10) {
+      nodes {
+        __typename
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - MemberRole
+mustInclude:
+  - Query.memberRoles
+  - Query.memberRoles(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-098. Admin: member roles + permissions."

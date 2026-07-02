@@ -1,0 +1,38 @@
+id: gh-ext-014-kw
+schemaId: github
+query: bug issues closed no fix commit
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10) {
+        nodes {
+          labels(first: 10) {
+            __typename
+          }
+          state
+          closedByPullRequestsReferences(first: 10) {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.state
+targetTypes:
+  - Issue
+  - Commit
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.labels
+  - Issue.state
+  - Issue.closedByPullRequestsReferences
+  - Issue.closedByPullRequestsReferences(first:)
+  - Issue.labels(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-014. Closed bug-labeled issues without any linked closing PR.

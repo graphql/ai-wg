@@ -1,0 +1,82 @@
+id: glab-028
+schemaId: gitlab
+query: In project group/project, what are the issue board lists and their card
+  counts for each board, grouped by iteration?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      boards(first: 10) {
+        nodes {
+          iteration {
+            title
+          }
+          lists(first: 10) {
+            nodes {
+              title
+              cardCount: issuesCount
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - BoardList.title
+  - BoardList.issuesCount
+  - Iteration.title
+targetTypes:
+  - Iteration
+  - BoardList
+mustInclude:
+  - Query.project
+  - Project.boards
+  - Board.lists
+  - Board.iteration
+  - Board.lists(first:)
+  - Project.boards(first:)
+  - Query.project(fullPath:)
+  - BoardList.title
+  - BoardList.issuesCount
+mustExclude:
+  - Mutation
+notes: "Maintainer: board lists for current iteration."
+answerSchema:
+  type: object
+  properties:
+    boards:
+      type: array
+      items:
+        type: object
+        properties:
+          iteration:
+            type: string
+          lists:
+            type: array
+            items:
+              type: object
+              properties:
+                title:
+                  type: string
+                cardCount:
+                  type: integer
+              required:
+                - title
+                - cardCount
+              additionalProperties: false
+        required:
+          - iteration
+          - lists
+        additionalProperties: false
+  required:
+    - boards
+  additionalProperties: false
+answer:
+  boards:
+    - iteration: Sprint 2
+      lists:
+        - title: Backlog
+          cardCount: 8
+        - title: Doing
+          cardCount: 4
+        - title: Done
+          cardCount: 12

@@ -1,0 +1,30 @@
+id: lin-ic-11-kw
+schemaId: linear
+query: issues most reactions emoji
+operation: |
+  query {
+    issues(first: 10) {
+      nodes {
+        reactions {
+          emoji
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Reaction.emoji
+targetTypes:
+  - Reaction
+  - Issue
+mustInclude:
+  - Query.issues
+  - Issue.reactions
+  - Reaction.emoji
+  - Reaction.user
+  - Query.issues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-11. Reactions on issues for sentiment / interest.

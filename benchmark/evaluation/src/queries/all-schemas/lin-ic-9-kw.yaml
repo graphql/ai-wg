@@ -1,0 +1,32 @@
+id: lin-ic-9-kw
+schemaId: linear
+query: my assigned issues labels
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          labels(first: 10) {
+            nodes {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueLabel.name
+targetTypes:
+  - IssueLabel
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.labels
+  - IssueLabel.name
+  - Issue.labels(first:)
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-9. My work grouped by label.

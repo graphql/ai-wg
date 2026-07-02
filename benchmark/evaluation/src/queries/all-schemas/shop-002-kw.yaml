@@ -1,0 +1,29 @@
+id: shop-002-kw
+schemaId: shopify
+query: paid unshipped orders Brooklyn warehouse
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        displayFinancialStatus
+        displayFulfillmentStatus
+        shippingAddress {
+          address1
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.displayFinancialStatus
+  - Order.displayFulfillmentStatus
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.orders
+  - Order.displayFinancialStatus
+  - Order.displayFulfillmentStatus
+  - Order.shippingAddress
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-002. Paid-but-unshipped orders from a specific warehouse location.

@@ -1,0 +1,32 @@
+id: lin-em-9-kw
+schemaId: linear
+query: engineers open issues distribution load
+operation: |
+  query {
+    users(first: 10) {
+      nodes {
+        assignedIssues(first: 10) {
+          nodes {
+            state {
+              id
+            }
+            priority
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.priority
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.users
+  - User.assignedIssues
+  - Issue.state
+  - Issue.priority
+  - Query.users(first:)
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-9. Load distribution across all engineers org-wide.

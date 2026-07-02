@@ -1,0 +1,31 @@
+id: gh-ext-012-kw
+schemaId: github
+query: unresolved review threads pull requests
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        reviewThreads(first: 10) {
+          nodes {
+            isResolved
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequestReviewThread.isResolved
+targetTypes:
+  - PullRequestReviewThread
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.reviewThreads
+  - PullRequestReviewThread.isResolved
+  - PullRequest.reviewThreads(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-012. Walk PR review threads and filter the unresolved ones.

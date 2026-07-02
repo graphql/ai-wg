@@ -1,0 +1,31 @@
+id: glab-054-kw
+schemaId: gitlab
+query: secret detection findings container scan
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          reportType
+          scanner {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.reportType
+targetTypes:
+  - Vulnerability
+  - VulnerabilityScanner
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.reportType
+  - Vulnerability.scanner
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-054. Security: secret detection findings from last scan."

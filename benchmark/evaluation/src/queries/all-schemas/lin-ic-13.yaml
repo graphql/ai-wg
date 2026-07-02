@@ -1,0 +1,43 @@
+id: lin-ic-13
+schemaId: linear
+query: "Which teams am I currently a member of?"
+operation: |
+  query {
+    viewer {
+      teams(first: 10) {
+        nodes {
+          name
+          key
+        }
+      }
+    }
+  }
+targetFields:
+  - Team.name
+  - Team.key
+targetTypes:
+  - Team
+mustInclude:
+  - Query.viewer
+  - User.teams
+  - Team.name
+  - Team.key
+  - User.teams(first:)
+mustExclude:
+  - Mutation
+notes: Teams the current user belongs to.
+answerSchema:
+  type: object
+  properties:
+    teams:
+      type: array
+      items:
+        type: string
+      description: Names of the teams the viewer is a member of
+  required:
+    - teams
+  additionalProperties: false
+answer:
+  teams:
+    - Engineering
+    - Platform

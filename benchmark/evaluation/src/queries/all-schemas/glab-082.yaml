@@ -1,0 +1,59 @@
+id: glab-082
+schemaId: gitlab
+query: Which issues are due this week and what's their current state?
+operation: |
+  query {
+    issues(first: 10, dueAfter: "2025-06-01T00:00:00Z", dueBefore: "2025-06-07T23:59:59Z") {
+      nodes {
+        iid
+        title
+        dueDate
+        state
+      }
+    }
+  }
+targetFields:
+  - Issue.iid
+  - Issue.title
+  - Issue.dueDate
+  - Issue.state
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issues
+  - Issue.dueDate
+  - Issue.state
+  - Query.issues(first:)
+  - Query.issues(dueAfter:)
+  - Query.issues(dueBefore:)
+mustExclude:
+  - Mutation
+notes: "PM: issues due this week."
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          iid: &a1
+            type: string
+          title: *a1
+          state: *a1
+        required:
+          - iid
+          - title
+          - state
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - iid: "2766"
+      title: Add support for SAML 2.0 single sign-on
+      state: closed
+    - iid: "167"
+      title: Implement dark mode UI theme
+      state: locked

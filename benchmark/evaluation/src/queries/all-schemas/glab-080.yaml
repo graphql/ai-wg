@@ -1,0 +1,67 @@
+id: glab-080
+schemaId: gitlab
+query: List the top-upvoted issues (sort POPULARITY_DESC) created after
+  2025-06-01 in group/project (iid, title, upvotes).
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      issues(first: 10, sort: POPULARITY_DESC, createdAfter: "2025-06-01T00:00:00Z") {
+        nodes {
+          iid
+          title
+          upvotes
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.iid
+  - Issue.title
+  - Issue.upvotes
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.group
+  - Group.issues
+  - Issue.iid
+  - Issue.title
+  - Issue.upvotes
+  - Group.issues(first:)
+  - Group.issues(sort:)
+  - Group.issues(createdAfter:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "PM: top upvoted issues in group."
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          iid: &a1
+            type: string
+          title: *a1
+          upvotes:
+            type: integer
+        required:
+          - iid
+          - title
+          - upvotes
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - iid: "7841"
+      title: Add export to CSV functionality
+      upvotes: 45
+    - iid: "3392"
+      title: Optimize database query performance
+      upvotes: 38
+    - iid: "5504"
+      title: Refactor legacy authentication module
+      upvotes: 12

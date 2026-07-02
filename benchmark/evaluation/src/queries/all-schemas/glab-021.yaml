@@ -1,0 +1,77 @@
+id: glab-021
+schemaId: gitlab
+query: List open merge requests in project group/project and their head pipeline
+  status.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10, state: opened) {
+        nodes {
+          iid
+          title
+          headPipeline {
+            status
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.iid
+  - MergeRequest.title
+  - Pipeline.status
+targetTypes:
+  - MergeRequest
+  - Pipeline
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.headPipeline
+  - Pipeline.status
+  - Project.mergeRequests(first:)
+  - Project.mergeRequests(state:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Maintainer: MRs blocked by failing pipeline. Head pipeline status filter."
+answerSchema:
+  type: object
+  properties:
+    mergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          headPipelineStatus:
+            type: string
+        required:
+          - iid
+          - title
+          - headPipelineStatus
+        additionalProperties: false
+  required:
+    - mergeRequests
+  additionalProperties: false
+answer:
+  mergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+      headPipelineStatus: SUCCESS
+    - iid: "108"
+      title: "perf: reduce memory footprint of serializer"
+      headPipelineStatus: FAILED
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+      headPipelineStatus: SUCCESS
+    - iid: "4774"
+      title: "feat: add webhook retry mechanism"
+      headPipelineStatus: RUNNING
+    - iid: "2623"
+      title: "fix: resolve race condition in cache layer"
+      headPipelineStatus: SUCCESS

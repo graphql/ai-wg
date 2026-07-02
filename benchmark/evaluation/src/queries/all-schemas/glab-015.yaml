@@ -1,0 +1,74 @@
+id: glab-015
+schemaId: gitlab
+query: Show merge requests I authored with state merged, merged between
+  2025-05-01 and 2025-05-31.
+operation: |
+  query {
+    currentUser {
+      authoredMergeRequests(state: merged, mergedAfter: "2025-05-01T00:00:00Z", mergedBefore: "2025-05-31T23:59:59Z", first: 10) {
+        nodes {
+          iid
+          title
+          mergedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.mergedAt
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.authoredMergeRequests
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.mergedAt
+  - CurrentUser.authoredMergeRequests(state:)
+  - CurrentUser.authoredMergeRequests(mergedAfter:)
+  - CurrentUser.authoredMergeRequests(mergedBefore:)
+  - CurrentUser.authoredMergeRequests(first:)
+mustExclude:
+  - Mutation
+notes: "Developer: my merged MRs in last month."
+answerSchema:
+  type: object
+  properties:
+    mergedMergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          mergedAt:
+            type: string
+        required:
+          - iid
+          - title
+          - mergedAt
+        additionalProperties: false
+  required:
+    - mergedMergeRequests
+  additionalProperties: false
+answer:
+  mergedMergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+      mergedAt: 2025-05-17T00:00:00.000Z
+    - iid: "108"
+      title: "perf: reduce memory footprint of serializer"
+      mergedAt: 2025-05-17T00:00:00.000Z
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+      mergedAt: 2025-05-17T00:00:00.000Z
+    - iid: "4774"
+      title: "feat: add webhook retry mechanism"
+      mergedAt: 2025-05-17T00:00:00.000Z
+    - iid: "2623"
+      title: "fix: resolve race condition in cache layer"
+      mergedAt: 2025-05-17T00:00:00.000Z

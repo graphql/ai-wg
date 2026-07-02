@@ -1,0 +1,25 @@
+id: shop-081-kw
+schemaId: shopify
+query: carrier services live shipping rates
+operation: |
+  query {
+    carrierServices(first: 10) {
+      nodes {
+        name
+        callbackUrl
+      }
+    }
+  }
+targetFields:
+  - DeliveryCarrierService.name
+  - DeliveryCarrierService.callbackUrl
+targetTypes:
+  - DeliveryCarrierService
+mustInclude:
+  - QueryRoot.carrierServices
+  - DeliveryCarrierService.name
+  - DeliveryCarrierService.callbackUrl
+  - QueryRoot.carrierServices(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-081. Carrier services set up for live shipping rates.

@@ -1,0 +1,54 @@
+id: shop-087
+schemaId: shopify
+query: For each market configured in the shop, what is its name and inclusive
+  tax pricing strategy?
+operation: |
+  query {
+    markets(first: 10) {
+      nodes {
+        name
+        priceInclusions {
+          inclusiveTaxPricingStrategy
+        }
+      }
+    }
+  }
+targetFields:
+  - MarketPriceInclusions.inclusiveTaxPricingStrategy
+targetTypes:
+  - Market
+  - MarketPriceInclusions
+mustInclude:
+  - QueryRoot.markets
+  - Market.name
+  - Market.priceInclusions
+  - MarketPriceInclusions.inclusiveTaxPricingStrategy
+  - QueryRoot.markets(first:)
+mustExclude:
+  - Mutation
+answer:
+  markets:
+    - name: US Market
+      inclusiveTaxPricingStrategy: INCLUDES_TAXES_IN_PRICE_BASED_ON_COUNTRY
+    - name: EU Market
+      inclusiveTaxPricingStrategy: ADD_TAXES_AT_CHECKOUT
+answerSchema:
+  type: object
+  properties:
+    markets:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          inclusiveTaxPricingStrategy:
+            type: string
+        required:
+          - name
+          - inclusiveTaxPricingStrategy
+        additionalProperties: false
+  required:
+    - markets
+  additionalProperties: false
+notes: Lists all configured markets with their inclusive tax pricing strategies.

@@ -1,0 +1,97 @@
+id: shop-072
+schemaId: shopify
+query: List abandoned checkouts with customer details and the items left in each cart.
+operation: |
+  query {
+    abandonedCheckouts(first: 10) {
+      nodes {
+        customer {
+          displayName
+          id
+        }
+        lineItems(first: 10) {
+          nodes {
+            title
+            quantity
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.abandonedCheckouts
+  - AbandonedCheckout.customer
+  - AbandonedCheckout.lineItems
+  - AbandonedCheckout.lineItems(first:)
+  - QueryRoot.abandonedCheckouts(first:)
+  - Customer.displayName
+  - Customer.id
+  - AbandonedCheckoutLineItem.title
+  - AbandonedCheckoutLineItem.quantity
+mustExclude:
+  - Mutation
+notes: Customers who added to cart from a marketing click but didn't check out.
+answerSchema:
+  type: object
+  properties:
+    abandonedCheckouts:
+      type: array
+      items:
+        type: object
+        properties:
+          customer:
+            type: string
+          lineItems:
+            type: array
+            items:
+              type: object
+              properties:
+                title:
+                  type: string
+                quantity:
+                  type: integer
+              required:
+                - title
+                - quantity
+              additionalProperties: false
+        required:
+          - customer
+          - lineItems
+        additionalProperties: false
+  required:
+    - abandonedCheckouts
+  additionalProperties: false
+answer:
+  abandonedCheckouts:
+    - customer: Emma Williams
+      lineItems:
+        - title: Yoga Mat Pro
+          quantity: 173
+        - title: Vintage Leather Journal
+          quantity: 0
+    - customer: Evelyn Scott
+      lineItems:
+        - title: Organic Cotton T-Shirt
+          quantity: 291
+        - title: Hiking Boot Waterproof
+          quantity: 160
+    - customer: Noah Davis
+      lineItems:
+        - title: Ceramic Mug Collection
+          quantity: 959
+        - title: Bamboo Cutting Board Set
+          quantity: 790
+    - customer: Liam Green
+      lineItems:
+        - title: Natural Soap Bar Set
+          quantity: 802
+        - title: Solar Powered Charger
+          quantity: 771
+    - customer: Sophia Anderson
+      lineItems:
+        - title: Premium Wireless Headphones
+          quantity: 962
+        - title: Stainless Steel Water Bottle
+          quantity: 115

@@ -1,0 +1,61 @@
+id: gh-ext-097
+schemaId: github
+query: What are the packages and their total download counts in the octocat
+  organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      packages(first: 10) {
+        nodes {
+          name
+          statistics {
+            downloadsTotalCount
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Package.name
+  - PackageStatistics.downloadsTotalCount
+targetTypes:
+  - PackageStatistics
+  - Package
+mustInclude:
+  - Query.organization
+  - Organization.packages
+  - Package.name
+  - Package.statistics
+  - PackageStatistics.downloadsTotalCount
+  - Organization.packages(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Packages whose statistics show no downloads in the time window.
+answerSchema:
+  type: object
+  properties:
+    packages:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          downloadsTotalCount:
+            type: number
+        required:
+          - name
+          - downloadsTotalCount
+        additionalProperties: false
+  required:
+    - packages
+  additionalProperties: false
+answer:
+  packages:
+    - name: example-package
+      downloadsTotalCount: 50000
+    - name: example-lib
+      downloadsTotalCount: 12000
+    - name: example-docker
+      downloadsTotalCount: 5000

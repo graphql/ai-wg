@@ -1,0 +1,55 @@
+id: lin-cs-6
+schemaId: linear
+query: "For the issue with id 'issue-eng-441', what is the customer ticket count
+  and what are the names of customers in its needs?"
+operation: |
+  query {
+    issue(id: "issue-eng-441") {
+      customerTicketCount
+      needs(first: 10) {
+        nodes {
+          customer {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+answer:
+  customerTicketCount: 531
+  customerNames:
+    - Globex Corporation
+    - MegaCorp Industries
+answerSchema:
+  type: object
+  properties:
+    customerTicketCount:
+      type: integer
+      description: The number of customer tickets on the issue
+    customerNames:
+      type: array
+      items:
+        type: string
+      description: The names of customers in the issue needs
+  required:
+    - customerTicketCount
+    - customerNames
+  additionalProperties: false
+targetFields:
+  - Issue.customerTicketCount
+  - Customer.name
+targetTypes:
+  - Issue
+  - Customer
+mustInclude:
+  - Query.issue
+  - Issue.customerTicketCount
+  - Issue.needs
+  - CustomerNeed.customer
+  - Customer.name
+  - Issue.needs(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: "How many customers asked for the same issue?"

@@ -1,0 +1,65 @@
+id: lin-pm-10
+schemaId: linear
+query: "Which projects are bundled into the workspace releases?"
+operation: |
+  query {
+    releases {
+      nodes {
+        name
+        issues(first: 50) {
+          nodes {
+            project {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.name
+targetTypes:
+  - Release
+  - Project
+mustInclude:
+  - Query.releases
+  - Release.issues
+  - Issue.project
+  - Project.name
+mustExclude:
+  - Mutation
+notes: Cross-project release planning view.
+answerSchema:
+  type: object
+  properties:
+    releases:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Release name
+          projects:
+            type: array
+            items:
+              type: string
+            description: Project names bundled in the release
+        required:
+          - name
+          - projects
+        additionalProperties: false
+  required:
+    - releases
+  additionalProperties: false
+answer:
+  releases:
+    - name: v3.0
+      projects:
+        - Auth Redesign
+        - Billing Portal
+    - name: v3.1
+      projects:
+        - Auth Redesign
+        - API Gateway
+        - Security Audit

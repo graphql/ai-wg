@@ -1,0 +1,29 @@
+id: gh-ext-091-kw
+schemaId: github
+query: audit log membership additions
+operation: |
+  query {
+    organization(login: "octocat") {
+      auditLog(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields:
+  - AuditEntry.action
+  - AuditEntry.createdAt
+targetTypes:
+  - AuditEntry
+mustInclude:
+  - Query.organization
+  - Organization.auditLog
+  - OrganizationAuditEntryConnection.nodes
+  - AuditEntry.action
+  - AuditEntry.createdAt
+  - Organization.auditLog(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-091. Organization audit log entries filtered to membership actions and a date window.

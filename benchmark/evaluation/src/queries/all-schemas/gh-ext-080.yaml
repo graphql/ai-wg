@@ -1,0 +1,158 @@
+id: gh-ext-080
+schemaId: github
+query: What are the custom fields and their values for each item in project Nr.
+  1 of the octocat organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectV2(number: 1) {
+        fields(first: 10) {
+          nodes {
+            ... on ProjectV2Field {
+              name
+              dataType
+            }
+            ... on ProjectV2IterationField {
+              name
+              dataType
+            }
+            ... on ProjectV2SingleSelectField {
+              name
+              dataType
+            }
+          }
+        }
+        items(first: 10) {
+          nodes {
+            fieldValues(first: 10) {
+              nodes {
+                ... on ProjectV2ItemFieldTextValue {
+                  field {
+                    ... on ProjectV2Field {
+                      name
+                    }
+                  }
+                  text
+                }
+                ... on ProjectV2ItemFieldNumberValue {
+                  field {
+                    ... on ProjectV2Field {
+                      name
+                    }
+                  }
+                  number
+                }
+                ... on ProjectV2ItemFieldSingleSelectValue {
+                  field {
+                    ... on ProjectV2SingleSelectField {
+                      name
+                    }
+                  }
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectV2Field.name
+  - ProjectV2Field.dataType
+  - ProjectV2ItemFieldTextValue.text
+  - ProjectV2ItemFieldNumberValue.number
+  - ProjectV2ItemFieldSingleSelectValue.name
+targetTypes:
+  - ProjectV2Field
+  - ProjectV2IterationField
+  - ProjectV2SingleSelectField
+  - ProjectV2ItemFieldTextValue
+  - ProjectV2ItemFieldNumberValue
+  - ProjectV2ItemFieldSingleSelectValue
+mustInclude:
+  - Query.organization
+  - Organization.projectV2
+  - ProjectV2.fields
+  - ProjectV2Field.name
+  - ProjectV2Field.dataType
+  - ProjectV2.items
+  - ProjectV2Item.fieldValues
+  - ProjectV2ItemFieldTextValue.text
+  - ProjectV2ItemFieldTextValue.field
+  - ProjectV2ItemFieldNumberValue.number
+  - ProjectV2ItemFieldNumberValue.field
+  - ProjectV2ItemFieldSingleSelectValue.name
+  - ProjectV2ItemFieldSingleSelectValue.field
+  - Organization.projectV2(number:)
+  - ProjectV2.fields(first:)
+  - ProjectV2.items(first:)
+  - ProjectV2Item.fieldValues(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Project custom fields and per-item values.
+answerSchema:
+  type: object
+  properties:
+    items:
+      type: array
+      items:
+        type: object
+        properties:
+          fields:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                value:
+                  type: string
+              required:
+                - name
+                - value
+              additionalProperties: false
+        required:
+          - fields
+        additionalProperties: false
+  required:
+    - items
+  additionalProperties: false
+answer:
+  items:
+    - fields:
+        - name: Title
+          value: Item text pi-1
+        - name: Title
+          value: "99"
+        - name: Status
+          value: Review
+    - fields:
+        - name: Title
+          value: Item text pi-2
+        - name: Title
+          value: "18"
+        - name: Status
+          value: Backlog
+    - fields:
+        - name: Title
+          value: Item text pi-3
+        - name: Title
+          value: "37"
+        - name: Status
+          value: Todo
+    - fields:
+        - name: Title
+          value: Item text pi-4
+        - name: Title
+          value: "56"
+        - name: Status
+          value: Done
+    - fields:
+        - name: Title
+          value: Item text pi-5
+        - name: Title
+          value: "75"
+        - name: Status
+          value: In Progress

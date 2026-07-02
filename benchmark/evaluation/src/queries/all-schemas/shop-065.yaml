@@ -1,0 +1,95 @@
+id: shop-065
+schemaId: shopify
+query: List the first 5 code discounts in the shop, including each discount's
+  title, expiration date, and associated codes.
+operation: |
+  query {
+    codeDiscountNodes(first: 5) {
+      edges {
+        node {
+          id
+          codeDiscount {
+            ... on DiscountCodeApp {
+              title
+              endsAt
+              codes(first: 5) {
+                edges {
+                  node {
+                    code
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscountCodeApp.endsAt
+  - DiscountCodeApp.title
+  - DiscountRedeemCode.code
+targetTypes:
+  - DiscountCodeApp
+  - DiscountRedeemCode
+mustInclude:
+  - QueryRoot.codeDiscountNodes
+  - DiscountCodeApp.endsAt
+  - DiscountCodeApp.title
+  - DiscountCodeApp.codes
+  - DiscountRedeemCode.code
+  - QueryRoot.codeDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: List first 5 code discounts with title, expiration date, and codes.
+answer:
+  discounts:
+    - title: Flash Sale Weekend
+      endsAt: 2024-09-22T00:00:00.000Z
+      codes:
+        - SEASONAL40
+        - MEMBER30
+    - title: 20% Off Your Next Order
+      endsAt: 2024-09-12T00:00:00.000Z
+      codes:
+        - WELCOME25
+        - SAVE15NOW
+    - title: Referral Reward Discount
+      endsAt: 2025-01-01T00:00:00.000Z
+      codes:
+        - THANKSFOR5
+        - SUMMER2024
+    - title: Exclusive App Discount
+      endsAt: 2025-01-25T00:00:00.000Z
+      codes:
+        - EASTER25
+        - VIPCLUB
+    - title: VIP Member Savings
+      endsAt: 2024-08-14T00:00:00.000Z
+      codes:
+        - FLASH50
+        - LOYALTY10
+answerSchema:
+  type: object
+  properties:
+    discounts:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          endsAt:
+            type: string
+          codes:
+            type: array
+            items:
+              type: string
+        required:
+          - title
+          - endsAt
+          - codes
+        additionalProperties: false
+  required:
+    - discounts
+  additionalProperties: false

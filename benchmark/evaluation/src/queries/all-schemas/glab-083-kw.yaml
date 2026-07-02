@@ -1,0 +1,27 @@
+id: glab-083-kw
+schemaId: gitlab
+query: epic health status group parents
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      epics(first: 10) {
+        nodes {
+          healthStatus {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - EpicHealthStatus
+mustInclude:
+  - Query.group
+  - Group.epics
+  - Epic.healthStatus
+  - Group.epics(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-083. PM: epic health status."

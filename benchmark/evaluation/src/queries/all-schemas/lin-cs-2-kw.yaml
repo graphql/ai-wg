@@ -1,0 +1,30 @@
+id: lin-cs-2-kw
+schemaId: linear
+query: top priority customer needs requests
+operation: |
+  query {
+    customerNeeds(first: 10) {
+      nodes {
+        customer {
+          id
+        }
+        priority
+        issue {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - CustomerNeed.priority
+targetTypes:
+  - CustomerNeed
+mustInclude:
+  - Query.customerNeeds
+  - CustomerNeed.customer
+  - CustomerNeed.priority
+  - CustomerNeed.issue
+  - Query.customerNeeds(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-cs-2. CS prioritizes their queue of customer requests.

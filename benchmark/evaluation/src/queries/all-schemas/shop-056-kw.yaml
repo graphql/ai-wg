@@ -1,0 +1,29 @@
+id: shop-056-kw
+schemaId: shopify
+query: chargebacks disputes recent orders
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        transactions(first: 10) {
+          kind
+          status
+        }
+      }
+    }
+  }
+targetFields:
+  - OrderTransaction.kind
+  - OrderTransaction.status
+targetTypes:
+  - OrderTransaction
+mustInclude:
+  - QueryRoot.orders
+  - Order.transactions
+  - OrderTransaction.kind
+  - OrderTransaction.status
+  - Order.transactions(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-056. Disputes and chargebacks attached to recent orders.

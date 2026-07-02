@@ -1,0 +1,43 @@
+id: gh-ext-098
+schemaId: github
+query: What is the current GraphQL rate limit, remaining budget, and reset time?
+operation: |
+  query {
+    rateLimit {
+      limit
+      remaining
+      resetAt
+    }
+  }
+targetFields:
+  - RateLimit.limit
+  - RateLimit.remaining
+  - RateLimit.resetAt
+targetTypes:
+  - RateLimit
+mustInclude:
+  - Query.rateLimit
+  - RateLimit.limit
+  - RateLimit.remaining
+  - RateLimit.resetAt
+mustExclude:
+  - Mutation
+notes: GraphQL rate limit budget remaining.
+answerSchema:
+  type: object
+  properties:
+    limit:
+      type: number
+    remaining:
+      type: number
+    resetAt:
+      type: string
+  required:
+    - limit
+    - remaining
+    - resetAt
+  additionalProperties: false
+answer:
+  limit: 428
+  remaining: 609
+  resetAt: 2025-03-18T00:00:00.000Z

@@ -1,0 +1,21 @@
+id: glab-064-kw
+schemaId: gitlab
+query: enabled scanners project report types
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      securityScanners {
+        __typename
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - SecurityScanners
+mustInclude:
+  - Query.project
+  - Project.securityScanners
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-064. Security: enabled scanners + report types."

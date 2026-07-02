@@ -1,0 +1,62 @@
+id: glab-051
+schemaId: gitlab
+query: What is the source of each pipeline in the group/project project
+  (identify each pipeline by its internal ID)?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(first: 10) {
+        nodes {
+          iid
+          source
+        }
+      }
+    }
+  }
+targetFields:
+  - Pipeline.iid
+  - Pipeline.source
+targetTypes:
+  - Pipeline
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.iid
+  - Pipeline.source
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "DevOps: per-pipeline source. Pipeline.source is a free-text String, so
+  the answer reports the raw source value per pipeline (no manual/push enum
+  exists in the schema)."
+answerSchema:
+  type: object
+  properties:
+    pipelines:
+      type: array
+      items:
+        type: object
+        properties:
+          pipelineId: &a1
+            type: string
+          source: *a1
+        required:
+          - pipelineId
+          - source
+        additionalProperties: false
+  required:
+    - pipelines
+  additionalProperties: false
+answer:
+  pipelines:
+    - pipelineId: "466"
+      source: push
+    - pipelineId: "847"
+      source: push
+    - pipelineId: "228"
+      source: push
+    - pipelineId: "609"
+      source: push
+    - pipelineId: "990"
+      source: push

@@ -1,0 +1,29 @@
+id: lin-ic-1-kw
+schemaId: linear
+query: my assigned issues
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          state {
+            id
+          }
+          priority
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.priority
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.state
+  - Issue.priority
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-ic-1. Classic \"my open issues\" view."

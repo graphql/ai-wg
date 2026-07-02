@@ -1,0 +1,74 @@
+id: glab-036
+schemaId: gitlab
+query: List environments and their protected environment entries for project
+  group/project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      environments(first: 10) {
+        nodes {
+          name
+          state
+          protectedEnvironments(first: 10) {
+            nodes {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Environment.name
+  - Environment.state
+  - ProtectedEnvironment.name
+targetTypes:
+  - Environment
+  - ProtectedEnvironment
+mustInclude:
+  - Query.project
+  - Project.environments
+  - Environment.state
+  - Environment.protectedEnvironments
+  - Environment.protectedEnvironments(first:)
+  - Project.environments(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "DevOps: protected environments + current deployment."
+answerSchema:
+  type: object
+  properties:
+    environments:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          state:
+            type: string
+          protectedEnvironments:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - state
+          - protectedEnvironments
+        additionalProperties: false
+  required:
+    - environments
+  additionalProperties: false
+answer:
+  environments:
+    - name: production
+      state: available
+      protectedEnvironments:
+        - production
+    - name: staging
+      state: available
+      protectedEnvironments: []
+    - name: review
+      state: stopped
+      protectedEnvironments: []

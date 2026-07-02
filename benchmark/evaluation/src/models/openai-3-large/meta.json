@@ -1,0 +1,9 @@
+{
+    "id": "openai-3-large",
+    "name": "OpenAI text-embedding-3-large",
+    "description": "3072-dim, higher quality, $0.13/Mtok.",
+    "provider": "openai",
+    "modelName": "text-embedding-3-large",
+    "dims": 3072,
+    "costPerMillionTokens": 0.13
+}

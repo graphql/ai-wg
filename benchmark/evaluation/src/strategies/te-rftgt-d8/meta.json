@@ -1,0 +1,35 @@
+{
+    "id": "te-rftgt-d8",
+    "name": "te-rftgt-d8",
+    "description": "Forks ptv-lex-weighted's full pipeline and adds two structural recall fixes after selection: (1) root-collection entry emission — identifies the real query-root type(s) (rootTypes minus Mutation/Subscription, plus any Query/QueryRoot type present, so shopify's QueryRoot is covered) and emits every root field whose bounded return-type family (returnType + connection node type via nodes/edges->node) intersects the selected types; (2) connection traversal guarantee — for every selected *Connection/*Edge type, emits its nodes/edges fields (and edges->node). Targets the #1 STRUCTURE_FIXABLE failure (root entry-points never emitted) plus the PICK_BUDGET connection-node class.",
+    "defaultConfig": {
+        "typesTopK": 15,
+        "perVariantBudget": 800,
+        "efficiencyThreshold": 0.04,
+        "cosWeight": 4,
+        "lexWeight": 1.5,
+        "parentCosBlend": 0.3,
+        "unwrapConnections": true,
+        "poolEntryTypeCosFloor": 0.25,
+        "variantTopK": 20,
+        "mergeMode": "relevance-gated",
+        "relevanceFloor": 0.75,
+        "mergeMaxVariants": 10,
+        "typeHitsCutoff": "kneedle",
+        "kneedleSensitivity": 0.05,
+        "maxExpandedTypes": 40,
+        "rootEntryEmit": true,
+        "rootFamilyDepth": 1,
+        "connectionTraversalEmit": true,
+        "pathsToRoot": {
+            "mode": "on",
+            "maxPathsPerType": 5,
+            "maxDepth": 6,
+            "includeMutationPaths": false,
+            "expandConnectionWrappers": true
+        },
+        "tgtTopK": 50,
+        "tgtDecay": 0.8,
+        "tgtHops": 5
+    }
+}

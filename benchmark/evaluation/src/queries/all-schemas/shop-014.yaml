@@ -1,0 +1,60 @@
+id: shop-014
+schemaId: shopify
+query: Which orders had partial refunds issued on individual items?
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        id
+        name
+        refunds(first: 10) {
+          refundLineItems(first: 10) {
+            nodes {
+              quantity
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.id
+  - Order.name
+  - RefundLineItem.quantity
+targetTypes:
+  - Order
+  - RefundLineItem
+mustInclude:
+  - QueryRoot.orders
+  - Order.id
+  - Order.name
+  - Order.refunds
+  - Refund.refundLineItems
+  - RefundLineItem.quantity
+  - Order.refunds(first:)
+  - QueryRoot.orders(first:)
+  - Refund.refundLineItems(first:)
+mustExclude:
+  - Mutation
+notes: Orders with partial refunds on individual line items.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+        required:
+          - id
+          - name
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders: []

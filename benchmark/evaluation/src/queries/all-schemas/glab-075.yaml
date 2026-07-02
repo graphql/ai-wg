@@ -1,0 +1,132 @@
+id: glab-075
+schemaId: gitlab
+query: Show the 10 most recent releases for project group/project with their tag
+  names, release dates, asset counts, asset link names/URLs, and milestone
+  titles.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      releases(first: 10) {
+        nodes {
+          name
+          tagName
+          releasedAt
+          assets {
+            count
+            links(first: 5) {
+              nodes {
+                name
+                url
+              }
+            }
+          }
+          milestones(first: 5) {
+            nodes {
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Release.name
+  - Release.tagName
+  - Release.releasedAt
+  - ReleaseAssets.count
+  - ReleaseAssetLink.name
+  - ReleaseAssetLink.url
+  - Milestone.title
+targetTypes:
+  - Release
+  - ReleaseAssets
+  - ReleaseAssetLink
+  - Milestone
+mustInclude:
+  - Query.project
+  - Project.releases
+  - Release.assets
+  - Release.milestones
+  - Release.name
+  - Release.releasedAt
+  - Project.releases(first:)
+  - Query.project(fullPath:)
+  - Release.milestones(first:)
+mustExclude:
+  - Mutation
+notes: "PM: releases past quarter with assets/milestones."
+answerSchema:
+  type: object
+  properties:
+    releases:
+      type: array
+      items:
+        type: object
+        properties:
+          name: &a1
+            type: string
+          tagName: *a1
+          releasedAt: *a1
+          assetCount:
+            type: integer
+          assetLinks:
+            type: array
+            items:
+              type: object
+              properties:
+                name: *a1
+                url: *a1
+              required:
+                - name
+                - url
+              additionalProperties: false
+          milestones:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - tagName
+          - releasedAt
+          - assetCount
+          - assetLinks
+          - milestones
+        additionalProperties: false
+  required:
+    - releases
+  additionalProperties: false
+answer:
+  releases:
+    - name: v1.0.0
+      tagName: v1.0.0
+      releasedAt: 2025-03-03T00:00:00.000Z
+      assetCount: 2
+      assetLinks:
+        - name: Binary
+          url: https://example.com/gid://gitlab/Release/1/release.tar.gz
+        - name: Checksum
+          url: https://example.com/gid://gitlab/Release/1/checksum.sha256
+      milestones:
+        - v2.0 Release Candidate
+    - name: v2.0.0
+      tagName: v2.0.0
+      releasedAt: 2025-07-01T00:00:00.000Z
+      assetCount: 2
+      assetLinks:
+        - name: Binary
+          url: https://example.com/gid://gitlab/Release/2/release.tar.gz
+        - name: Checksum
+          url: https://example.com/gid://gitlab/Release/2/checksum.sha256
+      milestones:
+        - v2.0 Release Candidate
+    - name: v0.9.0
+      tagName: v0.9.0
+      releasedAt: 2025-02-01T00:00:00.000Z
+      assetCount: 2
+      assetLinks:
+        - name: Binary
+          url: https://example.com/gid://gitlab/Release/3/release.tar.gz
+        - name: Checksum
+          url: https://example.com/gid://gitlab/Release/3/checksum.sha256
+      milestones:
+        - v2.0 Release Candidate

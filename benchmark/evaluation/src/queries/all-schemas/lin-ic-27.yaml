@@ -1,0 +1,61 @@
+id: lin-ic-27
+schemaId: linear
+query: "Who is involved with issue ENG-902 — creator, assignee, subscribers?"
+operation: |
+  query {
+    issue(id: "ENG-902") {
+      subscribers(first: 10) {
+        nodes {
+          name
+        }
+      }
+      assignee {
+        name
+      }
+      creator {
+        name
+      }
+    }
+  }
+targetFields:
+  - User.name
+targetTypes:
+  - User
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.subscribers
+  - Issue.assignee
+  - Issue.creator
+  - User.name
+  - Issue.subscribers(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Stakeholders on a single issue.
+answerSchema:
+  type: object
+  properties:
+    creator:
+      type: string
+    assignee:
+      type: string
+    subscribers:
+      type: array
+      items:
+        type: string
+  required:
+    - creator
+    - assignee
+    - subscribers
+  additionalProperties: false
+answer:
+  creator: Bob Smith
+  assignee: Eva Martinez
+  subscribers:
+    - Alice Johnson
+    - Bob Smith
+    - David Lee
+    - Eva Martinez
+    - Henry Park
+    - Iris Chen

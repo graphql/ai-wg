@@ -1,0 +1,21 @@
+id: shop-067-kw
+schemaId: shopify
+query: free shipping discount targeted countries
+operation: |
+  query {
+    codeDiscountNodes(first: 10) {
+      edges {
+        cursor
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.codeDiscountNodes
+  - DiscountCodeFreeShipping.destinationSelection
+  - DiscountCodeFreeShipping.minimumRequirement
+  - QueryRoot.codeDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-067. Free-shipping discounts targeting specific countries.

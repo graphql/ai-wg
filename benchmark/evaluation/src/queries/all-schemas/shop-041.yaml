@@ -1,0 +1,104 @@
+id: shop-041
+schemaId: shopify
+query: Pull the order history and lifetime spend for customer
+  gid://shopify/Object/1 (Maya Patel).
+operation: |
+  query {
+    customer(id: "gid://shopify/Object/1") {
+      orders(first: 10) {
+        edges {
+          node {
+            id
+            name
+            createdAt
+            totalPriceSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+            displayFinancialStatus
+          }
+        }
+      }
+      amountSpent {
+        amount
+        currencyCode
+      }
+      numberOfOrders
+    }
+  }
+targetFields:
+  - Order.name
+  - Order.createdAt
+  - Order.totalPriceSet
+  - Customer.numberOfOrders
+targetTypes:
+  - Customer
+  - Order
+mustInclude:
+  - QueryRoot.customer
+  - Customer.orders
+  - Customer.amountSpent
+  - Customer.numberOfOrders
+  - Customer.orders(first:)
+  - QueryRoot.customer(id:)
+  - Order.name
+  - Order.createdAt
+  - Order.totalPriceSet
+  - Order.displayFinancialStatus
+mustExclude:
+  - Mutation
+notes: A single customer's order history and lifetime spend.
+answerSchema:
+  type: object
+  properties:
+    lifetimeSpend:
+      type: string
+    currencyCode:
+      type: string
+    orderCount:
+      type: string
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          createdAt:
+            type: string
+          totalPrice:
+            type: string
+          currencyCode:
+            type: string
+          financialStatus:
+            type: string
+        required:
+          - name
+          - createdAt
+          - totalPrice
+          - currencyCode
+          - financialStatus
+        additionalProperties: false
+  required:
+    - lifetimeSpend
+    - currencyCode
+    - orderCount
+    - orders
+  additionalProperties: false
+answer:
+  lifetimeSpend: "78.99"
+  currencyCode: AMD
+  orderCount: "8"
+  orders:
+    - name: Item 5576
+      createdAt: "2024-09-30T00:00:00.000Z"
+      totalPrice: "21.50"
+      currencyCode: SEK
+      financialStatus: PARTIALLY_PAID
+    - name: Item 3679
+      createdAt: "2024-07-02T00:00:00.000Z"
+      totalPrice: "18.50"
+      currencyCode: RUB
+      financialStatus: PAID

@@ -1,0 +1,75 @@
+id: glab-019
+schemaId: gitlab
+query: List open merge requests in project group/project showing iid, title,
+  approved status, and state.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10, state: opened) {
+        nodes {
+          iid
+          title
+          approved
+          state
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.approved
+  - MergeRequest.title
+  - MergeRequest.iid
+  - MergeRequest.state
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.approved
+  - MergeRequest.title
+  - MergeRequest.state
+  - Project.mergeRequests(first:)
+  - Project.mergeRequests(state:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Maintainer: approved but unmerged MRs."
+answerSchema:
+  type: object
+  properties:
+    mergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          approved:
+            type: boolean
+        required:
+          - iid
+          - title
+          - approved
+        additionalProperties: false
+  required:
+    - mergeRequests
+  additionalProperties: false
+answer:
+  mergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+      approved: true
+    - iid: "108"
+      title: "perf: reduce memory footprint of serializer"
+      approved: true
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+      approved: false
+    - iid: "4774"
+      title: "feat: add webhook retry mechanism"
+      approved: true
+    - iid: "2623"
+      title: "fix: resolve race condition in cache layer"
+      approved: false

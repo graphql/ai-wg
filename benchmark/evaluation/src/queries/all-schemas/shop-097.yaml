@@ -1,0 +1,63 @@
+id: shop-097
+schemaId: shopify
+query: Which apps are installed on our store and what scopes do they have?
+operation: |
+  query {
+    appInstallations(first: 10) {
+      nodes {
+        app {
+          title
+        }
+        accessScopes {
+          handle
+        }
+      }
+    }
+  }
+targetFields:
+  - App.title
+  - AccessScope.handle
+targetTypes:
+  - App
+  - AccessScope
+mustInclude:
+  - QueryRoot.appInstallations
+  - AppInstallation.app
+  - App.title
+  - AppInstallation.accessScopes
+  - AccessScope.handle
+  - QueryRoot.appInstallations(first:)
+mustExclude:
+  - Mutation
+notes: Installed apps and their granted access scopes.
+answerSchema:
+  type: object
+  properties:
+    apps:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          scopes:
+            type: array
+            items:
+              type: string
+        required:
+          - title
+          - scopes
+        additionalProperties: false
+  required:
+    - apps
+  additionalProperties: false
+answer:
+  apps:
+    - title: Email Marketing Suite
+      scopes:
+        - write_products
+        - write_settings
+    - title: Inventory Manager Pro
+      scopes:
+        - read_inventory
+        - read_orders

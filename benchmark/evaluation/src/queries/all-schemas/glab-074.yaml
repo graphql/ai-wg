@@ -1,0 +1,30 @@
+id: glab-074
+schemaId: gitlab
+query: What is the total time logged in seconds for project gid://gitlab/Project/1?
+operation: |
+  query {
+    timelogs(projectId: "gid://gitlab/Project/1") {
+      totalSpentTime
+    }
+  }
+targetFields:
+  - TimelogConnection.totalSpentTime
+targetTypes:
+  - TimelogConnection
+mustInclude:
+  - Query.timelogs
+  - Query.timelogs(projectId:)
+  - TimelogConnection.totalSpentTime
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    totalSpentTimeSeconds:
+      type: integer
+  required:
+    - totalSpentTimeSeconds
+  additionalProperties: false
+notes: "PM: total time logged for a specific project."
+answer:
+  totalSpentTimeSeconds: 1894

@@ -1,0 +1,39 @@
+id: gh-ext-055-kw
+schemaId: github
+query: labels usage counts repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      labels(first: 10) {
+        nodes {
+          name
+          issues(first: 10) {
+            __typename
+          }
+          pullRequests(first: 10) {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Label.name
+targetTypes:
+  - Label
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.labels
+  - LabelConnection.nodes
+  - Label.name
+  - Label.issues
+  - Label.pullRequests
+  - Label.issues(first:)
+  - Label.pullRequests(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.labels(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-055. Labels and the issue/PR connections that imply usage frequency.

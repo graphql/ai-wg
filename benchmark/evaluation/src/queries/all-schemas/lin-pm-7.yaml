@@ -1,0 +1,67 @@
+id: lin-pm-7
+schemaId: linear
+query: "List all projects in the workspace along with their target dates."
+operation: |
+  query {
+    projects(first: 10) {
+      nodes {
+        name
+        targetDate
+      }
+    }
+  }
+answer:
+  projects:
+    - name: Mobile App
+      targetDate: 2025-Q2
+    - name: Auth Redesign
+      targetDate: 2025-Q2
+    - name: Billing Portal
+      targetDate: 2025-Q2
+    - name: Data Pipeline
+      targetDate: 2025-Q3
+    - name: API Gateway
+      targetDate: 2025-Q1
+    - name: Design System
+      targetDate: 2025-Q4
+    - name: Infrastructure Upgrade
+      targetDate: 2025-Q1
+    - name: Security Audit
+      targetDate: 2025-Q2
+    - name: Onboarding Flow
+      targetDate: 2025-Q1
+    - name: Reporting Dashboard
+      targetDate: 2025-Q2
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          targetDate:
+            type: string
+        required:
+          - name
+          - targetDate
+        additionalProperties: false
+  required:
+    - projects
+  additionalProperties: false
+targetFields:
+  - Project.name
+  - Project.targetDate
+targetTypes:
+  - Project
+mustInclude:
+  - Query.projects
+  - Project.name
+  - Project.targetDate
+  - Query.projects(first:)
+mustExclude:
+  - Mutation
+notes: PM lists all projects across the portfolio to review their scheduled
+  target dates.

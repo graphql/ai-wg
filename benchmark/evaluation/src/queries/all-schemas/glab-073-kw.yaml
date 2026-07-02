@@ -1,0 +1,31 @@
+id: glab-073-kw
+schemaId: gitlab
+query: iteration cadences active iteration
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      iterationCadences(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+      iterations(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Iteration
+mustInclude:
+  - Query.group
+  - Group.iterationCadences
+  - Group.iterations
+  - Group.iterationCadences(first:)
+  - Group.iterations(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-073. PM: iteration cadences + active iteration."

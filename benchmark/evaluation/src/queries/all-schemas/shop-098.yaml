@@ -1,0 +1,52 @@
+id: shop-098
+schemaId: shopify
+query: List all webhook subscriptions currently registered in the shop,
+  including each subscription's topic and endpoint URI.
+operation: |
+  query {
+    webhookSubscriptions(first: 10) {
+      nodes {
+        id
+        topic
+        uri
+      }
+    }
+  }
+targetFields:
+  - WebhookSubscription.topic
+  - WebhookSubscription.uri
+targetTypes:
+  - WebhookSubscription
+mustInclude:
+  - QueryRoot.webhookSubscriptions
+  - WebhookSubscription.topic
+  - WebhookSubscription.uri
+  - QueryRoot.webhookSubscriptions(first:)
+mustExclude:
+  - Mutation
+notes: All webhook subscriptions registered in the shop.
+answerSchema:
+  type: object
+  properties:
+    webhookSubscriptions:
+      type: array
+      items:
+        type: object
+        properties:
+          topic:
+            type: string
+          endpointUri:
+            type: string
+        required:
+          - topic
+          - endpointUri
+        additionalProperties: false
+  required:
+    - webhookSubscriptions
+  additionalProperties: false
+answer:
+  webhookSubscriptions:
+    - topic: COMPANY_CONTACT_ROLES_ASSIGN
+      endpointUri: https://inventory-sync.example.com/shopify/webhooks/orders/created
+    - topic: FULFILLMENT_HOLDS_RELEASED
+      endpointUri: https://analytics-hub.example.com/webhooks/fulfillments/completed
