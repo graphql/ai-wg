@@ -23,6 +23,7 @@
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Kewei Qu (Host)  | @Keweiqu	     | Meta Platforms	    | Menlo Park, CA, USA   |
+| Anastasia Finogenova  | @AnastasiaRainMaker	     | Meta Platforms	    | Texas, USA   |
 
 ## Agenda
 
