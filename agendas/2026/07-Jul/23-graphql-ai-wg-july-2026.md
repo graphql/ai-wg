@@ -22,7 +22,7 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
-
+| Kewei Qu (Host)  | @Keweiqu	     | Meta Platforms	    | Menlo Park, CA, USA   |
 
 ## Agenda
 
