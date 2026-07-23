@@ -28,7 +28,7 @@
 | Sabrina Wasserman  | @s3wasser    | Meta Platforms             | NYC, NY, USA    |
 | Mark Larah      | @magicmark    | Yelp             | Austin, TX, USA    |
 | Jeff Auriemma   | @bignimbus    | Apollo           | Monroe, CT, US     |
-| Hugh Nguyen   |     | Meta Platforms           | Menlo Park, CA, US    |
+| Hugh Nguyen   |@HieuNguyen202     | Meta Platforms           | Menlo Park, CA, US    |
 
 ## Agenda
 
