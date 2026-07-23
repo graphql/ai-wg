@@ -26,6 +26,7 @@
 | Anastasia Finogenova  | @AnastasiaRainMaker	     | Meta Platforms	    | Texas, USA   |
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 | Sabrina Wasserman  | @s3wasser    | Meta Platforms             | NYC, NY, USA    |
+| Mark Larah      | @magicmark    | Yelp             | Austin, TX, USA    |
 
 ## Agenda
 
