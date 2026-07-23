@@ -25,6 +25,7 @@
 | Kewei Qu (Host)  | @Keweiqu	     | Meta Platforms	    | Menlo Park, CA, USA   |
 | Anastasia Finogenova  | @AnastasiaRainMaker	     | Meta Platforms	    | Texas, USA   |
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
+| Sabrina Wasserman | @s3wasser    | Meta Platforms     | New York, NY, USA     |
 
 ## Agenda
 
