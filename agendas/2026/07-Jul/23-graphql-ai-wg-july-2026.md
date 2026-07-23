@@ -20,14 +20,15 @@
 ## Attendees
 
 <!-- prettier-ignore -->
-| Name             | GitHub        | Organization       | Location              |
-| :--------------- | :------------ | :----------------- | :-------------------- |
-| Kewei Qu (Host)  | @Keweiqu	     | Meta Platforms	    | Menlo Park, CA, USA   |
-| Anastasia Finogenova  | @AnastasiaRainMaker	     | Meta Platforms	    | Texas, USA   |
-| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
-| Sabrina Wasserman  | @s3wasser    | Meta Platforms             | NYC, NY, USA    |
-| Mark Larah      | @magicmark    | Yelp             | Austin, TX, USA    |
-| Jeff Auriemma   | @bignimbus    | Apollo           | Monroe, CT, US     |
+| Name                 | GitHub              | Organization   | Location            |
+|-:--------------------|-:-------------------|-:--------------|-:-------------------|
+| Kewei Qu (Host)      | @Keweiqu            | Meta Platforms | Menlo Park, CA, USA |
+| Anastasia Finogenova | @AnastasiaRainMaker | Meta Platforms | Texas, USA          |
+| Michael Rebello      | @rebello95          | Airbnb         | San Diego, CA, USA  |
+| Sabrina Wasserman    | @s3wasser           | Meta Platforms | NYC, NY, USA        |
+| Mark Larah           | @magicmark          | Yelp           | Austin, TX, USA     |
+| Jeff Auriemma        | @bignimbus          | Apollo         | Monroe, CT, US      |
+| Pascal Senn          | @pascalsenn         | ChilliCream    | Zurich, CH          |
 
 ## Agenda
 
