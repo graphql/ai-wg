@@ -23,6 +23,7 @@
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Martin Bonnin | martinbonnin | Apollo | Paris, FR|
+| Jake Robinson | jakerobinson | Rubrik | Indianapolis, IN |
 
 ## Agenda
 
