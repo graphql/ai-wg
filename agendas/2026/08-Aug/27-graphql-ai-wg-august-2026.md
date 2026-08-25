@@ -20,9 +20,10 @@
 ## Attendees
 
 <!-- prettier-ignore -->
-| Name             | GitHub        | Organization       | Location              |
-| :--------------- | :------------ | :----------------- | :-------------------- |
-| Martin Bonnin | martinbonnin | Apollo | Paris, FR|
+| Name          | GitHub       | Organization | Location    |
+|:--------------|:-------------|:-------------|:------------|
+| Martin Bonnin | martinbonnin | Apollo       | Paris, FR   |
+| Željko Kozina | zkozina      | Chronomill   | Dublin, ROI |
 
 ## Agenda
 
