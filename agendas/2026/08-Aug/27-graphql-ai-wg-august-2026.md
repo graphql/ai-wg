@@ -28,6 +28,7 @@
 | Mark Larah  | @magicmark    | Yelp             | Austin, TX, USA    |
 | Pascal Senn  | @pascalsenn    | ChilliCream             | Zurich, CH   |
 | Željko Kozina | zkozina      | Chronomill   | Dublin, ROI |
+| Thore Koritzius | @ThoreKoritzius      | Self   | Cologne, Germany |
 
 ## Agenda
 
