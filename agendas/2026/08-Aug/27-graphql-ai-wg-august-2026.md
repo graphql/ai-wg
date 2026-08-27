@@ -23,6 +23,7 @@
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Martin Bonnin | martinbonnin | Apollo | Paris, FR|
+| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 
 ## Agenda
 
