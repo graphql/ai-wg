@@ -25,6 +25,7 @@
 | Martin Bonnin | martinbonnin | Apollo | Paris, FR|
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 | Mark Larah  | @magicmark    | Yelp             | Austin, TX, USA    |
+| Pascal Senn  | @pascalsenn    | ChilliCream             | Zurich, CH   |
 
 ## Agenda
 
