@@ -7,3 +7,5 @@ runs/**/*.json
 runs/**/transcripts/
 *.log
 .DS_Store
+embed-server/.venv/
+__pycache__/

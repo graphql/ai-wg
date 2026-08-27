@@ -563,7 +563,7 @@ async function runOneSession(
     const embedTemplate = opts.setup.template;
     const embedCostPerMillion = embedModel.costPerMillionTokens ?? 0;
     const embed = async (text: string): Promise<{ vec: Float32Array; tokens: number }> => {
-        const vec = await embedOne(embedModel, embedTemplate, text);
+        const vec = await embedOne(embedModel, embedTemplate, text, 'query');
         let tokens: number;
         try {
             tokens = encode(text).length;

@@ -296,17 +296,21 @@ export interface TypeTemplateDef {
 }
 
 /**
- * A model is pure config — no code. Today only OpenAI is wired up; the
- * provider field is here so adding others later is a config-only change.
+ * A model is pure config — no code. `provider: 'openai'` uses the OpenAI
+ * embeddings API. `provider: 'http'` posts batches to a local sidecar
+ * (see embed-server/) — used for self-hosted models (e.g. sentence-transformers)
+ * that distinguish query vs document encodings.
  */
 export interface ModelDef {
     id: string;
     name: string;
     description: string;
-    provider: 'openai';
-    modelName: string; // e.g. 'text-embedding-3-small'
+    provider: 'openai' | 'http';
+    modelName: string; // e.g. 'text-embedding-3-small' (openai) or HF id (http)
     dims: number; // e.g. 1536
     costPerMillionTokens?: number;
+    /** HTTP provider: base URL of the sidecar `/embed` endpoint (e.g. 'http://127.0.0.1:8765/embed'). */
+    endpoint?: string;
     /** SHA256 of the model's meta.json, used by the result cache for invalidation. */
     sourceHash?: string;
 }
