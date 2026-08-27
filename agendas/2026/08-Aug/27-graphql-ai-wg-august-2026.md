@@ -28,6 +28,7 @@
 | Mark Larah  | @magicmark    | Yelp             | Austin, TX, USA    |
 | Pascal Senn  | @pascalsenn    | ChilliCream             | Zurich, CH   |
 | Željko Kozina | zkozina      | Chronomill   | Dublin, ROI |
+| Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
 
 ## Agenda
 
