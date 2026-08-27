@@ -27,6 +27,7 @@
 | Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
 | Mark Larah  | @magicmark    | Yelp             | Austin, TX, USA    |
 | Pascal Senn  | @pascalsenn    | ChilliCream             | Zurich, CH   |
+| Željko Kozina | zkozina      | Chronomill   | Dublin, ROI |
 
 ## Agenda
 
