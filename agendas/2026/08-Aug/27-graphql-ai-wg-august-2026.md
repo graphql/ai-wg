@@ -20,9 +20,12 @@
 ## Attendees
 
 <!-- prettier-ignore -->
-| Name          | GitHub       | Organization | Location    |
-|:--------------|:-------------|:-------------|:------------|
-| Martin Bonnin | martinbonnin | Apollo       | Paris, FR   |
+| Name             | GitHub        | Organization       | Location              |
+| :--------------- | :------------ | :----------------- | :-------------------- |
+| Martin Bonnin | martinbonnin | Apollo | Paris, FR|
+| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
+| Mark Larah  | @magicmark    | Yelp             | Austin, TX, USA    |
+| Pascal Senn  | @pascalsenn    | ChilliCream             | Zurich, CH   |
 | Željko Kozina | zkozina      | Chronomill   | Dublin, ROI |
 
 ## Agenda
