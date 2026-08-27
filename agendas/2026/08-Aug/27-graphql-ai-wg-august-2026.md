@@ -22,7 +22,6 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
-| Martin Bonnin | martinbonnin | Apollo | Paris, FR|
 | Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
 | Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
 | Mark Larah  | @magicmark    | Yelp             | Austin, TX, USA    |
