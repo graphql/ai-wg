@@ -29,6 +29,7 @@
 | Željko Kozina | zkozina      | Chronomill   | Dublin, ROI |
 | Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
 | Thore Koritzius | @ThoreKoritzius      | Self   | Cologne, Germany |
+| Miguel Quintero | @miqui  |             | Atlanta, GA, US   |
 
 ## Agenda
 
