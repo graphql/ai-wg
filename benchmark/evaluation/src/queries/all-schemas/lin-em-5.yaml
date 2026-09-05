@@ -1,0 +1,80 @@
+id: lin-em-5
+schemaId: linear
+query: "For each team, how many people are members, and how many issues does the
+  team have in total?"
+operation: |
+  query {
+    teams(first: 10) {
+      nodes {
+        name
+        members(first: 50) {
+          nodes {
+            id
+          }
+        }
+        issueCount
+      }
+    }
+  }
+answer:
+  teams:
+    - name: Engineering
+      memberCount: 9
+      issueCount: 58
+    - name: Design
+      memberCount: 3
+      issueCount: 45
+    - name: Backend
+      memberCount: 4
+      issueCount: 36
+    - name: Infrastructure
+      memberCount: 3
+      issueCount: 12
+    - name: Platform
+      memberCount: 4
+      issueCount: 51
+    - name: Frontend
+      memberCount: 3
+      issueCount: 45
+    - name: Security
+      memberCount: 3
+      issueCount: 59
+answerSchema:
+  type: object
+  properties:
+    teams:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          memberCount:
+            type: integer
+            description: number of members on the team
+          issueCount:
+            type: integer
+            description: total issues belonging to the team
+        required:
+          - name
+          - memberCount
+          - issueCount
+        additionalProperties: false
+  required:
+    - teams
+  additionalProperties: false
+targetFields:
+  - Team.name
+  - Team.issueCount
+targetTypes:
+  - Team
+mustInclude:
+  - Query.teams
+  - Team.name
+  - Team.members
+  - Team.issueCount
+  - Query.teams(first:)
+  - Team.members(first:)
+mustExclude:
+  - Mutation
+notes: Org-wide head-count and issue volume per team.

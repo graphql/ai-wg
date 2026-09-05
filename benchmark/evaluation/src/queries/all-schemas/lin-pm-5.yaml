@@ -1,0 +1,39 @@
+id: lin-pm-5
+schemaId: linear
+query: "For the project milestone with ID 'milestone-v2-beta', what is the
+  completion progress and current status?"
+operation: |
+  query {
+    projectMilestone(id: "milestone-v2-beta") {
+      progress
+      status
+    }
+  }
+answer:
+  progress: 0.885
+  status: overdue
+answerSchema:
+  type: object
+  properties:
+    progress:
+      type: number
+      description: Completion progress as a fraction between 0 and 1 (e.g. 0.885 = 88.5% complete)
+    status:
+      type: string
+  required:
+    - progress
+    - status
+  additionalProperties: false
+targetFields:
+  - ProjectMilestone.progress
+  - ProjectMilestone.status
+targetTypes:
+  - ProjectMilestone
+mustInclude:
+  - Query.projectMilestone
+  - ProjectMilestone.progress
+  - ProjectMilestone.status
+  - Query.projectMilestone(id:)
+mustExclude:
+  - Mutation
+notes: Per-milestone completion progress.

@@ -1,0 +1,70 @@
+id: sg-dengue-clusters-risk
+schemaId: singapore
+query: Show me the dengue clusters and their risk levels
+operation: |
+  query {
+    allDengueClusters {
+      locality
+      caseCount
+      breedingSitesHomes
+      breedingSitesPublicPlaces
+      breedingSitesConstruction
+    }
+  }
+targetFields:
+  - DengueCluster.caseCount
+  - DengueCluster.locality
+targetTypes:
+  - DengueCluster
+mustInclude:
+  - Query.allDengueClusters
+mustExclude: []
+shouldInclude:
+  - DengueCluster
+notes: The schema models clusters via DengueCluster + risk fields. Loose 'must'
+  since the exact risk field name varies.
+answerSchema:
+  type: object
+  properties:
+    dengueClusters:
+      type: array
+      items:
+        type: object
+        properties:
+          locality:
+            type: string
+          caseCount:
+            type: integer
+          breedingSitesHomes:
+            type: integer
+          breedingSitesPublicPlaces:
+            type: integer
+          breedingSitesConstruction:
+            type: integer
+        required:
+          - locality
+          - caseCount
+          - breedingSitesHomes
+          - breedingSitesPublicPlaces
+          - breedingSitesConstruction
+        additionalProperties: false
+  required:
+    - dengueClusters
+  additionalProperties: false
+answer:
+  dengueClusters:
+    - locality: Bukit Merah
+      caseCount: 781
+      breedingSitesHomes: 362
+      breedingSitesPublicPlaces: 49
+      breedingSitesConstruction: 869
+    - locality: Geylang East
+      caseCount: 989
+      breedingSitesHomes: 504
+      breedingSitesPublicPlaces: 569
+      breedingSitesConstruction: 365
+    - locality: Tampines Street 45
+      caseCount: 23
+      breedingSitesHomes: 12
+      breedingSitesPublicPlaces: 8
+      breedingSitesConstruction: 3

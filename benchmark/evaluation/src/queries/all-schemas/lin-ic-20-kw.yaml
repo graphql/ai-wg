@@ -1,0 +1,41 @@
+id: lin-ic-20-kw
+schemaId: linear
+query: issue comments thread body user
+operation: |
+  query {
+    issue(id: "<id>") {
+      comments(first: 10) {
+        nodes {
+          body
+          user {
+            id
+          }
+          parent {
+            body
+            user {
+              id
+            }
+            parent {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Comment.body
+targetTypes:
+  - Comment
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.comments
+  - Comment.body
+  - Comment.user
+  - Comment.parent
+  - Issue.comments(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-20. Threaded comments on an issue.

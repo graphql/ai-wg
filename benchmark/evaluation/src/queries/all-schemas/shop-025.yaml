@@ -1,0 +1,61 @@
+id: shop-025
+schemaId: shopify
+query: Show all variants of the product with handle 'navy-hoodie' with their
+  price and SKU.
+operation: |
+  query {
+    productByIdentifier(identifier: { handle: "navy-hoodie" }) {
+      variants(first: 10) {
+        nodes {
+          price
+          sku
+        }
+      }
+    }
+  }
+targetFields:
+  - ProductVariant.price
+  - ProductVariant.sku
+targetTypes:
+  - ProductVariant
+mustInclude:
+  - QueryRoot.productByIdentifier
+  - Product.variants
+  - ProductVariant.price
+  - ProductVariant.sku
+  - Product.variants(first:)
+  - QueryRoot.productByIdentifier(identifier:)
+mustExclude:
+  - Mutation
+notes: All variants of a specific product with price and SKU.
+answerSchema:
+  type: object
+  properties:
+    variants:
+      type: array
+      items:
+        type: object
+        properties:
+          price:
+            type: string
+          sku:
+            type: string
+        required:
+          - price
+          - sku
+        additionalProperties: false
+  required:
+    - variants
+  additionalProperties: false
+answer:
+  variants:
+    - price: "345.22"
+      sku: INAMZOTU
+    - price: "385.14"
+      sku: DLPD6SY6
+    - price: "490.49"
+      sku: 2GVOHNG2
+    - price: "383.60"
+      sku: 2Q7C48I6
+    - price: "60.36"
+      sku: THT185XE

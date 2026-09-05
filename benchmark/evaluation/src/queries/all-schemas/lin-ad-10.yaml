@@ -1,0 +1,45 @@
+id: lin-ad-10
+schemaId: linear
+query: "How is single sign-on and SCIM provisioning configured for our org?"
+operation: |
+  query {
+    organization {
+      samlEnabled
+      scimEnabled
+      authSettings
+    }
+  }
+targetFields:
+  - Organization.samlEnabled
+  - Organization.scimEnabled
+  - Organization.authSettings
+targetTypes:
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.samlEnabled
+  - Organization.scimEnabled
+  - Organization.authSettings
+mustExclude:
+  - Mutation
+notes: SSO/SCIM/auth config audit.
+answerSchema:
+  type: object
+  properties:
+    ssoEnabled:
+      type: boolean
+      description: Whether SAML single sign-on is enabled
+    scimEnabled:
+      type: boolean
+      description: Whether SCIM provisioning is enabled
+    authSettings:
+      type: string
+  required:
+    - ssoEnabled
+    - scimEnabled
+    - authSettings
+  additionalProperties: false
+answer:
+  ssoEnabled: false
+  scimEnabled: false
+  authSettings: "{}"

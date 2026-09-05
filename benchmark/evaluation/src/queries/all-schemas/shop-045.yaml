@@ -1,0 +1,95 @@
+id: shop-045
+schemaId: shopify
+query: Which customers have store credit balances we should remind them about?
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        displayName
+        storeCreditAccounts(first: 10) {
+          nodes {
+            balance {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.customers
+  - Customer.displayName
+  - Customer.storeCreditAccounts
+  - StoreCreditAccount.balance
+  - MoneyV2.amount
+  - MoneyV2.currencyCode
+  - Customer.storeCreditAccounts(first:)
+  - QueryRoot.customers(first:)
+mustExclude:
+  - Mutation
+notes: Customers with store credit balances to remind them about.
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          displayName:
+            type: string
+          balances:
+            type: array
+            items:
+              type: object
+              properties:
+                amount:
+                  type: string
+                currencyCode:
+                  type: string
+              required:
+                - amount
+                - currencyCode
+              additionalProperties: false
+        required:
+          - displayName
+          - balances
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false
+answer:
+  customers:
+    - displayName: Amelia Lopez
+      balances:
+        - amount: "145.00"
+          currencyCode: LTL
+        - amount: "97.25"
+          currencyCode: CAD
+    - displayName: Harper Young
+      balances:
+        - amount: "82.75"
+          currencyCode: KGS
+        - amount: "72.50"
+          currencyCode: TRY
+    - displayName: Logan Robinson
+      balances:
+        - amount: "69.00"
+          currencyCode: XXX
+        - amount: "31.00"
+          currencyCode: MRU
+    - displayName: Michael Chen
+      balances:
+        - amount: "168.50"
+          currencyCode: ZMW
+        - amount: "61.25"
+          currencyCode: HTG
+    - displayName: Benjamin Clark
+      balances:
+        - amount: "42.50"
+          currencyCode: HKD
+        - amount: "13.99"
+          currencyCode: STN

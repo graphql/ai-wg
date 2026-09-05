@@ -1,0 +1,70 @@
+id: shop-100
+schemaId: shopify
+query: Which Shopify Functions are deployed and where are they referenced?
+operation: |
+  query {
+    shopifyFunctions(first: 10) {
+      nodes {
+        apiType
+        title
+        appBridge {
+          detailsPath
+          createPath
+        }
+      }
+    }
+  }
+targetFields:
+  - ShopifyFunction.apiType
+  - ShopifyFunction.title
+  - FunctionsAppBridge.detailsPath
+  - FunctionsAppBridge.createPath
+targetTypes:
+  - ShopifyFunction
+  - FunctionsAppBridge
+mustInclude:
+  - QueryRoot.shopifyFunctions
+  - ShopifyFunction.apiType
+  - ShopifyFunction.title
+  - ShopifyFunction.appBridge
+  - FunctionsAppBridge.detailsPath
+  - FunctionsAppBridge.createPath
+  - QueryRoot.shopifyFunctions(first:)
+mustExclude:
+  - Mutation
+notes: Deployed Shopify Functions and where they're referenced.
+answerSchema:
+  type: object
+  properties:
+    functions:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          apiType:
+            type: string
+          detailsPath:
+            type: string
+          createPath:
+            type: string
+        required:
+          - title
+          - apiType
+          - detailsPath
+          - createPath
+        additionalProperties: false
+  required:
+    - functions
+  additionalProperties: false
+answer:
+  functions:
+    - title: Tiered discount by order total
+      apiType: order_discount
+      detailsPath: /admin/apps/my-app/detailspath/1218
+      createPath: /admin/functions/create
+    - title: Bundle product recommendation function
+      apiType: purchase_options
+      detailsPath: /admin/apps/my-app/detailspath/8586
+      createPath: /app/functions/new

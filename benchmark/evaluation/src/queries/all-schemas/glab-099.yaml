@@ -1,0 +1,60 @@
+id: glab-099
+schemaId: gitlab
+query: List projects in group/project with their visibility and last activity
+  timestamp.
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      projects(first: 10) {
+        nodes {
+          visibility
+          lastActivityAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.visibility
+  - Project.lastActivityAt
+targetTypes:
+  - Project
+mustInclude:
+  - Query.group
+  - Group.projects
+  - Project.visibility
+  - Project.lastActivityAt
+  - Group.projects(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Admin: projects in group + visibility + activity."
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: object
+        properties:
+          visibility: &a1
+            type: string
+          lastActivityAt: *a1
+        required:
+          - visibility
+          - lastActivityAt
+        additionalProperties: false
+  required:
+    - projects
+  additionalProperties: false
+answer:
+  projects:
+    - visibility: public
+      lastActivityAt: 2025-05-27T00:00:00.000Z
+    - visibility: private
+      lastActivityAt: 2025-05-22T00:00:00.000Z
+    - visibility: internal
+      lastActivityAt: 2025-05-17T00:00:00.000Z
+    - visibility: public
+      lastActivityAt: 2025-05-12T00:00:00.000Z
+    - visibility: private
+      lastActivityAt: 2025-05-07T00:00:00.000Z

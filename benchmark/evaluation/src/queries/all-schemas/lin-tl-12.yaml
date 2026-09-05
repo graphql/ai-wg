@@ -1,0 +1,74 @@
+id: lin-tl-12
+schemaId: linear
+query: "What templates are configured for my teams, and what kind of entity is
+  each template for?"
+operation: |
+  query {
+    viewer {
+      teams {
+        nodes {
+          name
+          templates {
+            nodes {
+              name
+              type
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Template.name
+  - Template.type
+targetTypes:
+  - Template
+mustInclude:
+  - Query.viewer
+  - User.teams
+  - Team.templates
+  - Template.name
+  - Template.type
+mustExclude:
+  - Mutation
+notes: Template inventory via viewer teams.
+answerSchema:
+  type: object
+  properties:
+    teams:
+      type: array
+      items:
+        type: object
+        properties:
+          name: &a1
+            type: string
+          templates:
+            type: array
+            items:
+              type: object
+              properties:
+                name: *a1
+                type:
+                  type: string
+                  description: Entity type the template is for
+              required:
+                - name
+                - type
+              additionalProperties: false
+        required:
+          - name
+          - templates
+        additionalProperties: false
+  required:
+    - teams
+  additionalProperties: false
+answer:
+  teams:
+    - name: Engineering
+      templates:
+        - name: Bug Report
+          type: issue
+        - name: Feature Request
+          type: issue
+    - name: Platform
+      templates: []

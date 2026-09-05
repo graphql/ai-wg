@@ -1,0 +1,23 @@
+# This file marks evaluation/ as its own pnpm config root, independent of the
+# parent repo's workspace. It does NOT define sub-packages — this is a single
+# project. The packages list is intentionally empty.
+packages: []
+
+# Allow esbuild's postinstall (tsx depends on it).
+allowBuilds:
+    esbuild: true
+
+# Block packages younger than 30 days to reduce supply-chain risk.
+# Value is in minutes.
+minimumReleaseAge: 43200
+
+# Per-version exclusions for packages whose latest releases fall inside the
+# 30-day window. Add a line here (with a one-line reason) when bootstrapping
+# pulls in a freshly-released transitive. Re-check on every dep bump.
+minimumReleaseAgeExclude:
+    - '@types/node@22.19.19' # transitive — types-only, no runtime
+    - 'es-object-atoms@1.1.2' # openai transitive
+    - 'graphql@16.14.0' # direct — patch release, monitored upstream
+    - 'hasown@2.0.4' # openai transitive
+    - 'tsx@4.22.3' # devDep — tsx CLI used at dev time only
+    - 'yaml@2.9.0' # direct — patch release

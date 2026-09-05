@@ -1,0 +1,27 @@
+id: glab-066-kw
+schemaId: gitlab
+query: vulnerabilities owasp top ten category
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          identifiers {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - VulnerabilityIdentifier
+mustInclude:
+  - Query.group
+  - Group.vulnerabilities
+  - Vulnerability.identifiers
+  - Group.vulnerabilities(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-066. Security: vulns by OWASP top 10 category."

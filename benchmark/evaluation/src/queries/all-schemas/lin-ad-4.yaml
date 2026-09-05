@@ -1,0 +1,58 @@
+id: lin-ad-4
+schemaId: linear
+query: List all webhooks set up for our workspace and which team they target.
+operation: |
+  query {
+    webhooks(first: 10) {
+      nodes {
+        url
+        team {
+          id
+          name
+        }
+        allPublicTeams
+      }
+    }
+  }
+targetFields:
+  - Webhook.url
+  - Webhook.allPublicTeams
+targetTypes:
+  - Webhook
+mustInclude:
+  - Query.webhooks
+  - Webhook.url
+  - Webhook.team
+  - Webhook.allPublicTeams
+  - Query.webhooks(first:)
+mustExclude:
+  - Mutation
+notes: Webhook configuration audit.
+answerSchema:
+  type: object
+  properties:
+    webhooks:
+      type: array
+      items:
+        type: object
+        properties:
+          destinationUrl:
+            type: string
+          targetTeam:
+            type: string
+            description: Name of the team the webhook targets
+        required:
+          - destinationUrl
+          - targetTeam
+        additionalProperties: false
+  required:
+    - webhooks
+  additionalProperties: false
+answer:
+  webhooks:
+    - destinationUrl: https://hooks.example.com/linear/1
+      targetTeam: Engineering
+    - destinationUrl: https://hooks.example.com/linear/2
+      targetTeam: Backend
+    - destinationUrl: https://ci.example.com/linear/events
+      targetTeam: Engineering

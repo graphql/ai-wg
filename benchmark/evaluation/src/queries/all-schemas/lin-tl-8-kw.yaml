@@ -1,0 +1,29 @@
+id: lin-tl-8-kw
+schemaId: linear
+query: issue cycle time started completed by assignee
+operation: |
+  query {
+    issues(first: 10) {
+      nodes {
+        startedAt
+        completedAt
+        assignee {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.startedAt
+  - Issue.completedAt
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issues
+  - Issue.startedAt
+  - Issue.completedAt
+  - Issue.assignee
+  - Query.issues(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-tl-8. Cycle-time analysis: time from started to completed."

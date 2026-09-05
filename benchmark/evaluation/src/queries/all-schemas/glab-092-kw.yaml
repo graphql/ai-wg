@@ -1,0 +1,24 @@
+id: glab-092-kw
+schemaId: gitlab
+query: pending member approvals group
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      pendingMembers(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - PendingMemberInterface
+mustInclude:
+  - Query.group
+  - Group.pendingMembers
+  - Group.pendingMembers(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-092. Admin: pending member approvals."

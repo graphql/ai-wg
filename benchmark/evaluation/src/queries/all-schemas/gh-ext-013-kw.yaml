@@ -1,0 +1,33 @@
+id: gh-ext-013-kw
+schemaId: github
+query: unassigned issues repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10) {
+        nodes {
+          assignees(first: 10) {
+            __typename
+          }
+          state
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.state
+targetTypes:
+  - Issue
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.assignees
+  - Issue.state
+  - Issue.assignees(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-013. Filter issues with empty assignees in the repo.

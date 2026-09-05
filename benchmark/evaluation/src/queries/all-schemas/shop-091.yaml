@@ -1,0 +1,58 @@
+id: shop-091
+schemaId: shopify
+query: Which locations are inactive or scheduled for deactivation?
+operation: |
+  query {
+    locations(first: 10, includeInactive: true) {
+      nodes {
+        name
+        isActive
+        deactivatedAt
+      }
+    }
+  }
+targetFields:
+  - Location.name
+  - Location.isActive
+  - Location.deactivatedAt
+targetTypes:
+  - Location
+mustInclude:
+  - QueryRoot.locations
+  - Location.name
+  - Location.isActive
+  - Location.deactivatedAt
+  - QueryRoot.locations(first:)
+  - QueryRoot.locations(includeInactive:)
+mustExclude:
+  - Mutation
+notes: Locations marked inactive or scheduled for deactivation.
+answerSchema:
+  type: object
+  properties:
+    locations:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          deactivatedAt:
+            type: string
+        required:
+          - name
+          - deactivatedAt
+        additionalProperties: false
+  required:
+    - locations
+  additionalProperties: false
+answer:
+  locations:
+    - name: Airport Logistics
+      deactivatedAt: value-7163
+    - name: West Fulfillment
+      deactivatedAt: value-9967
+    - name: Northern Facility
+      deactivatedAt: value-7525
+    - name: Downtown Store
+      deactivatedAt: value-4589

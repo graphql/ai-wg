@@ -1,0 +1,65 @@
+id: shop-012
+schemaId: shopify
+query: Which draft orders include custom-priced items and who is the assigned
+  customer?
+operation: |
+  query {
+    draftOrders(first: 10) {
+      nodes {
+        name
+        lineItems(first: 10) {
+          nodes {
+            custom
+            name
+          }
+        }
+        customer {
+          displayName
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.draftOrders
+  - DraftOrder.lineItems
+  - DraftOrderLineItem.custom
+  - DraftOrder.customer
+  - Customer.displayName
+  - DraftOrder.lineItems(first:)
+  - QueryRoot.draftOrders(first:)
+mustExclude:
+  - Mutation
+notes: Draft orders with custom-priced items and assigned customer.
+answerSchema:
+  type: object
+  properties:
+    draftOrders:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          customer:
+            type: string
+        required:
+          - name
+          - customer
+        additionalProperties: false
+  required:
+    - draftOrders
+  additionalProperties: false
+answer:
+  draftOrders:
+    - name: "#DO-2024-1003"
+      customer: James Rodriguez
+    - name: "#DO-2024-1002"
+      customer: Sarah Johnson
+    - name: "#DO-2024-1001"
+      customer: Olivia Martinez
+    - name: "#DO-2024-1005"
+      customer: Ethan Lee
+    - name: "#DO-2024-1004"
+      customer: Charlotte Harris

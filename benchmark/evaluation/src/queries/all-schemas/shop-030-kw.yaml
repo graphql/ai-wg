@@ -1,0 +1,25 @@
+id: shop-030-kw
+schemaId: shopify
+query: products vendor Acme
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        vendor
+        title
+      }
+    }
+  }
+targetFields:
+  - Product.vendor
+  - Product.title
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.products
+  - Product.vendor
+  - Product.title
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-030. Products supplied by a specific vendor.

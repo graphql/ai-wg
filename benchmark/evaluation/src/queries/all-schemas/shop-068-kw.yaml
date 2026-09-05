@@ -1,0 +1,28 @@
+id: shop-068-kw
+schemaId: shopify
+query: marketing event revenue last quarter
+operation: |
+  query {
+    marketingEvents(first: 10) {
+      nodes {
+        utmCampaign
+        startedAt
+        endedAt
+      }
+    }
+  }
+targetFields:
+  - MarketingEvent.utmCampaign
+  - MarketingEvent.startedAt
+  - MarketingEvent.endedAt
+targetTypes:
+  - MarketingEvent
+mustInclude:
+  - QueryRoot.marketingEvents
+  - MarketingEvent.utmCampaign
+  - MarketingEvent.startedAt
+  - MarketingEvent.endedAt
+  - QueryRoot.marketingEvents(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-068. Revenue attribution per marketing event last quarter.

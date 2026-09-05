@@ -1,0 +1,40 @@
+id: gh-ext-025-kw
+schemaId: github
+query: re-run workflow successes
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object {
+        ... on Commit {
+          checkSuites(first: 10) {
+            nodes {
+              workflowRun {
+                runNumber
+              }
+              conclusion
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - WorkflowRun.runNumber
+  - CheckSuite.conclusion
+targetTypes:
+  - WorkflowRun
+  - CheckSuite
+  - Workflow
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Commit.checkSuites
+  - CheckSuite.workflowRun
+  - WorkflowRun.runNumber
+  - CheckSuite.conclusion
+  - Commit.checkSuites(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-025. Detect runs that conclude SUCCESS after a re-run by inspecting run numbers and conclusions.

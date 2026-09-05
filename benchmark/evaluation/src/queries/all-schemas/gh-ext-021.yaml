@@ -1,0 +1,76 @@
+id: gh-ext-021
+schemaId: github
+query: What workflows are defined in the octocat/example repository and on what
+  events do they trigger?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object(expression: "HEAD") {
+        ... on Commit {
+          checkSuites(first: 5) {
+            nodes {
+              workflowRun {
+                event
+                workflow {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+answer:
+  workflows:
+    - name: CI
+      event: push
+    - name: Deploy
+      event: pull_request
+    - name: CI
+      event: push
+    - name: CI
+      event: push
+    - name: Deploy
+      event: push
+answerSchema:
+  type: object
+  properties:
+    workflows:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          event:
+            type: string
+        required:
+          - name
+          - event
+        additionalProperties: false
+  required:
+    - workflows
+  additionalProperties: false
+targetFields:
+  - WorkflowRun.event
+  - Workflow.name
+targetTypes:
+  - WorkflowRun
+  - Workflow
+  - CheckSuite
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Commit.checkSuites
+  - CheckSuite.workflowRun
+  - WorkflowRun.event
+  - WorkflowRun.workflow
+  - Workflow.name
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Read recent check suites on HEAD to discover workflow names and their
+  trigger events.

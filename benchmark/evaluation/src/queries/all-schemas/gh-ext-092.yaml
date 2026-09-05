@@ -1,0 +1,66 @@
+id: gh-ext-092
+schemaId: github
+query: What roles do members of the octocat organization have?
+queries:
+  - members of the octocat organization and their role
+  - repositories in the octocat organization and the viewer's permission
+operation: |
+  query {
+    organization(login: "octocat") {
+      membersWithRole(first: 10) {
+        edges {
+          node {
+            login
+          }
+          role
+        }
+      }
+    }
+  }
+targetFields:
+  - OrganizationMemberEdge.role
+  - User.login
+targetTypes:
+  - OrganizationMemberEdge
+mustInclude:
+  - Query.organization
+  - Organization.membersWithRole
+  - OrganizationMemberEdge.role
+  - OrganizationMemberEdge.node
+  - User.login
+  - Organization.membersWithRole(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Org members with role admin or repos where they have admin permission.
+answerSchema:
+  type: object
+  properties:
+    members:
+      type: array
+      items:
+        type: object
+        properties:
+          login:
+            type: string
+          role:
+            type: string
+        required:
+          - login
+          - role
+        additionalProperties: false
+  required:
+    - members
+  additionalProperties: false
+answer:
+  members:
+    - login: alice
+      role: ADMIN
+    - login: bob
+      role: MEMBER
+    - login: carol
+      role: MEMBER
+    - login: dave
+      role: MEMBER
+    - login: eve
+      role: MEMBER

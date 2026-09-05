@@ -1,0 +1,61 @@
+id: shop-060
+schemaId: shopify
+query: Which orders have a fraud-risk analysis that recommends investigating
+  them by contacting the buyer? Give me the order id, name, and recommendation.
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        id
+        name
+        risk {
+          recommendation
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.id
+  - Order.name
+  - OrderRiskSummary.recommendation
+targetTypes:
+  - Order
+  - OrderRiskSummary
+mustInclude:
+  - QueryRoot.orders
+  - Order.risk
+  - OrderRiskSummary.recommendation
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: >-
+  Orders whose risk recommendation is INVESTIGATE ("Recommends investigating the
+  order by contacting buyers"). The orders connection returns all orders; the
+  answer keeps only those with recommendation INVESTIGATE.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          recommendation:
+            type: string
+        required:
+          - id
+          - name
+          - recommendation
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - id: ord-3
+      name: Item 4308
+      recommendation: INVESTIGATE

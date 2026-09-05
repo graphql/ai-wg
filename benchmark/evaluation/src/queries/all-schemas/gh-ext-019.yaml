@@ -1,0 +1,64 @@
+id: gh-ext-019
+schemaId: github
+query: Which review requests on pull request Nr. 1 in the octocat/example
+  repository are flagged as codeowner requests?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        reviewRequests(first: 10) {
+          nodes {
+            asCodeOwner
+            requestedReviewer {
+              ... on User { login }
+              ... on Bot { login }
+              ... on Mannequin { login }
+              ... on Team { name }
+              ... on EnterpriseTeam { name }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ReviewRequest.asCodeOwner
+  - User.login
+  - Bot.login
+  - Mannequin.login
+  - Team.name
+  - EnterpriseTeam.name
+targetTypes:
+  - ReviewRequest
+  - User
+  - Bot
+  - Mannequin
+  - Team
+  - EnterpriseTeam
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.reviewRequests
+  - ReviewRequest.asCodeOwner
+  - ReviewRequest.requestedReviewer
+  - PullRequest.reviewRequests(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+mustExclude:
+  - Mutation
+notes: PR review requests filtered to codeowner-flagged ones.
+answerSchema:
+  type: object
+  properties:
+    requestedReviewers:
+      type: array
+      items:
+        type: string
+  required:
+    - requestedReviewers
+  additionalProperties: false
+answer:
+  requestedReviewers:
+    - alice
+    - bob

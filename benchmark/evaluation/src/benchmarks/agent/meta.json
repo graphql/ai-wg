@@ -1,0 +1,11 @@
+{
+    "id": "agent",
+    "name": "Agent benchmark",
+    "description": "Agentic LLM schema-search loop; vary (chat model × strategy). The embedding setup inside search is fixed. Headline: success% with a 95% Wilson CI, plus cost/turn distributions and a failure taxonomy.",
+    "variesAxis": "agentModel,strategy",
+    "fixed": {
+        "embeddingModel": "openai-3-small",
+        "template": "coord-return-desc",
+        "typeTemplate": "name-desc"
+    }
+}

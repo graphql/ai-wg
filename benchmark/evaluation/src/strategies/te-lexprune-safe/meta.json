@@ -1,0 +1,30 @@
+{
+    "id": "te-lexprune-safe",
+    "name": "TE — lexprune (recall-safe: equal recall, fewer tokens)",
+    "description": "Forks ptv-lex-weighted's full pipeline, tightens pathsToRoot to maxPathsPerType=2/maxDepth=5, and after selection drops any coord whose blended cosine is below dropFloor unless the coord is a root field, lies on a kept path-to-root, or its parent type is one of the top-K (completeTopK) retrieved types. A gentle relevance-floor prune that sheds the low-cos splice tail at near-baseline recall.",
+    "defaultConfig": {
+        "typesTopK": 15,
+        "perVariantBudget": 800,
+        "efficiencyThreshold": 0.04,
+        "cosWeight": 4,
+        "lexWeight": 1.5,
+        "parentCosBlend": 0.3,
+        "unwrapConnections": true,
+        "poolEntryTypeCosFloor": 0.25,
+        "variantTopK": 20,
+        "relevanceFloor": 0.75,
+        "mergeMaxVariants": 10,
+        "typeHitsCutoff": "kneedle",
+        "kneedleSensitivity": 0.05,
+        "maxExpandedTypes": 40,
+        "dropFloor": 0.16,
+        "completeTopK": 15,
+        "pathsToRoot": {
+            "mode": "on",
+            "maxPathsPerType": 5,
+            "maxDepth": 6,
+            "includeMutationPaths": false,
+            "expandConnectionWrappers": true
+        }
+    }
+}

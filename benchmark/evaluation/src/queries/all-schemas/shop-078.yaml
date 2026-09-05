@@ -1,0 +1,61 @@
+id: shop-078
+schemaId: shopify
+query: Which automatic discounts apply on subscription items? Give their titles
+  and statuses.
+operation: |
+  query {
+    automaticDiscountNodes(first: 10) {
+      edges {
+        node {
+          automaticDiscount {
+            ... on DiscountAutomaticApp {
+              title
+              status
+              appliesOnSubscription
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscountAutomaticApp.title
+  - DiscountAutomaticApp.status
+  - DiscountAutomaticApp.appliesOnSubscription
+targetTypes:
+  - DiscountAutomaticApp
+mustInclude:
+  - QueryRoot.automaticDiscountNodes
+  - DiscountAutomaticApp.title
+  - DiscountAutomaticApp.status
+  - DiscountAutomaticApp.appliesOnSubscription
+  - QueryRoot.automaticDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: >
+  Filter automatic discounts to those where appliesOnSubscription is true. Only
+  DiscountAutomaticApp.title-8257 qualifies (appliesOnSubscription: true);
+  title-1942 applies only on one-time purchases and is excluded.
+answerSchema:
+  type: object
+  properties:
+    discounts:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          status:
+            type: string
+        required:
+          - title
+          - status
+        additionalProperties: false
+  required:
+    - discounts
+  additionalProperties: false
+answer:
+  discounts:
+    - title: Volume Pricing Engine
+      status: ACTIVE

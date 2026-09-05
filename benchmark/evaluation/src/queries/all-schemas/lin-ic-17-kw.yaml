@@ -1,0 +1,23 @@
+id: lin-ic-17-kw
+schemaId: linear
+query: branch name lookup issue
+operation: |
+  query {
+    issueVcsBranchSearch(branchName: "<id>") {
+      identifier
+      title
+    }
+  }
+targetFields:
+  - Issue.identifier
+  - Issue.title
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issueVcsBranchSearch
+  - Issue.identifier
+  - Issue.title
+  - Query.issueVcsBranchSearch(branchName:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-17. Resolve a branch name back to its issue.

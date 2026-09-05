@@ -1,0 +1,51 @@
+id: shop-032
+schemaId: shopify
+query: List collections along with how many products each one contains.
+operation: |
+  query {
+    collections(first: 10) {
+      nodes {
+        productsCount {
+          count
+        }
+        title
+      }
+    }
+  }
+targetFields:
+  - Collection.title
+targetTypes:
+  - Collection
+mustInclude:
+  - QueryRoot.collections
+  - Collection.productsCount
+  - Collection.title
+  - QueryRoot.collections(first:)
+mustExclude:
+  - Mutation
+notes: Collections with their product counts.
+answerSchema:
+  type: object
+  properties:
+    collections:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          productCount:
+            type: integer
+        required:
+          - title
+          - productCount
+        additionalProperties: false
+  required:
+    - collections
+  additionalProperties: false
+answer:
+  collections:
+    - title: Summer Sale Collection
+      productCount: 712
+    - title: Best Sellers
+      productCount: 444

@@ -1,0 +1,63 @@
+id: shop-034
+schemaId: shopify
+query: Which products are tagged with 'eco-friendly' and what is their current price?
+operation: |
+  query {
+    products(first: 10, query: "tag:eco-friendly") {
+      nodes {
+        title
+        tags
+        priceRangeV2 {
+          maxVariantPrice {
+            amount
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.tags
+  - Product.title
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.products
+  - Product.tags
+  - Product.title
+  - Product.priceRangeV2
+  - QueryRoot.products(first:)
+  - QueryRoot.products(query:)
+mustExclude:
+  - Mutation
+notes: Products tagged with 'eco-friendly' and their current price range.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          price:
+            type: string
+        required:
+          - title
+          - price
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - title: Phone Case
+      price: "19.95"
+    - title: Leather Wallet
+      price: "256.00"
+    - title: Wireless Headphones
+      price: "159.99"
+    - title: Yoga Mat
+      price: "42.00"
+    - title: Smart Watch
+      price: "119.50"

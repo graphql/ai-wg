@@ -1,0 +1,11 @@
+{
+    "id": "type-templates",
+    "name": "Type-template benchmark",
+    "description": "Vary the type rendering template; fixed (model, field template, strategy=pure-knn). Headline: type recall@50.",
+    "variesAxis": "typeTemplate",
+    "fixed": {
+        "model": "openai-3-small",
+        "fieldTemplate": "coord-return-desc",
+        "strategy": "pure-knn"
+    }
+}

@@ -1,0 +1,57 @@
+id: gh-ext-060
+schemaId: github
+query: What is the disk usage for each repository owned by the authenticated user?
+operation: |
+  query {
+    viewer {
+      repositories(first: 10) {
+        nodes {
+          diskUsage
+          nameWithOwner
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.diskUsage
+  - Repository.nameWithOwner
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.viewer
+  - User.repositories
+  - Repository.diskUsage
+  - Repository.nameWithOwner
+  - User.repositories(first:)
+mustExclude:
+  - Mutation
+notes: Disk usage per repository for the viewer.
+answerSchema:
+  type: object
+  properties:
+    repositories:
+      type: array
+      items:
+        type: object
+        properties:
+          fullName:
+            type: string
+          diskUsage:
+            type: number
+        required:
+          - fullName
+          - diskUsage
+        additionalProperties: false
+  required:
+    - repositories
+  additionalProperties: false
+answer:
+  repositories:
+    - fullName: viewer-user/my-project
+      diskUsage: 6347
+    - fullName: viewer-user/example-fork
+      diskUsage: 7536
+    - fullName: viewer-user/hello-world-fork
+      diskUsage: 5029
+    - fullName: viewer-user/another-fork
+      diskUsage: 4271

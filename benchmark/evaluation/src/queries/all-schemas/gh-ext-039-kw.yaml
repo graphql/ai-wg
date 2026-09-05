@@ -1,0 +1,29 @@
+id: gh-ext-039-kw
+schemaId: github
+query: private vulnerability reporting enabled
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          hasVulnerabilityAlertsEnabled
+          isPrivate
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.hasVulnerabilityAlertsEnabled
+  - Repository.isPrivate
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.hasVulnerabilityAlertsEnabled
+  - Repository.isPrivate
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-039. Repositories with vulnerability reporting enabled (the only proxy for private vulnerability reporting).

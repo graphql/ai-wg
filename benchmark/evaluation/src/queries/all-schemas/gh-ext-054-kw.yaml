@@ -1,0 +1,28 @@
+id: gh-ext-054-kw
+schemaId: github
+query: pr templates repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequestTemplates {
+        filename
+        body
+      }
+    }
+  }
+targetFields:
+  - PullRequestTemplate.filename
+  - PullRequestTemplate.body
+targetTypes:
+  - PullRequestTemplate
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.pullRequestTemplates
+  - PullRequestTemplate.filename
+  - PullRequestTemplate.body
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-054. PR templates configured for the repo.

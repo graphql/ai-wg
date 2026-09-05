@@ -1,0 +1,50 @@
+id: lin-ic-3
+schemaId: linear
+query: Show me my unread notifications.
+operation: |
+  query {
+    notifications(first: 10) {
+      nodes {
+        type
+        readAt
+        actor {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Notification.type
+  - Notification.readAt
+targetTypes:
+  - Notification
+mustInclude:
+  - Query.notifications
+  - Notification.type
+  - Notification.readAt
+  - Notification.actor
+  - Query.notifications(first:)
+mustExclude:
+  - Mutation
+notes: Unread inbox notifications.
+answer:
+  unreadNotifications:
+    - type: issueAssigned
+    - type: issueMention
+    - type: issueComment
+answerSchema:
+  type: object
+  properties:
+    unreadNotifications:
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+        required:
+          - type
+        additionalProperties: false
+  required:
+    - unreadNotifications
+  additionalProperties: false

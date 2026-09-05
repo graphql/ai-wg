@@ -1,0 +1,49 @@
+id: shop-002
+schemaId: shopify
+query: Show me orders with financial_status:paid and fulfillment_status:unshipped.
+operation: |
+  query {
+    orders(first: 10, query: "financial_status:paid fulfillment_status:unshipped") {
+      nodes {
+        id
+        name
+        displayFinancialStatus
+        displayFulfillmentStatus
+      }
+    }
+  }
+targetFields:
+  - Order.displayFinancialStatus
+  - Order.displayFulfillmentStatus
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.orders
+  - Order.displayFinancialStatus
+  - Order.displayFulfillmentStatus
+  - QueryRoot.orders(first:)
+  - QueryRoot.orders(query:)
+mustExclude:
+  - Mutation
+notes: Paid-but-unshipped orders from a specific warehouse location.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+        required:
+          - id
+          - name
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders: []

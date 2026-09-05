@@ -1,0 +1,24 @@
+id: glab-063-kw
+schemaId: gitlab
+query: active scan execution policies project
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      scanExecutionPolicies(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - ScanExecutionPolicy
+mustInclude:
+  - Query.project
+  - Project.scanExecutionPolicies
+  - Project.scanExecutionPolicies(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-063. Security: active scan execution policies."

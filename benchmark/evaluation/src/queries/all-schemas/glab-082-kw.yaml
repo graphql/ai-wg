@@ -1,0 +1,25 @@
+id: glab-082-kw
+schemaId: gitlab
+query: issues due this week state
+operation: |
+  query {
+    issues(first: 10) {
+      nodes {
+        dueDate
+        state
+      }
+    }
+  }
+targetFields:
+  - Issue.dueDate
+  - Issue.state
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issues
+  - Issue.dueDate
+  - Issue.state
+  - Query.issues(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-082. PM: issues due this week."

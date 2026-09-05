@@ -1,0 +1,48 @@
+id: lin-tl-15
+schemaId: linear
+query: "When does the active cycle start and end for the team with ID
+  'team-engineering'?"
+operation: |
+  query {
+    team(id: "team-engineering") {
+      activeCycle {
+        startsAt
+        endsAt
+      }
+    }
+  }
+targetFields:
+  - Cycle.startsAt
+  - Cycle.endsAt
+targetTypes:
+  - Cycle
+  - Team
+mustInclude:
+  - Query.team
+  - Team.activeCycle
+  - Cycle.startsAt
+  - Cycle.endsAt
+  - Query.team(id:)
+mustExclude:
+  - Mutation
+notes: Active cycle dates for a specific team.
+answerSchema:
+  type: object
+  properties:
+    activeCycle:
+      type: object
+      properties:
+        startsAt: &a1
+          type: string
+        endsAt: *a1
+      required:
+        - startsAt
+        - endsAt
+      additionalProperties: false
+  required:
+    - activeCycle
+  additionalProperties: false
+answer:
+  activeCycle:
+    startsAt: 2025-05-19T00:00:00.000Z
+    endsAt: 2025-06-02T00:00:00.000Z

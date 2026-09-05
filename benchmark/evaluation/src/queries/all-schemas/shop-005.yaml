@@ -1,0 +1,74 @@
+id: shop-005
+schemaId: shopify
+query: Find unfulfilled orders (fulfillment_status:unfulfilled) and show their
+  shipping province and fulfillment status.
+operation: |
+  query {
+    orders(first: 10, query: "fulfillment_status:unfulfilled") {
+      nodes {
+        name
+        shippingAddress {
+          provinceCode
+        }
+        displayFulfillmentStatus
+      }
+    }
+  }
+targetFields:
+  - Order.name
+  - Order.displayFulfillmentStatus
+  - MailingAddress.provinceCode
+targetTypes:
+  - Order
+  - MailingAddress
+mustInclude:
+  - QueryRoot.orders
+  - Order.name
+  - Order.shippingAddress
+  - Order.displayFulfillmentStatus
+  - MailingAddress.provinceCode
+  - QueryRoot.orders(first:)
+  - QueryRoot.orders(query:)
+mustExclude:
+  - Mutation
+notes: Unfulfilled orders filtered by California shipping address.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          shippingProvince:
+            type: string
+            description: Two-letter province/state code (e.g. TX)
+          fulfillmentStatus:
+            type: string
+        required:
+          - name
+          - shippingProvince
+          - fulfillmentStatus
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - name: Item 2920
+      shippingProvince: TX
+      fulfillmentStatus: REQUEST_DECLINED
+    - name: Item 4129
+      shippingProvince: IL
+      fulfillmentStatus: REQUEST_DECLINED
+    - name: Item 4665
+      shippingProvince: TN
+      fulfillmentStatus: REQUEST_DECLINED
+    - name: Item 4308
+      shippingProvince: MD
+      fulfillmentStatus: PENDING_FULFILLMENT
+    - name: Item 7956
+      shippingProvince: PA
+      fulfillmentStatus: PARTIALLY_FULFILLED

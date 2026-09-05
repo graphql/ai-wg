@@ -1,0 +1,72 @@
+id: lin-tl-3
+schemaId: linear
+query: "Which urgent and high-priority issues are still open and approaching
+  their due date?"
+operation: |
+  query {
+    issues(first: 10, filter: { priority: { in: [1, 2] }, state: { type: { in: ["unstarted", "started"] } }, dueDate: { null: false } }) {
+      nodes {
+        title
+        priority
+        priorityLabel
+        dueDate
+        state {
+          name
+          type
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.title
+  - Issue.priority
+  - Issue.priorityLabel
+  - Issue.dueDate
+  - Issue.state
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issues
+  - Issue.title
+  - Issue.priority
+  - Issue.priorityLabel
+  - Issue.dueDate
+  - Issue.state
+  - Query.issues(first:)
+  - Query.issues(filter:)
+mustExclude:
+  - Mutation
+notes: Team lead triages urgent unassigned/at-risk work via priority and due dates.
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          priority:
+            type: number
+            description: Issue priority value
+          dueDate: *a1
+        required:
+          - title
+          - priority
+          - dueDate
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - title: Implement rate limiting on API gateway
+      priority: 1
+      dueDate: 2025-07-30
+    - title: Update mobile app onboarding flow
+      priority: 2
+      dueDate: 2025-05-29
+    - title: Implement audit logging
+      priority: 1
+      dueDate: 2025-05-30

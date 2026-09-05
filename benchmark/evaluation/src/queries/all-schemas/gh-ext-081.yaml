@@ -1,0 +1,49 @@
+id: gh-ext-081
+schemaId: github
+query: What are the updated timestamps for items in project Nr. 1 of the octocat
+  organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectV2(number: 1) {
+        items(first: 10) {
+          nodes {
+            updatedAt
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectV2Item.updatedAt
+targetTypes:
+  - ProjectV2Item
+  - Project
+mustInclude:
+  - Query.organization
+  - Organization.projectV2
+  - ProjectV2.items
+  - ProjectV2Item.updatedAt
+  - Organization.projectV2(number:)
+  - ProjectV2.items(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Project items ordered by updatedAt timestamp.
+answerSchema:
+  type: object
+  properties:
+    updatedAt:
+      type: array
+      items:
+        type: string
+  required:
+    - updatedAt
+  additionalProperties: false
+answer:
+  updatedAt:
+    - 2024-07-15T00:00:00.000Z
+    - 2025-04-26T00:00:00.000Z
+    - 2025-02-08T00:00:00.000Z
+    - 2024-11-05T00:00:00.000Z
+    - 2025-02-28T00:00:00.000Z

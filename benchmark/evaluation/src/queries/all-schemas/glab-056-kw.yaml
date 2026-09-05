@@ -1,0 +1,27 @@
+id: glab-056-kw
+schemaId: gitlab
+query: sast scanners last pipeline findings
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(first: 10) {
+        nodes {
+          securityReportSummary {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - SecurityReportSummary
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.securityReportSummary
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-056. Security: SAST scanners on last pipeline + findings."

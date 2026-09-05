@@ -1,0 +1,37 @@
+id: glab-075-kw
+schemaId: gitlab
+query: releases quarter assets milestones
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      releases(first: 10) {
+        nodes {
+          assets {
+            __typename
+          }
+          milestones(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+          releasedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Release.releasedAt
+targetTypes:
+  - Release
+mustInclude:
+  - Query.project
+  - Project.releases
+  - Release.assets
+  - Release.milestones
+  - Release.releasedAt
+  - Project.releases(first:)
+  - Query.project(fullPath:)
+  - Release.milestones(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-075. PM: releases past quarter with assets/milestones."

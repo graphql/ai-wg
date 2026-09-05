@@ -1,0 +1,28 @@
+id: gh-ext-046-kw
+schemaId: github
+query: inactive followed users 90 days
+operation: |
+  query {
+    viewer {
+      following(first: 10) {
+        __typename
+      }
+      updatedAt
+      login
+    }
+  }
+targetFields:
+  - User.updatedAt
+  - User.login
+targetTypes:
+  - User
+mustInclude:
+  - Query.viewer
+  - User.following
+  - UserConnection.nodes
+  - User.updatedAt
+  - User.login
+  - User.following(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-046. Followed users plus their last activity timestamp.

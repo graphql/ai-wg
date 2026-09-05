@@ -1,0 +1,29 @@
+id: glab-011-kw
+schemaId: gitlab
+query: open issues contributed projects
+operation: |
+  query {
+    currentUser {
+      contributedProjects(first: 10) {
+        nodes {
+          issues(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.contributedProjects
+  - Project.issues
+  - CurrentUser.contributedProjects(first:)
+  - Project.issues(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-011. Developer: open issues across projects I contribute to."

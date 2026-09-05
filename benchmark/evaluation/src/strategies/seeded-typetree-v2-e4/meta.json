@@ -1,0 +1,31 @@
+{
+    "id": "seeded-typetree-v2-e4",
+    "name": "Seeded type-tree v2 (E4: hybrid type-tree + global kNN)",
+    "description": "Hybrid variant of seeded-typetree-v2. Adds a `hybrid.mode` knob: 'off' (control = v2), 'typed-knn' (inject global cosine kNN filtered to retrieved types), 'strict-knn' (inject global cosine kNN minus Mutation/Subscription), 'rrf-fusion' (per-type RRF-fuse local cos+lex order with per-type-filtered global kNN order), 'knn-rerank' (per-type top-rerankPoolSize by formula, then re-rank by raw cosine). Eval port approximates the parent's per-type BM25/trigram+cosine type retrieval with a cosine-aggregated type score plus identifier-token + 3-gram overlap on type/field names (no description text, no precomputed type indexes in the eval snapshot); the per-field lex bonus is approximated from token + trigram overlap on field names (no BM25 / trigram index). Defaults mirror the parent strategy's defaultConfig (hybrid.mode='off').",
+    "defaultConfig": {
+        "nodeBudget": 60,
+        "typesTopK": 15,
+        "fieldsPerType": 12,
+        "childrenPerPickedField": 4,
+        "maxPathHops": 6,
+        "cosWeight": 1.0,
+        "lexWeight": 5.0,
+        "scoreMode": "add",
+        "minTypeScore": 0,
+        "cosineSafetyTopK": 0,
+        "hybrid": {
+            "mode": "off",
+            "knnTopK": 30,
+            "rrfK": 60,
+            "rerankPoolSize": 25,
+            "excludeRootTypes": ["Mutation", "Subscription"]
+        },
+        "pathsToRoot": {
+            "mode": "on",
+            "maxPathsPerType": 5,
+            "maxDepth": 6,
+            "includeMutationPaths": false,
+            "expandConnectionWrappers": true
+        }
+    }
+}

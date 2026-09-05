@@ -1,0 +1,27 @@
+id: gh-ext-056-kw
+schemaId: github
+query: archived repositories issues search
+operation: |
+  query {
+    search(query: "example", type: DISCUSSION, first: 10) {
+      nodes {
+        __typename
+      }
+    }
+  }
+targetFields:
+  - Repository.isArchived
+targetTypes:
+  - Repository
+  - Issue
+mustInclude:
+  - Query.search
+  - SearchResultItemConnection.nodes
+  - Repository.isArchived
+  - Issue.repository
+  - Query.search(first:)
+  - Query.search(query:)
+  - Query.search(type:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-056. Use the search type to find issues whose repository is archived.

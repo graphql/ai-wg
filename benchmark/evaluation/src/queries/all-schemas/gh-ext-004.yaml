@@ -1,0 +1,81 @@
+id: gh-ext-004
+schemaId: github
+query: List merged pull requests in the octocat/example repository with each
+  author's login, additions, deletions, and merge timestamp.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10, states: [MERGED]) {
+        nodes {
+          author {
+            login
+          }
+          additions
+          deletions
+          mergedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Actor.login
+  - PullRequest.additions
+  - PullRequest.deletions
+  - PullRequest.mergedAt
+targetTypes:
+  - PullRequest
+  - Actor
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.author
+  - Actor.login
+  - PullRequest.additions
+  - PullRequest.deletions
+  - PullRequest.mergedAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+  - Repository.pullRequests(states:)
+mustExclude:
+  - Mutation
+notes: Aggregate additions and deletions per author across merged PRs.
+answerSchema:
+  type: object
+  properties:
+    mergedPullRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          authorLogin:
+            type: string
+          additions:
+            type: integer
+          deletions:
+            type: integer
+          mergedAt:
+            type: string
+        required:
+          - authorLogin
+          - additions
+          - deletions
+          - mergedAt
+        additionalProperties: false
+  required:
+    - mergedPullRequests
+  additionalProperties: false
+answer:
+  mergedPullRequests:
+    - authorLogin: carol
+      additions: 184
+      deletions: 79
+      mergedAt: 2025-05-08T00:00:00.000Z
+    - authorLogin: grace
+      additions: 60
+      deletions: 55
+      mergedAt: 2025-05-12T00:00:00.000Z
+    - authorLogin: carol
+      additions: 130
+      deletions: 25
+      mergedAt: 2025-05-12T00:00:00.000Z

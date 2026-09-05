@@ -1,0 +1,21 @@
+id: shop-073-kw
+schemaId: shopify
+query: first time buyer discount codes
+operation: |
+  query {
+    codeDiscountNodes(first: 10) {
+      edges {
+        cursor
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.codeDiscountNodes
+  - DiscountCodeBasic.customerSelection
+  - DiscountCustomerSelection
+  - QueryRoot.codeDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-073. Discount codes limited to first-time buyers.

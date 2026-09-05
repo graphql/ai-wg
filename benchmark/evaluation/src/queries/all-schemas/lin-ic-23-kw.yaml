@@ -1,0 +1,47 @@
+id: lin-ic-23-kw
+schemaId: linear
+query: notification preferences settings
+operation: |
+  query {
+    userSettings {
+      notificationDeliveryPreferences {
+        mobile {
+          notificationsDisabled
+        }
+      }
+      notificationCategoryPreferences {
+        assignments {
+          mobile
+          desktop
+          email
+          slack
+        }
+        mentions {
+          mobile
+          desktop
+          email
+          slack
+        }
+      }
+    }
+  }
+targetFields:
+  - NotificationDeliveryPreferencesChannel.notificationsDisabled
+  - NotificationChannelPreferences.mobile
+  - NotificationChannelPreferences.desktop
+  - NotificationChannelPreferences.email
+  - NotificationChannelPreferences.slack
+targetTypes:
+  - UserSettings
+  - NotificationDeliveryPreferences
+  - NotificationCategoryPreferences
+  - NotificationChannelPreferences
+mustInclude:
+  - Query.userSettings
+  - UserSettings.notificationDeliveryPreferences
+  - UserSettings.notificationCategoryPreferences
+  - NotificationDeliveryPreferences.mobile
+  - NotificationCategoryPreferences.assignments
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-23. Notification preferences settings.

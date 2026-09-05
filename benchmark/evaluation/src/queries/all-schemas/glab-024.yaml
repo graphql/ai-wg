@@ -1,0 +1,70 @@
+id: glab-024
+schemaId: gitlab
+query: List the boards and their lists for project group/project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      boards(first: 10) {
+        nodes {
+          id
+          name
+          lists(first: 10) {
+            nodes {
+              id
+              listType
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Board.id
+  - Board.name
+  - BoardList.id
+  - BoardList.listType
+targetTypes:
+  - Board
+  - BoardList
+mustInclude:
+  - Query.project
+  - Project.boards
+  - Board.lists
+  - Board.id
+  - Board.name
+  - BoardList.id
+  - BoardList.listType
+  - Board.lists(first:)
+  - Project.boards(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Maintainer: project boards and lists."
+answerSchema:
+  type: object
+  properties:
+    boards:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          lists:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - lists
+        additionalProperties: false
+  required:
+    - boards
+  additionalProperties: false
+answer:
+  boards:
+    - name: Project Board
+      lists:
+        - backlog
+        - label
+        - closed

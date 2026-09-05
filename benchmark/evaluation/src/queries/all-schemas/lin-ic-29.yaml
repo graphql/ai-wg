@@ -1,0 +1,56 @@
+id: lin-ic-29
+schemaId: linear
+query: "Do I have any issues whose due date has already passed?"
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10, filter: { dueDate: { lt: "2025-06-01" } }) {
+        nodes {
+          title
+          dueDate
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.title
+  - Issue.dueDate
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.title
+  - Issue.dueDate
+  - User.assignedIssues(first:)
+  - User.assignedIssues(filter:)
+mustExclude:
+  - Mutation
+notes: Overdue work for the viewer.
+answer:
+  overdueIssues:
+    - title: Update mobile app onboarding flow
+      dueDate: 2025-05-29
+    - title: Resolve webpack bundle size issue
+      dueDate: 2025-05-27
+    - title: Implement audit logging
+      dueDate: 2025-05-30
+answerSchema:
+  type: object
+  properties:
+    overdueIssues:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          dueDate:
+            type: string
+        required:
+          - title
+          - dueDate
+        additionalProperties: false
+  required:
+    - overdueIssues
+  additionalProperties: false

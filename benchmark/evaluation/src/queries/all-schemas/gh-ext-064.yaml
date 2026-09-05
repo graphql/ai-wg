@@ -1,0 +1,63 @@
+id: gh-ext-064
+schemaId: github
+query: Search GitHub repositories with the keyword "graphql" and return the
+  first 5 results with their name and URL.
+operation: |
+  query {
+    search(query: "graphql", type: REPOSITORY, first: 5) {
+      nodes {
+        ... on Repository {
+          name
+          url
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.name
+  - Repository.url
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.search
+  - SearchResultItemConnection.nodes
+  - Repository.name
+  - Repository.url
+  - Query.search(first:)
+  - Query.search(query:)
+  - Query.search(type:)
+mustExclude:
+  - Mutation
+answer:
+  repositories:
+    - name: example
+      url: https://github.com/octocat/example
+    - name: Hello-World
+      url: https://github.com/octocat/Hello-World
+    - name: example
+      url: https://github.com/user1/example
+    - name: mirror-of-linux
+      url: https://github.com/octocat/mirror-of-linux
+    - name: archived-old
+      url: https://github.com/octocat/archived-old
+answerSchema:
+  type: object
+  properties:
+    repositories:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          url:
+            type: string
+        required:
+          - name
+          - url
+        additionalProperties: false
+  required:
+    - repositories
+  additionalProperties: false
+notes: Search returns Repository nodes; use the REPOSITORY type arg and
+  Repository inline fragment to project name and url.

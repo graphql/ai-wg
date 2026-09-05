@@ -1,0 +1,44 @@
+id: lin-ic-19
+schemaId: linear
+query: "Who is subscribed to issue ENG-99?"
+operation: |
+  query {
+    issue(id: "ENG-99") {
+      subscribers(first: 10) {
+        nodes {
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - User.name
+targetTypes:
+  - User
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.subscribers
+  - User.name
+  - Issue.subscribers(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Who is subscribed to follow updates on an issue.
+answerSchema:
+  type: object
+  properties:
+    subscribers:
+      type: array
+      items:
+        type: string
+  required:
+    - subscribers
+  additionalProperties: false
+answer:
+  subscribers:
+    - Alice Johnson
+    - Bob Smith
+    - Carol White
+    - David Lee
+    - Eva Martinez

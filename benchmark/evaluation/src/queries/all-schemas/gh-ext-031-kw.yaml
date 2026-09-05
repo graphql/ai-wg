@@ -1,0 +1,35 @@
+id: gh-ext-031-kw
+schemaId: github
+query: pending status checks blocking pr
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        statusCheckRollup {
+          contexts(first: 10) {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CheckRun.status
+  - CheckRun.conclusion
+targetTypes:
+  - CheckRun
+  - Status
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.statusCheckRollup
+  - StatusCheckRollup.contexts
+  - CheckRun.status
+  - CheckRun.conclusion
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+  - StatusCheckRollup.contexts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-031. Walk the status check rollup contexts and filter PENDING runs.

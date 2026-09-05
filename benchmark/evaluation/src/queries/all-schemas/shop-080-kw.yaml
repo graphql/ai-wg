@@ -1,0 +1,26 @@
+id: shop-080-kw
+schemaId: shopify
+query: 3PL fulfillment services connected
+operation: |
+  query {
+    shop {
+      fulfillmentServices {
+        serviceName
+        location {
+          activatable
+        }
+      }
+    }
+  }
+targetFields:
+  - FulfillmentService.serviceName
+targetTypes:
+  - FulfillmentService
+mustInclude:
+  - QueryRoot.shop
+  - Shop.fulfillmentServices
+  - FulfillmentService.serviceName
+  - FulfillmentService.location
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-080. Third-party fulfillment services connected to the store.

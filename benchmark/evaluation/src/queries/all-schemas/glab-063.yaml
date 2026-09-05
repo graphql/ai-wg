@@ -1,0 +1,55 @@
+id: glab-063
+schemaId: gitlab
+query: Which scan execution policies are configured for group/project (name and
+  enabled status)?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      scanExecutionPolicies(first: 10) {
+        nodes {
+          name
+          enabled
+        }
+      }
+    }
+  }
+targetFields:
+  - ScanExecutionPolicy.name
+  - ScanExecutionPolicy.enabled
+targetTypes:
+  - ScanExecutionPolicy
+mustInclude:
+  - Query.project
+  - Project.scanExecutionPolicies
+  - Project.scanExecutionPolicies(first:)
+  - Query.project(fullPath:)
+  - ScanExecutionPolicy.name
+  - ScanExecutionPolicy.enabled
+mustExclude:
+  - Mutation
+notes: "Security: active scan execution policies."
+answerSchema:
+  type: object
+  properties:
+    policies:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          enabled:
+            type: boolean
+        required:
+          - name
+          - enabled
+        additionalProperties: false
+  required:
+    - policies
+  additionalProperties: false
+answer:
+  policies:
+    - name: Weekly DAST Scanning
+      enabled: true
+    - name: Container Image Scanning
+      enabled: true

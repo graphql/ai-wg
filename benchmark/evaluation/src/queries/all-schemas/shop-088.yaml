@@ -1,0 +1,66 @@
+id: shop-088
+schemaId: shopify
+query: For each B2B company location in the shop, list the title of every
+  catalog assigned to that location.
+operation: |
+  query {
+    companyLocations(first: 10) {
+      nodes {
+        name
+        catalogs(first: 10) {
+          nodes {
+            id
+            title
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CompanyLocation.name
+  - Catalog.title
+targetTypes:
+  - CompanyLocation
+  - Catalog
+mustInclude:
+  - QueryRoot.companyLocations
+  - CompanyLocation.catalogs
+  - CompanyLocation.name
+  - CompanyLocation.catalogs(first:)
+  - QueryRoot.companyLocations(first:)
+  - Catalog.id
+  - Catalog.title
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    companyLocations:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          catalogs:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - catalogs
+        additionalProperties: false
+  required:
+    - companyLocations
+  additionalProperties: false
+answer:
+  companyLocations:
+    - name: Storage Facility - Southwest
+      catalogs:
+        - Subscription Manager
+        - Live Chat Support
+    - name: Distribution Center - West
+      catalogs:
+        - Page Builder Advanced
+        - Social Media Integration
+notes: Catalog assigned to each B2B company location.

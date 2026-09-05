@@ -1,0 +1,66 @@
+id: glab-068
+schemaId: gitlab
+query: Show the security training providers configured for group/project (id,
+  name, isEnabled, isPrimary).
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      securityTrainingProviders {
+        id
+        name
+        isEnabled
+        isPrimary
+      }
+    }
+  }
+targetFields:
+  - ProjectSecurityTraining.id
+  - ProjectSecurityTraining.name
+  - ProjectSecurityTraining.isEnabled
+  - ProjectSecurityTraining.isPrimary
+targetTypes:
+  - ProjectSecurityTraining
+mustInclude:
+  - Query.project
+  - Project.securityTrainingProviders
+  - Query.project(fullPath:)
+  - ProjectSecurityTraining.id
+  - ProjectSecurityTraining.name
+  - ProjectSecurityTraining.isEnabled
+  - ProjectSecurityTraining.isPrimary
+mustExclude:
+  - Mutation
+notes: "Security: security training providers."
+answerSchema:
+  type: object
+  properties:
+    trainingProviders:
+      type: array
+      items:
+        type: object
+        properties:
+          id: &a1
+            type: string
+          name: *a1
+          isEnabled: &a2
+            type: boolean
+          isPrimary: *a2
+        required:
+          - id
+          - name
+          - isEnabled
+          - isPrimary
+        additionalProperties: false
+  required:
+    - trainingProviders
+  additionalProperties: false
+answer:
+  trainingProviders:
+    - id: gid://gitlab/SecurityTraining/1
+      name: Secure Code Warrior
+      isEnabled: true
+      isPrimary: true
+    - id: gid://gitlab/SecurityTraining/2
+      name: Kontra
+      isEnabled: false
+      isPrimary: false

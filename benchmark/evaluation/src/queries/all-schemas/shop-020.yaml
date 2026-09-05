@@ -1,0 +1,328 @@
+id: shop-020
+schemaId: shopify
+query: Which orders are on hold and what is the reason for the hold?
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        name
+        fulfillmentOrders(first: 10) {
+          nodes {
+            fulfillmentHolds {
+              reason
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.name
+  - FulfillmentHold.reason
+targetTypes:
+  - Order
+  - FulfillmentHold
+mustInclude:
+  - QueryRoot.orders
+  - Order.name
+  - Order.fulfillmentOrders
+  - FulfillmentOrder.fulfillmentHolds
+  - FulfillmentHold.reason
+  - Order.fulfillmentOrders(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Fulfillment orders on hold and the reason for the hold.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          holdReasons:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - holdReasons
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - name: Item 2920
+      holdReasons:
+        - AWAITING_RETURN_ITEMS
+        - HIGH_RISK_OF_FRAUD
+        - INVENTORY_OUT_OF_STOCK
+        - INCORRECT_ADDRESS
+        - OTHER
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - AWAITING_RETURN_ITEMS
+        - HIGH_RISK_OF_FRAUD
+        - INVENTORY_OUT_OF_STOCK
+        - INCORRECT_ADDRESS
+        - OTHER
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - AWAITING_RETURN_ITEMS
+        - HIGH_RISK_OF_FRAUD
+        - INVENTORY_OUT_OF_STOCK
+        - INCORRECT_ADDRESS
+        - OTHER
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - AWAITING_RETURN_ITEMS
+        - HIGH_RISK_OF_FRAUD
+        - INVENTORY_OUT_OF_STOCK
+        - INCORRECT_ADDRESS
+        - OTHER
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - AWAITING_RETURN_ITEMS
+        - HIGH_RISK_OF_FRAUD
+        - INVENTORY_OUT_OF_STOCK
+        - INCORRECT_ADDRESS
+        - OTHER
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+    - name: Item 4129
+      holdReasons:
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - OTHER
+        - HIGH_RISK_OF_FRAUD
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - OTHER
+        - HIGH_RISK_OF_FRAUD
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - OTHER
+        - HIGH_RISK_OF_FRAUD
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - OTHER
+        - HIGH_RISK_OF_FRAUD
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_PAYMENT
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - OTHER
+        - HIGH_RISK_OF_FRAUD
+    - name: Item 4665
+      holdReasons:
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - UNKNOWN_DELIVERY_DATE
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - UNKNOWN_DELIVERY_DATE
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - UNKNOWN_DELIVERY_DATE
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - UNKNOWN_DELIVERY_DATE
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+        - INCORRECT_ADDRESS
+        - AWAITING_PAYMENT
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - UNKNOWN_DELIVERY_DATE
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+    - name: Item 4308
+      holdReasons:
+        - HIGH_RISK_OF_FRAUD
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - INCORRECT_ADDRESS
+        - INCORRECT_ADDRESS
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - UNKNOWN_DELIVERY_DATE
+        - INCORRECT_ADDRESS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - INCORRECT_ADDRESS
+        - INCORRECT_ADDRESS
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - UNKNOWN_DELIVERY_DATE
+        - INCORRECT_ADDRESS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - INCORRECT_ADDRESS
+        - INCORRECT_ADDRESS
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - UNKNOWN_DELIVERY_DATE
+        - INCORRECT_ADDRESS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - INCORRECT_ADDRESS
+        - INCORRECT_ADDRESS
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - UNKNOWN_DELIVERY_DATE
+        - INCORRECT_ADDRESS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - INCORRECT_ADDRESS
+        - INCORRECT_ADDRESS
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - UNKNOWN_DELIVERY_DATE
+        - INCORRECT_ADDRESS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - INCORRECT_ADDRESS
+        - INCORRECT_ADDRESS
+        - UNKNOWN_DELIVERY_DATE
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - UNKNOWN_DELIVERY_DATE
+        - INCORRECT_ADDRESS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+    - name: Item 7956
+      holdReasons:
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - HIGH_RISK_OF_FRAUD
+        - AWAITING_PAYMENT
+        - AWAITING_RETURN_ITEMS
+        - AWAITING_PAYMENT
+        - HIGH_RISK_OF_FRAUD
+        - OTHER
+        - INVENTORY_OUT_OF_STOCK
+        - AWAITING_RETURN_ITEMS
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL
+        - ONLINE_STORE_POST_PURCHASE_CROSS_SELL

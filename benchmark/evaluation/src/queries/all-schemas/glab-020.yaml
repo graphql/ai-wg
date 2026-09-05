@@ -1,0 +1,93 @@
+id: glab-020
+schemaId: gitlab
+query: Show the default branch (rootRef) and merge train activity for project
+  group/project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      repository {
+        rootRef
+      }
+      mergeTrains(first: 10) {
+        nodes {
+          targetBranch
+          cars(first: 5) {
+            nodes {
+              status
+              createdAt
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.rootRef
+  - MergeTrain.targetBranch
+  - MergeTrainCar.status
+  - MergeTrainCar.createdAt
+targetTypes:
+  - Repository
+  - MergeTrain
+  - MergeTrainCar
+mustInclude:
+  - Query.project
+  - Query.project(fullPath:)
+  - Project.repository
+  - Repository.rootRef
+  - Project.mergeTrains
+  - Project.mergeTrains(first:)
+  - MergeTrain.targetBranch
+  - MergeTrain.cars
+  - MergeTrain.cars(first:)
+  - MergeTrainCar.status
+  - MergeTrainCar.createdAt
+mustExclude:
+  - Mutation
+notes: "Maintainer: merge train activity for default branch."
+answerSchema:
+  type: object
+  properties:
+    rootRef:
+      type: string
+    mergeTrains:
+      type: array
+      items:
+        type: object
+        properties:
+          targetBranch:
+            type: string
+          cars:
+            type: array
+            items:
+              type: object
+              properties:
+                status:
+                  type: string
+                createdAt:
+                  type: string
+              required:
+                - status
+                - createdAt
+              additionalProperties: false
+        required:
+          - targetBranch
+          - cars
+        additionalProperties: false
+  required:
+    - rootRef
+    - mergeTrains
+  additionalProperties: false
+answer:
+  rootRef: main
+  mergeTrains:
+    - targetBranch: main
+      cars:
+        - status: FRESH
+          createdAt: 2025-05-31T00:00:00.000Z
+        - status: MERGING
+          createdAt: 2025-05-30T00:00:00.000Z
+    - targetBranch: release
+      cars:
+        - status: FRESH
+          createdAt: 2025-05-31T00:00:00.000Z

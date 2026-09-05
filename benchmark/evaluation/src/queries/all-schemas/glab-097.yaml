@@ -1,0 +1,52 @@
+id: glab-097
+schemaId: gitlab
+query: List all active add-on purchases with their id, name, and purchasedQuantity.
+operation: |
+  query {
+    addOnPurchases {
+      id
+      name
+      purchasedQuantity
+    }
+  }
+targetFields:
+  - AddOnPurchase.id
+  - AddOnPurchase.name
+  - AddOnPurchase.purchasedQuantity
+targetTypes:
+  - AddOnPurchase
+mustInclude:
+  - Query.addOnPurchases
+  - AddOnPurchase.name
+mustExclude:
+  - Mutation
+notes: "Admin: add-on purchases for namespace."
+answerSchema:
+  type: object
+  properties:
+    addOnPurchases:
+      type: array
+      items:
+        type: object
+        properties:
+          id: &a1
+            type: string
+          name: *a1
+          purchasedQuantity:
+            type: integer
+        required:
+          - id
+          - name
+          - purchasedQuantity
+        additionalProperties: false
+  required:
+    - addOnPurchases
+  additionalProperties: false
+answer:
+  addOnPurchases:
+    - id: Query.addOnPurchases[0]#3728801501
+      name: Premium Support Bundle
+      purchasedQuantity: 325
+    - id: Query.addOnPurchases[1]#3712023882
+      name: Advanced Security Pack
+      purchasedQuantity: 321

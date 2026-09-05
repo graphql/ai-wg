@@ -1,0 +1,59 @@
+id: shop-024
+schemaId: shopify
+query: Which products in the collection with handle 'summer-collection' have not
+  been updated in 90 days?
+operation: |
+  query {
+    collectionByIdentifier(identifier: { handle: "summer-collection" }) {
+      products(first: 10) {
+        nodes {
+          title
+          handle
+          updatedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.title
+  - Product.handle
+  - Product.updatedAt
+targetTypes:
+  - Product
+  - Collection
+mustInclude:
+  - QueryRoot.collectionByIdentifier
+  - Collection.products
+  - Product.title
+  - Product.handle
+  - Product.updatedAt
+  - Collection.products(first:)
+  - QueryRoot.collectionByIdentifier(identifier:)
+mustExclude:
+  - Mutation
+notes: Stale products in a named collection not updated in 90 days.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          updatedAt:
+            type: string
+        required:
+          - title
+          - updatedAt
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - title: USB Cable
+      updatedAt: 2024-10-24T00:00:00.000Z
+    - title: USB Cable
+      updatedAt: 2025-02-11T00:00:00.000Z

@@ -1,0 +1,82 @@
+id: lin-ic-8
+schemaId: linear
+query: "What sub-tasks are under my assigned issues?"
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          id
+          title
+          children(first: 10) {
+            nodes {
+              id
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.id
+  - Issue.title
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.title
+  - Issue.children
+  - IssueConnection.nodes
+  - Issue.children(first:)
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: My tasks and any sub-tasks beneath them.
+answerSchema:
+  type: object
+  properties:
+    assignedIssues:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          subTasks:
+            type: array
+            items:
+              type: string
+            description: Titles of the child sub-tasks
+        required:
+          - title
+          - subTasks
+        additionalProperties: false
+  required:
+    - assignedIssues
+  additionalProperties: false
+answer:
+  assignedIssues:
+    - title: Fix authentication token refresh
+      subTasks:
+        - Fix token refresh endpoint
+        - Update token refresh tests
+    - title: Refactor authentication middleware
+      subTasks: []
+    - title: Customer reported login issue on mobile
+      subTasks: []
+    - title: Update mobile app onboarding flow
+      subTasks: []
+    - title: Resolve webpack bundle size issue
+      subTasks: []
+    - title: Add dark mode support
+      subTasks: []
+    - title: Fix CI pipeline flakiness
+      subTasks: []
+    - title: Implement audit logging
+      subTasks: []
+    - title: Upgrade dependencies to latest LTS
+      subTasks: []
+    - title: Write integration tests for auth service
+      subTasks: []

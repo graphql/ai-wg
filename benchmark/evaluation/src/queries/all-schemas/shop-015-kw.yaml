@@ -1,0 +1,32 @@
+id: shop-015-kw
+schemaId: shopify
+query: orders gift cards recipient email
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        lineItems(first: 10) {
+          nodes {
+            product {
+              bodyHtml
+            }
+            customAttributes {
+              key
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.lineItems
+  - LineItem.product
+  - LineItem.customAttributes
+  - Order.lineItems(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-015. Orders that include gift cards with their recipient details.

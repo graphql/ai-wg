@@ -1,0 +1,84 @@
+id: glab-012
+schemaId: gitlab
+query: List merge requests in project group/project updated after 2025-05-31,
+  showing resolvable and resolved discussion counts.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10, updatedAfter: "2025-05-31T00:00:00Z") {
+        nodes {
+          iid
+          title
+          resolvableDiscussionsCount
+          resolvedDiscussionsCount
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.resolvableDiscussionsCount
+  - MergeRequest.resolvedDiscussionsCount
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.resolvableDiscussionsCount
+  - MergeRequest.resolvedDiscussionsCount
+  - Project.mergeRequests(first:)
+  - Project.mergeRequests(updatedAfter:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Developer: MRs with unresolved review threads. MR list + nested discussions."
+answerSchema:
+  type: object
+  properties:
+    mergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          resolvableDiscussionsCount:
+            type: integer
+          resolvedDiscussionsCount:
+            type: integer
+        required:
+          - iid
+          - title
+          - resolvableDiscussionsCount
+          - resolvedDiscussionsCount
+        additionalProperties: false
+  required:
+    - mergeRequests
+  additionalProperties: false
+answer:
+  mergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+      resolvableDiscussionsCount: 9
+      resolvedDiscussionsCount: 1
+    - iid: "108"
+      title: "perf: reduce memory footprint of serializer"
+      resolvableDiscussionsCount: 4
+      resolvedDiscussionsCount: 3
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+      resolvableDiscussionsCount: 3
+      resolvedDiscussionsCount: 2
+    - iid: "4774"
+      title: "feat: add webhook retry mechanism"
+      resolvableDiscussionsCount: 0
+      resolvedDiscussionsCount: 2
+    - iid: "2623"
+      title: "fix: resolve race condition in cache layer"
+      resolvableDiscussionsCount: 3
+      resolvedDiscussionsCount: 4

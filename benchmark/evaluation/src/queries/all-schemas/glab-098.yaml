@@ -1,0 +1,72 @@
+id: glab-098
+schemaId: gitlab
+query: List the first 5 members of the gitlab-org group on GitLab with their
+  username and access level role.
+operation: |
+  query {
+    group(fullPath: "gitlab-org") {
+      groupMembers(first: 5) {
+        nodes {
+          user {
+            username
+          }
+          accessLevel {
+            stringValue
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Group.groupMembers
+  - GroupMember.user
+  - UserCore.username
+  - GroupMember.accessLevel
+  - AccessLevel.stringValue
+targetTypes:
+  - Group
+  - GroupMember
+  - UserCore
+  - AccessLevel
+mustInclude:
+  - Query.group
+  - Query.group(fullPath:)
+  - Group.groupMembers
+  - Group.groupMembers(first:)
+  - GroupMember.user
+  - GroupMember.accessLevel
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    members:
+      type: array
+      items:
+        type: object
+        properties:
+          username: &a1
+            type: string
+          accessLevel: *a1
+        required:
+          - username
+          - accessLevel
+        additionalProperties: false
+  required:
+    - members
+  additionalProperties: false
+notes: "Rewrote: original used deprecated Query.memberRoles and
+  MemberRole.enabledPermissions with no non-deprecated alternative. Now asks
+  about group members and their access level roles in the gitlab-org group."
+answer:
+  members:
+    - username: git-alice
+      accessLevel: DEVELOPER
+    - username: git-bob
+      accessLevel: MAINTAINER
+    - username: git-carol
+      accessLevel: OWNER
+    - username: git-david
+      accessLevel: GUEST
+    - username: git-eva
+      accessLevel: REPORTER

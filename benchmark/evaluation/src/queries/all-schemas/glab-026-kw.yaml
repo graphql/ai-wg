@@ -1,0 +1,27 @@
+id: glab-026-kw
+schemaId: gitlab
+query: merge requests squash title regex violations
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+      mergeRequestTitleRegex
+    }
+  }
+targetFields:
+  - Project.mergeRequestTitleRegex
+targetTypes:
+  - Project
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - Project.mergeRequestTitleRegex
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-026. Maintainer: MRs not matching title regex."

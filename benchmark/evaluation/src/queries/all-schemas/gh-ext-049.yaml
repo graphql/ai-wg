@@ -1,0 +1,47 @@
+id: gh-ext-049
+schemaId: github
+query: How many additions and deletions does the HEAD commit in the
+  octocat/example repository have?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object(expression: "HEAD") {
+        ... on Commit {
+          additions
+          deletions
+        }
+      }
+    }
+  }
+targetFields:
+  - Commit.additions
+  - Commit.deletions
+targetTypes:
+  - Commit
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Commit.additions
+  - Commit.deletions
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.object(expression:)
+mustExclude:
+  - Mutation
+notes: Look up the HEAD commit via Repository.object and read its
+  additions/deletions line stats.
+answerSchema:
+  type: object
+  properties:
+    additions:
+      type: integer
+    deletions:
+      type: integer
+  required:
+    - additions
+    - deletions
+  additionalProperties: false
+answer:
+  additions: 46
+  deletions: 43

@@ -1,0 +1,29 @@
+id: gh-ext-058-kw
+schemaId: github
+query: archived org repositories
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          isArchived
+          archivedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.isArchived
+  - Repository.archivedAt
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.isArchived
+  - Repository.archivedAt
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-058. Organization repositories filtered to archived ones.

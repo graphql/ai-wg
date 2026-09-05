@@ -1,0 +1,31 @@
+id: gh-ext-043-kw
+schemaId: github
+query: latest gist user
+operation: |
+  query {
+    user(login: "octocat") {
+      gists(first: 10) {
+        nodes {
+          createdAt
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Gist.createdAt
+  - Gist.name
+targetTypes:
+  - Gist
+  - User
+mustInclude:
+  - Query.user
+  - User.gists
+  - GistConnection.nodes
+  - Gist.createdAt
+  - Gist.name
+  - Query.user(login:)
+  - User.gists(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-043. Gists of a user sorted by creation date.

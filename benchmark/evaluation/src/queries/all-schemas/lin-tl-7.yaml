@@ -1,0 +1,59 @@
+id: lin-tl-7
+schemaId: linear
+query: "What workflow states does the team with id \"Team:root/Team/0\" use and
+  in what order?"
+operation: |
+  query {
+    team(id: "Team:root/Team/0") {
+      states(first: 10) {
+        nodes {
+          name
+          type
+          position
+        }
+      }
+    }
+  }
+answer:
+  states:
+    - name: Open
+      position: 0
+    - name: Resolved
+      position: 1
+answerSchema:
+  type: object
+  properties:
+    states:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          position:
+            type: number
+            description: Ordering position of the state
+        required:
+          - name
+          - position
+        additionalProperties: false
+  required:
+    - states
+  additionalProperties: false
+targetFields:
+  - WorkflowState.name
+  - WorkflowState.type
+  - WorkflowState.position
+targetTypes:
+  - WorkflowState
+mustInclude:
+  - Query.team
+  - Team.states
+  - WorkflowState.name
+  - WorkflowState.type
+  - WorkflowState.position
+  - Query.team(id:)
+mustExclude:
+  - Mutation
+notes: Inspect workflow states (Todo/In Progress/Done) the team uses, identified
+  by team id.

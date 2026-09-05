@@ -1,0 +1,31 @@
+id: gh-ext-007-kw
+schemaId: github
+query: squash merged pull requests month
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          merged
+          mergedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.merged
+  - PullRequest.mergedAt
+targetTypes:
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.merged
+  - PullRequest.mergedAt
+  - PullRequestCommit.commit
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-007. Identify merged PRs and inspect commit history shape to infer squash merges.

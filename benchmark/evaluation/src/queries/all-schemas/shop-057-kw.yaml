@@ -1,0 +1,33 @@
+id: shop-057-kw
+schemaId: shopify
+query: return approved items refund amount
+operation: |
+  query {
+    return(id: "gid://shopify/Object/1") {
+      returnLineItems(first: 10) {
+        edges {
+          cursor
+        }
+      }
+      refunds(first: 10) {
+        edges {
+          cursor
+        }
+      }
+    }
+  }
+targetFields:
+  - ReturnLineItem.quantity
+targetTypes:
+  - ReturnLineItem
+mustInclude:
+  - QueryRoot.return
+  - Return.returnLineItems
+  - ReturnLineItem.quantity
+  - Return.refunds
+  - QueryRoot.return(id:)
+  - Return.refunds(first:)
+  - Return.returnLineItems(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-057. Approved items and refund amount on an open return.

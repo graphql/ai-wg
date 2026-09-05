@@ -1,0 +1,97 @@
+id: shop-006
+schemaId: shopify
+query: How much did we collect in refunds for orders with
+  created_at:>2026-05-30, and which orders did they come from?
+operation: |
+  query {
+    orders(first: 10, query: "created_at:>2026-05-30") {
+      nodes {
+        name
+        refunds(first: 10) {
+          totalRefundedSet {
+            presentmentMoney {
+              amount
+            }
+          }
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.name
+  - Refund.totalRefundedSet
+  - Refund.createdAt
+targetTypes:
+  - Order
+  - Refund
+mustInclude:
+  - QueryRoot.orders
+  - Order.name
+  - Order.refunds
+  - Refund.totalRefundedSet
+  - Refund.createdAt
+  - Order.refunds(first:)
+  - QueryRoot.orders(first:)
+  - QueryRoot.orders(query:)
+mustExclude:
+  - Mutation
+notes: Refunds aggregated last week, scoped per order.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          refundAmounts:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - refundAmounts
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - name: Item 2920
+      refundAmounts:
+        - "55.00"
+        - "151.75"
+        - "139.50"
+        - "165.00"
+        - "155.00"
+    - name: Item 4129
+      refundAmounts:
+        - "299.99"
+        - "13.95"
+        - "88.50"
+        - "129.00"
+        - "33.75"
+    - name: Item 4665
+      refundAmounts:
+        - "250.00"
+        - "107.50"
+        - "250.00"
+        - "28.99"
+        - "144.99"
+    - name: Item 4308
+      refundAmounts:
+        - "61.50"
+        - "112.50"
+        - "24.95"
+        - "5.99"
+        - "11.99"
+    - name: Item 7956
+      refundAmounts:
+        - "39.75"
+        - "56.75"
+        - "63.25"
+        - "12.25"
+        - "199.99"

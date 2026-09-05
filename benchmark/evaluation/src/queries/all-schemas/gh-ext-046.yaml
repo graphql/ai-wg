@@ -1,0 +1,57 @@
+id: gh-ext-046
+schemaId: github
+query: List users the authenticated viewer is following, with their login and
+  last updated timestamp.
+operation: |
+  query {
+    viewer {
+      following(first: 10) {
+        nodes {
+          login
+          updatedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - User.updatedAt
+  - User.login
+targetTypes:
+  - User
+mustInclude:
+  - Query.viewer
+  - User.following
+  - FollowingConnection.nodes
+  - User.updatedAt
+  - User.login
+  - User.following(first:)
+mustExclude:
+  - Mutation
+notes: Followed users plus their last activity timestamp.
+answerSchema:
+  type: object
+  properties:
+    following:
+      type: array
+      items:
+        type: object
+        properties:
+          login:
+            type: string
+          updatedAt:
+            type: string
+        required:
+          - login
+          - updatedAt
+        additionalProperties: false
+  required:
+    - following
+  additionalProperties: false
+answer:
+  following:
+    - login: alice
+      updatedAt: 2025-05-17T00:00:00.000Z
+    - login: bob
+      updatedAt: 2025-05-02T00:00:00.000Z
+    - login: carol
+      updatedAt: 2025-05-06T00:00:00.000Z

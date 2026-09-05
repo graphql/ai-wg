@@ -1,0 +1,21 @@
+id: shop-071-kw
+schemaId: shopify
+query: discount minimum spend rules
+operation: |
+  query {
+    codeDiscountNodes(first: 10) {
+      edges {
+        cursor
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.codeDiscountNodes
+  - DiscountCodeBasic.minimumRequirement
+  - DiscountMinimumSubtotal.greaterThanOrEqualToSubtotal
+  - QueryRoot.codeDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-071. Minimum-spend rules configured on current discount codes.

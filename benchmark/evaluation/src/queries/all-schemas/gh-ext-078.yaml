@@ -1,0 +1,73 @@
+id: gh-ext-078
+schemaId: github
+query: What are the projects in the octocat organization and what Status field
+  value does each item have?
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectsV2(first: 10) {
+        nodes {
+          title
+          items(first: 10) {
+            nodes {
+              fieldValueByName(name: "Status") {
+                ... on ProjectV2ItemFieldSingleSelectValue {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectV2.title
+  - ProjectV2ItemFieldSingleSelectValue.name
+targetTypes:
+  - ProjectV2ItemFieldSingleSelectValue
+  - Organization
+  - ProjectV2
+mustInclude:
+  - Query.organization
+  - Organization.projectsV2
+  - ProjectV2.title
+  - ProjectV2.items
+  - ProjectV2Item.fieldValueByName
+  - ProjectV2ItemFieldSingleSelectValue.name
+  - Organization.projectsV2(first:)
+  - ProjectV2.items(first:)
+  - ProjectV2Item.fieldValueByName(name:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Org projects and the items grouped by their single-select status field value.
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          statusValues:
+            type: array
+            items:
+              type: string
+        required:
+          - title
+          - statusValues
+        additionalProperties: false
+  required:
+    - projects
+  additionalProperties: false
+answer:
+  projects:
+    - title: GraphQL Schema Evolution
+      statusValues: []
+    - title: API Modernization Roadmap
+      statusValues: []
+    - title: Security Hardening Initiative
+      statusValues: []

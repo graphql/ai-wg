@@ -1,0 +1,60 @@
+id: gh-ext-005
+schemaId: github
+query: Which open pull requests in the octocat/example repository are marked as
+  drafts?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10, states: [OPEN]) {
+        nodes {
+          number
+          title
+          isDraft
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.isDraft
+targetTypes:
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.isDraft
+  - PullRequest.number
+  - PullRequest.title
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+  - Repository.pullRequests(states:)
+mustExclude:
+  - Mutation
+notes: Filter open PRs by draft status.
+answerSchema:
+  type: object
+  properties:
+    draftPullRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+        required:
+          - number
+          - title
+        additionalProperties: false
+  required:
+    - draftPullRequests
+  additionalProperties: false
+answer:
+  draftPullRequests:
+    - number: 2
+      title: Fix login bug
+    - number: 4
+      title: Add dark mode

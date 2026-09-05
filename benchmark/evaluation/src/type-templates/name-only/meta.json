@@ -1,0 +1,5 @@
+{
+    "id": "name-only",
+    "name": "Name only",
+    "description": "Bare type name with no description or fields (e.g. \"Commit\"). The hard-floor baseline for type rendering."
+}

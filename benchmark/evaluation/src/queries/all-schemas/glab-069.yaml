@@ -1,0 +1,88 @@
+id: glab-069
+schemaId: gitlab
+query: List the first 10 vulnerability findings (title, severity, state,
+  reportType) in the group/project GitLab project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          title
+          severity
+          state
+          reportType
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.title
+  - Vulnerability.severity
+  - Vulnerability.state
+  - Vulnerability.reportType
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.title
+  - Vulnerability.severity
+  - Vulnerability.state
+  - Vulnerability.reportType
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Security: vulnerability findings."
+answerSchema:
+  type: object
+  properties:
+    vulnerabilities:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          severity: *a1
+          state: *a1
+          reportType: *a1
+        required:
+          - title
+          - severity
+          - state
+          - reportType
+        additionalProperties: false
+  required:
+    - vulnerabilities
+  additionalProperties: false
+answer:
+  vulnerabilities:
+    - title: Weak password hashing algorithm detected
+      severity: CRITICAL
+      state: CONFIRMED
+      reportType: DEPENDENCY_SCANNING
+    - title: SQL Injection in user input validation
+      severity: UNKNOWN
+      state: CONFIRMED
+      reportType: CONTAINER_SCANNING
+    - title: Missing authentication on admin endpoints
+      severity: UNKNOWN
+      state: CONFIRMED
+      reportType: SARIF
+    - title: Cross-Site Scripting vulnerability in comments
+      severity: LOW
+      state: DETECTED
+      reportType: GENERIC
+    - title: Hardcoded API credentials in source code
+      severity: HIGH
+      state: DETECTED
+      reportType: CONTAINER_SCANNING_FOR_REGISTRY
+    - title: Unvalidated redirect in OAuth flow
+      severity: MEDIUM
+      state: DISMISSED
+      reportType: DEPENDENCY_SCANNING
+    - title: Insecure deserialization in API endpoint
+      severity: LOW
+      state: DISMISSED
+      reportType: SARIF

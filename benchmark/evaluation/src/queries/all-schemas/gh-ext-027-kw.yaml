@@ -1,0 +1,38 @@
+id: gh-ext-027-kw
+schemaId: github
+query: staging deployments pull requests yesterday
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      deployments(first: 10) {
+        nodes {
+          environment
+          ref {
+            associatedPullRequests(first: 10) {
+              __typename
+            }
+          }
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Deployment.environment
+  - Deployment.createdAt
+targetTypes:
+  - Deployment
+mustInclude:
+  - Query.repository
+  - Repository.deployments
+  - Deployment.environment
+  - Deployment.ref
+  - Ref.associatedPullRequests
+  - Deployment.createdAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Ref.associatedPullRequests(first:)
+  - Repository.deployments(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-027. Deployments to staging in a window, then pivot to their associated PRs through the ref.

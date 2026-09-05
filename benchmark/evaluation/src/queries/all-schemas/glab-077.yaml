@@ -1,0 +1,66 @@
+id: glab-077
+schemaId: gitlab
+query: Show me a velocity overview using closed issues per iteration for the
+  gitlab-org group.
+operation: |
+  query {
+    group(fullPath: "gitlab-org") {
+      iterations(first: 10) {
+        nodes {
+          title
+          report {
+            stats {
+              complete {
+                count
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Iteration.title
+  - TimeboxMetrics.count
+targetTypes:
+  - TimeboxReport
+  - TimeReportStats
+  - TimeboxMetrics
+mustInclude:
+  - Query.group
+  - Group.iterations
+  - Iteration.report
+  - Iteration.title
+  - TimeboxReport.stats
+  - TimeReportStats.complete
+  - TimeboxMetrics.count
+  - Group.iterations(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    iterations:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          closedIssuesCount:
+            type: integer
+        required:
+          - title
+          - closedIssuesCount
+        additionalProperties: false
+  required:
+    - iterations
+  additionalProperties: false
+notes: "PM: velocity via iteration report."
+answer:
+  iterations:
+    - title: GitLab Sprint 1
+      closedIssuesCount: 20
+    - title: GitLab Sprint 2
+      closedIssuesCount: 12

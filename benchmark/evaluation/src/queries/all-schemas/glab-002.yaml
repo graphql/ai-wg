@@ -1,0 +1,63 @@
+id: glab-002
+schemaId: gitlab
+query: Which merge requests have I been requested to review (pending review
+  requests for the current user)?
+operation: |
+  query {
+    currentUser {
+      reviewRequestedMergeRequests(first: 10) {
+        nodes {
+          iid
+          title
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.createdAt
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.reviewRequestedMergeRequests
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.createdAt
+  - CurrentUser.reviewRequestedMergeRequests(first:)
+mustExclude:
+  - Mutation
+notes: "Developer: MRs awaiting my review. Needs review-requested list +
+  creation/age signal."
+answerSchema:
+  type: object
+  properties:
+    reviewRequestedMergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          createdAt:
+            type: string
+        required:
+          - iid
+          - title
+          - createdAt
+        additionalProperties: false
+  required:
+    - reviewRequestedMergeRequests
+  additionalProperties: false
+answer:
+  reviewRequestedMergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+      createdAt: 2025-05-18T00:00:00.000Z
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+      createdAt: 2025-04-16T00:00:00.000Z

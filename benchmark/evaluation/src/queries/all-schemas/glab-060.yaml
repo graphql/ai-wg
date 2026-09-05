@@ -1,0 +1,103 @@
+id: glab-060
+schemaId: gitlab
+query: Show daily vulnerability counts (total, critical, high, medium, low) for
+  group/project from 2025-01-01 to 2025-12-31.
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      vulnerabilitiesCountByDay(startDate: "2025-01-01", endDate: "2025-12-31", first: 10) {
+        nodes {
+          date
+          total
+          critical
+          high
+          medium
+          low
+        }
+      }
+    }
+  }
+targetFields:
+  - VulnerabilitiesCountByDay.date
+  - VulnerabilitiesCountByDay.total
+  - VulnerabilitiesCountByDay.critical
+  - VulnerabilitiesCountByDay.high
+  - VulnerabilitiesCountByDay.medium
+  - VulnerabilitiesCountByDay.low
+targetTypes:
+  - VulnerabilitiesCountByDay
+mustInclude:
+  - Query.group
+  - Group.vulnerabilitiesCountByDay
+  - Group.vulnerabilitiesCountByDay(endDate:)
+  - Group.vulnerabilitiesCountByDay(first:)
+  - Group.vulnerabilitiesCountByDay(startDate:)
+  - Query.group(fullPath:)
+  - VulnerabilitiesCountByDay.date
+  - VulnerabilitiesCountByDay.total
+  - VulnerabilitiesCountByDay.critical
+  - VulnerabilitiesCountByDay.high
+  - VulnerabilitiesCountByDay.medium
+  - VulnerabilitiesCountByDay.low
+mustExclude:
+  - Mutation
+notes: "Security: vuln counts by day for trend."
+answerSchema:
+  type: object
+  properties:
+    dailyCounts:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            type: string
+          total: &a1
+            type: integer
+          critical: *a1
+          high: *a1
+          medium: *a1
+          low: *a1
+        required:
+          - date
+          - total
+          - critical
+          - high
+          - medium
+          - low
+        additionalProperties: false
+  required:
+    - dailyCounts
+  additionalProperties: false
+answer:
+  dailyCounts:
+    - date: 2025-01-15
+      total: 45
+      critical: 5
+      high: 10
+      medium: 20
+      low: 10
+    - date: 2025-03-15
+      total: 52
+      critical: 7
+      high: 12
+      medium: 23
+      low: 10
+    - date: 2025-06-01
+      total: 38
+      critical: 4
+      high: 8
+      medium: 18
+      low: 8
+    - date: 2025-09-01
+      total: 41
+      critical: 6
+      high: 9
+      medium: 19
+      low: 7
+    - date: 2025-12-01
+      total: 35
+      critical: 3
+      high: 7
+      medium: 17
+      low: 8

@@ -1,0 +1,33 @@
+id: lin-em-1-kw
+schemaId: linear
+query: roadmap projects target date status
+operation: |
+  query {
+    roadmaps(first: 10) {
+      nodes {
+        projects(first: 10) {
+          nodes {
+            targetDate
+            status {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.targetDate
+targetTypes:
+  - Project
+  - Roadmap
+mustInclude:
+  - Query.roadmaps
+  - Roadmap.projects
+  - Project.targetDate
+  - Project.status
+  - Query.roadmaps(first:)
+  - Roadmap.projects(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-1. EM roadmap view — projects with target dates and overall status.

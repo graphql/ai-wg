@@ -1,0 +1,37 @@
+id: gh-ext-034-kw
+schemaId: github
+query: runner groups org repository access
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          visibility
+        }
+      }
+      team(slug: "example") {
+        repositories(first: 10) {
+          nodes {
+            visibility
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.visibility
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.visibility
+  - Organization.team
+  - Team.repositories
+  - Organization.repositories(first:)
+  - Organization.team(slug:)
+  - Query.organization(login:)
+  - Team.repositories(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-034. Runner groups are not in the schema; closest is org repositories and team-to-repo mapping that determines runner-group access.

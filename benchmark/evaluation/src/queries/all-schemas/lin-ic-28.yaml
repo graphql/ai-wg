@@ -1,0 +1,57 @@
+id: lin-ic-28
+schemaId: linear
+query: "Which of my issues are currently snoozed?"
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10, filter: { snoozedUntilAt: { null: false } }) {
+        nodes {
+          identifier
+          title
+          snoozedUntilAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.identifier
+  - Issue.title
+  - Issue.snoozedUntilAt
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.identifier
+  - Issue.title
+  - Issue.snoozedUntilAt
+  - User.assignedIssues(first:)
+  - User.assignedIssues(filter:)
+mustExclude:
+  - Mutation
+notes: Snoozed work that will resurface.
+answer:
+  snoozedIssues:
+    - identifier: ENG-101
+      title: Resolve webpack bundle size issue
+    - identifier: ENG-103
+      title: Fix CI pipeline flakiness
+answerSchema:
+  type: object
+  properties:
+    snoozedIssues:
+      type: array
+      items:
+        type: object
+        properties:
+          identifier:
+            type: string
+          title:
+            type: string
+        required:
+          - identifier
+          - title
+        additionalProperties: false
+  required:
+    - snoozedIssues
+  additionalProperties: false

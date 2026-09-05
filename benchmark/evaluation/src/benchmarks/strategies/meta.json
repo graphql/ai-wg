@@ -1,0 +1,10 @@
+{
+    "id": "strategies",
+    "name": "Strategy benchmark",
+    "description": "Vary the slicing strategy; fixed model + template. Headline: perfect% per cohort.",
+    "variesAxis": "strategy",
+    "fixed": {
+        "model": "openai-3-small",
+        "template": "coord-return-desc"
+    }
+}

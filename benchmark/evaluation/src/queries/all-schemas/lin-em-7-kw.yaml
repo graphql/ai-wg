@@ -1,0 +1,30 @@
+id: lin-em-7-kw
+schemaId: linear
+query: initiative recent update health body
+operation: |
+  query {
+    initiative(id: "<id>") {
+      initiativeUpdates(first: 10) {
+        nodes {
+          body
+          health
+        }
+      }
+    }
+  }
+targetFields:
+  - InitiativeUpdate.body
+  - InitiativeUpdate.health
+targetTypes:
+  - InitiativeUpdate
+  - Initiative
+mustInclude:
+  - Query.initiative
+  - Initiative.initiativeUpdates
+  - InitiativeUpdate.body
+  - InitiativeUpdate.health
+  - Initiative.initiativeUpdates(first:)
+  - Query.initiative(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-7. Initiative-level status reporting.

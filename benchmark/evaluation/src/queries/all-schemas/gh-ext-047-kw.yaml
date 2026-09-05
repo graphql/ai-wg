@@ -1,0 +1,37 @@
+id: gh-ext-047-kw
+schemaId: github
+query: forks ahead upstream
+operation: |
+  query {
+    viewer {
+      repositories(first: 10) {
+        nodes {
+          isFork
+          parent {
+            __typename
+          }
+          defaultBranchRef {
+            compare(headRef: "example") {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.isFork
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.viewer
+  - User.repositories
+  - Repository.isFork
+  - Repository.parent
+  - Repository.defaultBranchRef
+  - Ref.compare
+  - Ref.compare(headRef:)
+  - User.repositories(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-047. My fork repositories and the ahead-by comparison with their upstream.

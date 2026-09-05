@@ -1,0 +1,30 @@
+id: lin-cs-6-kw
+schemaId: linear
+query: issue customer ticket count needs
+operation: |
+  query {
+    issue(id: "<id>") {
+      customerTicketCount
+      needs(first: 10) {
+        nodes {
+          customer {
+            id
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.customerTicketCount
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.customerTicketCount
+  - Issue.needs
+  - CustomerNeed.customer
+  - Issue.needs(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-cs-6. How many customers asked for the same issue?"

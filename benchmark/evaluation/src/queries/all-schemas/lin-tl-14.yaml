@@ -1,0 +1,87 @@
+id: lin-tl-14
+schemaId: linear
+query: "Give me burndown data for the Engineering team's current cycle: open vs
+  completed issues over time."
+operation: |
+  query {
+    cycle(id: "cycle-engineering-current") {
+      issues(first: 10) {
+        nodes {
+          state {
+            type
+          }
+          completedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - WorkflowState.type
+  - Issue.completedAt
+targetTypes:
+  - WorkflowState
+  - Issue
+  - Cycle
+mustInclude:
+  - Query.cycle
+  - Cycle.issues
+  - Issue.state
+  - WorkflowState.type
+  - Issue.completedAt
+  - Cycle.issues(first:)
+  - Query.cycle(id:)
+mustExclude:
+  - Mutation
+notes: Burndown chart data for a cycle.
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          state:
+            type: string
+            description: Workflow state type of the issue
+          completedAt:
+            type: string
+        required:
+          - state
+          - completedAt
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - state: started
+      completedAt: null
+    - state: started
+      completedAt: null
+    - state: started
+      completedAt: null
+    - state: unstarted
+      completedAt: null
+    - state: started
+      completedAt: null
+    - state: started
+      completedAt: null
+    - state: started
+      completedAt: null
+answers:
+  - issues:
+      - state: In Progress
+        completedAt: null
+      - state: In Progress
+        completedAt: null
+      - state: In Progress
+        completedAt: null
+      - state: Todo
+        completedAt: null
+      - state: In Progress
+        completedAt: null
+      - state: In Progress
+        completedAt: null
+      - state: In Progress
+        completedAt: null

@@ -1,0 +1,23 @@
+id: glab-010-kw
+schemaId: gitlab
+query: pipeline duration last mr
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      headPipeline {
+        duration
+      }
+    }
+  }
+targetFields:
+  - Pipeline.duration
+targetTypes:
+  - Pipeline
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.headPipeline
+  - Pipeline.duration
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-010. Developer: pipeline duration on a single MR."

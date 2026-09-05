@@ -1,0 +1,36 @@
+id: shop-099
+schemaId: shopify
+query: Show me the API access scopes granted to our private app.
+operation: |
+  query {
+    currentAppInstallation {
+      accessScopes {
+        handle
+      }
+    }
+  }
+targetFields:
+  - AccessScope.handle
+targetTypes:
+  - AccessScope
+mustInclude:
+  - QueryRoot.currentAppInstallation
+  - AppInstallation.accessScopes
+  - AccessScope.handle
+mustExclude:
+  - Mutation
+notes: Access scopes granted to the current private app.
+answerSchema:
+  type: object
+  properties:
+    accessScopes:
+      type: array
+      items:
+        type: string
+  required:
+    - accessScopes
+  additionalProperties: false
+answer:
+  accessScopes:
+    - manage_apps
+    - manage_customers

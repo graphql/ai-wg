@@ -1,0 +1,30 @@
+id: gh-ext-094-kw
+schemaId: github
+query: packages storage bandwidth org
+operation: |
+  query {
+    enterprise(slug: "example") {
+      billingInfo {
+        assetPacks
+        bandwidthUsage
+        storageUsage
+      }
+    }
+  }
+targetFields:
+  - EnterpriseBillingInfo.assetPacks
+  - EnterpriseBillingInfo.bandwidthUsage
+  - EnterpriseBillingInfo.storageUsage
+targetTypes:
+  - EnterpriseBillingInfo
+  - Package
+mustInclude:
+  - Query.enterprise
+  - Enterprise.billingInfo
+  - EnterpriseBillingInfo.assetPacks
+  - EnterpriseBillingInfo.bandwidthUsage
+  - EnterpriseBillingInfo.storageUsage
+  - Query.enterprise(slug:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-094. Enterprise billing info for Packages storage and bandwidth usage.

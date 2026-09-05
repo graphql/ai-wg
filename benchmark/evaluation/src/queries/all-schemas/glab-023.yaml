@@ -1,0 +1,75 @@
+id: glab-023
+schemaId: gitlab
+query: How many merge requests has each member of the "group/project" group authored?
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      groupMembers(first: 10) {
+        nodes {
+          user {
+            name
+            username
+            authoredMergeRequests {
+              count
+            }
+          }
+        }
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    members:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+          name:
+            type: string
+          authoredMergeRequestsCount:
+            type: integer
+        required:
+          - username
+          - name
+          - authoredMergeRequestsCount
+        additionalProperties: false
+  required:
+    - members
+  additionalProperties: false
+targetFields:
+  - MergeRequestConnection.count
+  - UserCore.name
+targetTypes:
+  - MergeRequestConnection
+  - UserCore
+mustInclude:
+  - Query.group
+  - Group.groupMembers
+  - GroupMember.user
+  - UserCore.authoredMergeRequests
+  - MergeRequestConnection.count
+  - Group.groupMembers(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Members of group/project and the count of MRs they have authored."
+answer:
+  members:
+    - username: hrodriguez
+      name: Grace Lee
+      authoredMergeRequestsCount: 394
+    - username: glee
+      name: Frank Wilson
+      authoredMergeRequestsCount: 704
+    - username: jtaylor
+      name: Henry Rodriguez
+      authoredMergeRequestsCount: 258
+    - username: ianderson
+      name: Jack Taylor
+      authoredMergeRequestsCount: 137
+    - username: ejohnson
+      name: Emma Johnson
+      authoredMergeRequestsCount: 512

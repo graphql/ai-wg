@@ -1,0 +1,26 @@
+id: lin-pm-16-kw
+schemaId: linear
+query: milestones due quarter across projects
+operation: |
+  query {
+    projectMilestones(first: 10) {
+      nodes {
+        targetDate
+        project {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectMilestone.targetDate
+targetTypes:
+  - ProjectMilestone
+mustInclude:
+  - Query.projectMilestones
+  - ProjectMilestone.targetDate
+  - ProjectMilestone.project
+  - Query.projectMilestones(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-16. All upcoming milestones across projects.

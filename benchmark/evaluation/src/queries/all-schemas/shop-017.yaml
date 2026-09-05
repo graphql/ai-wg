@@ -1,0 +1,182 @@
+id: shop-017
+schemaId: shopify
+query: List orders with multiple shipping destinations so I can split the fulfillment.
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        name
+        fulfillmentOrders(first: 10) {
+          nodes {
+            destination {
+              address1
+              city
+              firstName
+              lastName
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.name
+  - Order.fulfillmentOrders
+  - FulfillmentOrder.destination
+  - FulfillmentOrderDestination.address1
+  - Order.fulfillmentOrders(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Orders with multiple shipping destinations so fulfillment can be split.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          destinations:
+            type: array
+            items:
+              type: object
+              properties:
+                address1:
+                  type: string
+                city:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+              required:
+                - address1
+                - city
+                - firstName
+                - lastName
+              additionalProperties: false
+        required:
+          - name
+          - destinations
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - name: Item 2920
+      destinations:
+        - address1: 999 Tamarack Court
+          city: Las Vegas
+          firstName: Sarah
+          lastName: Gonzalez
+        - address1: 901 Walnut Drive
+          city: San Antonio
+          firstName: Mary
+          lastName: Lee
+        - address1: 910 Poplar Avenue
+          city: Baltimore
+          firstName: Elizabeth
+          lastName: Perez
+        - address1: 1842 Maple Avenue
+          city: New Orleans
+          firstName: Karen
+          lastName: Harris
+        - address1: 777 Dogwood Way
+          city: Dallas
+          firstName: William
+          lastName: Thomas
+    - name: Item 4129
+      destinations:
+        - address1: 456 Elm Street
+          city: Philadelphia
+          firstName: Lisa
+          lastName: Hernandez
+        - address1: 111 Willow Drive
+          city: Los Angeles
+          firstName: Margaret
+          lastName: Jones
+        - address1: 666 Mimosa Avenue
+          city: Nashville
+          firstName: Daniel
+          lastName: Garcia
+        - address1: 55 King Street West
+          city: Seattle
+          firstName: Michael
+          lastName: Rodriguez
+        - address1: 123 Hazel Street
+          city: Atlanta
+          firstName: David
+          lastName: Martinez
+    - name: Item 4665
+      destinations:
+        - address1: 888 Sweetgum Drive
+          city: Miami
+          firstName: Jessica
+          lastName: Brown
+        - address1: 890 Hickory Lane
+          city: Portland
+          firstName: Patricia
+          lastName: Martin
+        - address1: 333 Linden Street
+          city: Columbus
+          firstName: Barbara
+          lastName: Johnson
+        - address1: 555 Magnolia Road
+          city: Detroit
+          firstName: Richard
+          lastName: Lopez
+        - address1: 247 Park Place
+          city: Denver
+          firstName: Nancy
+          lastName: Miller
+    - name: Item 4308
+      destinations:
+        - address1: 567 Ash Court
+          city: Houston
+          firstName: Dorothy
+          lastName: Wilson
+        - address1: 678 Sycamore Place
+          city: Chicago
+          firstName: Charles
+          lastName: White
+        - address1: 678 Birch Avenue
+          city: Fort Worth
+          firstName: James
+          lastName: Anderson
+        - address1: 102 Oak Boulevard
+          city: Phoenix
+          firstName: Jennifer
+          lastName: Davis
+        - address1: 345 Chestnut Road
+          city: Boston
+          firstName: Ashley
+          lastName: Williams
+    - name: Item 7956
+      destinations:
+        - address1: 234 Spruce Way
+          city: Minneapolis
+          firstName: Donna
+          lastName: Taylor
+        - address1: 222 Cottonwood Court
+          city: Jacksonville
+          firstName: Linda
+          lastName: Moore
+        - address1: 333 Pine Road
+          city: San Diego
+          firstName: Robert
+          lastName: Smith
+        - address1: 789 Cedar Lane
+          city: San Jose
+          firstName: Susan
+          lastName: Thompson
+        - address1: 444 Laurel Lane
+          city: Austin
+          firstName: Christopher
+          lastName: Jackson

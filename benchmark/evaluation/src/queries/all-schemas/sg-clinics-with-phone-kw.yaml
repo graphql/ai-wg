@@ -1,0 +1,24 @@
+id: sg-clinics-with-phone-kw
+schemaId: singapore
+query: clinics phone number
+operation: |
+  query {
+    allClinics {
+      name
+      telephone
+      programmes
+    }
+  }
+targetFields:
+  - Clinic.telephone
+  - Clinic.name
+targetTypes:
+  - Clinic
+mustInclude:
+  - Query.allClinics
+  - Clinic.telephone
+mustExclude: []
+shouldInclude:
+  - Clinic.name
+  - Clinic.programmes
+notes: Keyword variant of sg-clinics-with-phone. Generated assuming LLM-as-caller without schema knowledge. Standard list-with-filter shape.

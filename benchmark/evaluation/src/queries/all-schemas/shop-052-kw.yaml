@@ -1,0 +1,26 @@
+id: shop-052-kw
+schemaId: shopify
+query: abandoned checkout recovery URL email
+operation: |
+  query {
+    abandonedCheckouts(first: 10) {
+      nodes {
+        abandonedCheckoutUrl
+        customer {
+          canDelete
+        }
+      }
+    }
+  }
+targetFields:
+  - AbandonedCheckout.abandonedCheckoutUrl
+targetTypes:
+  - AbandonedCheckout
+mustInclude:
+  - QueryRoot.abandonedCheckouts
+  - AbandonedCheckout.abandonedCheckoutUrl
+  - AbandonedCheckout.customer
+  - QueryRoot.abandonedCheckouts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-052. Abandoned checkouts with recovery URLs to email customers.

@@ -1,0 +1,25 @@
+id: shop-061-kw
+schemaId: shopify
+query: active discount codes usage count
+operation: |
+  query {
+    codeDiscountNodes(first: 10) {
+      edges {
+        cursor
+      }
+    }
+  }
+targetFields:
+  - DiscountCodeBasic.usageLimit
+  - DiscountCodeBasic.asyncUsageCount
+targetTypes:
+  - DiscountCodeBasic
+mustInclude:
+  - QueryRoot.codeDiscountNodes
+  - DiscountCodeBasic.codes
+  - DiscountCodeBasic.usageLimit
+  - DiscountCodeBasic.asyncUsageCount
+  - QueryRoot.codeDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-061. Active discount codes and how many times each has been used.

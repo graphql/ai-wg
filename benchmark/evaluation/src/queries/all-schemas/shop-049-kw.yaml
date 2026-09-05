@@ -1,0 +1,31 @@
+id: shop-049-kw
+schemaId: shopify
+query: returns per customer last year
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        orders(first: 10) {
+          nodes {
+            returns(first: 10) {
+              edges {
+                cursor
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.customers
+  - Customer.orders
+  - Order.returns
+  - Customer.orders(first:)
+  - Order.returns(first:)
+  - QueryRoot.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-049. Returns initiated per customer in the last year.

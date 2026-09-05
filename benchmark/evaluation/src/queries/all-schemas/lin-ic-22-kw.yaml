@@ -1,0 +1,28 @@
+id: lin-ic-22-kw
+schemaId: linear
+query: my profile info
+operation: |
+  query {
+    viewer {
+      email
+      name
+      displayName
+      timezone
+    }
+  }
+targetFields:
+  - User.email
+  - User.name
+  - User.displayName
+  - User.timezone
+targetTypes:
+  - User
+mustInclude:
+  - Query.viewer
+  - User.email
+  - User.name
+  - User.displayName
+  - User.timezone
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-22. My profile basics.

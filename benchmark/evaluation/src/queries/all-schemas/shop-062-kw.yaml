@@ -1,0 +1,24 @@
+id: shop-062-kw
+schemaId: shopify
+query: active automatic discounts
+operation: |
+  query {
+    automaticDiscountNodes(first: 10) {
+      edges {
+        cursor
+      }
+    }
+  }
+targetFields:
+  - DiscountAutomaticBasic.status
+  - DiscountAutomaticBasic.startsAt
+targetTypes:
+  - DiscountAutomaticBasic
+mustInclude:
+  - QueryRoot.automaticDiscountNodes
+  - DiscountAutomaticBasic.status
+  - DiscountAutomaticBasic.startsAt
+  - QueryRoot.automaticDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-062. Automatic discounts currently running on the storefront.

@@ -1,0 +1,72 @@
+id: gh-ext-073
+schemaId: github
+query: What are the discussions in category "example-category-id" in the
+  octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      discussions(first: 10, categoryId: "example-category-id") {
+        nodes {
+          title
+          upvoteCount
+          category {
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Discussion.title
+  - Discussion.upvoteCount
+  - DiscussionCategory.name
+targetTypes:
+  - Discussion
+  - DiscussionCategory
+mustInclude:
+  - Query.repository
+  - Repository.discussions
+  - Discussion.title
+  - Discussion.upvoteCount
+  - Discussion.category
+  - DiscussionCategory.name
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.discussions(first:)
+  - Repository.discussions(categoryId:)
+mustExclude:
+  - Mutation
+notes: Discussions in a category sorted by upvote count.
+answerSchema:
+  type: object
+  properties:
+    discussions:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          upvoteCount:
+            type: number
+          category:
+            type: string
+        required:
+          - title
+          - upvoteCount
+          - category
+        additionalProperties: false
+  required:
+    - discussions
+  additionalProperties: false
+answer:
+  discussions:
+    - title: Documentation improvement suggestions
+      upvoteCount: 43
+      category: General
+    - title: How do I configure the API client?
+      upvoteCount: 36
+      category: General
+    - title: Question about authentication flow
+      upvoteCount: 5
+      category: General

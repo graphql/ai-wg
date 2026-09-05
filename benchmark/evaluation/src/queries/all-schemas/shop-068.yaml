@@ -1,0 +1,75 @@
+id: shop-068
+schemaId: shopify
+query: List the first 10 marketing events with their campaign name, source
+  referrer, type, and start and end times.
+operation: |
+  query {
+    marketingEvents(first: 10) {
+      nodes {
+        utmCampaign
+        utmSource
+        type
+        startedAt
+        endedAt
+      }
+    }
+  }
+targetFields:
+  - MarketingEvent.utmCampaign
+  - MarketingEvent.utmSource
+  - MarketingEvent.type
+  - MarketingEvent.startedAt
+  - MarketingEvent.endedAt
+targetTypes:
+  - MarketingEvent
+mustInclude:
+  - QueryRoot.marketingEvents
+  - MarketingEvent.utmCampaign
+  - MarketingEvent.utmSource
+  - MarketingEvent.type
+  - MarketingEvent.startedAt
+  - MarketingEvent.endedAt
+  - QueryRoot.marketingEvents(first:)
+mustExclude:
+  - Mutation
+notes: Lists marketing events with UTM parameters, tactic type, and timing.
+answerSchema:
+  type: object
+  properties:
+    marketingEvents:
+      type: array
+      items:
+        type: object
+        properties:
+          campaignName:
+            type: string
+          sourceReferrer:
+            type: string
+          type:
+            type: string
+          startTime:
+            type: string
+          endTime:
+            type: string
+        required:
+          - campaignName
+          - sourceReferrer
+          - type
+          - startTime
+          - endTime
+        additionalProperties: false
+  required:
+    - marketingEvents
+  additionalProperties: false
+answer:
+  marketingEvents:
+    - campaignName: back_to_school
+      sourceReferrer: email
+      type: AFFILIATE
+      startTime: 2025-02-19T00:00:00.000Z
+      endTime: 2024-10-08T00:00:00.000Z
+    - campaignName: back_to_school
+      sourceReferrer: google
+      type: STOREFRONT_APP
+      startTime: 2025-02-26T00:00:00.000Z
+      endTime: 2024-12-27T00:00:00.000Z

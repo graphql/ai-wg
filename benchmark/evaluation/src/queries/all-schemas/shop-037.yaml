@@ -1,0 +1,130 @@
+id: shop-037
+schemaId: shopify
+query: What is the publication status of each product across the various sales
+  channels?
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        title
+        resourcePublications(first: 10) {
+          nodes {
+            publication {
+              name
+            }
+            isPublished
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ResourcePublication.isPublished
+  - Publication.name
+targetTypes:
+  - ResourcePublication
+  - Publication
+mustInclude:
+  - QueryRoot.products
+  - QueryRoot.products(first:)
+  - Product.resourcePublications
+  - Product.resourcePublications(first:)
+  - Product.title
+  - ResourcePublication.publication
+  - ResourcePublication.isPublished
+  - Publication.name
+mustExclude:
+  - Mutation
+notes: Publication status of each product across sales channels.
+answer:
+  products:
+    - title: Phone Case
+      publications:
+        - channel: Mobile App
+          isPublished: true
+        - channel: Point of Sale
+          isPublished: true
+        - channel: Mobile App
+          isPublished: false
+        - channel: Mobile App
+          isPublished: false
+        - channel: Mobile App
+          isPublished: false
+    - title: Leather Wallet
+      publications:
+        - channel: Online Store
+          isPublished: true
+        - channel: Mobile App
+          isPublished: false
+        - channel: Point of Sale
+          isPublished: false
+        - channel: B2B Portal
+          isPublished: true
+        - channel: Point of Sale
+          isPublished: false
+    - title: Wireless Headphones
+      publications:
+        - channel: B2B Portal
+          isPublished: false
+        - channel: Online Store
+          isPublished: true
+        - channel: B2B Portal
+          isPublished: true
+        - channel: B2B Portal
+          isPublished: false
+        - channel: B2B Portal
+          isPublished: true
+    - title: Yoga Mat
+      publications:
+        - channel: Mobile App
+          isPublished: true
+        - channel: B2B Portal
+          isPublished: true
+        - channel: Online Store
+          isPublished: true
+        - channel: Point of Sale
+          isPublished: true
+        - channel: Point of Sale
+          isPublished: false
+    - title: Smart Watch
+      publications:
+        - channel: B2B Portal
+          isPublished: false
+        - channel: Online Store
+          isPublished: false
+        - channel: Mobile App
+          isPublished: true
+        - channel: B2B Portal
+          isPublished: false
+        - channel: B2B Portal
+          isPublished: false
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          publications:
+            type: array
+            items:
+              type: object
+              properties:
+                channel:
+                  type: string
+                isPublished:
+                  type: boolean
+              required:
+                - channel
+                - isPublished
+              additionalProperties: false
+        required:
+          - title
+          - publications
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false

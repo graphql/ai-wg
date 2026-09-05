@@ -1,0 +1,51 @@
+id: shop-084
+schemaId: shopify
+query: Which B2B companies do we serve and how many locations do they have?
+operation: |
+  query {
+    companies(first: 10) {
+      nodes {
+        name
+        locationsCount {
+          count
+        }
+      }
+    }
+  }
+targetFields:
+  - Company.name
+targetTypes:
+  - Company
+mustInclude:
+  - QueryRoot.companies
+  - Company.name
+  - Company.locationsCount
+  - QueryRoot.companies(first:)
+mustExclude:
+  - Mutation
+notes: B2B companies and how many locations each has.
+answerSchema:
+  type: object
+  properties:
+    companies:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          locationCount:
+            type: integer
+        required:
+          - name
+          - locationCount
+        additionalProperties: false
+  required:
+    - companies
+  additionalProperties: false
+answer:
+  companies:
+    - name: Acme Wholesale Inc
+      locationCount: 575
+    - name: Global Brands Ltd
+      locationCount: 831

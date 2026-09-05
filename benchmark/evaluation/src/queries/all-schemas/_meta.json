@@ -1,0 +1,5 @@
+{
+    "id": "all-schemas",
+    "name": "All schemas (canonical 800)",
+    "description": "Canonical 800-query eval ported from tests/explore-eval/all-schemas.json — 200 queries each across Github, Shopify, Linear, GitLab. Mix of NL and KW phrasings (suffix -kw)."
+}

@@ -1,0 +1,30 @@
+id: glab-093-kw
+schemaId: gitlab
+query: projects inherited ci variables group
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      projects(first: 10) {
+        nodes {
+          inheritedCiVariables(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - InheritedCiVariable
+mustInclude:
+  - Query.group
+  - Group.projects
+  - Project.inheritedCiVariables
+  - Group.projects(first:)
+  - Project.inheritedCiVariables(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-093. Admin: projects with inherited CI vars."

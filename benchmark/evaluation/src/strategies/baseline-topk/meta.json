@@ -1,0 +1,11 @@
+{
+    "id": "baseline-topk",
+    "name": "Baseline top-K (cosine + path-to-root per hit)",
+    "description": "Floor strategy. Take cosine top-K against the raw query embedding, then for each hit walk a single shortest path-to-root and add every field coord on that path. No scoring beyond cosine, no expansion, no stopping logic. Ports lib/explore/strategies/baseline-topk.ts.",
+    "defaultConfig": {
+        "k": 20,
+        "maxDepth": 6,
+        "includeMutationPaths": false,
+        "expandConnectionWrappers": true
+    }
+}

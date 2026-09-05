@@ -1,0 +1,52 @@
+id: gh-ext-076
+schemaId: github
+query: Which discussions in the octocat/example repository are locked?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      discussions(first: 10) {
+        nodes {
+          locked
+          title
+        }
+      }
+    }
+  }
+targetFields:
+  - Discussion.locked
+  - Discussion.title
+targetTypes:
+  - Discussion
+  - Comment
+mustInclude:
+  - Query.repository
+  - Repository.discussions
+  - Discussion.locked
+  - Discussion.title
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.discussions(first:)
+mustExclude:
+  - Mutation
+notes: Locked discussions in a repository.
+answerSchema:
+  type: object
+  properties:
+    lockedDiscussions:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - lockedDiscussions
+  additionalProperties: false
+answer:
+  lockedDiscussions:
+    - title: Documentation improvement suggestions
+    - title: How do I configure the API client?
+    - title: Question about authentication flow

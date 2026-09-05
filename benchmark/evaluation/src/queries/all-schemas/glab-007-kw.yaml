@@ -1,0 +1,28 @@
+id: glab-007-kw
+schemaId: gitlab
+query: my commits last sprint project
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      repository {
+        commits(ref: "main", first: 10) {
+          nodes {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Commit
+mustInclude:
+  - Query.project
+  - Project.repository
+  - Repository.commits
+  - Query.project(fullPath:)
+  - Repository.commits(first:)
+  - Repository.commits(ref:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-007. Developer: my recent commits on a project. Repo commits feed."

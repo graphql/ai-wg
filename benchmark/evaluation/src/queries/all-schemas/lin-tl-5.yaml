@@ -1,0 +1,123 @@
+id: lin-tl-5
+schemaId: linear
+query: Show me velocity across our last few completed cycles.
+operation: |
+  query {
+    cycles(first: 5, filter: { isPast: { eq: true } }) {
+      nodes {
+        completedAt
+        completedScopeHistory
+        scopeHistory
+        team {
+          id
+        }
+        startsAt
+        endsAt
+      }
+    }
+  }
+targetFields:
+  - Cycle.completedAt
+  - Cycle.completedScopeHistory
+  - Cycle.scopeHistory
+  - Cycle.startsAt
+  - Cycle.endsAt
+targetTypes:
+  - Cycle
+mustInclude:
+  - Query.cycles
+  - Cycle.completedAt
+  - Cycle.completedScopeHistory
+  - Cycle.scopeHistory
+  - Cycle.team
+  - Cycle.startsAt
+  - Cycle.endsAt
+  - Query.cycles(first:)
+  - Query.cycles(filter:)
+mustExclude:
+  - Mutation
+notes: Multi-cycle velocity trend across recent cycles.
+answer:
+  cycles:
+    - completedAt: 2025-01-20T00:00:00.000Z
+      startsAt: 2025-01-06T00:00:00.000Z
+      endsAt: 2025-01-20T00:00:00.000Z
+      completedScopeHistory:
+        - 0
+        - 2
+        - 4
+        - 7
+        - 10
+        - 14
+        - 23
+      scopeHistory:
+        - 0
+        - 5
+        - 8
+        - 13
+        - 21
+        - 26
+        - 30
+    - completedAt: 2025-03-17T00:00:00.000Z
+      startsAt: 2025-03-03T00:00:00.000Z
+      endsAt: 2025-03-17T00:00:00.000Z
+      completedScopeHistory:
+        - 0
+        - 4
+        - 9
+        - 15
+        - 29
+      scopeHistory:
+        - 0
+        - 10
+        - 18
+        - 27
+        - 35
+    - completedAt: 2025-05-12T00:00:00.000Z
+      startsAt: 2025-04-28T00:00:00.000Z
+      endsAt: 2025-05-12T00:00:00.000Z
+      completedScopeHistory:
+        - 0
+        - 3
+        - 7
+        - 13
+        - 18
+        - 30
+      scopeHistory:
+        - 0
+        - 8
+        - 15
+        - 22
+        - 28
+        - 33
+answerSchema:
+  type: object
+  properties:
+    cycles:
+      type: array
+      items:
+        type: object
+        properties:
+          completedAt: &a1
+            type: string
+          startsAt: *a1
+          endsAt: *a1
+          completedScopeHistory:
+            type: array
+            items: &a2
+              type: number
+            description: Completed scope (velocity) over the cycle
+          scopeHistory:
+            type: array
+            items: *a2
+            description: Total scope over the cycle
+        required:
+          - completedAt
+          - startsAt
+          - endsAt
+          - completedScopeHistory
+          - scopeHistory
+        additionalProperties: false
+  required:
+    - cycles
+  additionalProperties: false

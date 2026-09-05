@@ -1,0 +1,29 @@
+id: gh-ext-032-kw
+schemaId: github
+query: actions disabled repositories
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          isDisabled
+          hasIssuesEnabled
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.isDisabled
+  - Repository.hasIssuesEnabled
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.isDisabled
+  - Repository.hasIssuesEnabled
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-032. GraphQL exposes Repository.isDisabled but not per-feature Actions toggles; nearest field is the disabled flag.

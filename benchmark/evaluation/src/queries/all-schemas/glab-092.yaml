@@ -1,0 +1,92 @@
+id: glab-092
+schemaId: gitlab
+query: Show the pending member approval requests for the "group/project" group,
+  including each request's status, the user's id, name, and username, and the
+  requested access level.
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      pendingMemberApprovals(first: 10) {
+        nodes {
+          status
+          user {
+            id
+            name
+            username
+          }
+          newAccessLevel {
+            stringValue
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - MemberApproval.status
+  - MemberApproval.user
+  - MemberApproval.newAccessLevel
+  - AccessLevel.stringValue
+  - UserCore.id
+  - UserCore.name
+  - UserCore.username
+targetTypes:
+  - MemberApproval
+  - AccessLevel
+  - UserCore
+mustInclude:
+  - Query.group
+  - Query.group(fullPath:)
+  - Group.pendingMemberApprovals
+  - Group.pendingMemberApprovals(first:)
+  - MemberApproval.status
+  - MemberApproval.user
+  - MemberApproval.newAccessLevel
+  - AccessLevel.stringValue
+  - UserCore.id
+  - UserCore.name
+  - UserCore.username
+mustExclude:
+  - Mutation
+  - Group.pendingMembers
+notes: "Admin: pending member approval requests for a group."
+answerSchema:
+  type: object
+  properties:
+    pendingApprovals:
+      type: array
+      items:
+        type: object
+        properties:
+          status: &a1
+            type: string
+          userId: *a1
+          userName: *a1
+          username: *a1
+          newAccessLevel: *a1
+        required:
+          - status
+          - userId
+          - userName
+          - username
+          - newAccessLevel
+        additionalProperties: false
+  required:
+    - pendingApprovals
+  additionalProperties: false
+answer:
+  pendingApprovals:
+    - status: pending
+      userId: gid://gitlab/User/10
+      userName: Grace Lee
+      username: hrodriguez
+      newAccessLevel: REPORTER
+    - status: pending
+      userId: gid://gitlab/User/11
+      userName: Frank Wilson
+      username: glee
+      newAccessLevel: DEVELOPER
+    - status: pending
+      userId: gid://gitlab/User/12
+      userName: Henry Rodriguez
+      username: jtaylor
+      newAccessLevel: MAINTAINER

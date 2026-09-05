@@ -1,0 +1,36 @@
+id: gh-ext-085-kw
+schemaId: github
+query: teams added this year
+operation: |
+  query {
+    viewer {
+      organizations(first: 10) {
+        nodes {
+          teams(first: 10) {
+            nodes {
+              members(first: 10) {
+                __typename
+              }
+              createdAt
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Team.createdAt
+targetTypes:
+  - Team
+mustInclude:
+  - Query.viewer
+  - User.organizations
+  - Organization.teams
+  - Team.members
+  - Team.createdAt
+  - Organization.teams(first:)
+  - Team.members(first:)
+  - User.organizations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-085. Teams I belong to via my organizations, filtered by when I joined.

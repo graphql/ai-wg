@@ -1,0 +1,62 @@
+id: lin-ic-21
+schemaId: linear
+query: "What teams and projects am I subscribed to for notifications?"
+operation: |
+  query {
+    notificationSubscriptions(first: 10) {
+      nodes {
+        project {
+          id
+          name
+        }
+        team {
+          id
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.name
+  - Team.name
+targetTypes:
+  - NotificationSubscription
+mustInclude:
+  - Query.notificationSubscriptions
+  - NotificationSubscription.project
+  - NotificationSubscription.team
+  - Query.notificationSubscriptions(first:)
+  - Project.name
+  - Team.name
+mustExclude:
+  - Mutation
+notes: What I am subscribed to.
+answerSchema:
+  type: object
+  properties:
+    subscriptions:
+      type: array
+      items:
+        type: object
+        properties:
+          projectName:
+            type: string
+          teamName:
+            type: string
+        required:
+          - projectName
+          - teamName
+        additionalProperties: false
+  required:
+    - subscriptions
+  additionalProperties: false
+answer:
+  subscriptions:
+    - projectName: Mobile App
+      teamName: null
+    - projectName: null
+      teamName: Engineering
+    - projectName: Auth Redesign
+      teamName: null
+    - projectName: null
+      teamName: Design

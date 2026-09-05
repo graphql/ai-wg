@@ -1,0 +1,25 @@
+id: shop-060-kw
+schemaId: shopify
+query: fraudulent orders flagged review
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        risk {
+          recommendation
+        }
+      }
+    }
+  }
+targetFields:
+  - OrderRiskSummary.recommendation
+targetTypes:
+  - OrderRiskSummary
+mustInclude:
+  - QueryRoot.orders
+  - Order.risk
+  - OrderRiskSummary.recommendation
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-060. Orders the team flagged as fraudulent for manual review.

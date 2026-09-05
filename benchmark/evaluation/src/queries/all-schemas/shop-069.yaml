@@ -1,0 +1,65 @@
+id: shop-069
+schemaId: shopify
+query: For recent orders, show each customer's name and email along with their
+  last visit source and source type.
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        customer {
+          displayName
+          defaultEmailAddress {
+            emailAddress
+          }
+        }
+        customerJourneySummary {
+          lastVisit {
+            source
+            sourceType
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.displayName
+  - CustomerEmailAddress.emailAddress
+  - CustomerVisit.source
+  - CustomerVisit.sourceType
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.customer
+  - Order.customerJourneySummary
+  - CustomerJourneySummary.lastVisit
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Customers who converted from a recent email campaign.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          customerName:
+            type: string
+          customerEmail:
+            type: string
+          lastVisitSource:
+            type: string
+          sourceType:
+            type: string
+        required:
+          - customerName
+          - customerEmail
+          - lastVisitSource
+          - sourceType
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders: []

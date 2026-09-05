@@ -1,0 +1,31 @@
+id: lin-ic-10-kw
+schemaId: linear
+query: my favorites starred pinned
+operation: |
+  query {
+    favorites(first: 10) {
+      nodes {
+        issue {
+          id
+        }
+        project {
+          id
+        }
+        cycle {
+          id
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Favorite
+mustInclude:
+  - Query.favorites
+  - Favorite.issue
+  - Favorite.project
+  - Favorite.cycle
+  - Query.favorites(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-10. Pinned/favorite items for the current viewer.

@@ -1,0 +1,35 @@
+id: shop-096-kw
+schemaId: shopify
+query: company contacts placed orders
+operation: |
+  query {
+    companies(first: 10) {
+      nodes {
+        contacts(first: 10) {
+          nodes {
+            orders(first: 10) {
+              edges {
+                cursor
+              }
+            }
+            customer {
+              canDelete
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.companies
+  - Company.contacts
+  - CompanyContact.orders
+  - CompanyContact.customer
+  - Company.contacts(first:)
+  - CompanyContact.orders(first:)
+  - QueryRoot.companies(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-096. Company contacts who have placed orders on behalf of their company.

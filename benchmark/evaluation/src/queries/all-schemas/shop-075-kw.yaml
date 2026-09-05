@@ -1,0 +1,21 @@
+id: shop-075-kw
+schemaId: shopify
+query: SUMMER25 code redemptions last week
+operation: |
+  query {
+    codeDiscountNodeByCode(code: "placeholder") {
+      id
+    }
+  }
+targetFields:
+  - DiscountCodeBasic.asyncUsageCount
+targetTypes:
+  - DiscountCodeBasic
+mustInclude:
+  - QueryRoot.codeDiscountNodeByCode
+  - DiscountCodeBasic.asyncUsageCount
+  - DiscountCodeBasic.codes
+  - QueryRoot.codeDiscountNodeByCode(code:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-075. Redemptions of a specific code last week.

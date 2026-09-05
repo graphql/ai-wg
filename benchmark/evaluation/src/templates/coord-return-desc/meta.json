@@ -1,0 +1,6 @@
+{
+    "id": "coord-return-desc",
+    "name": "Coord + return + description",
+    "description": "Default template. Renders \"<Type>.<field> -> <ReturnType> — <description>\" matching the previous hardcoded text.",
+    "applies": ["field"]
+}

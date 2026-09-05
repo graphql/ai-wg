@@ -1,0 +1,36 @@
+id: gh-ext-069-kw
+schemaId: github
+query: dependency graph repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      dependencyGraphManifests(first: 10) {
+        nodes {
+          filename
+          dependenciesCount
+          dependencies(first: 10) {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DependencyGraphManifest.filename
+  - DependencyGraphManifest.dependenciesCount
+targetTypes:
+  - DependencyGraphManifest
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.dependencyGraphManifests
+  - DependencyGraphManifest.filename
+  - DependencyGraphManifest.dependenciesCount
+  - DependencyGraphManifest.dependencies
+  - DependencyGraphManifest.dependencies(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.dependencyGraphManifests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-069. List dependency graph manifests with their dependencies.

@@ -1,0 +1,30 @@
+id: glab-076-kw
+schemaId: gitlab
+query: child epics parent state
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      epic {
+        children(first: 10) {
+          nodes {
+            __typename
+          }
+        }
+        state
+      }
+    }
+  }
+targetFields:
+  - Epic.state
+targetTypes:
+  - Epic
+mustInclude:
+  - Query.group
+  - Group.epic
+  - Epic.children
+  - Epic.state
+  - Epic.children(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-076. PM: child epics of a parent + state."

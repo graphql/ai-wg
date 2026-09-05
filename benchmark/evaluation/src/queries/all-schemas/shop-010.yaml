@@ -1,0 +1,29 @@
+id: shop-010
+schemaId: shopify
+query: How many orders were placed through the Online Store sales channel this month?
+operation: |
+  query {
+    ordersCount(query: "source_name:web created_at:>=2026-06-01") {
+      count
+    }
+  }
+targetFields:
+  - Count.count
+targetTypes:
+  - Count
+mustInclude:
+  - QueryRoot.ordersCount(query:)
+  - Count.count
+mustExclude:
+  - Mutation
+notes: Order count from the Online Store sales channel this month.
+answerSchema:
+  type: object
+  properties:
+    orderCount:
+      type: integer
+  required:
+    - orderCount
+  additionalProperties: false
+answer:
+  orderCount: 794

@@ -1,0 +1,37 @@
+id: lin-ic-17
+schemaId: linear
+query: "Which Linear issue corresponds to the git branch \"fix-rate-limit\"?"
+operation: |
+  query {
+    issueVcsBranchSearch(branchName: "fix-rate-limit") {
+      identifier
+      title
+    }
+  }
+targetFields:
+  - Issue.identifier
+  - Issue.title
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issueVcsBranchSearch
+  - Issue.identifier
+  - Issue.title
+  - Query.issueVcsBranchSearch(branchName:)
+mustExclude:
+  - Mutation
+notes: Resolve a branch name back to its issue.
+answerSchema:
+  type: object
+  properties:
+    identifier:
+      type: string
+    title:
+      type: string
+  required:
+    - identifier
+    - title
+  additionalProperties: false
+answer:
+  identifier: ENG-512
+  title: Fix rate limit bypass vulnerability

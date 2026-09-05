@@ -1,0 +1,80 @@
+id: shop-055
+schemaId: shopify
+query: What payment methods does customer gid://shopify/Customer/1 have on file?
+operation: |
+  query {
+    customer(id: "gid://shopify/Customer/1") {
+      paymentMethods(first: 10) {
+        nodes {
+          id
+          instrument {
+            __typename
+            ... on CustomerCreditCard {
+              brand
+              maskedNumber
+              expiryMonth
+              expiryYear
+            }
+            ... on CustomerPaypalBillingAgreement {
+              paypalAccountEmail
+            }
+            ... on CustomerShopPayAgreement {
+              maskedNumber
+              lastDigits
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CustomerCreditCard.brand
+  - CustomerCreditCard.maskedNumber
+targetTypes:
+  - CustomerCreditCard
+  - CustomerPaypalBillingAgreement
+  - CustomerShopPayAgreement
+mustInclude:
+  - QueryRoot.customer
+  - Customer.paymentMethods
+  - CustomerPaymentMethod.instrument
+  - Customer.paymentMethods(first:)
+  - QueryRoot.customer(id:)
+mustExclude:
+  - Mutation
+notes: Saved payment methods on file for a customer.
+answerSchema:
+  type: object
+  properties:
+    paymentMethods:
+      type: array
+      items:
+        type: object
+        properties:
+          brand:
+            type: string
+          maskedNumber:
+            type: string
+          expiryMonth:
+            type: integer
+          expiryYear:
+            type: integer
+        required:
+          - brand
+          - maskedNumber
+          - expiryMonth
+          - expiryYear
+        additionalProperties: false
+  required:
+    - paymentMethods
+  additionalProperties: false
+answer:
+  paymentMethods:
+    - brand: Mastercard
+      maskedNumber: "****-****-****-1111"
+      expiryMonth: 411
+      expiryYear: 64
+    - brand: Visa
+      maskedNumber: "****-****-****-4242"
+      expiryMonth: 693
+      expiryYear: 640

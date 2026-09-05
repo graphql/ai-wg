@@ -1,0 +1,53 @@
+id: gh-ext-051
+schemaId: github
+query: What are the funding links configured for the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      fundingLinks {
+        platform
+        url
+      }
+    }
+  }
+targetFields:
+  - FundingLink.platform
+  - FundingLink.url
+targetTypes:
+  - FundingLink
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.fundingLinks
+  - FundingLink.platform
+  - FundingLink.url
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Funding links configured on the repo.
+answerSchema:
+  type: object
+  properties:
+    fundingLinks:
+      type: array
+      items:
+        type: object
+        properties:
+          platform:
+            type: string
+          url:
+            type: string
+        required:
+          - platform
+          - url
+        additionalProperties: false
+  required:
+    - fundingLinks
+  additionalProperties: false
+answer:
+  fundingLinks:
+    - platform: BUY_ME_A_COFFEE
+      url: https://www.buymeacoffee.com/octocat
+    - platform: POLAR
+      url: https://polar.sh/octocat

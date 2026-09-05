@@ -1,0 +1,30 @@
+id: shop-059-kw
+schemaId: shopify
+query: gift card balance expiring customers
+operation: |
+  query {
+    giftCards(first: 10) {
+      nodes {
+        balance {
+          amount
+        }
+        expiresOn
+        customer {
+          canDelete
+        }
+      }
+    }
+  }
+targetFields:
+  - GiftCard.expiresOn
+targetTypes:
+  - GiftCard
+mustInclude:
+  - QueryRoot.giftCards
+  - GiftCard.balance
+  - GiftCard.expiresOn
+  - GiftCard.customer
+  - QueryRoot.giftCards(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-059. Customers with unused gift card balances about to expire.

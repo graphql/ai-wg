@@ -1,0 +1,32 @@
+id: lin-ad-4-kw
+schemaId: linear
+query: webhooks list enabled url
+operation: |
+  query {
+    webhooks(first: 10) {
+      nodes {
+        url
+        enabled
+        team {
+          id
+        }
+        allPublicTeams
+      }
+    }
+  }
+targetFields:
+  - Webhook.url
+  - Webhook.enabled
+  - Webhook.allPublicTeams
+targetTypes:
+  - Webhook
+mustInclude:
+  - Query.webhooks
+  - Webhook.url
+  - Webhook.enabled
+  - Webhook.team
+  - Webhook.allPublicTeams
+  - Query.webhooks(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-4. Webhook configuration audit.

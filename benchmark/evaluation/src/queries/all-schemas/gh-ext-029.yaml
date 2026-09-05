@@ -1,0 +1,69 @@
+id: gh-ext-029
+schemaId: github
+query: What are the production environment deployments in the octocat/example
+  repository, including environment name, status, and creation time?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      deployments(first: 10, environments: ["production"]) {
+        nodes {
+          environment
+          latestStatus {
+            state
+          }
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Deployment.environment
+  - Deployment.createdAt
+  - DeploymentStatus.state
+targetTypes:
+  - Deployment
+  - DeploymentStatus
+mustInclude:
+  - Query.repository
+  - Repository.deployments
+  - Deployment.environment
+  - Deployment.latestStatus
+  - DeploymentStatus.state
+  - Deployment.createdAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.deployments(first:)
+  - Repository.deployments(environments:)
+mustExclude:
+  - Mutation
+notes: Deployment history filtered to production, grouped client-side.
+answerSchema:
+  type: object
+  properties:
+    deployments:
+      type: array
+      items:
+        type: object
+        properties:
+          environment:
+            type: string
+          status:
+            type: string
+          createdAt:
+            type: string
+        required:
+          - environment
+          - status
+          - createdAt
+        additionalProperties: false
+  required:
+    - deployments
+  additionalProperties: false
+answer:
+  deployments:
+    - environment: production
+      status: SUCCESS
+      createdAt: 2025-05-29T00:00:00.000Z
+    - environment: production
+      status: FAILURE
+      createdAt: 2025-05-12T00:00:00.000Z

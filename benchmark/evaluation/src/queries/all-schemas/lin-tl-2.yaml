@@ -1,0 +1,72 @@
+id: lin-tl-2
+schemaId: linear
+query: "For team team-1, how much estimated work does each assigned teammate
+  have in the active cycle and what state are those issues in?"
+operation: |
+  query {
+    team(id: "team-1") {
+      activeCycle {
+        issues(first: 10) {
+          nodes {
+            estimate
+            state {
+              name
+            }
+            assignee {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.estimate
+  - WorkflowState.name
+  - User.name
+targetTypes:
+  - Issue
+  - Cycle
+  - WorkflowState
+  - User
+  - Team
+mustInclude:
+  - Query.team
+  - Team.activeCycle
+  - Cycle.issues
+  - Issue.estimate
+  - Issue.state
+  - Issue.assignee
+  - WorkflowState.name
+  - User.name
+  - Cycle.issues(first:)
+  - Query.team(id:)
+mustExclude:
+  - Mutation
+answer:
+  teammates: []
+answerSchema:
+  type: object
+  properties:
+    teammates:
+      type: array
+      items:
+        type: object
+        properties:
+          assignee:
+            type: string
+          estimate:
+            type: number
+          state:
+            type: string
+            description: Workflow state of the issue
+        required:
+          - assignee
+          - estimate
+          - state
+        additionalProperties: false
+  required:
+    - teammates
+  additionalProperties: false
+notes: Sprint-planning load-by-assignee within a cycle; needs estimate + state +
+  assignee.

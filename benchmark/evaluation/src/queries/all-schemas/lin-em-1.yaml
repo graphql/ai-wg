@@ -1,0 +1,138 @@
+id: lin-em-1
+schemaId: linear
+query: "What projects are on our roadmap this quarter and how are they tracking?"
+operation: |
+  query {
+    roadmaps(first: 10) {
+      nodes {
+        projects(first: 10) {
+          nodes {
+            name
+            targetDate
+            health
+            status {
+              name
+              type
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.name
+  - Project.targetDate
+  - Project.health
+  - Project.status
+targetTypes:
+  - Project
+  - Roadmap
+  - ProjectStatus
+mustInclude:
+  - Query.roadmaps
+  - Roadmap.projects
+  - Project.name
+  - Project.targetDate
+  - Project.health
+  - Project.status
+  - ProjectStatus.name
+  - ProjectStatus.type
+  - Query.roadmaps(first:)
+  - Roadmap.projects(first:)
+mustExclude:
+  - Mutation
+notes: EM roadmap view — projects with target dates and overall status.
+answerSchema:
+  type: object
+  properties:
+    roadmaps:
+      type: array
+      items:
+        type: object
+        properties:
+          projects:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                targetDate:
+                  type: string
+                health:
+                  type: string
+                status:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    type:
+                      type: string
+                  required:
+                    - name
+                    - type
+                  additionalProperties: false
+              required:
+                - name
+                - targetDate
+                - health
+                - status
+              additionalProperties: false
+        required:
+          - projects
+        additionalProperties: false
+  required:
+    - roadmaps
+  additionalProperties: false
+answer:
+  roadmaps:
+    - projects:
+        - name: Mobile App
+          targetDate: 2025-Q2
+          health: onTrack
+          status:
+            name: In Progress
+            type: started
+        - name: Auth Redesign
+          targetDate: 2025-Q2
+          health: onTrack
+          status:
+            name: In Progress
+            type: started
+        - name: Billing Portal
+          targetDate: 2025-Q2
+          health: onTrack
+          status:
+            name: Planned
+            type: planned
+        - name: Data Pipeline
+          targetDate: 2025-Q3
+          health: onTrack
+          status:
+            name: In Progress
+            type: started
+    - projects:
+        - name: Security Audit
+          targetDate: 2025-Q2
+          health: offTrack
+          status:
+            name: On Hold
+            type: paused
+        - name: Infrastructure Upgrade
+          targetDate: 2025-Q1
+          health: onTrack
+          status:
+            name: In Progress
+            type: started
+        - name: API Gateway
+          targetDate: 2025-Q1
+          health: offTrack
+          status:
+            name: Canceled
+            type: canceled
+        - name: Design System
+          targetDate: 2025-Q4
+          health: atRisk
+          status:
+            name: Completed
+            type: completed

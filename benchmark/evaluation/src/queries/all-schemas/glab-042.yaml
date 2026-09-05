@@ -1,0 +1,81 @@
+id: glab-042
+schemaId: gitlab
+query: What CI variables are configured at the project level and inherited from
+  the group for project group/project?
+queries:
+  - CI variables configured at the project level for project group/project
+  - CI variables inherited from the group for project group/project
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      ciVariables(first: 10) {
+        nodes {
+          key
+        }
+      }
+      inheritedCiVariables(first: 10) {
+        nodes {
+          key
+          groupName
+        }
+      }
+    }
+  }
+targetFields:
+  - CiProjectVariable.key
+  - InheritedCiVariable.key
+  - InheritedCiVariable.groupName
+targetTypes:
+  - CiProjectVariable
+  - InheritedCiVariable
+mustInclude:
+  - Query.project
+  - Project.ciVariables
+  - Project.inheritedCiVariables
+  - CiProjectVariable.key
+  - InheritedCiVariable.key
+  - InheritedCiVariable.groupName
+  - Project.ciVariables(first:)
+  - Project.inheritedCiVariables(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "DevOps: project vs inherited CI variables."
+answerSchema:
+  type: object
+  properties:
+    projectVariables:
+      type: array
+      items:
+        type: string
+    inheritedVariables:
+      type: array
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+          groupName:
+            type: string
+        required:
+          - key
+          - groupName
+        additionalProperties: false
+  required:
+    - projectVariables
+    - inheritedVariables
+  additionalProperties: false
+answer:
+  projectVariables:
+    - DATABASE_URL
+    - API_KEY
+    - SECRET_TOKEN
+    - DEPLOY_TOKEN
+    - CI_REGISTRY_USER
+  inheritedVariables:
+    - key: GROUP_TOKEN
+      groupName: parent-group
+    - key: SHARED_CONFIG
+      groupName: parent-group
+    - key: ORG_SECRET
+      groupName: root-group

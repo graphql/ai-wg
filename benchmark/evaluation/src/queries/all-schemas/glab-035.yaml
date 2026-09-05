@@ -1,0 +1,71 @@
+id: glab-035
+schemaId: gitlab
+query: Using the single-environment lookup on project group/project, fetch the
+  environment named "production" and list its first 10 deployments (iid,
+  finishedAt, status).
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      environment(name: "production") {
+        deployments(first: 10) {
+          nodes {
+            iid
+            finishedAt
+            status
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Deployment.iid
+  - Deployment.finishedAt
+  - Deployment.status
+targetTypes:
+  - Deployment
+mustInclude:
+  - Query.project
+  - Project.environment
+  - Environment.deployments
+  - Deployment.iid
+  - Deployment.finishedAt
+  - Deployment.status
+  - Environment.deployments(first:)
+  - Project.environment(name:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "DevOps: production deployments past week."
+answerSchema:
+  type: object
+  properties:
+    deployments:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          finishedAt:
+            type: string
+          status:
+            type: string
+        required:
+          - iid
+          - finishedAt
+          - status
+        additionalProperties: false
+  required:
+    - deployments
+  additionalProperties: false
+answer:
+  deployments:
+    - iid: "86"
+      finishedAt: 2025-05-31T00:00:00.000Z
+      status: CREATED
+    - iid: "45"
+      finishedAt: 2025-05-28T00:00:00.000Z
+      status: RUNNING
+    - iid: "28"
+      finishedAt: 2025-05-13T00:00:00.000Z
+      status: BLOCKED

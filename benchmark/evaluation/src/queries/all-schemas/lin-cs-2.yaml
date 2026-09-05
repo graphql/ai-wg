@@ -1,0 +1,80 @@
+id: lin-cs-2
+schemaId: linear
+query: "What are the highest-priority customer requests right now?"
+operation: |
+  query {
+    customerNeeds(first: 10, filter: { priority: { gte: 1 } }) {
+      nodes {
+        id
+        priority
+        body
+        customer {
+          name
+        }
+        issue {
+          title
+        }
+      }
+    }
+  }
+targetFields:
+  - CustomerNeed.priority
+  - CustomerNeed.body
+targetTypes:
+  - CustomerNeed
+mustInclude:
+  - Query.customerNeeds
+  - CustomerNeed.priority
+  - CustomerNeed.body
+  - CustomerNeed.customer
+  - CustomerNeed.issue
+  - Query.customerNeeds(first:)
+  - Query.customerNeeds(filter:)
+mustExclude:
+  - Mutation
+notes: CS prioritizes their queue of customer requests.
+answerSchema:
+  type: object
+  properties:
+    requests:
+      type: array
+      items:
+        type: object
+        properties:
+          priority:
+            type: number
+            description: The priority score of the customer request
+          body:
+            type: string
+            description: The body text of the customer request
+          issueTitle:
+            type: string
+            description: The title of the linked issue
+        required:
+          - priority
+          - body
+          - issueTitle
+        additionalProperties: false
+  required:
+    - requests
+  additionalProperties: false
+answer:
+  requests:
+    - priority: 2
+      body: Need faster login on mobile devices
+      issueTitle: Customer reported login issue on mobile
+    - priority: 1
+      body: Rate limiting blocks our API integration
+      issueTitle: Fix rate limit bypass vulnerability
+    - priority: 2
+      body: API rate limiting causes failures in our workflow
+      issueTitle: Implement rate limiting on API gateway
+    - priority: 2
+      body: Database migrations are too slow
+      issueTitle: Migrate database to PostgreSQL 16
+    - priority: 1
+      body: Payment module has occasional failures
+      issueTitle: Add unit tests for payment module
+    - priority: 2
+      body: Also affected by mobile login issue
+      issueTitle: Customer reported login issue on mobile

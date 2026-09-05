@@ -1,0 +1,77 @@
+id: shop-079
+schemaId: shopify
+query: List every fulfillment location we have and its address.
+operation: |
+  query {
+    locations(first: 10) {
+      nodes {
+        name
+        address {
+          formatted
+        }
+      }
+    }
+  }
+targetFields:
+  - Location.name
+  - LocationAddress.formatted
+targetTypes:
+  - Location
+  - LocationAddress
+mustInclude:
+  - QueryRoot.locations
+  - Location.name
+  - Location.address
+  - LocationAddress.formatted
+  - QueryRoot.locations(first:)
+mustExclude:
+  - Mutation
+notes: All fulfillment locations and their addresses.
+answerSchema:
+  type: object
+  properties:
+    locations:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          address:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - address
+        additionalProperties: false
+  required:
+    - locations
+  additionalProperties: false
+answer:
+  locations:
+    - name: Airport Logistics
+      address:
+        - 1200 Airport Blvd Suite 100
+        - Los Angeles, California 90045
+        - United States
+    - name: Industrial Park
+      address:
+        - 450 Industrial Pkwy
+        - Chicago, Illinois 60601
+        - United States
+    - name: West Fulfillment
+      address:
+        - 3300 West Commerce St Unit B
+        - Dallas, Texas 75208
+        - United States
+    - name: Northern Facility
+      address:
+        - 789 Northern Ave
+        - Seattle, Washington 98101
+        - United States
+    - name: Downtown Store
+      address:
+        - 55 Main Street Floor 2
+        - New York, New York 10001
+        - United States

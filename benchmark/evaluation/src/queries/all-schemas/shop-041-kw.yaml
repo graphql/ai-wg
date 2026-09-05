@@ -1,0 +1,31 @@
+id: shop-041-kw
+schemaId: shopify
+query: customer order history lifetime spend Maya Patel
+operation: |
+  query {
+    customer(id: "gid://shopify/Object/1") {
+      orders(first: 10) {
+        edges {
+          cursor
+        }
+      }
+      amountSpent {
+        amount
+      }
+      numberOfOrders
+    }
+  }
+targetFields:
+  - Customer.numberOfOrders
+targetTypes:
+  - Customer
+mustInclude:
+  - QueryRoot.customer
+  - Customer.orders
+  - Customer.amountSpent
+  - Customer.numberOfOrders
+  - Customer.orders(first:)
+  - QueryRoot.customer(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-041. A single customer's order history and lifetime spend.

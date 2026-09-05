@@ -1,0 +1,48 @@
+id: gh-ext-057-kw
+schemaId: github
+query: repository star count fork count is fork
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      nameWithOwner
+      stargazerCount
+      forkCount
+      isFork
+    }
+  }
+targetFields:
+  - Repository.nameWithOwner
+  - Repository.stargazerCount
+  - Repository.forkCount
+  - Repository.isFork
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.nameWithOwner
+  - Repository.stargazerCount
+  - Repository.forkCount
+  - Repository.isFork
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-057.
+answerSchema:
+  type: object
+  properties:
+    starCount:
+      type: integer
+    forkCount:
+      type: integer
+    isFork:
+      type: boolean
+  required:
+    - starCount
+    - forkCount
+    - isFork
+  additionalProperties: false
+answer:
+  starCount: 102
+  forkCount: 225
+  isFork: false

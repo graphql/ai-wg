@@ -1,0 +1,52 @@
+id: glab-095
+schemaId: gitlab
+query: What is the visibility of each descendant group of group/project
+  (fullPath and visibility)?
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      descendantGroups(first: 10) {
+        nodes {
+          fullPath
+          visibility
+        }
+      }
+    }
+  }
+targetFields:
+  - Group.fullPath
+  - Group.visibility
+targetTypes:
+  - Group
+mustInclude:
+  - Query.group
+  - Group.descendantGroups
+  - Group.fullPath
+  - Group.visibility
+  - Group.descendantGroups(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Admin: visibility of subgroups."
+answerSchema:
+  type: object
+  properties:
+    descendantGroups:
+      type: array
+      items:
+        type: object
+        properties:
+          fullPath: &a1
+            type: string
+          visibility: *a1
+        required:
+          - fullPath
+          - visibility
+        additionalProperties: false
+  required:
+    - descendantGroups
+  additionalProperties: false
+answer:
+  descendantGroups:
+    - fullPath: gitlab-org/gitlab
+      visibility: private

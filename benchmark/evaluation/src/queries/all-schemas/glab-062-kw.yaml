@@ -1,0 +1,26 @@
+id: glab-062-kw
+schemaId: gitlab
+query: license compliance latest scan
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          reportType
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.reportType
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.reportType
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-062. Security: license compliance findings."

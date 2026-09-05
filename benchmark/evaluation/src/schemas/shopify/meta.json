@@ -1,0 +1,5 @@
+{
+    "id": "shopify",
+    "name": "Shopify",
+    "description": "Shopify Admin API (~3.2MB SDL — largest schema). No queries in v1 eval yet; available for new categories."
+}

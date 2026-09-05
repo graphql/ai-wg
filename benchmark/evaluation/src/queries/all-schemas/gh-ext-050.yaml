@@ -1,0 +1,49 @@
+id: gh-ext-050
+schemaId: github
+query: What license does the octocat/example repository use?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      licenseInfo {
+        name
+        spdxId
+      }
+    }
+  }
+targetFields:
+  - License.name
+  - License.spdxId
+targetTypes:
+  - License
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.licenseInfo
+  - License.name
+  - License.spdxId
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Repository license info.
+answerSchema:
+  type: object
+  properties:
+    license:
+      type: object
+      properties:
+        name:
+          type: string
+        spdxId:
+          type: string
+      required:
+        - name
+        - spdxId
+      additionalProperties: false
+  required:
+    - license
+  additionalProperties: false
+answer:
+  license:
+    name: MIT License
+    spdxId: MIT

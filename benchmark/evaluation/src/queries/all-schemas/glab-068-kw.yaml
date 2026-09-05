@@ -1,0 +1,21 @@
+id: glab-068-kw
+schemaId: gitlab
+query: security training providers
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      securityTrainingProviders {
+        __typename
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - ProjectSecurityTraining
+mustInclude:
+  - Query.project
+  - Project.securityTrainingProviders
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-068. Security: security training providers."

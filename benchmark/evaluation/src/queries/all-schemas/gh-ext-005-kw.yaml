@@ -1,0 +1,30 @@
+id: gh-ext-005-kw
+schemaId: github
+query: draft pull requests not ready
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          isDraft
+          state
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.isDraft
+  - PullRequest.state
+targetTypes:
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.isDraft
+  - PullRequest.state
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-005. Filter open PRs by draft status.

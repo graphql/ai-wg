@@ -1,0 +1,94 @@
+id: glab-085
+schemaId: gitlab
+query: Show the state and report stats (complete, incomplete, total with count
+  and weight) for iteration gid://gitlab/Iteration/1.
+operation: |
+  query {
+    iteration(id: "gid://gitlab/Iteration/1") {
+      state
+      report {
+        stats {
+          complete { count weight }
+          incomplete { count weight }
+          total { count weight }
+        }
+      }
+    }
+  }
+targetFields:
+  - TimeboxMetrics.count
+  - TimeboxMetrics.weight
+  - TimeReportStats.complete
+  - TimeReportStats.incomplete
+  - TimeReportStats.total
+  - TimeboxReport.stats
+  - Iteration.state
+targetTypes:
+  - Iteration
+  - TimeboxReport
+  - TimeReportStats
+  - TimeboxMetrics
+mustInclude:
+  - Query.iteration
+  - Query.iteration(id:)
+  - Iteration.report
+  - Iteration.state
+  - TimeboxReport.stats
+  - TimeReportStats.complete
+  - TimeReportStats.incomplete
+  - TimeReportStats.total
+  - TimeboxMetrics.count
+  - TimeboxMetrics.weight
+mustExclude:
+  - Mutation
+notes: "PM: past iteration report."
+answerSchema:
+  type: object
+  properties:
+    state:
+      type: string
+    complete:
+      type: object
+      properties:
+        count: &a1
+          type: integer
+        weight: *a1
+      required:
+        - count
+        - weight
+      additionalProperties: false
+    incomplete:
+      type: object
+      properties:
+        count: *a1
+        weight: *a1
+      required:
+        - count
+        - weight
+      additionalProperties: false
+    total:
+      type: object
+      properties:
+        count: *a1
+        weight: *a1
+      required:
+        - count
+        - weight
+      additionalProperties: false
+  required:
+    - state
+    - complete
+    - incomplete
+    - total
+  additionalProperties: false
+answer:
+  state: closed
+  complete:
+    count: 480
+    weight: 867
+  incomplete:
+    count: 906
+    weight: 49
+  total:
+    count: 629
+    weight: 544

@@ -1,0 +1,35 @@
+id: glab-043
+schemaId: gitlab
+query: How many CI compute minutes have we used this month across the namespace?
+operation: |
+  query {
+    ciMinutesUsage(first: 1) {
+      nodes {
+        minutes
+        month
+      }
+    }
+  }
+targetFields:
+  - CiMinutesNamespaceMonthlyUsage.minutes
+  - CiMinutesNamespaceMonthlyUsage.month
+targetTypes:
+  - CiMinutesNamespaceMonthlyUsage
+mustInclude:
+  - Query.ciMinutesUsage
+  - Query.ciMinutesUsage(first:)
+  - CiMinutesNamespaceMonthlyUsage.minutes
+  - CiMinutesNamespaceMonthlyUsage.month
+mustExclude:
+  - Mutation
+notes: "DevOps: CI minutes usage by namespace."
+answerSchema:
+  type: object
+  properties:
+    computeMinutesUsed:
+      type: integer
+  required:
+    - computeMinutesUsed
+  additionalProperties: false
+answer:
+  computeMinutesUsed: 1257

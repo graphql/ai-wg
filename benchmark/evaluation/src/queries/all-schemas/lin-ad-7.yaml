@@ -1,0 +1,73 @@
+id: lin-ad-7
+schemaId: linear
+query: "Show me recent audit log entries — who did what and when?"
+operation: |
+  query {
+    auditEntries(first: 10) {
+      nodes {
+        type
+        actor {
+          name
+        }
+        createdAt
+      }
+    }
+  }
+targetFields:
+  - AuditEntry.type
+  - AuditEntry.createdAt
+  - User.name
+targetTypes:
+  - AuditEntry
+mustInclude:
+  - Query.auditEntries
+  - AuditEntry.type
+  - AuditEntry.actor
+  - AuditEntry.createdAt
+  - Query.auditEntries(first:)
+  - User.name
+mustExclude:
+  - Mutation
+notes: Security audit log review.
+answerSchema:
+  type: object
+  properties:
+    auditEntries:
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+            description: The kind of action recorded
+          actor:
+            type: string
+            description: Name of the user who performed the action
+          createdAt:
+            type: string
+            description: When the action occurred
+        required:
+          - type
+          - actor
+          - createdAt
+        additionalProperties: false
+  required:
+    - auditEntries
+  additionalProperties: false
+answer:
+  auditEntries:
+    - type: userLogin
+      actor: Alice Johnson
+      createdAt: 2025-05-30T00:00:00.000Z
+    - type: issueCreate
+      actor: Bob Smith
+      createdAt: 2025-05-30T00:00:00.000Z
+    - type: projectUpdate
+      actor: Carol White
+      createdAt: 2025-05-30T00:00:00.000Z
+    - type: teamMembershipCreate
+      actor: David Lee
+      createdAt: 2025-05-30T00:00:00.000Z
+    - type: webhookCreate
+      actor: Alice Johnson
+      createdAt: 2025-05-30T00:00:00.000Z

@@ -1,0 +1,22 @@
+id: shop-085-kw
+schemaId: shopify
+query: payment terms templates wholesale
+operation: |
+  query {
+    paymentTermsTemplates {
+      name
+      dueInDays
+    }
+  }
+targetFields:
+  - PaymentTermsTemplate.name
+  - PaymentTermsTemplate.dueInDays
+targetTypes:
+  - PaymentTermsTemplate
+mustInclude:
+  - QueryRoot.paymentTermsTemplates
+  - PaymentTermsTemplate.name
+  - PaymentTermsTemplate.dueInDays
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-085. Payment terms templates for wholesale accounts.

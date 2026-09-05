@@ -1,0 +1,80 @@
+id: lin-pm-3
+schemaId: linear
+query: "What customer feature requests are linked to engineering issues right now?"
+operation: |
+  query {
+    customerNeeds(first: 10, filter: { issue: { null: false } }) {
+      nodes {
+        body
+        issue {
+          identifier
+        }
+      }
+    }
+  }
+targetFields:
+  - CustomerNeed.body
+  - Issue.identifier
+targetTypes:
+  - CustomerNeed
+  - Issue
+mustInclude:
+  - Query.customerNeeds
+  - CustomerNeed.body
+  - CustomerNeed.issue
+  - Issue.identifier
+  - Query.customerNeeds(first:)
+  - Query.customerNeeds(filter:)
+mustExclude:
+  - Mutation
+notes: PM tracks customer feature requests linked to issues; filter pins needs
+  that have a linked issue.
+answerSchema:
+  type: object
+  properties:
+    featureRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          need:
+            type: string
+            description: Customer feature request body
+          issue:
+            type: string
+            description: Linked issue identifier
+        required:
+          - need
+          - issue
+        additionalProperties: false
+  required:
+    - featureRequests
+  additionalProperties: false
+answer:
+  featureRequests:
+    - need: Need faster login on mobile devices
+      issue: ENG-441
+    - need: Rate limiting blocks our API integration
+      issue: ENG-512
+    - need: API rate limiting causes failures in our workflow
+      issue: ENG-99
+    - need: Database migrations are too slow
+      issue: ENG-200
+    - need: Payment module has occasional failures
+      issue: ENG-321
+    - need: Also affected by mobile login issue
+      issue: ENG-441
+answers:
+  - featureRequests:
+      - need: Need faster login on mobile devices
+        issue: Customer reported login issue on mobile
+      - need: Rate limiting blocks our API integration
+        issue: Fix rate limit bypass vulnerability
+      - need: API rate limiting causes failures in our workflow
+        issue: Implement rate limiting on API gateway
+      - need: Database migrations are too slow
+        issue: Migrate database to PostgreSQL 16
+      - need: Payment module has occasional failures
+        issue: Add unit tests for payment module
+      - need: Also affected by mobile login issue
+        issue: Customer reported login issue on mobile

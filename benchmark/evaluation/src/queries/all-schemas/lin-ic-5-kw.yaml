@@ -1,0 +1,29 @@
+id: lin-ic-5-kw
+schemaId: linear
+query: issues I created recent
+operation: |
+  query {
+    viewer {
+      createdIssues(first: 10) {
+        nodes {
+          state {
+            id
+          }
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.createdAt
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.createdIssues
+  - Issue.state
+  - Issue.createdAt
+  - User.createdIssues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-5. Issues I personally filed.

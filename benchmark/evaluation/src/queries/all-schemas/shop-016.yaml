@@ -1,0 +1,77 @@
+id: shop-016
+schemaId: shopify
+query: How much in taxes did we charge per province for orders with
+  processed_at:>=2026-05-01 and processed_at:<=2026-05-31?
+operation: |
+  query {
+    orders(first: 10, query: "processed_at:>=2026-05-01 processed_at:<=2026-05-31") {
+      nodes {
+        taxLines {
+          priceSet {
+            presentmentMoney {
+              amount
+            }
+          }
+        }
+        shippingAddress {
+          province
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.taxLines
+  - TaxLine.priceSet
+  - Order.shippingAddress
+  - MailingAddress.province
+  - QueryRoot.orders(first:)
+  - QueryRoot.orders(query:)
+mustExclude:
+  - Mutation
+notes: Tax collected per state for last month's orders.
+answerSchema:
+  type: object
+  properties:
+    provinces:
+      type: array
+      items:
+        type: object
+        properties:
+          province:
+            type: string
+          taxAmounts:
+            type: array
+            items:
+              type: string
+        required:
+          - province
+          - taxAmounts
+        additionalProperties: false
+  required:
+    - provinces
+  additionalProperties: false
+answer:
+  provinces:
+    - province: Ohio
+      taxAmounts:
+        - "105.50"
+        - "39.99"
+    - province: New York
+      taxAmounts:
+        - "9.99"
+        - "29.99"
+    - province: Virginia
+      taxAmounts:
+        - "235.00"
+        - "275.99"
+    - province: California
+      taxAmounts:
+        - "299.00"
+        - "20.00"
+    - province: New Jersey
+      taxAmounts:
+        - "38.99"
+        - "92.50"

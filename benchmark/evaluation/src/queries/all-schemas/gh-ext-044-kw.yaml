@@ -1,0 +1,31 @@
+id: gh-ext-044-kw
+schemaId: github
+query: popular gists author
+operation: |
+  query {
+    user(login: "octocat") {
+      gists(first: 10) {
+        nodes {
+          stargazerCount
+          owner {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Gist.stargazerCount
+targetTypes:
+  - Gist
+mustInclude:
+  - Query.user
+  - User.gists
+  - GistConnection.nodes
+  - Gist.stargazerCount
+  - Gist.owner
+  - Query.user(login:)
+  - User.gists(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-044. Gists with their star counts.

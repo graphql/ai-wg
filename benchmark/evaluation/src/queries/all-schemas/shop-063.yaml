@@ -1,0 +1,41 @@
+id: shop-063
+schemaId: shopify
+query: Which marketing events have a start date between 2026-06-07 and 2026-06-21?
+operation: |
+  query {
+    marketingEvents(first: 10, query: "started_at:>2026-06-07 started_at:<2026-06-21") {
+      nodes {
+        startedAt
+      }
+    }
+  }
+targetFields:
+  - MarketingEvent.startedAt
+targetTypes:
+  - MarketingEvent
+mustInclude:
+  - QueryRoot.marketingEvents
+  - MarketingEvent.startedAt
+  - QueryRoot.marketingEvents(first:)
+  - QueryRoot.marketingEvents(query:)
+mustExclude:
+  - Mutation
+notes: Marketing events starting within the next two weeks.
+answerSchema:
+  type: object
+  properties:
+    marketingEvents:
+      type: array
+      items:
+        type: object
+        properties:
+          startedAt:
+            type: string
+        required:
+          - startedAt
+        additionalProperties: false
+  required:
+    - marketingEvents
+  additionalProperties: false
+answer:
+  marketingEvents: []

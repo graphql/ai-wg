@@ -1,0 +1,11 @@
+{
+    "id": "te-unified",
+    "name": "TE — unified member selection (one embedding space)",
+    "description": "Treats every type-system member — field, argument, input field, enum value — as one kind of coordinate in a single embedding space and runs ONE greedy best-first selector over the merged pool until a member budget. Field cos comes from snapshot.cosineToQuery; arg/input-field/enum-value cos comes from snapshot.cosineToQueryElements. The frontier is seeded with all query-root fields plus the fields of the top typesTopK cosine-relevant types (type relevance = max field cos), then expands structurally: admitting a field enqueues its args and (object/enum) return-type members; admitting an arg ensures its field and enqueues its input type's fields; admitting an input field enqueues nested input fields. Required args/input-fields of admitted fields/inputs are always admitted so the slice stays usable. The selection itself decides which args/enums/input-fields appear (no per-kind cosine threshold). Returns selectedCoords (admitted field coords) + selectedMembers (admitted arg/in/enum keys) for the slice's explicit-members render. Does not read query musts.",
+    "defaultConfig": {
+        "maxMembers": 1500,
+        "typesTopK": 15,
+        "seedRootFields": true,
+        "returnTypeExpansion": true
+    }
+}

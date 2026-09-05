@@ -1,0 +1,31 @@
+id: shop-064
+schemaId: shopify
+query: How many customers are in segment gid://shopify/Segment/1?
+operation: |
+  query {
+    customerSegmentMembers(segmentId: "gid://shopify/Object/1", first: 1) {
+      totalCount
+    }
+  }
+targetFields:
+  - CustomerSegmentMemberConnection.totalCount
+targetTypes:
+  - CustomerSegmentMemberConnection
+mustInclude:
+  - QueryRoot.customerSegmentMembers
+  - QueryRoot.customerSegmentMembers(segmentId:)
+  - QueryRoot.customerSegmentMembers(first:)
+  - CustomerSegmentMemberConnection.totalCount
+mustExclude:
+  - Mutation
+notes: Customer count for a named VIP segment.
+answerSchema:
+  type: object
+  properties:
+    customerCount:
+      type: integer
+  required:
+    - customerCount
+  additionalProperties: false
+answer:
+  customerCount: 82

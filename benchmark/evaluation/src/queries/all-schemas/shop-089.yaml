@@ -1,0 +1,130 @@
+id: shop-089
+schemaId: shopify
+query: For each wholesale company in the shop, what contracts (payment terms
+  templates) and price lists are tied to its locations?
+operation: |
+  query {
+    companies(first: 250) {
+      nodes {
+        name
+        locations(first: 50) {
+          nodes {
+            name
+            catalogs(first: 50) {
+              nodes {
+                title
+                priceList {
+                  name
+                }
+              }
+            }
+            buyerExperienceConfiguration {
+              paymentTermsTemplate {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PriceList.name
+  - PaymentTermsTemplate.name
+  - Catalog.title
+targetTypes: []
+mustInclude:
+  - QueryRoot.companies
+  - Company.locations
+  - Company.locations(first:)
+  - CompanyLocation.catalogs
+  - CompanyLocation.catalogs(first:)
+  - Catalog.priceList
+  - CompanyLocation.buyerExperienceConfiguration
+  - BuyerExperienceConfiguration.paymentTermsTemplate
+mustExclude:
+  - Mutation
+answer:
+  companies:
+    - name: Acme Wholesale Inc
+      locations:
+        - name: Processing Center - South
+          paymentTermsTemplate: 2/10 Net 30
+          catalogs:
+            - title: Loyalty Program Builder
+              priceList: Bulk Discount
+            - title: SMS Marketing Automator
+              priceList: VIP Tier
+        - name: Regional Hub - Midwest
+          paymentTermsTemplate: Due on Receipt
+          catalogs:
+            - title: Customer Analytics Dashboard
+              priceList: Retail Pricing
+            - title: Bulk Order Processor
+              priceList: Retail Pricing
+    - name: Global Brands Ltd
+      locations:
+        - name: Fulfillment Center - Northeast
+          paymentTermsTemplate: Net 60
+          catalogs:
+            - title: Product Review System
+              priceList: VIP Tier
+            - title: Invoice Generator Plus
+              priceList: Wholesale Pricing
+        - name: Warehouse - East Coast
+          paymentTermsTemplate: 2/10 Net 30
+          catalogs:
+            - title: Shipping Rate Optimizer
+              priceList: Bulk Discount
+            - title: Abandoned Cart Recovery
+              priceList: Retail Pricing
+answerSchema:
+  type: object
+  properties:
+    companies:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          locations:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                paymentTermsTemplate:
+                  type: string
+                catalogs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      priceList:
+                        type: string
+                    required:
+                      - title
+                      - priceList
+                    additionalProperties: false
+              required:
+                - name
+                - paymentTermsTemplate
+                - catalogs
+              additionalProperties: false
+        required:
+          - name
+          - locations
+        additionalProperties: false
+  required:
+    - companies
+  additionalProperties: false
+notes: Lists every wholesale company in the shop and, per location, the
+  catalogs/price lists and the payment terms template (contract) tied to it. The
+  original "highest total spend" ranking was dropped because the mock's
+  companies field ignores sortKey/reverse/first (no total-spend data backs any
+  ranking), making the ranked single-company variant un-evaluable; the honest
+  question enumerates all companies the backend returns.

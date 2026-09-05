@@ -1,0 +1,68 @@
+id: lin-pm-11
+schemaId: linear
+query: "List the projects in our workspace, and for each one give its name and
+  when it was last updated."
+operation: |
+  query {
+    projects(first: 10) {
+      nodes {
+        name
+        updatedAt
+      }
+    }
+  }
+targetFields:
+  - Project.name
+  - Project.updatedAt
+targetTypes:
+  - Project
+mustInclude:
+  - Query.projects
+  - Project.name
+  - Project.updatedAt
+  - Query.projects(first:)
+mustExclude:
+  - Mutation
+notes: Workspace projects with their last-updated time.
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          updatedAt:
+            type: string
+            description: When the project was last updated
+        required:
+          - name
+          - updatedAt
+        additionalProperties: false
+  required:
+    - projects
+  additionalProperties: false
+answer:
+  projects:
+    - name: Mobile App
+      updatedAt: 2025-05-30T00:00:00.000Z
+    - name: Auth Redesign
+      updatedAt: 2025-05-30T00:00:00.000Z
+    - name: Billing Portal
+      updatedAt: 2025-05-30T00:00:00.000Z
+    - name: Data Pipeline
+      updatedAt: 2025-05-30T00:00:00.000Z
+    - name: API Gateway
+      updatedAt: 2025-05-30T00:00:00.000Z
+    - name: Design System
+      updatedAt: 2025-05-30T00:00:00.000Z
+    - name: Infrastructure Upgrade
+      updatedAt: 2025-05-30T00:00:00.000Z
+    - name: Security Audit
+      updatedAt: 2025-05-30T00:00:00.000Z
+    - name: Onboarding Flow
+      updatedAt: 2025-05-30T00:00:00.000Z
+    - name: Reporting Dashboard
+      updatedAt: 2025-05-30T00:00:00.000Z

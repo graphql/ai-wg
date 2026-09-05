@@ -1,0 +1,30 @@
+id: gh-ext-070-kw
+schemaId: github
+query: vulnerable dependency consumers
+operation: |
+  query {
+    securityVulnerabilities(first: 10) {
+      nodes {
+        package {
+          name
+        }
+        vulnerableVersionRange
+      }
+    }
+  }
+targetFields:
+  - SecurityAdvisoryPackage.name
+  - SecurityVulnerability.vulnerableVersionRange
+targetTypes:
+  - SecurityAdvisoryPackage
+  - SecurityVulnerability
+mustInclude:
+  - Query.securityVulnerabilities
+  - SecurityVulnerability.package
+  - SecurityAdvisoryPackage.name
+  - SecurityVulnerability.vulnerableVersionRange
+  - Repository.dependencyGraphManifests
+  - Query.securityVulnerabilities(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-070. Cross-reference security vulnerabilities with repository dependency graph entries.

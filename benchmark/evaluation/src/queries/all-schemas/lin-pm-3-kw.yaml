@@ -1,0 +1,30 @@
+id: lin-pm-3-kw
+schemaId: linear
+query: customer needs issues feature requests linked
+operation: |
+  query {
+    customerNeeds(first: 10) {
+      nodes {
+        issue {
+          id
+        }
+        customer {
+          id
+        }
+        priority
+      }
+    }
+  }
+targetFields:
+  - CustomerNeed.priority
+targetTypes:
+  - CustomerNeed
+mustInclude:
+  - Query.customerNeeds
+  - CustomerNeed.issue
+  - CustomerNeed.customer
+  - CustomerNeed.priority
+  - Query.customerNeeds(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-3. PM tracks customer feature requests linked to issues.

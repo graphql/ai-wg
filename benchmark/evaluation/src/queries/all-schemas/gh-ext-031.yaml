@@ -1,0 +1,69 @@
+id: gh-ext-031
+schemaId: github
+query: What are the status check contexts for pull request Nr. 1 in the
+  octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        statusCheckRollup {
+          contexts(first: 10) {
+            nodes {
+              ... on StatusContext {
+                context
+                state
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - StatusContext.context
+  - StatusContext.state
+targetTypes:
+  - StatusContext
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.statusCheckRollup
+  - StatusCheckRollup.contexts
+  - StatusCheckRollupContextConnection.nodes
+  - StatusContext.context
+  - StatusContext.state
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+  - StatusCheckRollup.contexts(first:)
+mustExclude:
+  - Mutation
+notes: Walk the status check rollup contexts and return the context name and
+  state for each StatusContext entry.
+answerSchema:
+  type: object
+  properties:
+    statusCheckContexts:
+      type: array
+      items:
+        type: object
+        properties:
+          context:
+            type: string
+          state:
+            type: string
+        required:
+          - context
+          - state
+        additionalProperties: false
+  required:
+    - statusCheckContexts
+  additionalProperties: false
+answer:
+  statusCheckContexts:
+    - context: ci/test
+      state: SUCCESS
+    - context: ci/lint
+      state: SUCCESS
+    - context: ci/build
+      state: PENDING

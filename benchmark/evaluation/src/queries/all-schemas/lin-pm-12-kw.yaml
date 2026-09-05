@@ -1,0 +1,30 @@
+id: lin-pm-12-kw
+schemaId: linear
+query: project documents attached
+operation: |
+  query {
+    project(id: "<id>") {
+      documents(first: 10) {
+        nodes {
+          title
+          content
+        }
+      }
+    }
+  }
+targetFields:
+  - Document.title
+  - Document.content
+targetTypes:
+  - Document
+  - Project
+mustInclude:
+  - Query.project
+  - Project.documents
+  - Document.title
+  - Document.content
+  - Project.documents(first:)
+  - Query.project(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-12. Documents scoped to a project.

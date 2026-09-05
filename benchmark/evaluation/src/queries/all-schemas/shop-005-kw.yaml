@@ -1,0 +1,29 @@
+id: shop-005-kw
+schemaId: shopify
+query: California unfulfilled shipping orders
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        shippingAddress {
+          provinceCode
+        }
+        displayFulfillmentStatus
+      }
+    }
+  }
+targetFields:
+  - Order.displayFulfillmentStatus
+  - MailingAddress.provinceCode
+targetTypes:
+  - Order
+  - MailingAddress
+mustInclude:
+  - QueryRoot.orders
+  - Order.shippingAddress
+  - Order.displayFulfillmentStatus
+  - MailingAddress.provinceCode
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-005. Unfulfilled orders filtered by California shipping address.

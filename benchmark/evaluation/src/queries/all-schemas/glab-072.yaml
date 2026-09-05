@@ -1,0 +1,46 @@
+id: glab-072
+schemaId: gitlab
+query: What is the title and issue statistics (totalIssuesCount,
+  closedIssuesCount) for milestone gid://gitlab/Milestone/1?
+operation: |
+  query {
+    milestone(id: "gid://gitlab/Milestone/1") {
+      title
+      stats {
+        totalIssuesCount
+        closedIssuesCount
+      }
+    }
+  }
+targetFields:
+  - Milestone.title
+  - MilestoneStats.totalIssuesCount
+  - MilestoneStats.closedIssuesCount
+targetTypes:
+  - Milestone
+  - MilestoneStats
+mustInclude:
+  - Query.milestone
+  - Milestone.title
+  - Milestone.stats
+  - Query.milestone(id:)
+mustExclude:
+  - Mutation
+notes: "PM: current milestone + issues."
+answerSchema:
+  type: object
+  properties:
+    title:
+      type: string
+    totalIssuesCount: &a1
+      type: integer
+    closedIssuesCount: *a1
+  required:
+    - title
+    - totalIssuesCount
+    - closedIssuesCount
+  additionalProperties: false
+answer:
+  title: v2.0 Release Candidate
+  totalIssuesCount: 842
+  closedIssuesCount: 540

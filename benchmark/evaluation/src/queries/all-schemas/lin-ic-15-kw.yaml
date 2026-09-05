@@ -1,0 +1,26 @@
+id: lin-ic-15-kw
+schemaId: linear
+query: search issues fulltext term
+operation: |
+  query {
+    searchIssues(term: "<id>") {
+      nodes {
+        title
+        identifier
+      }
+    }
+  }
+targetFields:
+  - IssueSearchResult.title
+  - IssueSearchResult.identifier
+targetTypes:
+  - IssueSearchResult
+mustInclude:
+  - Query.searchIssues
+  - IssueSearchPayload.nodes
+  - IssueSearchResult.title
+  - IssueSearchResult.identifier
+  - Query.searchIssues(term:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-15. Full-text issue search.

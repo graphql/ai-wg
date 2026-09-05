@@ -1,0 +1,123 @@
+id: glab-040
+schemaId: gitlab
+query: "List the stages, the jobs in each stage, and for each job its artifacts
+  (name, type, and size in bytes) on the most recent successful pipeline
+  (status: SUCCESS) in project group/project."
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(status: SUCCESS, first: 1) {
+        nodes {
+          id
+          stages {
+            nodes {
+              name
+              jobs {
+                nodes {
+                  name
+                  artifacts {
+                    nodes {
+                      name
+                      fileType
+                      size
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CiStage.name
+  - CiJob.name
+  - CiJobArtifact.name
+  - CiJobArtifact.fileType
+  - CiJobArtifact.size
+targetTypes:
+  - CiStage
+  - CiJob
+  - CiJobArtifact
+mustInclude:
+  - Query.project
+  - Query.project(fullPath:)
+  - Project.pipelines
+  - Project.pipelines(status:)
+  - Project.pipelines(first:)
+  - Pipeline.stages
+  - CiStage.name
+  - CiStage.jobs
+  - CiJob.name
+  - CiJob.artifacts
+  - CiJobArtifact.name
+  - CiJobArtifact.fileType
+  - CiJobArtifact.size
+mustExclude:
+  - Mutation
+notes: "DevOps: deploy-stage artifacts on last successful pipeline."
+answerSchema:
+  type: object
+  properties:
+    stages:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          jobs:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                artifacts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      fileType:
+                        type: string
+                      size:
+                        type: string
+                    required:
+                      - name
+                      - fileType
+                      - size
+                    additionalProperties: false
+              required:
+                - name
+                - artifacts
+              additionalProperties: false
+        required:
+          - name
+          - jobs
+        additionalProperties: false
+  required:
+    - stages
+  additionalProperties: false
+answer:
+  stages:
+    - name: build
+      jobs:
+        - name: build
+          artifacts:
+            - name: artifact-art-1
+              fileType: ARCHIVE
+              size: "1024"
+            - name: artifact-art-2
+              fileType: CODEQUALITY
+              size: "1024"
+    - name: test
+      jobs:
+        - name: test-unit
+          artifacts: []
+        - name: test-integration
+          artifacts: []
+    - name: deploy
+      jobs: []

@@ -1,0 +1,71 @@
+id: gh-ext-047
+schemaId: github
+query: List forked repositories owned by the authenticated viewer, showing each
+  fork's name, its upstream parent name, and how far ahead of upstream the
+  default branch is.
+operation: |
+  query {
+    viewer {
+      repositories(first: 10, isFork: true) {
+        nodes {
+          nameWithOwner
+          parent {
+            nameWithOwner
+          }
+          defaultBranchRef {
+            compare(headRef: "main") {
+              aheadBy
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.nameWithOwner
+  - Repository.parent
+  - Comparison.aheadBy
+targetTypes:
+  - Repository
+  - Comparison
+mustInclude:
+  - Query.viewer
+  - User.repositories
+  - Repository.nameWithOwner
+  - Repository.parent
+  - Repository.defaultBranchRef
+  - Ref.compare
+  - Ref.compare(headRef:)
+  - Comparison.aheadBy
+  - User.repositories(first:)
+  - User.repositories(isFork:)
+mustExclude:
+  - Mutation
+notes: My fork repositories and the ahead-by comparison with their upstream.
+answerSchema:
+  type: object
+  properties:
+    forkedRepositories:
+      type: array
+      items:
+        type: object
+        properties:
+          nameWithOwner:
+            type: string
+          upstreamParent:
+            type: string
+          aheadBy:
+            type: integer
+        required:
+          - nameWithOwner
+          - upstreamParent
+          - aheadBy
+        additionalProperties: false
+  required:
+    - forkedRepositories
+  additionalProperties: false
+answer:
+  forkedRepositories:
+    - nameWithOwner: viewer-user/example-fork
+      upstreamParent: octocat/example
+      aheadBy: 1

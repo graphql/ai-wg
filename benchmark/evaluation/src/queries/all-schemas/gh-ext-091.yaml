@@ -1,0 +1,60 @@
+id: gh-ext-091
+schemaId: github
+query: What are the audit log entries for org.add_member actions in the octocat
+  organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      auditLog(first: 10, query: "action:org.add_member") {
+        nodes {
+          ... on OrgAddMemberAuditEntry {
+            action
+            createdAt
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - OrgAddMemberAuditEntry.action
+  - OrgAddMemberAuditEntry.createdAt
+targetTypes:
+  - OrgAddMemberAuditEntry
+mustInclude:
+  - Query.organization
+  - Organization.auditLog
+  - OrganizationAuditEntryConnection.nodes
+  - OrgAddMemberAuditEntry.action
+  - OrgAddMemberAuditEntry.createdAt
+  - Organization.auditLog(first:)
+  - Organization.auditLog(query:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Organization audit log entries filtered to membership actions and a date
+  window.
+answerSchema:
+  type: object
+  properties:
+    auditLogEntries:
+      type: array
+      items:
+        type: object
+        properties:
+          action:
+            type: string
+          createdAt:
+            type: string
+        required:
+          - action
+          - createdAt
+        additionalProperties: false
+  required:
+    - auditLogEntries
+  additionalProperties: false
+answer:
+  auditLogEntries:
+    - action: org.add_member
+      createdAt: 2025-03-21T00:00:00.000Z
+    - action: org.add_member
+      createdAt: 2024-10-11T00:00:00.000Z

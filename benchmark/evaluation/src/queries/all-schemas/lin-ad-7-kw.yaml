@@ -1,0 +1,29 @@
+id: lin-ad-7-kw
+schemaId: linear
+query: audit log entries recent actor
+operation: |
+  query {
+    auditEntries(first: 10) {
+      nodes {
+        type
+        actor {
+          id
+        }
+        createdAt
+      }
+    }
+  }
+targetFields:
+  - AuditEntry.type
+  - AuditEntry.createdAt
+targetTypes:
+  - AuditEntry
+mustInclude:
+  - Query.auditEntries
+  - AuditEntry.type
+  - AuditEntry.actor
+  - AuditEntry.createdAt
+  - Query.auditEntries(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-7. Security audit log review.

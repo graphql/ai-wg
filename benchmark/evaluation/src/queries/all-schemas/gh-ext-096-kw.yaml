@@ -1,0 +1,33 @@
+id: gh-ext-096-kw
+schemaId: github
+query: container images org packages
+operation: |
+  query {
+    organization(login: "octocat") {
+      packages(first: 10) {
+        nodes {
+          packageType
+          latestVersion {
+            platform
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Package.packageType
+  - PackageVersion.platform
+targetTypes:
+  - Package
+  - PackageVersion
+mustInclude:
+  - Query.organization
+  - Organization.packages
+  - Package.packageType
+  - Package.latestVersion
+  - PackageVersion.platform
+  - Organization.packages(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-096. Org packages of packageType DOCKER and their latest versions.

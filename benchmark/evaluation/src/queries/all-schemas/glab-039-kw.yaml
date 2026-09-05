@@ -1,0 +1,21 @@
+id: glab-039-kw
+schemaId: gitlab
+query: runner queue history group
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      ciQueueingHistory {
+        __typename
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - QueueingDelayHistory
+mustInclude:
+  - Query.group
+  - Group.ciQueueingHistory
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-039. DevOps: queue wait history for group shared runners."

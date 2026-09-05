@@ -1,0 +1,70 @@
+id: glab-056
+schemaId: gitlab
+query: Which SAST scanners ran on the last pipeline of the group/project project
+  and what did they flag?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(last: 1) {
+        nodes {
+          securityReportSummary {
+            sast {
+              vulnerabilitiesCount
+              scans {
+                nodes {
+                  name
+                  status
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    sastVulnerabilitiesCount:
+      type: integer
+    scanners:
+      type: array
+      items:
+        type: object
+        properties:
+          name: &a1
+            type: string
+          status: *a1
+        required:
+          - name
+          - status
+        additionalProperties: false
+  required:
+    - sastVulnerabilitiesCount
+    - scanners
+  additionalProperties: false
+targetFields:
+  - SecurityReportSummarySection.vulnerabilitiesCount
+  - Scan.name
+  - Scan.status
+targetTypes:
+  - SecurityReportSummary
+  - SecurityReportSummarySection
+  - Scan
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.securityReportSummary
+  - SecurityReportSummary.sast
+  - SecurityReportSummarySection.vulnerabilitiesCount
+  - SecurityReportSummarySection.scans
+  - Scan.name
+  - Scan.status
+  - Project.pipelines(last:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Security: SAST scanners on last pipeline + findings."
+answer:
+  sastVulnerabilitiesCount: null
+  scanners: []

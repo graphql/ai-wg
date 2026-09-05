@@ -1,0 +1,28 @@
+id: shop-031-kw
+schemaId: shopify
+query: smart collections automatic rules conditions
+operation: |
+  query {
+    collections(first: 10) {
+      nodes {
+        ruleSet {
+          rules {
+            condition
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CollectionRule.condition
+targetTypes:
+  - CollectionRule
+mustInclude:
+  - QueryRoot.collections
+  - Collection.ruleSet
+  - CollectionRuleSet.rules
+  - CollectionRule.condition
+  - QueryRoot.collections(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-031. Smart collections with their automatic rule conditions.

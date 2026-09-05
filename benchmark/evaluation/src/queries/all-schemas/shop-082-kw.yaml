@@ -1,0 +1,26 @@
+id: shop-082-kw
+schemaId: shopify
+query: delivery profiles products coverage
+operation: |
+  query {
+    deliveryProfiles(first: 10) {
+      nodes {
+        name
+        productVariantsCount {
+          count
+        }
+      }
+    }
+  }
+targetFields:
+  - DeliveryProfile.name
+targetTypes:
+  - DeliveryProfile
+mustInclude:
+  - QueryRoot.deliveryProfiles
+  - DeliveryProfile.name
+  - DeliveryProfile.productVariantsCount
+  - QueryRoot.deliveryProfiles(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-082. Configured delivery profiles and the products they cover.

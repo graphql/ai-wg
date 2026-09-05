@@ -1,0 +1,30 @@
+id: lin-pm-10-kw
+schemaId: linear
+query: next major release projects bundled
+operation: |
+  query {
+    releases(first: 10) {
+      nodes {
+        pipeline {
+          id
+        }
+        targetDate
+        stage {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Release.targetDate
+targetTypes:
+  - Release
+mustInclude:
+  - Query.releases
+  - Release.pipeline
+  - Release.targetDate
+  - Release.stage
+  - Query.releases(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-10. Cross-project release planning view.

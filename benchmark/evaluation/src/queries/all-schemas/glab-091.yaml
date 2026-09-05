@@ -1,0 +1,75 @@
+id: glab-091
+schemaId: gitlab
+query: List the members of group/project with their access level (integerValue,
+  stringValue) and expiry date.
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      groupMembers(first: 10) {
+        nodes {
+          accessLevel {
+            integerValue
+            stringValue
+          }
+          expiresAt
+        }
+      }
+    }
+  }
+targetFields:
+  - AccessLevel.integerValue
+  - AccessLevel.stringValue
+  - GroupMember.expiresAt
+targetTypes:
+  - GroupMember
+  - AccessLevel
+mustInclude:
+  - Query.group
+  - Group.groupMembers
+  - GroupMember.accessLevel
+  - AccessLevel.integerValue
+  - AccessLevel.stringValue
+  - GroupMember.expiresAt
+  - Group.groupMembers(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Admin: group members + access + expiration."
+answerSchema:
+  type: object
+  properties:
+    members:
+      type: array
+      items:
+        type: object
+        properties:
+          accessLevelInteger:
+            type: integer
+          accessLevelName: &a1
+            type: string
+          expiresAt: *a1
+        required:
+          - accessLevelInteger
+          - accessLevelName
+          - expiresAt
+        additionalProperties: false
+  required:
+    - members
+  additionalProperties: false
+answer:
+  members:
+    - accessLevelInteger: 10
+      accessLevelName: GUEST
+      expiresAt: null
+    - accessLevelInteger: 20
+      accessLevelName: REPORTER
+      expiresAt: null
+    - accessLevelInteger: 30
+      accessLevelName: DEVELOPER
+      expiresAt: null
+    - accessLevelInteger: 40
+      accessLevelName: MAINTAINER
+      expiresAt: null
+    - accessLevelInteger: 50
+      accessLevelName: OWNER
+      expiresAt: null

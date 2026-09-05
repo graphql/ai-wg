@@ -1,0 +1,101 @@
+id: gh-ext-008
+schemaId: github
+query: Which open issues in the octocat/example repository have references to
+  closed pull requests?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10, states: [OPEN]) {
+        nodes {
+          number
+          title
+          closedByPullRequestsReferences(first: 10, includeClosedPrs: true) {
+            nodes {
+              number
+              title
+              state
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.number
+  - Issue.title
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.state
+targetTypes:
+  - Issue
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.number
+  - Issue.title
+  - Issue.closedByPullRequestsReferences
+  - Issue.closedByPullRequestsReferences(first:)
+  - Issue.closedByPullRequestsReferences(includeClosedPrs:)
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.state
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+  - Repository.issues(states:)
+mustExclude:
+  - Mutation
+notes: Open issues that have references to closed PRs.
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+          closedPullRequestReferences:
+            type: array
+            items:
+              type: object
+              properties:
+                number:
+                  type: integer
+                title:
+                  type: string
+              required:
+                - number
+                - title
+              additionalProperties: false
+        required:
+          - number
+          - title
+          - closedPullRequestReferences
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - number: 1
+      title: Bug in login flow
+      closedPullRequestReferences:
+        - number: 6
+          title: Fix security vulnerability
+    - number: 2
+      title: "Feature request: dark mode"
+      closedPullRequestReferences: []
+    - number: 3
+      title: Documentation needs update
+      closedPullRequestReferences: []
+    - number: 4
+      title: Performance regression
+      closedPullRequestReferences: []
+    - number: 5
+      title: Security vulnerability
+      closedPullRequestReferences: []

@@ -1,0 +1,85 @@
+id: lin-tl-8
+schemaId: linear
+query: "How long are issues taking from start to finish, broken down by assignee?"
+operation: |
+  query {
+    issues(first: 10) {
+      nodes {
+        startedAt
+        completedAt
+        assignee {
+          id
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.startedAt
+  - Issue.completedAt
+  - User.name
+targetTypes:
+  - Issue
+  - User
+mustInclude:
+  - Query.issues
+  - Issue.startedAt
+  - Issue.completedAt
+  - Issue.assignee
+  - User.name
+  - Query.issues(first:)
+mustExclude:
+  - Mutation
+notes: "Cycle-time analysis: time from started to completed."
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          assignee: &a1
+            type: string
+          startedAt: *a1
+          completedAt: *a1
+        required:
+          - assignee
+          - startedAt
+          - completedAt
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - assignee: Alice Johnson
+      startedAt: 2025-05-22T00:00:00.000Z
+      completedAt: null
+    - assignee: Bob Smith
+      startedAt: null
+      completedAt: null
+    - assignee: Carol White
+      startedAt: 2025-05-22T00:00:00.000Z
+      completedAt: null
+    - assignee: Alice Johnson
+      startedAt: 2025-05-01T00:00:00.000Z
+      completedAt: 2025-05-15T00:00:00.000Z
+    - assignee: Bob Smith
+      startedAt: null
+      completedAt: null
+    - assignee: David Lee
+      startedAt: 2025-05-22T00:00:00.000Z
+      completedAt: null
+    - assignee: Eva Martinez
+      startedAt: 2025-05-22T00:00:00.000Z
+      completedAt: null
+    - assignee: Alice Johnson
+      startedAt: 2025-05-22T00:00:00.000Z
+      completedAt: null
+    - assignee: Bob Smith
+      startedAt: null
+      completedAt: null
+    - assignee: Alice Johnson
+      startedAt: 2025-05-22T00:00:00.000Z
+      completedAt: null

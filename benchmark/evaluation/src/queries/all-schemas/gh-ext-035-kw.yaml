@@ -1,0 +1,33 @@
+id: gh-ext-035-kw
+schemaId: github
+query: secret scanning false positives month
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      vulnerabilityAlerts(first: 10) {
+        nodes {
+          dismissReason
+          dismissedAt
+          autoDismissedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - RepositoryVulnerabilityAlert.dismissReason
+  - RepositoryVulnerabilityAlert.dismissedAt
+  - RepositoryVulnerabilityAlert.autoDismissedAt
+targetTypes:
+  - RepositoryVulnerabilityAlert
+mustInclude:
+  - Query.repository
+  - Repository.vulnerabilityAlerts
+  - RepositoryVulnerabilityAlert.dismissReason
+  - RepositoryVulnerabilityAlert.dismissedAt
+  - RepositoryVulnerabilityAlert.autoDismissedAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.vulnerabilityAlerts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-035. Secret scanning is not exposed; nearest is vulnerability alerts dismissed with a reason in a date window.

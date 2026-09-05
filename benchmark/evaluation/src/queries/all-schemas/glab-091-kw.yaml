@@ -1,0 +1,30 @@
+id: glab-091-kw
+schemaId: gitlab
+query: group members access level expiration
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      groupMembers(first: 10) {
+        nodes {
+          accessLevel {
+            __typename
+          }
+          expiresAt
+        }
+      }
+    }
+  }
+targetFields:
+  - GroupMember.expiresAt
+targetTypes:
+  - GroupMember
+mustInclude:
+  - Query.group
+  - Group.groupMembers
+  - GroupMember.accessLevel
+  - GroupMember.expiresAt
+  - Group.groupMembers(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-091. Admin: group members + access + expiration."

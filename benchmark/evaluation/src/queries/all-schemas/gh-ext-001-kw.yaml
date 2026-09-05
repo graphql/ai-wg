@@ -1,0 +1,38 @@
+id: gh-ext-001-kw
+schemaId: github
+query: commit history main branch two weeks authors
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      defaultBranchRef {
+        target {
+          ... on Commit {
+            history(first: 10) {
+              __typename
+            }
+            author {
+              __typename
+            }
+            message
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Commit.message
+targetTypes:
+  - Commit
+mustInclude:
+  - Query.repository
+  - Repository.defaultBranchRef
+  - Ref.target
+  - Commit.history
+  - Commit.author
+  - Commit.message
+  - Commit.history(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-001. Walk default branch to commit history with authors and messages.

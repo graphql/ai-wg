@@ -1,0 +1,37 @@
+id: gh-ext-097-kw
+schemaId: github
+query: unused packages six months
+operation: |
+  query {
+    organization(login: "octocat") {
+      packages(first: 10) {
+        nodes {
+          statistics {
+            downloadsTotalCount
+          }
+          latestVersion {
+            statistics {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PackageStatistics.downloadsTotalCount
+targetTypes:
+  - PackageStatistics
+  - Package
+mustInclude:
+  - Query.organization
+  - Organization.packages
+  - Package.statistics
+  - PackageStatistics.downloadsTotalCount
+  - Package.latestVersion
+  - PackageVersion.statistics
+  - Organization.packages(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-097. Packages whose statistics show no downloads in the time window.

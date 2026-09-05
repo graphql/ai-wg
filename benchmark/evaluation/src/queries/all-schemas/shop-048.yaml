@@ -1,0 +1,71 @@
+id: shop-048
+schemaId: shopify
+query: Show every comment event our team logged on the timeline of customer gid://shopify/Object/1, including who authored each one.
+operation: |
+  query {
+    customer(id: "gid://shopify/Object/1") {
+      events(first: 10, query: "verb:comment") {
+        nodes {
+          ... on CommentEvent {
+            message
+            createdAt
+            author {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CommentEvent.message
+  - CommentEvent.createdAt
+  - CommentEvent.author
+  - StaffMember.name
+targetTypes:
+  - CommentEvent
+  - StaffMember
+mustInclude:
+  - QueryRoot.customer
+  - Customer.events
+  - CommentEvent.message
+  - CommentEvent.createdAt
+  - CommentEvent.author
+  - StaffMember.name
+  - Customer.events(first:)
+  - Customer.events(query:)
+  - QueryRoot.customer(id:)
+mustExclude:
+  - Mutation
+notes: Comment events (timeline comments) a staff member logged on a specific
+  customer, with the authoring staff member.
+answerSchema:
+  type: object
+  properties:
+    commentEvents:
+      type: array
+      items:
+        type: object
+        properties:
+          message:
+            type: string
+          createdAt:
+            type: string
+          author:
+            type: string
+        required:
+          - message
+          - createdAt
+          - author
+        additionalProperties: false
+  required:
+    - commentEvents
+  additionalProperties: false
+answer:
+  commentEvents:
+    - message: Product back in stock notification sent
+      createdAt: 2024-07-30T00:00:00.000Z
+      author: James Rodriguez
+    - message: "Customer requested expedited shipping on order #1042"
+      createdAt: 2025-03-09T00:00:00.000Z
+      author: Sarah Mitchell

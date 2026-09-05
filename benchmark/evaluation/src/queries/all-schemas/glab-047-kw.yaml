@@ -1,0 +1,25 @@
+id: glab-047-kw
+schemaId: gitlab
+query: paused offline runners instance
+operation: |
+  query {
+    runners(first: 10) {
+      nodes {
+        paused
+        status
+      }
+    }
+  }
+targetFields:
+  - CiRunner.paused
+  - CiRunner.status
+targetTypes:
+  - CiRunner
+mustInclude:
+  - Query.runners
+  - CiRunner.paused
+  - CiRunner.status
+  - Query.runners(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-047. DevOps: paused/offline runners."

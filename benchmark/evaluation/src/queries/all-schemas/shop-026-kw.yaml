@@ -1,0 +1,28 @@
+id: shop-026-kw
+schemaId: shopify
+query: product media pending processing
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        media(first: 10) {
+          nodes {
+            status
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Media.status
+targetTypes:
+  - Media
+mustInclude:
+  - QueryRoot.products
+  - Product.media
+  - Media.status
+  - Product.media(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-026. Products with media still uploading or pending processing.

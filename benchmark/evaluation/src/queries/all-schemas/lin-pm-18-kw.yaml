@@ -1,0 +1,27 @@
+id: lin-pm-18-kw
+schemaId: linear
+query: release stage status v3
+operation: |
+  query {
+    release(id: "<id>") {
+      stage {
+        name
+      }
+      targetDate
+    }
+  }
+targetFields:
+  - ReleaseStage.name
+  - Release.targetDate
+targetTypes:
+  - ReleaseStage
+  - Release
+mustInclude:
+  - Query.release
+  - Release.stage
+  - ReleaseStage.name
+  - Release.targetDate
+  - Query.release(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-18. Status of a release across stages.

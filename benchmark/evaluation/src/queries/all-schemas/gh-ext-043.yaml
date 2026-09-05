@@ -1,0 +1,53 @@
+id: gh-ext-043
+schemaId: github
+query: What is the most recently created gist by the user octocat?
+operation: |
+  query {
+    user(login: "octocat") {
+      gists(first: 1, orderBy: { field: CREATED_AT, direction: DESC }) {
+        nodes {
+          createdAt
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Gist.createdAt
+  - Gist.name
+targetTypes:
+  - Gist
+  - User
+mustInclude:
+  - Query.user
+  - User.gists
+  - GistConnection.nodes
+  - Gist.createdAt
+  - Gist.name
+  - Query.user(login:)
+  - User.gists(first:)
+  - User.gists(orderBy:)
+mustExclude:
+  - Mutation
+notes: Most recent gist of a user, ordered by creation date descending.
+answerSchema:
+  type: object
+  properties:
+    mostRecentGist:
+      type: object
+      properties:
+        name:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - name
+        - createdAt
+      additionalProperties: false
+  required:
+    - mostRecentGist
+  additionalProperties: false
+answer:
+  mostRecentGist:
+    name: deployment-script.sh
+    createdAt: 2025-01-21T00:00:00.000Z

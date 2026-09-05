@@ -1,0 +1,55 @@
+id: glab-065
+schemaId: gitlab
+query: Which vulnerabilities in group/project have been dismissed (state
+  DISMISSED) and what is their dismissal reason?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10, state: [DISMISSED]) {
+        nodes {
+          title
+          dismissalReason
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.title
+  - Vulnerability.dismissalReason
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.title
+  - Vulnerability.dismissalReason
+  - Project.vulnerabilities(first:)
+  - Project.vulnerabilities(state:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Security: dismissed vulns + reason."
+answerSchema:
+  type: object
+  properties:
+    vulnerabilities:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          dismissalReason: *a1
+        required:
+          - title
+          - dismissalReason
+        additionalProperties: false
+  required:
+    - vulnerabilities
+  additionalProperties: false
+answer:
+  vulnerabilities:
+    - title: Unvalidated redirect in OAuth flow
+      dismissalReason: ACCEPTABLE_RISK
+    - title: Insecure deserialization in API endpoint
+      dismissalReason: USED_IN_TESTS

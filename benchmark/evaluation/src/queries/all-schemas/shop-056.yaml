@@ -1,0 +1,83 @@
+id: shop-056
+schemaId: shopify
+query: List dispute or chargeback cases tied to recent orders.
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        disputes {
+          id
+          initiatedAs
+          status
+        }
+      }
+    }
+  }
+targetFields:
+  - OrderDisputeSummary.initiatedAs
+  - OrderDisputeSummary.status
+targetTypes:
+  - OrderDisputeSummary
+mustInclude:
+  - QueryRoot.orders
+  - Order.disputes
+  - OrderDisputeSummary.initiatedAs
+  - OrderDisputeSummary.status
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Disputes and chargebacks attached to recent orders.
+answerSchema:
+  type: object
+  properties:
+    disputes:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          initiatedAs:
+            type: string
+          status:
+            type: string
+        required:
+          - id
+          - initiatedAs
+          - status
+        additionalProperties: false
+  required:
+    - disputes
+  additionalProperties: false
+answer:
+  disputes:
+    - id: Order.disputes[0]#12818317
+      initiatedAs: INQUIRY
+      status: NEEDS_RESPONSE
+    - id: Order.disputes[1]#3419211070
+      initiatedAs: CHARGEBACK
+      status: LOST
+    - id: Order.disputes[0]#3736279256
+      initiatedAs: INQUIRY
+      status: ACCEPTED
+    - id: Order.disputes[1]#1779272315
+      initiatedAs: INQUIRY
+      status: ACCEPTED
+    - id: Order.disputes[0]#3349212909
+      initiatedAs: CHARGEBACK
+      status: CHARGE_REFUNDED
+    - id: Order.disputes[1]#3005863038
+      initiatedAs: INQUIRY
+      status: WON
+    - id: Order.disputes[0]#1094002403
+      initiatedAs: INQUIRY
+      status: ACCEPTED
+    - id: Order.disputes[1]#3195702940
+      initiatedAs: CHARGEBACK
+      status: LOST
+    - id: Order.disputes[0]#4187813346
+      initiatedAs: CHARGEBACK
+      status: UNDER_REVIEW
+    - id: Order.disputes[1]#589603801
+      initiatedAs: INQUIRY
+      status: WON

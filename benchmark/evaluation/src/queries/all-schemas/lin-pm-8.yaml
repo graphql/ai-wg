@@ -1,0 +1,39 @@
+id: lin-pm-8
+schemaId: linear
+query: "Is the security-hardening initiative on track for its target date?"
+operation: |
+  query {
+    initiative(id: "initiative-security-hardening") {
+      targetDate
+      health
+    }
+  }
+targetFields:
+  - Initiative.targetDate
+  - Initiative.health
+targetTypes:
+  - Initiative
+mustInclude:
+  - Query.initiative
+  - Initiative.targetDate
+  - Initiative.health
+  - Query.initiative(id:)
+mustExclude:
+  - Mutation
+notes: health field (onTrack/atRisk/offTrack) directly answers "on track?";
+  targetDate provides the deadline context.
+answerSchema:
+  type: object
+  properties:
+    targetDate:
+      type: string
+    health:
+      type: string
+      description: Initiative health status
+  required:
+    - targetDate
+    - health
+  additionalProperties: false
+answer:
+  targetDate: 2025-Q3
+  health: offTrack

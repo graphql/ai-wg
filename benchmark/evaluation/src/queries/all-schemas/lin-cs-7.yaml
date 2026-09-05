@@ -1,0 +1,85 @@
+id: lin-cs-7
+schemaId: linear
+query: List the first 10 customers in the workspace with each customer's name,
+  company size (number of employees), and tier name.
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        name
+        size
+        tier {
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.size
+targetTypes:
+  - Customer
+mustInclude:
+  - Query.customers
+  - Customer.size
+  - Customer.tier
+  - Query.customers(first:)
+mustExclude:
+  - Mutation
+notes: Account-size segmentation.
+answer:
+  customers:
+    - name: Globex Corporation
+      size: 5000
+      tierName: Enterprise
+    - name: Initech
+      size: 250
+      tierName: Pro
+    - name: Widgets Inc
+      size: 75
+      tierName: Pro
+    - name: Acme Solutions
+      size: 1200
+      tierName: Enterprise
+    - name: Startup XYZ
+      size: 15
+      tierName: Free
+    - name: MegaCorp Industries
+      size: 10000
+      tierName: Enterprise
+    - name: TechPlus
+      size: 120
+      tierName: Pro
+    - name: SmallBiz LLC
+      size: 8
+      tierName: Free
+    - name: EnterpriseOne
+      size: 8000
+      tierName: Enterprise
+    - name: GrowthCo
+      size: 45
+      tierName: Pro
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: The display name of the customer organization
+          size:
+            type: number
+            description: The number of employees or seats at the customer organization
+          tierName:
+            type: string
+            description: The name of the tier assigned to this customer
+        required:
+          - name
+          - size
+          - tierName
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false

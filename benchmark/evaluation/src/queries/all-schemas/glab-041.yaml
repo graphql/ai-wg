@@ -1,0 +1,64 @@
+id: glab-041
+schemaId: gitlab
+query: List deploy freeze windows for the production environment in project
+  group/project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      environment(name: "production") {
+        deployFreezes {
+          startCron
+          endCron
+          cronTimezone
+          status
+        }
+      }
+    }
+  }
+targetFields:
+  - CiFreezePeriod.startCron
+  - CiFreezePeriod.endCron
+  - CiFreezePeriod.cronTimezone
+  - CiFreezePeriod.status
+targetTypes:
+  - CiFreezePeriod
+mustInclude:
+  - Query.project
+  - Project.environment
+  - Environment.deployFreezes
+  - Query.project(fullPath:)
+  - Project.environment(name:)
+mustExclude:
+  - Mutation
+notes: "DevOps: deploy freezes on prod env."
+answerSchema:
+  type: object
+  properties:
+    deployFreezes:
+      type: array
+      items:
+        type: object
+        properties:
+          startCron:
+            type: string
+          endCron:
+            type: string
+          cronTimezone:
+            type: string
+          status:
+            type: string
+        required:
+          - startCron
+          - endCron
+          - cronTimezone
+          - status
+        additionalProperties: false
+  required:
+    - deployFreezes
+  additionalProperties: false
+answer:
+  deployFreezes:
+    - startCron: 0 22 * * 5
+      endCron: 0 6 * * 1
+      cronTimezone: UTC
+      status: ACTIVE

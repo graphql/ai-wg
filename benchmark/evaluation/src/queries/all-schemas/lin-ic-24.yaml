@@ -1,0 +1,66 @@
+id: lin-ic-24
+schemaId: linear
+query: "What issues are linked to ENG-200 and what is the relationship?"
+operation: |
+  query {
+    issue(id: "ENG-200") {
+      relations(first: 10) {
+        nodes {
+          type
+          relatedIssue {
+            identifier
+            title
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueRelation.type
+  - Issue.identifier
+  - Issue.title
+targetTypes:
+  - IssueRelation
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.relations
+  - IssueRelation.type
+  - IssueRelation.relatedIssue
+  - Issue.relations(first:)
+  - Query.issue(id:)
+  - Issue.identifier
+  - Issue.title
+mustExclude:
+  - Mutation
+notes: "Issue relationships (duplicates, blocks)."
+answerSchema:
+  type: object
+  properties:
+    links:
+      type: array
+      items:
+        type: object
+        properties:
+          relationship:
+            type: string
+          identifier:
+            type: string
+          title:
+            type: string
+        required:
+          - relationship
+          - identifier
+          - title
+        additionalProperties: false
+  required:
+    - links
+  additionalProperties: false
+answer:
+  links:
+    - relationship: blocks
+      identifier: ENG-99
+      title: Implement rate limiting on API gateway
+    - relationship: related
+      identifier: ENG-7
+      title: Fix authentication token refresh

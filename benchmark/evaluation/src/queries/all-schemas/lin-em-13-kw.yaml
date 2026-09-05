@@ -1,0 +1,29 @@
+id: lin-em-13-kw
+schemaId: linear
+query: initiative owner target date status
+operation: |
+  query {
+    initiatives(first: 10) {
+      nodes {
+        owner {
+          id
+        }
+        targetDate
+        status
+      }
+    }
+  }
+targetFields:
+  - Initiative.targetDate
+  - Initiative.status
+targetTypes:
+  - Initiative
+mustInclude:
+  - Query.initiatives
+  - Initiative.owner
+  - Initiative.targetDate
+  - Initiative.status
+  - Query.initiatives(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-13. Initiative owners and timelines.

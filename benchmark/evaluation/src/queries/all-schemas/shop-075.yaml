@@ -1,0 +1,39 @@
+id: shop-075
+schemaId: shopify
+query: How many total redemptions has the basic amount-off discount code
+  SUMMER25 accumulated?
+operation: |
+  query {
+    codeDiscountNodeByCode(code: "SUMMER25") {
+      id
+      codeDiscount {
+        ... on DiscountCodeBasic {
+          asyncUsageCount
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscountCodeBasic.asyncUsageCount
+targetTypes:
+  - DiscountCodeBasic
+mustInclude:
+  - QueryRoot.codeDiscountNodeByCode
+  - DiscountCodeBasic.asyncUsageCount
+  - DiscountCodeNode.codeDiscount
+  - QueryRoot.codeDiscountNodeByCode(code:)
+mustExclude:
+  - Mutation
+notes: Total redemptions (asyncUsageCount) of the basic amount-off code
+  SUMMER25. The codeDiscount union member is pinned to DiscountCodeBasic by the
+  question so the count is unambiguous.
+answerSchema:
+  type: object
+  properties:
+    totalRedemptions:
+      type: integer
+  required:
+    - totalRedemptions
+  additionalProperties: false
+answer:
+  totalRedemptions: 585

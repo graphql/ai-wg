@@ -1,0 +1,30 @@
+id: lin-em-10-kw
+schemaId: linear
+query: organization users teams
+operation: |
+  query {
+    organization {
+      users(first: 10) {
+        nodes {
+          id
+        }
+      }
+      teams(first: 10) {
+        nodes {
+          id
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.users
+  - Organization.teams
+  - Organization.teams(first:)
+  - Organization.users(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-10. Org structure snapshot.

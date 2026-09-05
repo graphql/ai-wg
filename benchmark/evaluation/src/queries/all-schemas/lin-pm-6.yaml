@@ -1,0 +1,52 @@
+id: lin-pm-6
+schemaId: linear
+query: Show me the most recent release notes, with their titles and creation dates.
+operation: |
+  query {
+    releaseNotes(first: 10) {
+      nodes {
+        title
+        createdAt
+      }
+    }
+  }
+targetFields:
+  - ReleaseNote.title
+  - ReleaseNote.createdAt
+targetTypes:
+  - ReleaseNote
+mustInclude:
+  - Query.releaseNotes
+  - ReleaseNote.title
+  - ReleaseNote.createdAt
+  - Query.releaseNotes(first:)
+mustExclude:
+  - Mutation
+notes: Most recent release notes listed by title and creation date.
+answerSchema:
+  type: object
+  properties:
+    releaseNotes:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          createdAt:
+            type: string
+        required:
+          - title
+          - createdAt
+        additionalProperties: false
+  required:
+    - releaseNotes
+  additionalProperties: false
+answer:
+  releaseNotes:
+    - title: Improved authentication performance
+      createdAt: 2025-05-17T00:00:00.000Z
+    - title: Fixed payment module edge cases
+      createdAt: 2025-05-22T00:00:00.000Z
+    - title: New mobile app features
+      createdAt: 2025-05-27T00:00:00.000Z

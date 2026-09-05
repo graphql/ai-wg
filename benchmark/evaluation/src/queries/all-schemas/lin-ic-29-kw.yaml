@@ -1,0 +1,25 @@
+id: lin-ic-29-kw
+schemaId: linear
+query: my overdue issues due date passed
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          dueDate
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.dueDate
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.dueDate
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-29. Overdue work for the viewer.

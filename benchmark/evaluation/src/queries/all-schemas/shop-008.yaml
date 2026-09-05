@@ -1,0 +1,54 @@
+id: shop-008
+schemaId: shopify
+query: Which orders are still open with outstanding balances customers haven't paid?
+operation: |
+  query {
+    orders(first: 10, query: "status:open") {
+      nodes {
+        displayFinancialStatus
+        totalOutstandingSet {
+          presentmentMoney {
+            amount
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.displayFinancialStatus
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.orders
+  - Order.displayFinancialStatus
+  - Order.totalOutstandingSet
+  - QueryRoot.orders(first:)
+  - QueryRoot.orders(query:)
+mustExclude:
+  - Mutation
+notes: Open orders with outstanding balances customers haven't paid.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          financialStatus:
+            type: string
+          outstandingAmount:
+            type: string
+        required:
+          - financialStatus
+          - outstandingAmount
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - financialStatus: PARTIALLY_PAID
+      outstandingAmount: "67.00"
+    - financialStatus: PARTIALLY_PAID
+      outstandingAmount: "15.99"

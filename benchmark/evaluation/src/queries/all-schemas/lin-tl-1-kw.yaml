@@ -1,0 +1,30 @@
+id: lin-tl-1-kw
+schemaId: linear
+query: current cycle progress completion
+operation: |
+  query {
+    cycle(id: "<id>") {
+      issues(first: 10) {
+        nodes {
+          id
+        }
+      }
+      progress
+      completedAt
+    }
+  }
+targetFields:
+  - Cycle.progress
+  - Cycle.completedAt
+targetTypes:
+  - Cycle
+mustInclude:
+  - Query.cycle
+  - Cycle.issues
+  - Cycle.progress
+  - Cycle.completedAt
+  - Cycle.issues(first:)
+  - Query.cycle(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-1. Team-lead cycle velocity overview; needs cycle entry plus completion/progress signals.

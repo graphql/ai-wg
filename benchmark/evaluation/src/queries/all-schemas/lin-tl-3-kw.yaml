@@ -1,0 +1,33 @@
+id: lin-tl-3-kw
+schemaId: linear
+query: urgent high priority issues approaching due date
+operation: |
+  query {
+    issues(first: 10) {
+      nodes {
+        priority
+        state {
+          id
+        }
+        assignee {
+          id
+        }
+        dueDate
+      }
+    }
+  }
+targetFields:
+  - Issue.priority
+  - Issue.dueDate
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issues
+  - Issue.priority
+  - Issue.state
+  - Issue.assignee
+  - Issue.dueDate
+  - Query.issues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-3. Team lead triages urgent unassigned/at-risk work via priority and due dates.

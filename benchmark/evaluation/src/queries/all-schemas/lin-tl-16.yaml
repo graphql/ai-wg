@@ -1,0 +1,55 @@
+id: lin-tl-16
+schemaId: linear
+query: "For cycle with ID 'cycle-1', what are the completion and cancellation
+  timestamps of each issue?"
+operation: |
+  query {
+    cycle(id: "cycle-1") {
+      issues(first: 10) {
+        nodes {
+          completedAt
+          canceledAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.completedAt
+  - Issue.canceledAt
+targetTypes:
+  - Issue
+  - Cycle
+mustInclude:
+  - Query.cycle
+  - Cycle.issues
+  - Issue.completedAt
+  - Issue.canceledAt
+  - Cycle.issues(first:)
+  - Query.cycle(id:)
+mustExclude:
+  - Mutation
+notes: "Cycle outcomes — completed and canceled timestamps per issue."
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          completedAt: &a1
+            type: string
+          canceledAt: *a1
+        required:
+          - completedAt
+          - canceledAt
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - completedAt: 2025-01-18T00:00:00.000Z
+      canceledAt: null
+    - completedAt: null
+      canceledAt: 2025-01-15T00:00:00.000Z

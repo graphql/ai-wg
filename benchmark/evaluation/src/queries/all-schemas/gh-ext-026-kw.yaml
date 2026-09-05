@@ -1,0 +1,40 @@
+id: gh-ext-026-kw
+schemaId: github
+query: workflow artifacts expiration
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object {
+        ... on Commit {
+          checkSuites(first: 10) {
+            nodes {
+              workflowRun {
+                workflow {
+                  runs(first: 10) {
+                    __typename
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Workflow
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Commit.checkSuites
+  - CheckSuite.workflowRun
+  - WorkflowRun.workflow
+  - Workflow.runs
+  - Commit.checkSuites(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Workflow.runs(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-026. GraphQL has no first-class artifact field; nearest hook is workflow runs and the surrounding workflow definition.

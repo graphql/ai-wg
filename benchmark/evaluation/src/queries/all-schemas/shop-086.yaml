@@ -1,0 +1,56 @@
+id: shop-086
+schemaId: shopify
+query: List inventory transfers in transit between warehouses.
+operation: |
+  query {
+    inventoryTransfers(first: 10, query: "status:IN_PROGRESS") {
+      nodes {
+        status
+        origin {
+          name
+        }
+        destination {
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - InventoryTransfer.status
+targetTypes:
+  - InventoryTransfer
+mustInclude:
+  - QueryRoot.inventoryTransfers
+  - InventoryTransfer.status
+  - InventoryTransfer.origin
+  - InventoryTransfer.destination
+  - QueryRoot.inventoryTransfers(first:)
+  - QueryRoot.inventoryTransfers(query:)
+mustExclude:
+  - Mutation
+notes: Inventory transfers in transit between warehouses.
+answer:
+  transfers:
+    - origin: Main Warehouse
+      destination: Regional Center
+    - origin: Industrial Park
+      destination: Main Warehouse
+answerSchema:
+  type: object
+  properties:
+    transfers:
+      type: array
+      items:
+        type: object
+        properties:
+          origin:
+            type: string
+          destination:
+            type: string
+        required:
+          - origin
+          - destination
+        additionalProperties: false
+  required:
+    - transfers
+  additionalProperties: false

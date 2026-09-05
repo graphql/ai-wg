@@ -1,0 +1,56 @@
+id: shop-026
+schemaId: shopify
+query: Which products have media still uploading or pending processing?
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        id
+        title
+        media(first: 10) {
+          nodes {
+            status
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.id
+  - Product.title
+  - Media.status
+targetTypes:
+  - Product
+  - Media
+mustInclude:
+  - QueryRoot.products
+  - Product.id
+  - Product.title
+  - Product.media
+  - Media.status
+  - Product.media(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Products with media still uploading or pending processing.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - title: Leather Wallet
+    - title: Wireless Headphones
+    - title: Yoga Mat

@@ -1,0 +1,84 @@
+id: shop-022
+schemaId: shopify
+query: List the first 10 products in the shop, showing each product's title and
+  the inventory quantity of each of its variants.
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        title
+        variants(first: 10) {
+          nodes {
+            inventoryQuantity
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.title
+  - ProductVariant.inventoryQuantity
+targetTypes:
+  - Product
+  - ProductVariant
+mustInclude:
+  - QueryRoot.products
+  - QueryRoot.products(first:)
+  - Product.title
+  - Product.variants
+  - Product.variants(first:)
+  - ProductVariant.inventoryQuantity
+mustExclude:
+  - Mutation
+notes: Lists products with their titles and the inventory quantity of each of
+  their variants.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          variantInventoryQuantities:
+            type: array
+            items:
+              type: integer
+        required:
+          - title
+          - variantInventoryQuantities
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - title: Phone Case
+      variantInventoryQuantities:
+        - 305
+    - title: Leather Wallet
+      variantInventoryQuantities:
+        - 908
+        - 945
+        - 474
+        - 542
+        - 104
+    - title: Wireless Headphones
+      variantInventoryQuantities:
+        - 776
+        - 733
+        - 296
+        - 692
+        - 985
+    - title: Yoga Mat
+      variantInventoryQuantities:
+        - 678
+        - 253
+        - 58
+        - 268
+        - 728
+    - title: Smart Watch
+      variantInventoryQuantities:
+        - 641

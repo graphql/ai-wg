@@ -1,0 +1,73 @@
+id: lin-ic-11
+schemaId: linear
+query: "Which issues have the most reactions from the team?"
+operation: |
+  query {
+    issues(first: 10) {
+      nodes {
+        id
+        title
+        reactions {
+          emoji
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.title
+  - Reaction.emoji
+targetTypes:
+  - Reaction
+  - Issue
+mustInclude:
+  - Query.issues
+  - Issue.id
+  - Issue.title
+  - Issue.reactions
+  - Reaction.emoji
+  - Query.issues(first:)
+mustExclude:
+  - Mutation
+notes: Reactions on issues for sentiment / interest.
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          reactionCount:
+            type: integer
+            description: Number of reactions on the issue
+        required:
+          - title
+          - reactionCount
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - title: Fix authentication token refresh
+      reactionCount: 1
+    - title: Implement rate limiting on API gateway
+      reactionCount: 1
+    - title: Migrate database to PostgreSQL 16
+      reactionCount: 0
+    - title: Refactor authentication middleware
+      reactionCount: 0
+    - title: Add unit tests for payment module
+      reactionCount: 0
+    - title: Fix rate limit bypass vulnerability
+      reactionCount: 0
+    - title: Performance regression in search results
+      reactionCount: 0
+    - title: Customer reported login issue on mobile
+      reactionCount: 0
+    - title: API documentation update needed
+      reactionCount: 0
+    - title: Update mobile app onboarding flow
+      reactionCount: 0

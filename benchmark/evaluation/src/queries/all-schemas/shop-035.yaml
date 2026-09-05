@@ -1,0 +1,58 @@
+id: shop-035
+schemaId: shopify
+query: Find products that are eligible for bundle discounts via their product options.
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        title
+        hasVariantsThatRequiresComponents
+        options {
+          name
+          values
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.hasVariantsThatRequiresComponents
+  - Product.title
+  - ProductOption.name
+  - ProductOption.values
+targetTypes:
+  - Product
+  - ProductOption
+mustInclude:
+  - QueryRoot.products
+  - Product.hasVariantsThatRequiresComponents
+  - Product.title
+  - Product.options
+  - ProductOption.name
+  - ProductOption.values
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Product options to check bundle eligibility.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - title: Phone Case
+    - title: Leather Wallet
+    - title: Wireless Headphones
+    - title: Yoga Mat
+    - title: Smart Watch

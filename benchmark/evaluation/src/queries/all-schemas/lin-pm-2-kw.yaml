@@ -1,0 +1,33 @@
+id: lin-pm-2-kw
+schemaId: linear
+query: releases upcoming issues target date
+operation: |
+  query {
+    releases(first: 10) {
+      nodes {
+        targetDate
+        issues(first: 10) {
+          nodes {
+            id
+          }
+        }
+        stage {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Release.targetDate
+targetTypes:
+  - Release
+mustInclude:
+  - Query.releases
+  - Release.targetDate
+  - Release.issues
+  - Release.stage
+  - Query.releases(first:)
+  - Release.issues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-2. Upcoming releases with their associated issues.

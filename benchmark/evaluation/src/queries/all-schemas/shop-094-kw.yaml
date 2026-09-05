@@ -1,0 +1,29 @@
+id: shop-094-kw
+schemaId: shopify
+query: pending inventory adjustments approval
+operation: |
+  query {
+    locations(first: 10) {
+      nodes {
+        inventoryLevels(first: 10) {
+          nodes {
+            quantities(names: ["placeholder"]) {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.locations
+  - Location.inventoryLevels
+  - InventoryLevel.quantities
+  - InventoryLevel.quantities(names:)
+  - Location.inventoryLevels(first:)
+  - QueryRoot.locations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-094. Open inventory adjustments waiting for approval.

@@ -1,0 +1,34 @@
+id: gh-ext-068-kw
+schemaId: github
+query: repositories depending on package
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      dependencyGraphManifests(first: 10) {
+        nodes {
+          dependencies(first: 10) {
+            nodes {
+              packageName
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DependencyGraphDependency.packageName
+targetTypes:
+  - DependencyGraphDependency
+  - Package
+mustInclude:
+  - Query.repository
+  - Repository.dependencyGraphManifests
+  - DependencyGraphManifest.dependencies
+  - DependencyGraphDependency.packageName
+  - DependencyGraphManifest.dependencies(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.dependencyGraphManifests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-068. Walk dependency graph manifests of a repo and filter by package name.

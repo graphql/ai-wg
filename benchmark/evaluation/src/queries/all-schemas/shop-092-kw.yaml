@@ -1,0 +1,29 @@
+id: shop-092-kw
+schemaId: shopify
+query: daily payouts bank deposits this month
+operation: |
+  query {
+    shopifyPaymentsAccount {
+      payouts(first: 10) {
+        nodes {
+          net {
+            amount
+          }
+          issuedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - ShopifyPaymentsPayout.issuedAt
+targetTypes:
+  - ShopifyPaymentsPayout
+mustInclude:
+  - QueryRoot.shopifyPaymentsAccount
+  - ShopifyPaymentsAccount.payouts
+  - ShopifyPaymentsPayout.net
+  - ShopifyPaymentsPayout.issuedAt
+  - ShopifyPaymentsAccount.payouts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-092. Daily payout amounts deposited to the bank account this month.

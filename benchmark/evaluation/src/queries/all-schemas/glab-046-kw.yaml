@@ -1,0 +1,21 @@
+id: glab-046-kw
+schemaId: gitlab
+query: dora metrics project quarterly
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      dora {
+        __typename
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Dora
+mustInclude:
+  - Query.project
+  - Project.dora
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-046. DevOps: DORA metrics for project."

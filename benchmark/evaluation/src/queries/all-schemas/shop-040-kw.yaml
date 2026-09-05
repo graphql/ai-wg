@@ -1,0 +1,32 @@
+id: shop-040-kw
+schemaId: shopify
+query: incoming inventory transfers next week per location
+operation: |
+  query {
+    locations(first: 10) {
+      nodes {
+        inventoryLevels(first: 10) {
+          nodes {
+            quantities(names: ["placeholder"]) {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - InventoryQuantity.name
+targetTypes:
+  - InventoryQuantity
+mustInclude:
+  - QueryRoot.locations
+  - Location.inventoryLevels
+  - InventoryLevel.quantities
+  - InventoryQuantity.name
+  - InventoryLevel.quantities(names:)
+  - Location.inventoryLevels(first:)
+  - QueryRoot.locations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-040. Incoming inventory units scheduled per location next week.

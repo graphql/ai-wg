@@ -1,0 +1,25 @@
+id: lin-ad-10-kw
+schemaId: linear
+query: sso scim auth configuration
+operation: |
+  query {
+    organization {
+      samlEnabled
+      scimEnabled
+      allowedAuthServices
+    }
+  }
+targetFields:
+  - Organization.samlEnabled
+  - Organization.scimEnabled
+  - Organization.allowedAuthServices
+targetTypes:
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.samlEnabled
+  - Organization.scimEnabled
+  - Organization.allowedAuthServices
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-10. SSO/SCIM/auth config audit.

@@ -1,0 +1,29 @@
+{
+    "id": "seeded-lex",
+    "name": "Seeded + lexical-aware expansion",
+    "description": "Port of the parent's `seeded-lex` strategy. Builds a seed set from global cosine top-K plus an approximate token+trigram lex channel fused via RRF, then expands best-first through the schema graph. Child scoring blends cosine (shaped per `lexExpand.scoreShape`) with a synthetic lex bonus so high-lexical-rank children survive the per-expansion cap. Closes the slice with paths-to-root. Eval shortcuts: no per-template variants, no synonymy bridges, BM25/trigram approximated from field-name token overlap (eval snapshot has no description text or precomputed channel indexes).",
+    "defaultConfig": {
+        "seedTopK": 10,
+        "nodeBudget": 25,
+        "hopBudget": 5,
+        "ratioCutoff": 0.25,
+        "decay": 0.85,
+        "fanoutAlpha": 0.3,
+        "maxChildrenPerExpansion": 8,
+        "coverageEpsilon": 0.03,
+        "lexExpand": { "alpha": 5.0, "topKForBonus": 100, "scoreShape": "cos-sq" },
+        "channels": {
+            "cosine": { "enabled": true, "weight": 1.0, "topK": 20 },
+            "trigram": { "enabled": true, "weight": 1.0, "topK": 20 },
+            "bm25": { "enabled": true, "weight": 1.0, "topK": 20 },
+            "fusion": { "mode": "rrf", "rrfK": 60, "topN": 30 }
+        },
+        "pathsToRoot": {
+            "mode": "on",
+            "maxPathsPerType": 5,
+            "maxDepth": 6,
+            "includeMutationPaths": false,
+            "expandConnectionWrappers": true
+        }
+    }
+}

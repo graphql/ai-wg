@@ -1,0 +1,138 @@
+id: lin-em-9
+schemaId: linear
+query: "How is open work distributed across all engineers in the org?"
+operation: |
+  query {
+    users(first: 10) {
+      nodes {
+        name
+        assignedIssues(first: 10, filter: { state: { type: { in: ["unstarted", "started"] } } }) {
+          nodes {
+            title
+            priority
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - User.name
+  - Issue.title
+  - Issue.priority
+targetTypes:
+  - User
+  - Issue
+mustInclude:
+  - Query.users
+  - User.name
+  - User.assignedIssues
+  - Issue.title
+  - Issue.priority
+  - Query.users(first:)
+  - User.assignedIssues(first:)
+  - User.assignedIssues(filter:)
+mustExclude:
+  - Mutation
+notes: Load distribution across all engineers org-wide.
+answer:
+  engineers:
+    - name: Alice Johnson
+      assignedIssues:
+        - title: Fix authentication token refresh
+          priority: 2
+        - title: Customer reported login issue on mobile
+          priority: 1
+        - title: Update mobile app onboarding flow
+          priority: 2
+        - title: Resolve webpack bundle size issue
+          priority: 3
+        - title: Add dark mode support
+          priority: 4
+        - title: Fix CI pipeline flakiness
+          priority: 2
+        - title: Implement audit logging
+          priority: 1
+        - title: Upgrade dependencies to latest LTS
+          priority: 3
+        - title: Write integration tests for auth service
+          priority: 2
+        - title: Optimize database query performance
+          priority: 2
+    - name: Bob Smith
+      assignedIssues:
+        - title: Implement rate limiting on API gateway
+          priority: 1
+        - title: Add unit tests for payment module
+          priority: 3
+        - title: API documentation update needed
+          priority: 4
+        - title: Resolve webpack bundle size issue
+          priority: 3
+    - name: Carol White
+      assignedIssues:
+        - title: Migrate database to PostgreSQL 16
+          priority: 2
+        - title: Redesign dashboard layout
+          priority: 2
+        - title: Update mobile app onboarding flow
+          priority: 2
+        - title: Refactor module Z-7
+          priority: 1
+    - name: David Lee
+      assignedIssues:
+        - title: Fix rate limit bypass vulnerability
+          priority: 1
+        - title: Set up Kubernetes cluster for staging
+          priority: 1
+        - title: Update docs for component-3
+          priority: 2
+        - title: Update docs for component-8
+          priority: 0
+    - name: Eva Martinez
+      assignedIssues:
+        - title: Performance regression in search results
+          priority: 2
+        - title: Set up Kubernetes cluster for staging
+          priority: 1
+        - title: Add tests for service-4
+          priority: 3
+    - name: Frank Nguyen
+      assignedIssues: []
+    - name: Grace Kim
+      assignedIssues: []
+    - name: Henry Park
+      assignedIssues: []
+    - name: Iris Chen
+      assignedIssues: []
+    - name: Jack Brown
+      assignedIssues: []
+answerSchema:
+  type: object
+  properties:
+    engineers:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          assignedIssues:
+            type: array
+            items:
+              type: object
+              properties:
+                title:
+                  type: string
+                priority:
+                  type: number
+              required:
+                - title
+                - priority
+              additionalProperties: false
+        required:
+          - name
+          - assignedIssues
+        additionalProperties: false
+  required:
+    - engineers
+  additionalProperties: false

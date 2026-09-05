@@ -1,0 +1,59 @@
+id: gh-ext-083
+schemaId: github
+query: Which pull requests are items in project Nr. 1 of the octocat organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectV2(number: 1) {
+        items(first: 10) {
+          nodes {
+            content {
+              ... on PullRequest {
+                title
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.title
+targetTypes:
+  - PullRequest
+  - Project
+mustInclude:
+  - Query.organization
+  - Organization.projectV2
+  - ProjectV2.items
+  - ProjectV2Item.content
+  - PullRequest.title
+  - Organization.projectV2(number:)
+  - ProjectV2.items(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Project items whose content is a PullRequest.
+answerSchema:
+  type: object
+  properties:
+    pullRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - pullRequests
+  additionalProperties: false
+answer:
+  pullRequests:
+    - title: Add GraphQL endpoint
+    - title: Fix login bug
+    - title: Update dependencies
+    - title: Add dark mode
+    - title: Improve search performance

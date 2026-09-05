@@ -1,0 +1,24 @@
+id: glab-057-kw
+schemaId: gitlab
+query: dast profiles project
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      dastProfiles(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - DastProfile
+mustInclude:
+  - Query.project
+  - Project.dastProfiles
+  - Project.dastProfiles(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-057. Security: DAST profile configurations."

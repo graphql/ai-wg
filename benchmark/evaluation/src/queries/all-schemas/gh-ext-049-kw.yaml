@@ -1,0 +1,30 @@
+id: gh-ext-049-kw
+schemaId: github
+query: readme contents repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object {
+        ... on Blob {
+          text
+          byteSize
+        }
+      }
+    }
+  }
+targetFields:
+  - Blob.text
+  - Blob.byteSize
+targetTypes:
+  - Blob
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Blob.text
+  - Blob.byteSize
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-049. Read README via Repository.object with an HEAD:README.md expression.

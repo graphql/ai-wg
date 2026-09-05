@@ -1,0 +1,24 @@
+id: glab-096-kw
+schemaId: gitlab
+query: namespace billable members top group
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      namespaceSettings {
+        __typename
+      }
+      billableMembersCount
+    }
+  }
+targetFields:
+  - Group.billableMembersCount
+targetTypes:
+  - Group
+mustInclude:
+  - Query.group
+  - Group.namespaceSettings
+  - Group.billableMembersCount
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-096. Admin: namespace settings + billable members."

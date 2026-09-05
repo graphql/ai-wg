@@ -1,0 +1,107 @@
+id: glab-067
+schemaId: gitlab
+query: Which vulnerabilities in the project with fullPath "group/project" are
+  linked to issues (linkType, issue iid, title, and state)?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          id
+          title
+          issueLinks(first: 10) {
+            nodes {
+              linkType
+              issue {
+                iid
+                title
+                state
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.id
+  - Vulnerability.title
+  - VulnerabilityIssueLink.linkType
+  - Issue.iid
+  - Issue.title
+  - Issue.state
+targetTypes:
+  - VulnerabilityIssueLink
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.issueLinks
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+  - Vulnerability.issueLinks(first:)
+  - Vulnerability.id
+  - Vulnerability.title
+  - VulnerabilityIssueLink.linkType
+  - VulnerabilityIssueLink.issue
+  - Issue.iid
+  - Issue.title
+  - Issue.state
+mustExclude:
+  - Mutation
+notes: "Security: vulns linked to issues."
+answerSchema:
+  type: object
+  properties:
+    vulnerabilities:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          issueLinks:
+            type: array
+            items:
+              type: object
+              properties:
+                linkType: *a1
+                issueIid: *a1
+                issueTitle: *a1
+                issueState: *a1
+              required:
+                - linkType
+                - issueIid
+                - issueTitle
+                - issueState
+              additionalProperties: false
+        required:
+          - title
+          - issueLinks
+        additionalProperties: false
+  required:
+    - vulnerabilities
+  additionalProperties: false
+answer:
+  vulnerabilities:
+    - title: Weak password hashing algorithm detected
+      issueLinks:
+        - linkType: CREATED
+          issueIid: "1"
+          issueTitle: Fix authentication timeout on expired tokens
+          issueState: opened
+        - linkType: RELATED
+          issueIid: "2766"
+          issueTitle: Add support for SAML 2.0 single sign-on
+          issueState: closed
+    - title: SQL Injection in user input validation
+      issueLinks: []
+    - title: Missing authentication on admin endpoints
+      issueLinks: []
+    - title: Cross-Site Scripting vulnerability in comments
+      issueLinks: []
+    - title: Hardcoded API credentials in source code
+      issueLinks: []
+    - title: Unvalidated redirect in OAuth flow
+      issueLinks: []
+    - title: Insecure deserialization in API endpoint
+      issueLinks: []

@@ -1,0 +1,30 @@
+id: lin-cs-9-kw
+schemaId: linear
+query: issue attachments external support source
+operation: |
+  query {
+    issue(id: "<id>") {
+      attachments(first: 10) {
+        nodes {
+          sourceType
+          url
+        }
+      }
+    }
+  }
+targetFields:
+  - Attachment.sourceType
+  - Attachment.url
+targetTypes:
+  - Attachment
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.attachments
+  - Attachment.sourceType
+  - Attachment.url
+  - Issue.attachments(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-cs-9. Zendesk/Intercom/etc. attachments on a specific issue.

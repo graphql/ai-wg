@@ -1,0 +1,22 @@
+id: lin-em-12-kw
+schemaId: linear
+query: project update reminders frequency hour
+operation: |
+  query {
+    organization {
+      projectUpdateReminderFrequencyInWeeks
+      projectUpdateRemindersHour
+    }
+  }
+targetFields:
+  - Organization.projectUpdateReminderFrequencyInWeeks
+  - Organization.projectUpdateRemindersHour
+targetTypes:
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.projectUpdateReminderFrequencyInWeeks
+  - Organization.projectUpdateRemindersHour
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-em-12. When are project-update reminders sent?"

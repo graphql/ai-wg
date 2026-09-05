@@ -1,0 +1,27 @@
+id: gh-ext-048-kw
+schemaId: github
+query: mutual followers
+operation: |
+  query {
+    viewer {
+      followers(first: 10) {
+        __typename
+      }
+      isFollowingViewer
+      viewerIsFollowing
+    }
+  }
+targetFields:
+  - User.isFollowingViewer
+  - User.viewerIsFollowing
+targetTypes:
+  - User
+mustInclude:
+  - Query.viewer
+  - User.followers
+  - User.isFollowingViewer
+  - User.viewerIsFollowing
+  - User.followers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-048. Mutual following relationship between viewer and followers.

@@ -1,0 +1,25 @@
+id: shop-070-kw
+schemaId: shopify
+query: lapsed customers segment query 6 months
+operation: |
+  query {
+    segments(first: 10) {
+      nodes {
+        query
+        name
+      }
+    }
+  }
+targetFields:
+  - Segment.query
+  - Segment.name
+targetTypes:
+  - Segment
+mustInclude:
+  - QueryRoot.segments
+  - Segment.query
+  - Segment.name
+  - QueryRoot.segments(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-070. Segment definition (query) for lapsed customers — no purchase in 6 months.

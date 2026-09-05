@@ -1,0 +1,88 @@
+id: gh-ext-023
+schemaId: github
+query: What are the check run names, start times, and completion times in the
+  latest commit check suites of the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      defaultBranchRef {
+        target {
+          ... on Commit {
+            checkSuites(first: 10) {
+              nodes {
+                checkRuns(first: 10) {
+                  nodes {
+                    name
+                    startedAt
+                    completedAt
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CheckRun.name
+  - CheckRun.startedAt
+  - CheckRun.completedAt
+targetTypes:
+  - CheckRun
+mustInclude:
+  - Query.repository
+  - Repository.defaultBranchRef
+  - Ref.target
+  - Commit.checkSuites
+  - CheckSuite.checkRuns
+  - CheckRun.name
+  - CheckRun.startedAt
+  - CheckRun.completedAt
+  - CheckSuite.checkRuns(first:)
+  - Commit.checkSuites(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Inspect check runs on the latest commit via the default branch ref and
+  compare start to completion durations.
+answerSchema:
+  type: object
+  properties:
+    checkRuns:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          startedAt:
+            type: string
+          completedAt:
+            type: string
+        required:
+          - name
+          - startedAt
+          - completedAt
+        additionalProperties: false
+  required:
+    - checkRuns
+  additionalProperties: false
+answer:
+  checkRuns:
+    - name: test
+      startedAt: 2025-05-29T00:00:00.000Z
+      completedAt: 2025-05-30T00:00:00.000Z
+    - name: lint
+      startedAt: 2025-05-29T00:00:00.000Z
+      completedAt: 2025-05-29T00:00:00.000Z
+    - name: test
+      startedAt: 2025-05-29T00:00:00.000Z
+      completedAt: 2025-05-30T00:00:00.000Z
+    - name: lint
+      startedAt: 2025-05-29T00:00:00.000Z
+      completedAt: 2025-05-29T00:00:00.000Z
+    - name: build
+      startedAt: 2025-05-30T00:00:00.000Z
+      completedAt: 2025-05-30T00:00:00.000Z

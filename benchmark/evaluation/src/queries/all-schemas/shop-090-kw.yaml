@@ -1,0 +1,26 @@
+id: shop-090-kw
+schemaId: shopify
+query: Reno fulfillment orders waiting pick
+operation: |
+  query {
+    assignedFulfillmentOrders(first: 10) {
+      nodes {
+        assignedLocation {
+          address1
+        }
+        status
+      }
+    }
+  }
+targetFields:
+  - FulfillmentOrder.status
+targetTypes:
+  - FulfillmentOrder
+mustInclude:
+  - QueryRoot.assignedFulfillmentOrders
+  - FulfillmentOrder.assignedLocation
+  - FulfillmentOrder.status
+  - QueryRoot.assignedFulfillmentOrders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-090. Fulfillment orders assigned to a specific warehouse waiting to be picked.

@@ -1,0 +1,27 @@
+id: lin-ic-21-kw
+schemaId: linear
+query: my notification subscriptions teams projects
+operation: |
+  query {
+    notificationSubscriptions(first: 10) {
+      nodes {
+        project {
+          id
+        }
+        team {
+          id
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - NotificationSubscription
+mustInclude:
+  - Query.notificationSubscriptions
+  - NotificationSubscription.project
+  - NotificationSubscription.team
+  - Query.notificationSubscriptions(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-21. What I am subscribed to.

@@ -1,0 +1,96 @@
+id: gh-ext-037
+schemaId: github
+query: List security advisories from the GitHub Advisory Database with their
+  identifier types and values.
+operation: |
+  query {
+    securityAdvisories(first: 10) {
+      nodes {
+        identifiers {
+          type
+          value
+        }
+      }
+    }
+  }
+targetFields:
+  - SecurityAdvisoryIdentifier.type
+  - SecurityAdvisoryIdentifier.value
+targetTypes:
+  - SecurityAdvisoryIdentifier
+  - SecurityAdvisory
+mustInclude:
+  - Query.securityAdvisories
+  - SecurityAdvisoryConnection.nodes
+  - SecurityAdvisory.identifiers
+  - SecurityAdvisoryIdentifier.type
+  - SecurityAdvisoryIdentifier.value
+  - Query.securityAdvisories(first:)
+mustExclude:
+  - Mutation
+notes: Top-level security advisories listing with their CVE identifiers (the
+  schema only exposes GitHub Security Advisory Database entries; per-repo
+  advisories are reachable through Query.securityAdvisories).
+answerSchema:
+  type: object
+  properties:
+    advisories:
+      type: array
+      items:
+        type: object
+        properties:
+          identifiers:
+            type: array
+            items:
+              type: object
+              properties:
+                type:
+                  type: string
+                value:
+                  type: string
+              required:
+                - type
+                - value
+              additionalProperties: false
+        required:
+          - identifiers
+        additionalProperties: false
+  required:
+    - advisories
+  additionalProperties: false
+answer:
+  advisories:
+    - identifiers:
+        - type: CVE
+          value: CVE-2024-0001
+        - type: GHSA
+          value: GHSA-xxxx-xxxx-0001
+    - identifiers:
+        - type: CVE
+          value: CVE-2024-0002
+        - type: GHSA
+          value: GHSA-xxxx-xxxx-0002
+    - identifiers:
+        - type: CVE
+          value: CVE-2024-0003
+    - identifiers:
+        - type: GHSA
+          value: GHSA-xxxx-xxxx-0004
+    - identifiers:
+        - type: CVE
+          value: CVE-2024-0005
+    - identifiers:
+        - type: CVE
+          value: CVE-2024-0006
+    - identifiers:
+        - type: GHSA
+          value: GHSA-xxxx-xxxx-0007
+    - identifiers:
+        - type: CVE
+          value: CVE-2023-0001
+    - identifiers:
+        - type: CVE
+          value: CVE-2023-0002
+    - identifiers:
+        - type: GHSA
+          value: GHSA-xxxx-xxxx-0010

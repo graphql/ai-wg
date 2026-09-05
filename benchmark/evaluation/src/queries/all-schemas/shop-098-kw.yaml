@@ -1,0 +1,26 @@
+id: shop-098-kw
+schemaId: shopify
+query: webhook subscriptions orders topic
+operation: |
+  query {
+    webhookSubscriptions(first: 10) {
+      nodes {
+        topic
+        endpoint {
+          __typename
+        }
+      }
+    }
+  }
+targetFields:
+  - WebhookSubscription.topic
+targetTypes:
+  - WebhookSubscription
+mustInclude:
+  - QueryRoot.webhookSubscriptions
+  - WebhookSubscription.topic
+  - WebhookSubscription.endpoint
+  - QueryRoot.webhookSubscriptions(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-098. Webhook subscriptions registered for the orders topic.

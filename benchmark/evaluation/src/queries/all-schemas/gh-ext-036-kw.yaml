@@ -1,0 +1,34 @@
+id: gh-ext-036-kw
+schemaId: github
+query: open code scanning error severity
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      vulnerabilityAlerts(first: 10) {
+        nodes {
+          state
+          securityVulnerability {
+            severity
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - RepositoryVulnerabilityAlert.state
+  - SecurityVulnerability.severity
+targetTypes:
+  - RepositoryVulnerabilityAlert
+  - SecurityVulnerability
+mustInclude:
+  - Query.repository
+  - Repository.vulnerabilityAlerts
+  - RepositoryVulnerabilityAlert.state
+  - RepositoryVulnerabilityAlert.securityVulnerability
+  - SecurityVulnerability.severity
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.vulnerabilityAlerts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-036. Open vulnerability alerts at high or critical severity stand in for code scanning alerts.

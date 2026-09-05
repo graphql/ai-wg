@@ -1,0 +1,32 @@
+id: lin-ic-2-kw
+schemaId: linear
+query: my open urgent priority issues
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          priority
+          dueDate
+          state {
+            id
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.priority
+  - Issue.dueDate
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.priority
+  - Issue.dueDate
+  - Issue.state
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-2. My triage view of urgent work.

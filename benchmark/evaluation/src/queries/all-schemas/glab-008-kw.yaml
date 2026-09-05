@@ -1,0 +1,24 @@
+id: glab-008-kw
+schemaId: gitlab
+query: labels on assigned issue
+operation: |
+  query {
+    issue(id: "gid://gitlab/Issue/1") {
+      labels(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Label
+mustInclude:
+  - Query.issue
+  - Issue.labels
+  - Issue.labels(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-008. Developer: labels on a specific issue."

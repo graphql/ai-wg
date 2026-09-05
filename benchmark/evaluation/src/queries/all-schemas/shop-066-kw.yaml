@@ -1,0 +1,21 @@
+id: shop-066-kw
+schemaId: shopify
+query: BXGY buy get promotions products
+operation: |
+  query {
+    codeDiscountNodes(first: 10) {
+      edges {
+        cursor
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.codeDiscountNodes
+  - DiscountCodeBxgy.customerBuys
+  - DiscountCodeBxgy.customerGets
+  - QueryRoot.codeDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-066. Buy-X-get-Y promotions and the products involved.

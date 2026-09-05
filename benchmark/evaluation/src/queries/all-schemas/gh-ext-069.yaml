@@ -1,0 +1,110 @@
+id: gh-ext-069
+schemaId: github
+query: What are the dependency graph manifests and their dependencies for the
+  octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      dependencyGraphManifests(first: 10) {
+        nodes {
+          filename
+          dependenciesCount
+          dependencies(first: 10) {
+            nodes {
+              packageName
+              packageManager
+              requirements
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DependencyGraphManifest.filename
+  - DependencyGraphManifest.dependenciesCount
+  - DependencyGraphDependency.packageName
+  - DependencyGraphDependency.packageManager
+  - DependencyGraphDependency.requirements
+targetTypes:
+  - DependencyGraphManifest
+  - DependencyGraphDependency
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.dependencyGraphManifests
+  - DependencyGraphManifest.filename
+  - DependencyGraphManifest.dependenciesCount
+  - DependencyGraphManifest.dependencies
+  - DependencyGraphManifest.dependencies(first:)
+  - DependencyGraphDependency.packageName
+  - DependencyGraphDependency.packageManager
+  - DependencyGraphDependency.requirements
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.dependencyGraphManifests(first:)
+mustExclude:
+  - Mutation
+notes: List dependency graph manifests with their dependencies.
+answerSchema:
+  type: object
+  properties:
+    manifests:
+      type: array
+      items:
+        type: object
+        properties:
+          filename:
+            type: string
+          dependenciesCount:
+            type: number
+          dependencies:
+            type: array
+            items:
+              type: object
+              properties:
+                packageName:
+                  type: string
+                packageManager:
+                  type: string
+                requirements:
+                  type: string
+              required:
+                - packageName
+                - packageManager
+                - requirements
+              additionalProperties: false
+        required:
+          - filename
+          - dependenciesCount
+          - dependencies
+        additionalProperties: false
+  required:
+    - manifests
+  additionalProperties: false
+answer:
+  manifests:
+    - filename: package.json
+      dependenciesCount: 4
+      dependencies:
+        - packageName: lodash
+          packageManager: npm
+          requirements: ^4.17.21
+        - packageName: react
+          packageManager: npm
+          requirements: ^18.0.0
+        - packageName: express
+          packageManager: npm
+          requirements: ^4.18.0
+        - packageName: axios
+          packageManager: npm
+          requirements: ^1.4.0
+    - filename: package-lock.json
+      dependenciesCount: 2
+      dependencies:
+        - packageName: lodash
+          packageManager: npm
+          requirements: ^4.17.21
+        - packageName: react
+          packageManager: npm
+          requirements: ^18.0.0

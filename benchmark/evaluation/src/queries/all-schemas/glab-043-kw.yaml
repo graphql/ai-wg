@@ -1,0 +1,20 @@
+id: glab-043-kw
+schemaId: gitlab
+query: ci compute minutes usage namespace
+operation: |
+  query {
+    ciMinutesUsage(first: 10) {
+      nodes {
+        __typename
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - CiMinutesNamespaceMonthlyUsage
+mustInclude:
+  - Query.ciMinutesUsage
+  - Query.ciMinutesUsage(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-043. DevOps: CI minutes usage by namespace."

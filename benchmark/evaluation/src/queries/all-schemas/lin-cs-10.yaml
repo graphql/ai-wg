@@ -1,0 +1,50 @@
+id: lin-cs-10
+schemaId: linear
+query: "For customer id \"customer-globex\", who is the account owner (id and
+  name) and what Slack channel ID is configured?"
+operation: |
+  query {
+    customer(id: "customer-globex") {
+      owner {
+        id
+        name
+      }
+      slackChannelId
+    }
+  }
+targetFields:
+  - Customer.slackChannelId
+  - User.name
+targetTypes:
+  - Customer
+  - User
+mustInclude:
+  - Query.customer
+  - Customer.owner
+  - Customer.slackChannelId
+  - User.name
+  - Query.customer(id:)
+mustExclude:
+  - Mutation
+notes: Customer owner / slack channel directory.
+answerSchema:
+  type: object
+  properties:
+    ownerId:
+      type: string
+      description: The id of the account owner
+    ownerName:
+      type: string
+      description: The name of the account owner
+    slackChannelId:
+      type: string
+      description: The configured Slack channel id
+  required:
+    - ownerId
+    - ownerName
+    - slackChannelId
+  additionalProperties: false
+answer:
+  ownerId: user-2
+  ownerName: Bob Smith
+  slackChannelId: C-GLOBEX-001

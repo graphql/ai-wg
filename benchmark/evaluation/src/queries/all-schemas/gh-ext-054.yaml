@@ -1,0 +1,53 @@
+id: gh-ext-054
+schemaId: github
+query: What pull request templates are configured for the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequestTemplates {
+        filename
+        body
+      }
+    }
+  }
+targetFields:
+  - PullRequestTemplate.filename
+  - PullRequestTemplate.body
+targetTypes:
+  - PullRequestTemplate
+mustInclude:
+  - Query.repository
+  - Repository.pullRequestTemplates
+  - PullRequestTemplate.filename
+  - PullRequestTemplate.body
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: PR templates configured for the repo.
+answerSchema:
+  type: object
+  properties:
+    pullRequestTemplates:
+      type: array
+      items:
+        type: object
+        properties:
+          filename:
+            type: string
+          body:
+            type: string
+        required:
+          - filename
+          - body
+        additionalProperties: false
+  required:
+    - pullRequestTemplates
+  additionalProperties: false
+answer:
+  pullRequestTemplates:
+    - filename: PULL_REQUEST_TEMPLATE.md
+      body: |
+        ## Summary
+  
+        ## Test Plan

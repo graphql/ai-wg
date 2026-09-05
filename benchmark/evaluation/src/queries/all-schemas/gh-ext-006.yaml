@@ -1,0 +1,64 @@
+id: gh-ext-006
+schemaId: github
+query: Who requested changes on pull request Nr. 1 in the octocat/example
+  repository and what was their review feedback?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        reviews(first: 10, states: [CHANGES_REQUESTED]) {
+          nodes {
+            author {
+              login
+            }
+            body
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Actor.login
+  - PullRequestReview.body
+targetTypes:
+  - PullRequestReview
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.reviews
+  - PullRequestReview.author
+  - PullRequestReview.body
+  - Actor.login
+  - PullRequest.reviews(first:)
+  - PullRequest.reviews(states:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+mustExclude:
+  - Mutation
+notes: List reviews with CHANGES_REQUESTED state and their feedback bodies.
+answerSchema:
+  type: object
+  properties:
+    reviews:
+      type: array
+      items:
+        type: object
+        properties:
+          authorLogin:
+            type: string
+          feedback:
+            type: string
+        required:
+          - authorLogin
+          - feedback
+        additionalProperties: false
+  required:
+    - reviews
+  additionalProperties: false
+answer:
+  reviews:
+    - authorLogin: dependabot-bot-
+      feedback: Please fix the error handling.
+    - authorLogin: github-actions-bot-
+      feedback: Looks good overall but needs fixes.

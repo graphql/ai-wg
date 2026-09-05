@@ -1,0 +1,28 @@
+id: lin-ad-2-kw
+schemaId: linear
+query: inactive users last seen 90 days
+operation: |
+  query {
+    users(first: 10) {
+      nodes {
+        active
+        lastSeen
+        email
+      }
+    }
+  }
+targetFields:
+  - User.active
+  - User.lastSeen
+  - User.email
+targetTypes:
+  - User
+mustInclude:
+  - Query.users
+  - User.active
+  - User.lastSeen
+  - User.email
+  - Query.users(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-2. Identify inactive seats for clean-up.

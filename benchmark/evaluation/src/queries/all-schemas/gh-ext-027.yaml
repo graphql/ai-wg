@@ -1,0 +1,105 @@
+id: gh-ext-027
+schemaId: github
+query: Which deployments to the staging environment in the octocat/example
+  repository have associated pull requests?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      deployments(first: 10, environments: ["staging"]) {
+        nodes {
+          environment
+          createdAt
+          ref {
+            associatedPullRequests(first: 10) {
+              nodes {
+                number
+                title
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.number
+  - PullRequest.title
+  - Deployment.environment
+  - Deployment.createdAt
+targetTypes:
+  - Deployment
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.deployments
+  - Deployment.environment
+  - Deployment.ref
+  - Ref.associatedPullRequests
+  - Deployment.createdAt
+  - PullRequest.number
+  - PullRequest.title
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.deployments(environments:)
+  - Repository.deployments(first:)
+  - Ref.associatedPullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Deployments to staging in a window, then pivot to their associated PRs
+  through the ref.
+answerSchema:
+  type: object
+  properties:
+    deployments:
+      type: array
+      items:
+        type: object
+        properties:
+          environment:
+            type: string
+          createdAt:
+            type: string
+          associatedPullRequests:
+            type: array
+            items:
+              type: object
+              properties:
+                number:
+                  type: integer
+                title:
+                  type: string
+              required:
+                - number
+                - title
+              additionalProperties: false
+        required:
+          - environment
+          - createdAt
+          - associatedPullRequests
+        additionalProperties: false
+  required:
+    - deployments
+  additionalProperties: false
+answer:
+  deployments:
+    - environment: staging
+      createdAt: 2025-05-27T00:00:00.000Z
+      associatedPullRequests:
+        - number: 1
+          title: Add GraphQL endpoint
+        - number: 2
+          title: Fix login bug
+    - environment: staging
+      createdAt: 2025-05-17T00:00:00.000Z
+      associatedPullRequests:
+        - number: 1
+          title: Add GraphQL endpoint
+        - number: 2
+          title: Fix login bug
+    - environment: staging
+      createdAt: 2025-05-24T00:00:00.000Z
+      associatedPullRequests:
+        - number: 1
+          title: Add GraphQL endpoint
+        - number: 2
+          title: Fix login bug

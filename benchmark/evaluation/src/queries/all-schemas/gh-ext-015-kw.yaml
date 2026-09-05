@@ -1,0 +1,33 @@
+id: gh-ext-015-kw
+schemaId: github
+query: pull requests waiting reviewer
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          reviewRequests(first: 10) {
+            nodes {
+              requestedReviewer {
+                __typename
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.reviewRequests
+  - ReviewRequest.requestedReviewer
+  - PullRequest.reviewRequests(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-015. Walk PRs whose review-request list contains a particular reviewer.

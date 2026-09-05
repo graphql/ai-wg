@@ -1,0 +1,33 @@
+{
+    "id": "te-rf-trim-c",
+    "name": "te-rf-trim-c (trimmed-breadth rootfix)",
+    "description": "Forks te-lexprune-safe (ptv-lex-weighted + relevance-floor prune) and adds the same two structural recall fixes as te-rootfix, run AFTER the prune on the kept set so they are never pruned: (1) root-collection entry emission keyed off the real query-root type(s) including QueryRoot; (2) connection traversal guarantee (nodes/edges/edges->node on every selected *Connection/*Edge). The prune's own root-field protection is hardened to cover QueryRoot too. Recovers the root-entry recall gain while keeping the prune's token savings.",
+    "defaultConfig": {
+        "typesTopK": 15,
+        "perVariantBudget": 650,
+        "efficiencyThreshold": 0.04,
+        "cosWeight": 4,
+        "lexWeight": 1.5,
+        "parentCosBlend": 0.3,
+        "unwrapConnections": true,
+        "poolEntryTypeCosFloor": 0.25,
+        "variantTopK": 20,
+        "relevanceFloor": 0.75,
+        "mergeMaxVariants": 7,
+        "typeHitsCutoff": "kneedle",
+        "kneedleSensitivity": 0.05,
+        "maxExpandedTypes": 32,
+        "dropFloor": 0.16,
+        "completeTopK": 12,
+        "rootEntryEmit": true,
+        "rootFamilyDepth": 1,
+        "connectionTraversalEmit": true,
+        "pathsToRoot": {
+            "mode": "on",
+            "maxPathsPerType": 5,
+            "maxDepth": 6,
+            "includeMutationPaths": false,
+            "expandConnectionWrappers": true
+        }
+    }
+}

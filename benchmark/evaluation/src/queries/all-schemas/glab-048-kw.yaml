@@ -1,0 +1,24 @@
+id: glab-048-kw
+schemaId: gitlab
+query: cluster agents authorized ci access project
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      ciAccessAuthorizedAgents(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - ClusterAgentAuthorizationCiAccess
+mustInclude:
+  - Query.project
+  - Project.ciAccessAuthorizedAgents
+  - Project.ciAccessAuthorizedAgents(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-048. DevOps: cluster agents authorized for CI."

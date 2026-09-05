@@ -1,0 +1,32 @@
+id: gh-ext-008-kw
+schemaId: github
+query: issues linked closed prs still open
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10) {
+        nodes {
+          state
+          closedByPullRequestsReferences(first: 10) {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.state
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.state
+  - Issue.closedByPullRequestsReferences
+  - Issue.closedByPullRequestsReferences(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-008. Open issues that have references to closed PRs.

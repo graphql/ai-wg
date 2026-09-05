@@ -1,0 +1,32 @@
+id: glab-004-kw
+schemaId: gitlab
+query: failing jobs latest pipeline gitlab project
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(first: 10) {
+        nodes {
+          jobs(first: 10) {
+            nodes {
+              status
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CiJob.status
+targetTypes:
+  - CiJob
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.jobs
+  - CiJob.status
+  - Pipeline.jobs(first:)
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-004. Developer: failing jobs in latest pipeline. Pipeline list + nested job status."

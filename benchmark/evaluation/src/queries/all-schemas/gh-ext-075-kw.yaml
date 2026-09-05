@@ -1,0 +1,36 @@
+id: gh-ext-075-kw
+schemaId: github
+query: discussion answer comments
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      discussions(first: 10) {
+        nodes {
+          answer {
+            body
+            author {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscussionComment.body
+targetTypes:
+  - DiscussionComment
+  - Discussion
+  - Comment
+mustInclude:
+  - Query.repository
+  - Repository.discussions
+  - Discussion.answer
+  - DiscussionComment.body
+  - DiscussionComment.author
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.discussions(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-075. Discussion comments that are marked as the answer.

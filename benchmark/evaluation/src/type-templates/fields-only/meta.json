@@ -1,0 +1,5 @@
+{
+    "id": "fields-only",
+    "name": "Fields only",
+    "description": "Renders only the type's first 30 field names (capped to bound tokens) — no type name, no description. The field-surface floor."
+}

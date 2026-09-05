@@ -1,0 +1,25 @@
+id: shop-047-kw
+schemaId: shopify
+query: customer saved addresses default
+operation: |
+  query {
+    customer(id: "gid://shopify/Object/1") {
+      addresses(first: 10) {
+        address1
+      }
+      defaultAddress {
+        address1
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.customer
+  - Customer.addresses
+  - Customer.defaultAddress
+  - Customer.addresses(first:)
+  - QueryRoot.customer(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-047. Saved addresses on a customer with the default flagged.

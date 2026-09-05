@@ -1,0 +1,26 @@
+id: glab-052-kw
+schemaId: gitlab
+query: pipeline coverage main monthly
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(first: 10) {
+        nodes {
+          coverage
+        }
+      }
+    }
+  }
+targetFields:
+  - Pipeline.coverage
+targetTypes:
+  - Pipeline
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.coverage
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-052. DevOps: coverage reports on main monthly."

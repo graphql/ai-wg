@@ -1,0 +1,30 @@
+id: glab-023-kw
+schemaId: gitlab
+query: merged merge requests per teammate sprint
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      groupMembers(first: 10) {
+        nodes {
+          user {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.mergedAt
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.group
+  - Group.groupMembers
+  - GroupMember.user
+  - Project.mergeRequests
+  - MergeRequest.mergedAt
+  - Group.groupMembers(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-023. Maintainer: merged MRs per teammate. Group members + their MRs."

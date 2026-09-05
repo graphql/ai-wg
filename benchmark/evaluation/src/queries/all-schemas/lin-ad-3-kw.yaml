@@ -1,0 +1,29 @@
+id: lin-ad-3-kw
+schemaId: linear
+query: integrations connected services
+operation: |
+  query {
+    integrations(first: 10) {
+      nodes {
+        service
+        creator {
+          id
+        }
+        createdAt
+      }
+    }
+  }
+targetFields:
+  - Integration.service
+  - Integration.createdAt
+targetTypes:
+  - Integration
+mustInclude:
+  - Query.integrations
+  - Integration.service
+  - Integration.creator
+  - Integration.createdAt
+  - Query.integrations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-3. Audit installed integrations.

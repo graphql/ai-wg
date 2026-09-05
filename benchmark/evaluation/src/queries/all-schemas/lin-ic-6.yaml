@@ -1,0 +1,64 @@
+id: lin-ic-6
+schemaId: linear
+query: List the recent comments I left on issues.
+operation: |
+  query {
+    comments(first: 10, filter: { user: { isMe: { eq: true } }, issue: { null: false } }) {
+      nodes {
+        body
+        createdAt
+        issue {
+          title
+        }
+      }
+    }
+  }
+targetFields:
+  - Comment.body
+  - Comment.createdAt
+targetTypes:
+  - Comment
+mustInclude:
+  - Query.comments
+  - Comment.body
+  - Comment.createdAt
+  - Comment.issue
+  - Query.comments(first:)
+  - Query.comments(filter:)
+mustExclude:
+  - Mutation
+notes: My recent comment activity across issues.
+answerSchema:
+  type: object
+  properties:
+    comments:
+      type: array
+      items:
+        type: object
+        properties:
+          body:
+            type: string
+          createdAt:
+            type: string
+          issueTitle:
+            type: string
+            description: Title of the issue the comment was left on
+        required:
+          - body
+          - createdAt
+          - issueTitle
+        additionalProperties: false
+  required:
+    - comments
+  additionalProperties: false
+answer:
+  comments:
+    - body: I can reproduce it locally. Working on a fix.
+      createdAt: 2025-05-28T00:00:00.000Z
+      issueTitle: Fix authentication token refresh
+    - body: I will take a look at this issue.
+      createdAt: 2025-05-29T00:00:00.000Z
+      issueTitle: Implement rate limiting on API gateway
+    - body: The fix looks good, approving.
+      createdAt: 2025-05-30T00:00:00.000Z
+      issueTitle: Migrate database to PostgreSQL 16

@@ -1,0 +1,29 @@
+id: lin-ad-8-kw
+schemaId: linear
+query: pending invitations unaccepted
+operation: |
+  query {
+    organizationInvites(first: 10) {
+      nodes {
+        email
+        invitee {
+          id
+        }
+        acceptedAt
+      }
+    }
+  }
+targetFields:
+  - OrganizationInvite.email
+  - OrganizationInvite.acceptedAt
+targetTypes:
+  - OrganizationInvite
+mustInclude:
+  - Query.organizationInvites
+  - OrganizationInvite.email
+  - OrganizationInvite.invitee
+  - OrganizationInvite.acceptedAt
+  - Query.organizationInvites(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-8. Pending invite cleanup.

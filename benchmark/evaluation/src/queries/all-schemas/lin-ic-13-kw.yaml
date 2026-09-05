@@ -1,0 +1,28 @@
+id: lin-ic-13-kw
+schemaId: linear
+query: my teams membership
+operation: |
+  query {
+    viewer {
+      teams(first: 10) {
+        nodes {
+          name
+          key
+        }
+      }
+    }
+  }
+targetFields:
+  - Team.name
+  - Team.key
+targetTypes:
+  - Team
+mustInclude:
+  - Query.viewer
+  - User.teams
+  - Team.name
+  - Team.key
+  - User.teams(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-13. Teams the current user belongs to.

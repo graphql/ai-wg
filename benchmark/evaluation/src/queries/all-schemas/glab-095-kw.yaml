@@ -1,0 +1,27 @@
+id: glab-095-kw
+schemaId: gitlab
+query: subgroups pending deletion descendants
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      descendantGroups(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+      markedForDeletion
+    }
+  }
+targetFields:
+  - Group.markedForDeletion
+targetTypes:
+  - Group
+mustInclude:
+  - Query.group
+  - Group.descendantGroups
+  - Group.markedForDeletion
+  - Group.descendantGroups(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-095. Admin: subgroups pending deletion."

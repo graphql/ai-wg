@@ -1,0 +1,28 @@
+id: shop-022-kw
+schemaId: shopify
+query: products variants low inventory under 5
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        variants(first: 10) {
+          nodes {
+            inventoryQuantity
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProductVariant.inventoryQuantity
+targetTypes:
+  - ProductVariant
+mustInclude:
+  - QueryRoot.products
+  - Product.variants
+  - ProductVariant.inventoryQuantity
+  - Product.variants(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-022. Products where any variant has fewer than 5 units left.

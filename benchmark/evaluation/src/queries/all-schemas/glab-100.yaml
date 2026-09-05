@@ -1,0 +1,50 @@
+id: glab-100
+schemaId: gitlab
+query: In the gitlab-org/gitlab group, which projects have container registry
+  usage above the storage size?
+operation: |
+  query {
+    group(fullPath: "gitlab-org/gitlab") {
+      projects(first: 10) {
+        nodes {
+          name
+          statistics {
+            containerRegistrySize
+            storageSize
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectStatistics.containerRegistrySize
+  - ProjectStatistics.storageSize
+  - Project.name
+targetTypes:
+  - ProjectStatistics
+mustInclude:
+  - Query.group
+  - Group.projects
+  - Project.statistics
+  - Group.projects(first:)
+  - Query.group(fullPath:)
+  - ProjectStatistics.containerRegistrySize
+  - ProjectStatistics.storageSize
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: string
+  required:
+    - projects
+  additionalProperties: false
+notes: "Group projects where container registry usage exceeds storage size."
+answer:
+  projects:
+    - data-analytics
+    - notification-system
+    - web-frontend

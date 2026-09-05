@@ -1,0 +1,69 @@
+id: glab-089
+schemaId: gitlab
+query: Show me all top-level groups in the instance and their visibility settings.
+operation: |
+  query {
+    groups(first: 10) {
+      nodes {
+        name
+        fullPath
+        visibility
+        parent {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Group.visibility
+  - Group.name
+  - Group.fullPath
+targetTypes:
+  - Group
+mustInclude:
+  - Query.groups
+  - Group.name
+  - Group.fullPath
+  - Group.visibility
+  - Group.parent
+  - Query.groups(first:)
+mustExclude:
+  - Mutation
+notes: "Admin: top-level groups + visibility."
+answerSchema:
+  type: object
+  properties:
+    groups:
+      type: array
+      items:
+        type: object
+        properties:
+          name: &a1
+            type: string
+          fullPath: *a1
+          visibility: *a1
+        required:
+          - name
+          - fullPath
+          - visibility
+        additionalProperties: false
+  required:
+    - groups
+  additionalProperties: false
+answer:
+  groups:
+    - name: Project Group
+      fullPath: group/project
+      visibility: private
+    - name: GitLab Org
+      fullPath: gitlab-org
+      visibility: private
+    - name: My Org
+      fullPath: myorg
+      visibility: public
+    - name: Dev Team
+      fullPath: devteam
+      visibility: private
+    - name: Clients
+      fullPath: clients
+      visibility: internal
