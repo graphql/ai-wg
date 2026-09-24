@@ -21,9 +21,17 @@
 
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
-| :--------------- | :------------ | :----------------- | :-------------------- |
+| :--------------- | :------------ | :----------------- | :-------------------- | 
 | Martin Bonnin | martinbonnin | Apollo | Paris, FR|
-| Jake Robinson | jakerobinson | Rubrik | Indianapolis, IN |
+| Jake Robinson | jakerobinson | Rubrik | Indianapolis, IN | 
+| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
+| Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
+| Mark Larah  | @magicmark    | Yelp             | Austin, TX, USA    |
+| Pascal Senn  | @pascalsenn    | ChilliCream             | Zurich, CH   |
+| Željko Kozina | zkozina      | Chronomill   | Dublin, ROI |
+| Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
+| Thore Koritzius | @ThoreKoritzius      | Self   | Cologne, Germany |
+| Miguel Quintero | @miqui  |             | Atlanta, GA, US   | 
 
 ## Agenda
 
@@ -40,3 +48,4 @@
 1. Reminder: [grants available for key initiatives](https://graphql.org/community/foundation/community-grant/) (1m, Host)
 2. graphql.org/ai page (10min, Martin)
    - https://github.com/graphql/graphql.github.io/pull/2469
+1. Comparison Token Efficency (20m, Stephen)
