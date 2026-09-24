@@ -1,9 +1,9 @@
 | This is an open meeting: To attend, edit and PR this file. (Edit: ✎ above, or press "e") |
 | ---------------------------------------------------------------------------------------- |
 
-# GraphQL AI WG — August 2026
+# GraphQL AI WG — October 2026
 
-- **Date & Time**: [August 27, 2026, 1:30 – 2:30 PM EDT](https://www.timeanddate.com/worldclock/converter.html?iso=20260827T173000&p1=224&p2=179&p3=136&p4=268&p5=367&p6=438&p7=248&p8=240)
+- **Date & Time**: [October 22, 2026, 1:30 – 2:30 PM EDT](https://www.timeanddate.com/worldclock/converter.html?iso=20261022T173000&p1=224&p2=179&p3=136&p4=268&p5=367&p6=438&p7=248&p8=240)
   - View the [calendar][], or subscribe ([Google Calendar][], [ical file][]).
   - _Please Note:_ The date or time may change. Please check this agenda the
     week of the meeting to confirm. While we try to keep all calendars accurate,
@@ -21,17 +21,8 @@
 
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
-| :--------------- | :------------ | :----------------- | :-------------------- | 
-| Martin Bonnin | martinbonnin | Apollo | Paris, FR|
-| Jake Robinson | jakerobinson | Rubrik | Indianapolis, IN | 
-| Michael Rebello  | @rebello95    | Airbnb             | San Diego, CA, USA    |
-| Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
-| Mark Larah  | @magicmark    | Yelp             | Austin, TX, USA    |
-| Pascal Senn  | @pascalsenn    | ChilliCream             | Zurich, CH   |
-| Željko Kozina | zkozina      | Chronomill   | Dublin, ROI |
-| Stephen Spalding | @fotoetienne  | Netflix            | Chattanooga, TN, US   |
-| Thore Koritzius | @ThoreKoritzius      | Self   | Cologne, Germany |
-| Miguel Quintero | @miqui  |             | Atlanta, GA, US   | 
+| :--------------- | :------------ | :----------------- | :-------------------- |
+
 
 ## Agenda
 
@@ -46,6 +37,3 @@
 1. Review agenda (2m, Host)
 1. Check for [ready for review agenda items](https://github.com/graphql/ai-wg/issues?q=is%3Aissue+is%3Aopen+label%3A%22Ready+for+review+%F0%9F%99%8C%22+sort%3Aupdated-desc) (5m, Host)
 1. Reminder: [grants available for key initiatives](https://graphql.org/community/foundation/community-grant/) (1m, Host)
-2. graphql.org/ai page (10min, Martin)
-   - https://github.com/graphql/graphql.github.io/pull/2469
-1. Comparison Token Efficency (20m, Stephen)

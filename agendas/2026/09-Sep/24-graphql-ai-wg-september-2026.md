@@ -20,8 +20,9 @@
 ## Attendees
 
 <!-- prettier-ignore -->
-| Name             | GitHub        | Organization       | Location              |
-| :--------------- | :------------ | :----------------- | :-------------------- |
+| Name              | GitHub        | Organization       | Location              |
+| :---------------- | :------------ | :----------------- | :-------------------- |
+| Pascal Senn (Host)| PascalSenn.   | ChilliCream.       | Zurich, CH            |
 
 
 ## Agenda
