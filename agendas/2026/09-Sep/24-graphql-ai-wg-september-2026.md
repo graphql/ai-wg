@@ -24,6 +24,7 @@
 | :---------------- | :------------ | :----------------- | :-------------------- |
 | Pascal Senn (Host)| PascalSenn.   | ChilliCream.       | Zurich, CH            |
 | Jeff Auriemma     | @bignimbus    | Apollo             | Monroe, CT, US        |
+| Raymie Stata      | @rstata.      | Airbnb             | San Francisco, CA, US |
 
 
 ## Agenda
