@@ -1,0 +1,63 @@
+id: lin-pm-15
+schemaId: linear
+query: Show me the full timeline of status updates posted on the mobile-app project.
+operation: |
+  query {
+    project(id: "project-mobile-app") {
+      projectUpdates(first: 10) {
+        nodes {
+          body
+          health
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectUpdate.body
+  - ProjectUpdate.health
+  - ProjectUpdate.createdAt
+targetTypes:
+  - ProjectUpdate
+  - Project
+mustInclude:
+  - Query.project
+  - Project.projectUpdates
+  - ProjectUpdate.body
+  - ProjectUpdate.health
+  - ProjectUpdate.createdAt
+  - Project.projectUpdates(first:)
+  - Query.project(id:)
+mustExclude:
+  - Mutation
+notes: Project update timeline.
+answerSchema:
+  type: object
+  properties:
+    statusUpdates:
+      type: array
+      items:
+        type: object
+        properties:
+          body:
+            type: string
+          health:
+            type: string
+          createdAt:
+            type: string
+        required:
+          - body
+          - health
+          - createdAt
+        additionalProperties: false
+  required:
+    - statusUpdates
+  additionalProperties: false
+answer:
+  statusUpdates:
+    - body: Mobile App is on track. Backend APIs complete.
+      health: onTrack
+      createdAt: 2025-05-25T00:00:00.000Z
+    - body: UI components 70% done. Some delays in testing.
+      health: atRisk
+      createdAt: 2025-05-25T00:00:00.000Z

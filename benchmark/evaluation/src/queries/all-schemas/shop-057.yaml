@@ -1,0 +1,111 @@
+id: shop-057
+schemaId: shopify
+query: What is the status, line items (quantity and reason), and refund amounts
+  for return gid://shopify/Return/1?
+operation: |
+  query {
+    return(id: "gid://shopify/Return/1") {
+      status
+      returnLineItems(first: 10) {
+        edges {
+          node {
+            quantity
+            returnReason
+          }
+        }
+      }
+      refunds(first: 10) {
+        edges {
+          node {
+            totalRefundedSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ReturnLineItemType.quantity
+  - ReturnLineItemType.returnReason
+  - Refund.totalRefundedSet
+  - MoneyV2.amount
+targetTypes:
+  - ReturnLineItemType
+  - Refund
+  - MoneyBag
+  - MoneyV2
+mustInclude:
+  - QueryRoot.return
+  - QueryRoot.return(id:)
+  - Return.status
+  - Return.returnLineItems
+  - Return.returnLineItems(first:)
+  - ReturnLineItemType.quantity
+  - ReturnLineItemType.returnReason
+  - Return.refunds
+  - Return.refunds(first:)
+  - Refund.totalRefundedSet
+  - MoneyBag.shopMoney
+  - MoneyV2.amount
+  - MoneyV2.currencyCode
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    status:
+      type: string
+    returnLineItems:
+      type: array
+      items:
+        type: object
+        properties:
+          quantity:
+            type: integer
+          returnReason:
+            type: string
+        required:
+          - quantity
+          - returnReason
+        additionalProperties: false
+    refundAmounts:
+      type: array
+      items:
+        type: object
+        properties:
+          amount:
+            type: string
+          currencyCode:
+            type: string
+        required:
+          - amount
+          - currencyCode
+        additionalProperties: false
+  required:
+    - status
+    - returnLineItems
+    - refundAmounts
+  additionalProperties: false
+answer:
+  status: CANCELED
+  returnLineItems:
+    - quantity: 89
+      returnReason: OTHER
+    - quantity: 183
+      returnReason: UNWANTED
+  refundAmounts:
+    - amount: "69.99"
+      currencyCode: BYN
+    - amount: "81.25"
+      currencyCode: TOP
+notes: Dropped the unanswerable 'approved' qualifier from the question (schema
+  has no per-line-item approval; returnLineItems only filters by
+  processingStatus PROCESSED/PROCESSABLE, and requestApprovedAt is a
+  request-level timestamp). Question now asks for all line items, matching the
+  unfiltered gold op and the projected answer. Question names the return ID;
+  gold op uses edges { node } (nodes and edges produce different data from the
+  default mock resolver).

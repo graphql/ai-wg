@@ -1,0 +1,38 @@
+id: gh-ext-009-kw
+schemaId: github
+query: commit signature verification main
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      defaultBranchRef {
+        target {
+          ... on Commit {
+            history(first: 10) {
+              __typename
+            }
+            signature {
+              isValid
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - GitSignature.isValid
+targetTypes:
+  - GitSignature
+  - Commit
+mustInclude:
+  - Query.repository
+  - Repository.defaultBranchRef
+  - Ref.target
+  - Commit.history
+  - Commit.signature
+  - GitSignature.isValid
+  - Commit.history(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-009. Walk recent commits on main and check their signature verification.

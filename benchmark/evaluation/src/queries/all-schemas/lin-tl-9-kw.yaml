@@ -1,0 +1,33 @@
+id: lin-tl-9-kw
+schemaId: linear
+query: backlog priority estimate breakdown
+operation: |
+  query {
+    team(id: "<id>") {
+      issues(first: 10) {
+        nodes {
+          state {
+            id
+          }
+          priority
+          estimate
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.priority
+  - Issue.estimate
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.team
+  - Team.issues
+  - Issue.state
+  - Issue.priority
+  - Issue.estimate
+  - Query.team(id:)
+  - Team.issues(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-tl-9. Backlog grooming: triaged / todo issues that need refinement."

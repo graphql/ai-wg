@@ -1,0 +1,39 @@
+id: gh-ext-038-kw
+schemaId: github
+query: stale dependabot prs
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          author {
+            login
+          }
+          createdAt
+          reviews(first: 10) {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Actor.login
+  - PullRequest.createdAt
+targetTypes:
+  - Actor
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.author
+  - Actor.login
+  - PullRequest.createdAt
+  - PullRequest.reviews
+  - PullRequest.reviews(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-038. PRs authored by dependabot[bot] that have no reviews after N days.

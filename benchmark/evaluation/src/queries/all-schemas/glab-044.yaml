@@ -1,0 +1,92 @@
+id: glab-044
+schemaId: gitlab
+query: Show pipeline schedules for project group/project including cron,
+  nextRunAt, and last pipeline times.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelineSchedules(first: 10) {
+        nodes {
+          id
+          description
+          cron
+          nextRunAt
+          lastPipeline {
+            createdAt
+            finishedAt
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PipelineSchedule.id
+  - PipelineSchedule.description
+  - PipelineSchedule.cron
+  - PipelineSchedule.nextRunAt
+  - PipelineSchedule.lastPipeline
+  - Pipeline.createdAt
+  - Pipeline.finishedAt
+targetTypes:
+  - PipelineSchedule
+  - Pipeline
+mustInclude:
+  - Query.project
+  - Query.project(fullPath:)
+  - Project.pipelineSchedules
+  - Project.pipelineSchedules(first:)
+  - PipelineSchedule.description
+  - PipelineSchedule.cron
+  - PipelineSchedule.lastPipeline
+  - Pipeline.createdAt
+mustExclude:
+  - Mutation
+notes: "DevOps: pipeline schedules."
+answerSchema:
+  type: object
+  properties:
+    pipelineSchedules:
+      type: array
+      items:
+        type: object
+        properties:
+          description:
+            type: string
+          cron:
+            type: string
+          nextRunAt:
+            type: string
+          lastPipeline:
+            type: object
+            properties:
+              createdAt:
+                type: string
+              finishedAt:
+                type: string
+            required:
+              - createdAt
+              - finishedAt
+            additionalProperties: false
+        required:
+          - description
+          - cron
+          - nextRunAt
+          - lastPipeline
+        additionalProperties: false
+  required:
+    - pipelineSchedules
+  additionalProperties: false
+answer:
+  pipelineSchedules:
+    - description: Nightly build and test run
+      cron: 0 2 * * *
+      nextRunAt: 2025-06-01T00:00:00.000Z
+      lastPipeline:
+        createdAt: 2025-05-29T00:00:00.000Z
+        finishedAt: 2025-05-25T00:00:00.000Z
+    - description: Weekly security scan
+      cron: 0 8 * * 1
+      nextRunAt: 2025-06-01T00:00:00.000Z
+      lastPipeline:
+        createdAt: 2025-05-27T00:00:00.000Z
+        finishedAt: 2025-05-10T00:00:00.000Z

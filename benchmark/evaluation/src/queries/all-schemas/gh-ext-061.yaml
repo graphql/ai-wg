@@ -1,0 +1,52 @@
+id: gh-ext-061
+schemaId: github
+query: List the repositories in the "octocat" organization where the wiki has
+  been enabled.
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          nameWithOwner
+          hasWikiEnabled
+        }
+      }
+    }
+  }
+answer:
+  repositories:
+    - fullName: octocat/example
+    - fullName: octocat/wiki-enabled
+answerSchema:
+  type: object
+  properties:
+    repositories:
+      type: array
+      items:
+        type: object
+        properties:
+          fullName:
+            type: string
+        required:
+          - fullName
+        additionalProperties: false
+  required:
+    - repositories
+  additionalProperties: false
+targetFields:
+  - Repository.hasWikiEnabled
+  - Repository.nameWithOwner
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.hasWikiEnabled
+  - Repository.nameWithOwner
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: GitHub GraphQL does not support filtering repositories by hasWikiEnabled;
+  the operation fetches all repos and the answer is the subset where
+  hasWikiEnabled is true.

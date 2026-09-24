@@ -1,0 +1,38 @@
+id: gh-ext-006-kw
+schemaId: github
+query: reviewers requested changes feedback
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        reviews(first: 10) {
+          nodes {
+            state
+            author {
+              __typename
+            }
+            body
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequestReview.state
+  - PullRequestReview.body
+targetTypes:
+  - PullRequestReview
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.reviews
+  - PullRequestReview.state
+  - PullRequestReview.author
+  - PullRequestReview.body
+  - PullRequest.reviews(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-006. List reviews with CHANGES_REQUESTED state and their feedback bodies.

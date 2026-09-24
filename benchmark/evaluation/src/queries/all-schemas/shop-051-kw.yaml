@@ -1,0 +1,29 @@
+id: shop-051-kw
+schemaId: shopify
+query: Toronto repeat customers more than 5 orders
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        defaultAddress {
+          city
+        }
+        numberOfOrders
+      }
+    }
+  }
+targetFields:
+  - Customer.numberOfOrders
+  - MailingAddress.city
+targetTypes:
+  - Customer
+  - MailingAddress
+mustInclude:
+  - QueryRoot.customers
+  - Customer.defaultAddress
+  - Customer.numberOfOrders
+  - MailingAddress.city
+  - QueryRoot.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-051. Customers from a specific city with > 5 orders.

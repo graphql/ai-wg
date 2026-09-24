@@ -1,0 +1,58 @@
+id: glab-076
+schemaId: gitlab
+query: "What are the titles and states of the child epics of epic #1 in the group/project group?"
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      epics(iid: "1", first: 1) {
+        nodes {
+          children(first: 10) {
+            nodes {
+              title
+              state
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Epic.title
+  - Epic.state
+targetTypes:
+  - Epic
+mustInclude:
+  - Query.group
+  - Group.epics
+  - Epic.children
+  - Epic.title
+  - Epic.state
+  - Epic.children(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "PM: child epics of a parent + state."
+answerSchema:
+  type: object
+  properties:
+    childEpics:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          state: *a1
+        required:
+          - title
+          - state
+        additionalProperties: false
+  required:
+    - childEpics
+  additionalProperties: false
+answer:
+  childEpics:
+    - title: Auth Sub-epic
+      state: opened
+    - title: API Sub-epic
+      state: closed

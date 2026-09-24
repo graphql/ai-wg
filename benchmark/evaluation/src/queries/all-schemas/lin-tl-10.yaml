@@ -1,0 +1,64 @@
+id: lin-tl-10
+schemaId: linear
+query: "Who is currently on triage rotation for the Engineering team?"
+operation: |
+  query {
+    team(id: "team-engineering") {
+      triageResponsibility {
+        id
+        manualSelection {
+          userIds
+        }
+        currentUser {
+          id
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - TriageResponsibility.id
+  - TriageResponsibilityManualSelection.userIds
+  - User.id
+  - User.name
+targetTypes:
+  - Team
+  - TriageResponsibility
+  - TriageResponsibilityManualSelection
+  - User
+mustInclude:
+  - Query.team
+  - Team.triageResponsibility
+  - TriageResponsibility.manualSelection
+  - TriageResponsibilityManualSelection.userIds
+  - Query.team(id:)
+mustExclude:
+  - Mutation
+notes: "Who is on triage duty for this team right now?"
+answerSchema:
+  type: object
+  properties:
+    onRotation:
+      type: array
+      items:
+        type: string
+      description: User ids in the triage rotation roster
+    currentUser:
+      type: string
+      description: User currently on triage
+  required:
+    - onRotation
+    - currentUser
+  additionalProperties: false
+answer:
+  onRotation:
+    - user-1
+    - user-2
+    - user-3
+  currentUser: Alice Johnson
+answers:
+  - onRotation:
+      - Alice Johnson
+      - Bob Smith
+      - Carol White
+    currentUser: Alice Johnson

@@ -1,0 +1,50 @@
+id: lin-ic-22
+schemaId: linear
+query: Show me my own profile information.
+operation: |
+  query {
+    viewer {
+      email
+      name
+      displayName
+      timezone
+    }
+  }
+targetFields:
+  - User.email
+  - User.name
+  - User.displayName
+  - User.timezone
+targetTypes:
+  - User
+mustInclude:
+  - Query.viewer
+  - User.email
+  - User.name
+  - User.displayName
+  - User.timezone
+mustExclude:
+  - Mutation
+notes: My profile basics.
+answerSchema:
+  type: object
+  properties:
+    email:
+      type: string
+    name:
+      type: string
+    displayName:
+      type: string
+    timezone:
+      type: string
+  required:
+    - email
+    - name
+    - displayName
+    - timezone
+  additionalProperties: false
+answer:
+  email: alice@acme.com
+  name: Alice Johnson
+  displayName: Alice Johnson
+  timezone: America/Los_Angeles

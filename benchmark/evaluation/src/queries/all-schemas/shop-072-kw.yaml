@@ -1,0 +1,29 @@
+id: shop-072-kw
+schemaId: shopify
+query: marketing click added cart abandoned
+operation: |
+  query {
+    abandonedCheckouts(first: 10) {
+      nodes {
+        customer {
+          canDelete
+        }
+        lineItems(first: 10) {
+          edges {
+            cursor
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.abandonedCheckouts
+  - AbandonedCheckout.customer
+  - AbandonedCheckout.lineItems
+  - AbandonedCheckout.lineItems(first:)
+  - QueryRoot.abandonedCheckouts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-072. Customers who added to cart from a marketing click but didn't check out.

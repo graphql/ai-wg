@@ -1,0 +1,5 @@
+{
+    "id": "name-fields",
+    "name": "Name + fields",
+    "description": "Renders \"<Type> { f1 f2 ... }\" — the type name plus its first 30 field names (capped to bound tokens)."
+}

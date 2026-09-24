@@ -1,0 +1,60 @@
+id: glab-014
+schemaId: gitlab
+query: >
+  For merge request gid://gitlab/MergeRequest/1, which jobs failed in its head
+  pipeline and why?
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      headPipeline {
+        jobs(statuses: [FAILED], first: 10) {
+          nodes {
+            name
+            failureMessage
+          }
+        }
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    failedJobs:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          failureMessage:
+            type: string
+        required:
+          - name
+          - failureMessage
+        additionalProperties: false
+  required:
+    - failedJobs
+  additionalProperties: false
+targetFields:
+  - CiJob.name
+  - CiJob.failureMessage
+targetTypes:
+  - CiJob
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.headPipeline
+  - Pipeline.jobs
+  - CiJob.name
+  - CiJob.failureMessage
+  - Pipeline.jobs(statuses:)
+  - Pipeline.jobs(first:)
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Developer: failed jobs and reasons on last pipeline."
+answer:
+  failedJobs:
+    - name: test-unit
+      failureMessage: exit code 1
+    - name: test-integration
+      failureMessage: timeout

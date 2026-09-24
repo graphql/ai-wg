@@ -1,0 +1,130 @@
+id: glab-027
+schemaId: gitlab
+query: What are the branch rules and push rules for project group/project?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      branchRules {
+        nodes {
+          name
+          isProtected
+        }
+      }
+      pushRules {
+        commitCommitterCheck
+        memberCheck
+        preventSecrets
+        maxFileSize
+        authorEmailRegex
+        branchNameRegex
+        commitCommitterNameCheck
+        commitMessageNegativeRegex
+        commitMessageRegex
+        denyDeleteTag
+        rejectNonDcoCommits
+        rejectUnsignedCommits
+      }
+    }
+  }
+targetFields:
+  - BranchRule.name
+  - BranchRule.isProtected
+  - PushRules.commitCommitterCheck
+  - PushRules.memberCheck
+  - PushRules.preventSecrets
+  - PushRules.maxFileSize
+targetTypes:
+  - Project
+  - BranchRule
+  - BranchRuleConnection
+  - PushRules
+mustInclude:
+  - Query.project
+  - Project.branchRules
+  - BranchRule.name
+  - BranchRule.isProtected
+  - Project.pushRules
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Maintainer: protected branches + push rules."
+answerSchema:
+  type: object
+  properties:
+    branchRules:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          isProtected:
+            type: boolean
+        required:
+          - name
+          - isProtected
+        additionalProperties: false
+    pushRules:
+      type: object
+      properties:
+        commitCommitterCheck:
+          type: boolean
+        memberCheck:
+          type: boolean
+        preventSecrets:
+          type: boolean
+        maxFileSize:
+          type: integer
+        authorEmailRegex:
+          type: string
+        branchNameRegex:
+          type: string
+        commitCommitterNameCheck:
+          type: boolean
+        commitMessageNegativeRegex:
+          type: string
+        commitMessageRegex:
+          type: string
+        denyDeleteTag:
+          type: boolean
+        rejectNonDcoCommits:
+          type: boolean
+        rejectUnsignedCommits:
+          type: boolean
+      required:
+        - commitCommitterCheck
+        - memberCheck
+        - preventSecrets
+        - maxFileSize
+        - authorEmailRegex
+        - branchNameRegex
+        - commitCommitterNameCheck
+        - commitMessageNegativeRegex
+        - commitMessageRegex
+        - denyDeleteTag
+        - rejectNonDcoCommits
+        - rejectUnsignedCommits
+      additionalProperties: false
+  required:
+    - branchRules
+    - pushRules
+  additionalProperties: false
+answer:
+  branchRules:
+    - name: release-branch-guard
+      isProtected: false
+    - name: main-protection-rule
+      isProtected: true
+  pushRules:
+    commitCommitterCheck: false
+    memberCheck: true
+    preventSecrets: false
+    maxFileSize: 376
+    authorEmailRegex: ^[a-zA-Z0-9._%+-]+@company.com$
+    branchNameRegex: ^(main|develop|feat|hotfix)/[a-zA-Z0-9-]+$
+    commitCommitterNameCheck: true
+    commitMessageNegativeRegex: ^WIP|^DEBUG|^TEMP
+    commitMessageRegex: "^(feat|fix|docs|style|refactor|test|chore):"
+    denyDeleteTag: false
+    rejectNonDcoCommits: true
+    rejectUnsignedCommits: true

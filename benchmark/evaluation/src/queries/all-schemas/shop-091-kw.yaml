@@ -1,0 +1,25 @@
+id: shop-091-kw
+schemaId: shopify
+query: inactive locations deactivated
+operation: |
+  query {
+    locations(first: 10) {
+      nodes {
+        isActive
+        deactivatedAt
+      }
+    }
+  }
+targetFields:
+  - Location.isActive
+  - Location.deactivatedAt
+targetTypes:
+  - Location
+mustInclude:
+  - QueryRoot.locations
+  - Location.isActive
+  - Location.deactivatedAt
+  - QueryRoot.locations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-091. Locations marked inactive or scheduled for deactivation.

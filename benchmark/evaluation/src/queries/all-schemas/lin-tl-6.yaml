@@ -1,0 +1,62 @@
+id: lin-tl-6
+schemaId: linear
+query: "What issues were left uncompleted when the Engineering team's cycles closed?"
+operation: |
+  query {
+    team(id: "team-engineering") {
+      cycles {
+        nodes {
+          id
+          uncompletedIssuesUponClose(first: 10) {
+            nodes {
+              id
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.title
+targetTypes:
+  - Team
+  - Cycle
+  - Issue
+mustInclude:
+  - Query.team
+  - Team.cycles
+  - Cycle.uncompletedIssuesUponClose
+  - Cycle.uncompletedIssuesUponClose(first:)
+  - Query.team(id:)
+mustExclude:
+  - Mutation
+notes: "Spill-over analysis: issues left over after a cycle closes."
+answerSchema:
+  type: object
+  properties:
+    cycles:
+      type: array
+      items:
+        type: object
+        properties:
+          uncompletedIssues:
+            type: array
+            items:
+              type: string
+              description: The issue title
+        required:
+          - uncompletedIssues
+        additionalProperties: false
+  required:
+    - cycles
+  additionalProperties: false
+answer:
+  cycles:
+    - uncompletedIssues:
+        - Resolve webpack bundle size issue
+        - Add dark mode support
+        - Fix CI pipeline flakiness
+    - uncompletedIssues:
+        - Add unit tests for payment module
+    - uncompletedIssues: []

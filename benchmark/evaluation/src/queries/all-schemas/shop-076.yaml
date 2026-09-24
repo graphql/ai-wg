@@ -1,0 +1,62 @@
+id: shop-076
+schemaId: shopify
+query: List the customer segments in the store, including each segment's name,
+  query definition, and last edit date. Return up to 10.
+operation: |
+  query {
+    segments(first: 10) {
+      nodes {
+        lastEditDate
+        query
+        name
+      }
+    }
+  }
+targetFields:
+  - Segment.lastEditDate
+  - Segment.query
+  - Segment.name
+targetTypes:
+  - Segment
+mustInclude:
+  - QueryRoot.segments
+  - Segment.lastEditDate
+  - Segment.query
+  - Segment.name
+  - QueryRoot.segments(first:)
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    segments:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          query:
+            type: string
+          lastEditDate:
+            type: string
+        required:
+          - name
+          - query
+          - lastEditDate
+        additionalProperties: false
+  required:
+    - segments
+  additionalProperties: false
+answer:
+  segments:
+    - name: Newsletter unsubscribed
+      query: "customers where total_spent >= 500 AND created_at >= 2024-01-01"
+      lastEditDate: "2025-05-23T00:00:00.000Z"
+    - name: Email subscribers engaged
+      query: orders where status = cancelled AND reason = customer_request
+      lastEditDate: "2024-09-14T00:00:00.000Z"
+    - name: Customers with at least one order
+      query: "customers_with_orders_count > 0"
+      lastEditDate: "2025-05-01T00:00:00.000Z"
+notes: List all customer segments with name, query definition, and last edit date.

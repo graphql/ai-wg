@@ -1,0 +1,65 @@
+id: gh-ext-044
+schemaId: github
+query: List gists by octocat with their names, descriptions, and star counts.
+operation: |
+  query {
+    user(login: "octocat") {
+      gists(first: 10, orderBy: {field: CREATED_AT, direction: DESC}) {
+        nodes {
+          name
+          description
+          stargazerCount
+        }
+      }
+    }
+  }
+targetFields:
+  - Gist.stargazerCount
+  - Gist.name
+targetTypes:
+  - Gist
+mustInclude:
+  - Query.user
+  - User.gists
+  - GistConnection.nodes
+  - Gist.stargazerCount
+  - Gist.name
+  - Query.user(login:)
+  - User.gists(first:)
+mustExclude:
+  - Mutation
+notes: Gists with their names and star counts to identify which gists have the
+  most stars.
+answerSchema:
+  type: object
+  properties:
+    gists:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+          stargazerCount:
+            type: integer
+        required:
+          - name
+          - description
+          - stargazerCount
+        additionalProperties: false
+  required:
+    - gists
+  additionalProperties: false
+answer:
+  gists:
+    - name: deployment-script.sh
+      description: My first gist
+      stargazerCount: 5
+    - name: gist-older
+      description: An older gist
+      stargazerCount: 2
+    - name: gist-oldest
+      description: The oldest gist
+      stargazerCount: 0

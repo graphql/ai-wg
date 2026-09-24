@@ -1,0 +1,64 @@
+id: gh-ext-075
+schemaId: github
+query: What are the accepted answers to discussions in the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      discussions(first: 10) {
+        nodes {
+          answer {
+            body
+            author {
+              login
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscussionComment.body
+targetTypes:
+  - DiscussionComment
+  - Discussion
+  - Comment
+mustInclude:
+  - Query.repository
+  - Repository.discussions
+  - Discussion.answer
+  - DiscussionComment.body
+  - DiscussionComment.author
+  - Actor.login
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.discussions(first:)
+mustExclude:
+  - Mutation
+notes: Discussion comments that are marked as the answer.
+answerSchema:
+  type: object
+  properties:
+    acceptedAnswers:
+      type: array
+      items:
+        type: object
+        properties:
+          author:
+            type: string
+          body:
+            type: string
+        required:
+          - author
+          - body
+        additionalProperties: false
+  required:
+    - acceptedAnswers
+  additionalProperties: false
+answer:
+  acceptedAnswers:
+    - author: alice
+      body: This is the answer.
+    - author: alice
+      body: This is the answer.
+    - author: alice
+      body: This is the answer.

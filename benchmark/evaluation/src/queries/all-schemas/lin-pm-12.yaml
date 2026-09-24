@@ -1,0 +1,49 @@
+id: lin-pm-12
+schemaId: linear
+query: "What documents are attached to the project with ID 'project-auth-redesign'?"
+operation: |
+  query {
+    project(id: "project-auth-redesign") {
+      documents(first: 10) {
+        nodes {
+          title
+          content
+        }
+      }
+    }
+  }
+targetFields:
+  - Document.title
+  - Document.content
+targetTypes:
+  - Document
+  - Project
+mustInclude:
+  - Query.project
+  - Project.documents
+  - Document.title
+  - Document.content
+  - Project.documents(first:)
+  - Query.project(id:)
+mustExclude:
+  - Mutation
+notes: Documents scoped to a project.
+answerSchema:
+  type: object
+  properties:
+    documents:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - documents
+  additionalProperties: false
+answer:
+  documents:
+    - title: Auth Redesign Spec

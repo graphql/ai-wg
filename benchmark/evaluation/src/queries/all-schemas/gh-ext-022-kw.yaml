@@ -1,0 +1,37 @@
+id: gh-ext-022-kw
+schemaId: github
+query: last successful production deploy run
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      deployments(first: 10) {
+        nodes {
+          environment
+          latestStatus {
+            state
+            createdAt
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Deployment.environment
+  - DeploymentStatus.state
+  - DeploymentStatus.createdAt
+targetTypes:
+  - Deployment
+  - DeploymentStatus
+mustInclude:
+  - Query.repository
+  - Repository.deployments
+  - Deployment.environment
+  - Deployment.latestStatus
+  - DeploymentStatus.state
+  - DeploymentStatus.createdAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.deployments(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-022. Filter recent deployments to production environment with SUCCESS status.

@@ -1,0 +1,66 @@
+id: sg-schools-by-zone
+schemaId: singapore
+query: List all MOE schools with their name, education level, and MOE
+  administrative zone.
+operation: |
+  query {
+    allSchools {
+      name
+      zone
+      level
+    }
+  }
+targetFields:
+  - School.zone
+  - School.name
+  - School.level
+targetTypes:
+  - School
+mustInclude:
+  - Query.allSchools
+  - School.zone
+mustExclude: []
+shouldInclude:
+  - School.name
+  - School.level
+notes: No zone filter arg exists on allSchools; the question asks for the full
+  list with zone and level data.
+answerSchema:
+  type: object
+  properties:
+    schools:
+      type: array
+      items:
+        type: object
+        properties:
+          schoolName:
+            type: string
+          educationLevel:
+            type: string
+          moeZone:
+            type: string
+        required:
+          - schoolName
+          - educationLevel
+          - moeZone
+        additionalProperties: false
+  required:
+    - schools
+  additionalProperties: false
+answer:
+  schools:
+    - schoolName: Raffles Institution
+      educationLevel: JUNIOR_COLLEGE
+      moeZone: North-East
+    - schoolName: Riverside Primary School
+      educationLevel: JUNIOR_COLLEGE
+      moeZone: Central
+    - schoolName: Ang Mo Kio Primary School
+      educationLevel: PRIMARY
+      moeZone: NORTH
+    - schoolName: Bedok Secondary School
+      educationLevel: SECONDARY
+      moeZone: EAST
+    - schoolName: Jurong Mixed Levels Institute
+      educationLevel: MIXED_LEVELS
+      moeZone: WEST

@@ -1,0 +1,30 @@
+id: lin-pm-6-kw
+schemaId: linear
+query: release notes published body
+operation: |
+  query {
+    releaseNotes(first: 10) {
+      nodes {
+        lastRelease {
+          id
+        }
+        documentContent {
+          id
+        }
+        generationStatus
+      }
+    }
+  }
+targetFields:
+  - ReleaseNote.generationStatus
+targetTypes:
+  - ReleaseNote
+mustInclude:
+  - Query.releaseNotes
+  - ReleaseNote.lastRelease
+  - ReleaseNote.documentContent
+  - ReleaseNote.generationStatus
+  - Query.releaseNotes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-6. Drafted release notes review.

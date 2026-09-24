@@ -1,0 +1,5 @@
+{
+    "id": "linear",
+    "name": "Linear",
+    "description": "Linear issue tracker API (~1MB SDL). No queries in v1 eval yet; available for new categories."
+}

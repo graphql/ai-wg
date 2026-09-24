@@ -1,0 +1,55 @@
+id: lin-ic-4
+schemaId: linear
+query: "Which issues appear in my recent issue notifications?"
+operation: |
+  query {
+    notifications(first: 10) {
+      nodes {
+        ... on IssueNotification {
+          issue {
+            id
+            title
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueNotification.issue
+  - Issue.title
+targetTypes:
+  - Notification
+  - IssueNotification
+  - Issue
+mustInclude:
+  - Query.notifications
+  - IssueNotification.issue
+  - Issue.title
+  - Query.notifications(first:)
+mustExclude:
+  - Mutation
+notes: Issue notifications specifically.
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - title: Fix authentication token refresh
+    - title: Implement rate limiting on API gateway
+    - title: Migrate database to PostgreSQL 16
+    - title: Refactor authentication middleware
+    - title: Fix rate limit bypass vulnerability
+    - title: Performance regression in search results

@@ -1,0 +1,44 @@
+id: glab-005
+schemaId: gitlab
+query: List the unresolved discussions on merge request gid://gitlab/MergeRequest/1.
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      discussions(first: 10) {
+        nodes {
+          id
+          resolved
+        }
+      }
+    }
+  }
+targetFields:
+  - Discussion.id
+  - Discussion.resolved
+targetTypes:
+  - Discussion
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.discussions
+  - Discussion.id
+  - Discussion.resolved
+  - MergeRequest.discussions(first:)
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Developer: unresolved discussions on an MR."
+answerSchema:
+  type: object
+  properties:
+    unresolvedDiscussions:
+      type: array
+      items:
+        type: string
+  required:
+    - unresolvedDiscussions
+  additionalProperties: false
+answer:
+  unresolvedDiscussions:
+    - gid://gitlab/MergeRequest/1/Discussion/0
+    - gid://gitlab/MergeRequest/1/Discussion/2
+    - gid://gitlab/MergeRequest/1/Discussion/4

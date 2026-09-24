@@ -1,0 +1,23 @@
+id: shop-065-kw
+schemaId: shopify
+query: expiring discount codes this month
+operation: |
+  query {
+    codeDiscountNodes(first: 10) {
+      edges {
+        cursor
+      }
+    }
+  }
+targetFields:
+  - DiscountCodeBasic.endsAt
+targetTypes:
+  - DiscountCodeBasic
+mustInclude:
+  - QueryRoot.codeDiscountNodes
+  - DiscountCodeBasic.endsAt
+  - DiscountCodeBasic.codes
+  - QueryRoot.codeDiscountNodes(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-065. Discount codes expiring this month.

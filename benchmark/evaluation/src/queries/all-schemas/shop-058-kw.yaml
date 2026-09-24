@@ -1,0 +1,51 @@
+id: shop-058-kw
+schemaId: shopify
+query: customer messages contact order notes
+operation: |
+  query {
+    order(id: "gid://shopify/Object/1") {
+      events(first: 10) {
+        nodes {
+          message
+        }
+      }
+    }
+    abandonedCheckouts(first: 10) {
+      nodes {
+        customer {
+          companyContactProfiles {
+            company {
+              draftOrders(first: 10) {
+                nodes {
+                  events(first: 10) {
+                    edges {
+                      __typename
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Event.message
+  - CommentEvent.message
+targetTypes:
+  - Event
+  - CommentEvent
+mustInclude:
+  - QueryRoot.order
+  - Order.events
+  - Event.message
+  - CommentEvent.message
+  - Company.draftOrders(first:)
+  - DraftOrder.events(first:)
+  - Order.events(first:)
+  - QueryRoot.abandonedCheckouts(first:)
+  - QueryRoot.order(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-058. Messages the customer left on an order timeline.

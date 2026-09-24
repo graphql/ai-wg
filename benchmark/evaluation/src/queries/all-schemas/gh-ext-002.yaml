@@ -1,0 +1,48 @@
+id: gh-ext-002
+schemaId: github
+query: What is the changed file count and OID of the most recent commit on the
+  default branch of the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      defaultBranchRef {
+        target {
+          ... on Commit {
+            changedFilesIfAvailable
+            oid
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Commit.changedFilesIfAvailable
+  - Commit.oid
+targetTypes:
+  - Commit
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.defaultBranchRef
+  - Ref.target
+  - Commit.changedFilesIfAvailable
+  - Commit.oid
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Most recent commit on the repository plus its changed files count.
+answerSchema:
+  type: object
+  properties:
+    oid:
+      type: string
+    changedFiles:
+      type: integer
+  required:
+    - oid
+    - changedFiles
+  additionalProperties: false
+answer:
+  oid: abc1234def5678901234567890abcdef12345678
+  changedFiles: 2

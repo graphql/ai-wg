@@ -1,0 +1,101 @@
+id: gh-ext-015
+schemaId: github
+query: List pull requests in the octocat/example repository with their
+  outstanding review requests.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          number
+          title
+          reviewRequests(first: 10) {
+            nodes {
+              requestedReviewer {
+                ... on User {
+                  login
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.number
+  - PullRequest.title
+  - User.login
+targetTypes: []
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.reviewRequests
+  - ReviewRequest.requestedReviewer
+  - PullRequest.reviewRequests(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Walk PRs whose review-request list contains a particular reviewer.
+answerSchema:
+  type: object
+  properties:
+    pullRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+          requestedReviewers:
+            type: array
+            items:
+              type: string
+        required:
+          - number
+          - title
+          - requestedReviewers
+        additionalProperties: false
+  required:
+    - pullRequests
+  additionalProperties: false
+answer:
+  pullRequests:
+    - number: 1
+      title: Add GraphQL endpoint
+      requestedReviewers:
+        - alice
+        - bob
+    - number: 2
+      title: Fix login bug
+      requestedReviewers: []
+    - number: 3
+      title: Update dependencies
+      requestedReviewers: []
+    - number: 4
+      title: Add dark mode
+      requestedReviewers: []
+    - number: 5
+      title: Improve search performance
+      requestedReviewers: []
+    - number: 6
+      title: Fix security vulnerability
+      requestedReviewers: []
+    - number: 7
+      title: Add CI pipeline
+      requestedReviewers: []
+    - number: 8
+      title: Update documentation
+      requestedReviewers: []
+    - number: 9
+      title: Implement rate limiting
+      requestedReviewers: []
+    - number: 10
+      title: Refactor data layer
+      requestedReviewers: []

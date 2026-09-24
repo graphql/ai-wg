@@ -1,0 +1,46 @@
+id: lin-tl-1
+schemaId: linear
+query: "How is cycle cycle-1 progressing toward completion?"
+operation: |
+  query {
+    cycle(id: "cycle-1") {
+      progress
+      completedAt
+    }
+  }
+targetFields:
+  - Cycle.progress
+  - Cycle.completedAt
+targetTypes:
+  - Cycle
+mustInclude:
+  - Query.cycle
+  - Cycle.progress
+  - Cycle.completedAt
+  - Query.cycle(id:)
+mustExclude:
+  - Mutation
+notes: Team-lead cycle velocity overview; needs cycle entry plus
+  completion/progress signals.
+answerSchema:
+  type: object
+  properties:
+    cycle:
+      type: object
+      properties:
+        progress:
+          type: number
+          description: Completion percentage of the cycle
+        completedAt:
+          type: string
+      required:
+        - progress
+        - completedAt
+      additionalProperties: false
+  required:
+    - cycle
+  additionalProperties: false
+answer:
+  cycle:
+    progress: 0.766
+    completedAt: 2025-01-20T00:00:00.000Z

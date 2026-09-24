@@ -1,0 +1,29 @@
+id: gh-ext-053-kw
+schemaId: github
+query: issue templates repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issueTemplates {
+        name
+        body
+      }
+    }
+  }
+targetFields:
+  - IssueTemplate.name
+  - IssueTemplate.body
+targetTypes:
+  - IssueTemplate
+  - Issue
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.issueTemplates
+  - IssueTemplate.name
+  - IssueTemplate.body
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-053. Issue templates available in the repository.

@@ -1,0 +1,28 @@
+id: shop-045-kw
+schemaId: shopify
+query: store credit balances customers
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        storeCreditAccounts(first: 10) {
+          nodes {
+            balance {
+              amount
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.customers
+  - Customer.storeCreditAccounts
+  - StoreCreditAccount.balance
+  - Customer.storeCreditAccounts(first:)
+  - QueryRoot.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-045. Customers with store credit balances to remind them about.

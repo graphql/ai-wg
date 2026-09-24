@@ -1,0 +1,67 @@
+id: lin-ad-1
+schemaId: linear
+query: List every admin in the workspace.
+operation: |
+  query {
+    users(filter: { admin: { eq: true } }, first: 50) {
+      nodes {
+        id
+        name
+        email
+      }
+    }
+  }
+targetFields:
+  - User.id
+  - User.name
+  - User.email
+targetTypes:
+  - User
+mustInclude:
+  - Query.users
+  - User.id
+  - User.name
+  - User.email
+  - Query.users(filter:)
+mustExclude:
+  - Mutation
+notes: "Admin user roster — filtered to admin: true."
+answerSchema:
+  type: object
+  properties:
+    admins:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          email:
+            type: string
+        required:
+          - id
+          - name
+          - email
+        additionalProperties: false
+  required:
+    - admins
+  additionalProperties: false
+answer:
+  admins:
+    - id: user-1
+      name: Alice Johnson
+      email: alice@acme.com
+    - id: user-2
+      name: Bob Smith
+      email: bob@acme.com
+    - id: user-3
+      name: Carol White
+      email: carol@acme.com
+    - id: user-4
+      name: David Lee
+      email: david@acme.com
+    - id: user-5
+      name: Eva Martinez
+      email: eva@acme.com

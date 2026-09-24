@@ -1,0 +1,23 @@
+id: shop-039-kw
+schemaId: shopify
+query: inventory tracking disabled products
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        tracksInventory
+      }
+    }
+  }
+targetFields:
+  - Product.tracksInventory
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.products
+  - Product.tracksInventory
+  - ProductVariant.inventoryItem
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-039. Products with inventory tracking turned off.

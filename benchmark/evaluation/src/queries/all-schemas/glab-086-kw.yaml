@@ -1,0 +1,29 @@
+id: glab-086-kw
+schemaId: gitlab
+query: milestone schedule upcoming quarter
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      milestones(first: 10) {
+        nodes {
+          startDate
+          dueDate
+        }
+      }
+    }
+  }
+targetFields:
+  - Milestone.startDate
+  - Milestone.dueDate
+targetTypes:
+  - Milestone
+mustInclude:
+  - Query.group
+  - Group.milestones
+  - Milestone.startDate
+  - Milestone.dueDate
+  - Group.milestones(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-086. PM: milestone schedule upcoming."

@@ -1,0 +1,29 @@
+id: gh-ext-016-kw
+schemaId: github
+query: reopened pull requests
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          timelineItems(first: 10) {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.timelineItems
+  - ReopenedEvent.actor
+  - PullRequest.timelineItems(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-016. Detect reopen events on PRs through the timeline.

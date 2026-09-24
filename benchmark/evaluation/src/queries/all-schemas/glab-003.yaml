@@ -1,0 +1,33 @@
+id: glab-003
+schemaId: gitlab
+query: What is the head pipeline status for merge request gid://gitlab/MergeRequest/1?
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      headPipeline {
+        status
+      }
+    }
+  }
+targetFields:
+  - Pipeline.status
+targetTypes:
+  - Pipeline
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.headPipeline
+  - Pipeline.status
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Developer: head pipeline status on a single MR."
+answerSchema:
+  type: object
+  properties:
+    headPipelineStatus:
+      type: string
+  required:
+    - headPipelineStatus
+  additionalProperties: false
+answer:
+  headPipelineStatus: FAILED

@@ -1,0 +1,72 @@
+id: sg-traffic-camera-locations
+schemaId: singapore
+query: List all traffic camera locations with their image URLs and coordinates.
+operation: |
+  query {
+    trafficCameras {
+      cameraId
+      imageUrl
+      latitude
+      longitude
+      timestamp
+    }
+  }
+targetFields:
+  - TrafficCamera.imageUrl
+  - TrafficCamera.latitude
+  - TrafficCamera.longitude
+targetTypes:
+  - TrafficCamera
+mustInclude:
+  - Query.trafficCameras
+  - TrafficCamera.imageUrl
+  - TrafficCamera.latitude
+  - TrafficCamera.longitude
+mustExclude: []
+shouldInclude:
+  - TrafficCamera.cameraId
+notes: Multi-leaf single-root. Tests that the algorithm includes all relevant
+  leaves, not just the top one.
+answerSchema:
+  type: object
+  properties:
+    trafficCameras:
+      type: array
+      items:
+        type: object
+        properties:
+          cameraId:
+            type: string
+          imageUrl:
+            type: string
+          latitude:
+            type: number
+          longitude:
+            type: number
+        required:
+          - cameraId
+          - imageUrl
+          - latitude
+          - longitude
+        additionalProperties: false
+  required:
+    - trafficCameras
+  additionalProperties: false
+answer:
+  trafficCameras:
+    - cameraId: SG-PIE-0123
+      imageUrl: https://traffic.data.gov.sg/cameras/SG-PIE-0123.jpg
+      latitude: 10.9
+      longitude: 65.6
+    - cameraId: SG-ECP-0047
+      imageUrl: https://traffic.data.gov.sg/cameras/SG-ECP-0047.jpg
+      latitude: 52.3
+      longitude: 69.7
+    - cameraId: "1001"
+      imageUrl: https://images.data.gov.sg/api/traffic-images/2025/06/camera1001.jpg
+      latitude: 1.3521
+      longitude: 103.8198
+    - cameraId: "1002"
+      imageUrl: https://images.data.gov.sg/api/traffic-images/2025/06/camera1002.jpg
+      latitude: 1.36
+      longitude: 103.91

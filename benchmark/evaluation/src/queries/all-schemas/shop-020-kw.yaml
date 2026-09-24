@@ -1,0 +1,39 @@
+id: shop-020-kw
+schemaId: shopify
+query: fulfillment orders on hold reason
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        fulfillmentOrders(first: 10) {
+          nodes {
+            fulfillmentHolds {
+              reason
+            }
+          }
+        }
+      }
+    }
+    assignedFulfillmentOrders(first: 10) {
+      nodes {
+        fulfillmentHolds {
+          reason
+        }
+      }
+    }
+  }
+targetFields:
+  - FulfillmentHold.reason
+targetTypes:
+  - FulfillmentHold
+mustInclude:
+  - QueryRoot.orders
+  - Order.fulfillmentOrders
+  - FulfillmentOrder.fulfillmentHolds
+  - FulfillmentHold.reason
+  - Order.fulfillmentOrders(first:)
+  - QueryRoot.assignedFulfillmentOrders(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-020. Fulfillment orders on hold and the reason for the hold.

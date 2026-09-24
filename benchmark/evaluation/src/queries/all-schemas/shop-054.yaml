@@ -1,0 +1,40 @@
+id: shop-054
+schemaId: shopify
+query: Is customer 1234 a member of any segment, and which ones?
+operation: |
+  query {
+    customerSegmentMembership(segmentIds: ["gid://shopify/Object/1"], customerId: "gid://shopify/Object/1") {
+      memberships {
+        isMember
+        segmentId
+      }
+    }
+  }
+targetFields:
+  - SegmentMembership.isMember
+  - SegmentMembership.segmentId
+targetTypes:
+  - SegmentMembership
+mustInclude:
+  - QueryRoot.customerSegmentMembership
+  - SegmentMembershipResponse.memberships
+  - SegmentMembership.isMember
+  - SegmentMembership.segmentId
+  - QueryRoot.customerSegmentMembership(customerId:)
+  - QueryRoot.customerSegmentMembership(segmentIds:)
+mustExclude:
+  - Mutation
+notes: Segment memberships for a particular customer.
+answer:
+  segments:
+    - gid://shopify/Object/1
+answerSchema:
+  type: object
+  properties:
+    segments:
+      type: array
+      items:
+        type: string
+  required:
+    - segments
+  additionalProperties: false

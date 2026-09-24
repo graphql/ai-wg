@@ -1,0 +1,31 @@
+id: lin-ad-11-kw
+schemaId: linear
+query: git automation state events team
+operation: |
+  query {
+    team(id: "<id>") {
+      gitAutomationStates(first: 10) {
+        nodes {
+          state {
+            id
+          }
+          event
+        }
+      }
+    }
+  }
+targetFields:
+  - GitAutomationState.event
+targetTypes:
+  - GitAutomationState
+  - Team
+mustInclude:
+  - Query.team
+  - Team.gitAutomationStates
+  - GitAutomationState.state
+  - GitAutomationState.event
+  - Query.team(id:)
+  - Team.gitAutomationStates(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-11. Git automation rules per team.

@@ -1,0 +1,28 @@
+id: lin-ad-1-kw
+schemaId: linear
+query: admins workspace list
+operation: |
+  query {
+    users(first: 10) {
+      nodes {
+        email
+        admin
+        active
+      }
+    }
+  }
+targetFields:
+  - User.email
+  - User.admin
+  - User.active
+targetTypes:
+  - User
+mustInclude:
+  - Query.users
+  - User.email
+  - User.admin
+  - User.active
+  - Query.users(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-1. Admin user roster with role + status.

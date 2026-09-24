@@ -1,0 +1,28 @@
+id: shop-034-kw
+schemaId: shopify
+query: products tagged eco-friendly price
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        tags
+        priceRangeV2 {
+          maxVariantPrice {
+            amount
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.tags
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.products
+  - Product.tags
+  - Product.priceRangeV2
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-034. Products tagged with a tag and their current price range.

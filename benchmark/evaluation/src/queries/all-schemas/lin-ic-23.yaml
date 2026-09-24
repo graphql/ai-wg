@@ -1,0 +1,103 @@
+id: lin-ic-23
+schemaId: linear
+query: "What are my notification preferences set to?"
+operation: |
+  query {
+    userSettings {
+      notificationDeliveryPreferences {
+        mobile {
+          notificationsDisabled
+        }
+      }
+      notificationCategoryPreferences {
+        assignments {
+          mobile
+          desktop
+          email
+          slack
+        }
+        mentions {
+          mobile
+          desktop
+          email
+          slack
+        }
+      }
+    }
+  }
+targetFields:
+  - NotificationDeliveryPreferencesChannel.notificationsDisabled
+  - NotificationChannelPreferences.mobile
+  - NotificationChannelPreferences.desktop
+  - NotificationChannelPreferences.email
+  - NotificationChannelPreferences.slack
+targetTypes:
+  - UserSettings
+  - NotificationDeliveryPreferences
+  - NotificationCategoryPreferences
+  - NotificationChannelPreferences
+mustInclude:
+  - Query.userSettings
+  - UserSettings.notificationDeliveryPreferences
+  - UserSettings.notificationCategoryPreferences
+  - NotificationDeliveryPreferences.mobile
+  - NotificationCategoryPreferences.assignments
+mustExclude:
+  - Mutation
+notes: Notification preferences settings.
+answerSchema:
+  type: object
+  properties:
+    mobileNotificationsDisabled:
+      type: boolean
+    assignments:
+      type: object
+      properties:
+        mobile:
+          type: boolean
+        desktop:
+          type: boolean
+        email:
+          type: boolean
+        slack:
+          type: boolean
+      required:
+        - mobile
+        - desktop
+        - email
+        - slack
+      additionalProperties: false
+    mentions:
+      type: object
+      properties:
+        mobile:
+          type: boolean
+        desktop:
+          type: boolean
+        email:
+          type: boolean
+        slack:
+          type: boolean
+      required:
+        - mobile
+        - desktop
+        - email
+        - slack
+      additionalProperties: false
+  required:
+    - mobileNotificationsDisabled
+    - assignments
+    - mentions
+  additionalProperties: false
+answer:
+  mobileNotificationsDisabled: false
+  assignments:
+    mobile: true
+    desktop: true
+    email: true
+    slack: false
+  mentions:
+    mobile: true
+    desktop: true
+    email: false
+    slack: true

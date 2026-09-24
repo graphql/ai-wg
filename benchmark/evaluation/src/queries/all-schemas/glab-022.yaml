@@ -1,0 +1,115 @@
+id: glab-022
+schemaId: gitlab
+query: List merge requests in project group/project with their approval rules
+  and scan result policies.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          iid
+          title
+          approvalState {
+            rules {
+              name
+              type
+              scanResultPolicies {
+                name
+                approvalsRequired
+                reportType
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.iid
+  - MergeRequest.title
+  - ApprovalRule.scanResultPolicies
+  - ApprovalScanResultPolicy.name
+  - ApprovalScanResultPolicy.approvalsRequired
+  - ApprovalScanResultPolicy.reportType
+targetTypes:
+  - MergeRequestApprovalState
+  - ApprovalRule
+  - ApprovalScanResultPolicy
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.approvalState
+  - MergeRequestApprovalState.rules
+  - ApprovalRule.scanResultPolicies
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Maintainer: MRs with scan-result policy approvals."
+answerSchema:
+  type: object
+  properties:
+    mergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          approvalRules:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                scanResultPolicies:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      approvalsRequired:
+                        type: integer
+                      reportType:
+                        type: string
+                    required:
+                      - name
+                      - approvalsRequired
+                      - reportType
+                    additionalProperties: false
+              required:
+                - name
+                - type
+                - scanResultPolicies
+              additionalProperties: false
+        required:
+          - iid
+          - title
+          - approvalRules
+        additionalProperties: false
+  required:
+    - mergeRequests
+  additionalProperties: false
+answer:
+  mergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+      approvalRules: []
+    - iid: "108"
+      title: "perf: reduce memory footprint of serializer"
+      approvalRules: []
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+      approvalRules: []
+    - iid: "4774"
+      title: "feat: add webhook retry mechanism"
+      approvalRules: []
+    - iid: "2623"
+      title: "fix: resolve race condition in cache layer"
+      approvalRules: []

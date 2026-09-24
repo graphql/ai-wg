@@ -1,0 +1,82 @@
+id: shop-096
+schemaId: shopify
+query: List company contacts who have placed orders on behalf of their company.
+operation: |
+  query {
+    companies(first: 10) {
+      nodes {
+        contacts(first: 10) {
+          nodes {
+            id
+            customer {
+              displayName
+            }
+            orders(first: 10) {
+              nodes {
+                id
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CompanyContact.id
+  - Customer.displayName
+  - Order.id
+  - Order.name
+targetTypes: []
+mustInclude:
+  - QueryRoot.companies
+  - Company.contacts
+  - CompanyContact.orders
+  - CompanyContact.customer
+  - Company.contacts(first:)
+  - CompanyContact.orders(first:)
+  - QueryRoot.companies(first:)
+  - Customer.displayName
+  - Order.name
+mustExclude:
+  - Mutation
+notes: Company contacts who have placed orders on behalf of their company.
+answerSchema:
+  type: object
+  properties:
+    contacts:
+      type: array
+      items:
+        type: object
+        properties:
+          customer:
+            type: string
+          orders:
+            type: array
+            items:
+              type: string
+        required:
+          - customer
+          - orders
+        additionalProperties: false
+  required:
+    - contacts
+  additionalProperties: false
+answer:
+  contacts:
+    - customer: Ava Brown
+      orders:
+        - Item 1408
+        - Item 1749
+    - customer: Jackson King
+      orders:
+        - Item 9986
+        - Item 8682
+    - customer: Mia Martin
+      orders:
+        - Item 1286
+        - Item 7566
+    - customer: Lucas Taylor
+      orders:
+        - Item 2701
+        - Item 6557

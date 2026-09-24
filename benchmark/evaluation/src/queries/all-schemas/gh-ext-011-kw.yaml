@@ -1,0 +1,36 @@
+id: gh-ext-011-kw
+schemaId: github
+query: closed unmerged pull requests quarter
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          state
+          closed
+          merged
+          closedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.state
+  - PullRequest.closed
+  - PullRequest.merged
+  - PullRequest.closedAt
+targetTypes:
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.state
+  - PullRequest.closed
+  - PullRequest.merged
+  - PullRequest.closedAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-011. PRs with state CLOSED that are not merged in a date window.

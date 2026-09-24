@@ -1,0 +1,64 @@
+id: gh-ext-036
+schemaId: github
+query: List open vulnerability alerts in the octocat/example repository with
+  their alert number and severity.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      vulnerabilityAlerts(first: 10, states: [OPEN]) {
+        nodes {
+          number
+          securityVulnerability {
+            severity
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - RepositoryVulnerabilityAlert.number
+  - SecurityVulnerability.severity
+targetTypes:
+  - RepositoryVulnerabilityAlert
+  - SecurityVulnerability
+mustInclude:
+  - Query.repository
+  - Repository.vulnerabilityAlerts
+  - RepositoryVulnerabilityAlert.number
+  - RepositoryVulnerabilityAlert.securityVulnerability
+  - SecurityVulnerability.severity
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.vulnerabilityAlerts(first:)
+  - Repository.vulnerabilityAlerts(states:)
+mustExclude:
+  - Mutation
+notes: Open vulnerability alerts at high or critical severity stand in for code
+  scanning alerts. Filtered to OPEN state via states arg.
+answerSchema:
+  type: object
+  properties:
+    vulnerabilityAlerts:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          severity:
+            type: string
+        required:
+          - number
+          - severity
+        additionalProperties: false
+  required:
+    - vulnerabilityAlerts
+  additionalProperties: false
+answer:
+  vulnerabilityAlerts:
+    - number: 534
+      severity: HIGH
+    - number: 249
+      severity: HIGH
+    - number: 103
+      severity: HIGH

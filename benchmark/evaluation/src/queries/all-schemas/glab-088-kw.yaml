@@ -1,0 +1,30 @@
+id: glab-088-kw
+schemaId: gitlab
+query: release evidences latest release
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      releases(first: 10) {
+        nodes {
+          evidences(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - ReleaseEvidence
+mustInclude:
+  - Query.project
+  - Project.releases
+  - Release.evidences
+  - Project.releases(first:)
+  - Query.project(fullPath:)
+  - Release.evidences(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-088. PM: release evidences."

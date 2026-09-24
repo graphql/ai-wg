@@ -1,0 +1,26 @@
+id: glab-059-kw
+schemaId: gitlab
+query: auto remediation vulnerabilities
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          aiResolutionAvailable
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.aiResolutionAvailable
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.aiResolutionAvailable
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-059. Security: vulns with available auto-remediation."

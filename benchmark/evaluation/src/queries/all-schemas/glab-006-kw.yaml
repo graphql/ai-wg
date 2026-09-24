@@ -1,0 +1,24 @@
+id: glab-006-kw
+schemaId: gitlab
+query: missing approvals merge request
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      approvalState {
+        __typename
+      }
+      approvalsLeft
+    }
+  }
+targetFields:
+  - MergeRequest.approvalsLeft
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.approvalState
+  - MergeRequest.approvalsLeft
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-006. Developer: missing approvals on my MR. approvalState/approvalsLeft."

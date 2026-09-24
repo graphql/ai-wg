@@ -1,0 +1,22 @@
+id: glab-050-kw
+schemaId: gitlab
+query: job execution status runners team
+operation: |
+  query {
+    runners(first: 10) {
+      nodes {
+        jobExecutionStatus
+      }
+    }
+  }
+targetFields:
+  - CiRunner.jobExecutionStatus
+targetTypes:
+  - CiRunner
+mustInclude:
+  - Query.runners
+  - CiRunner.jobExecutionStatus
+  - Query.runners(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-050. DevOps: job execution status counts per runner."

@@ -1,0 +1,36 @@
+id: lin-tl-15-kw
+schemaId: linear
+query: team next cycle starts ends
+operation: |
+  query {
+    team(id: "<id>") {
+      cycles(first: 10) {
+        nodes {
+          isActive
+          isNext
+          startsAt
+          endsAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Cycle.isActive
+  - Cycle.isNext
+  - Cycle.startsAt
+  - Cycle.endsAt
+targetTypes:
+  - Cycle
+  - Team
+mustInclude:
+  - Query.team
+  - Team.cycles
+  - Cycle.isActive
+  - Cycle.isNext
+  - Cycle.startsAt
+  - Cycle.endsAt
+  - Query.team(id:)
+  - Team.cycles(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-15. Active vs. upcoming cycles for a team.

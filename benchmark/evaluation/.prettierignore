@@ -1,0 +1,21 @@
+# Dependencies & caches
+node_modules/
+.pnpm-store/
+.embed-cache/
+.result-cache/
+
+# Generated / run artifacts (ground truth — never hand- or auto-format)
+runs/
+.archive/
+
+# Lockfile
+pnpm-lock.yaml
+
+# Data fixtures, not hand-formatted source:
+#   GraphQL SDL fixtures and the YAML query corpus are data the harness reads
+#   verbatim — reformatting risks corrupting fixtures and snapshots.
+src/schemas/**/*.graphql
+src/queries/**/*.yaml
+
+# Append-only log, not prose to be reflowed
+logbook.md

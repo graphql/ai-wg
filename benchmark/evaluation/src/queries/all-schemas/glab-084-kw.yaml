@@ -1,0 +1,21 @@
+id: glab-084-kw
+schemaId: gitlab
+query: confidential work items
+operation: |
+  query {
+    workItem(id: "gid://gitlab/WorkItem/1") {
+      widgets {
+        __typename
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - WorkItemWidget
+mustInclude:
+  - Query.workItem
+  - WorkItem.widgets
+  - Query.workItem(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-084. PM: confidential work items."

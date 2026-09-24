@@ -1,0 +1,26 @@
+id: lin-tl-12-kw
+schemaId: linear
+query: issue templates team
+operation: |
+  query {
+    templates {
+      name
+      type
+      team {
+        id
+      }
+    }
+  }
+targetFields:
+  - Template.name
+  - Template.type
+targetTypes:
+  - Template
+mustInclude:
+  - Query.templates
+  - Template.name
+  - Template.type
+  - Template.team
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-12. Template inventory.

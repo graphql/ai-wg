@@ -1,0 +1,41 @@
+id: gh-ext-023-kw
+schemaId: github
+query: slowest actions jobs latest run
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object {
+        ... on Commit {
+          checkSuites(first: 10) {
+            nodes {
+              checkRuns(first: 10) {
+                nodes {
+                  startedAt
+                  completedAt
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CheckRun.startedAt
+  - CheckRun.completedAt
+targetTypes:
+  - CheckRun
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Commit.checkSuites
+  - CheckSuite.checkRuns
+  - CheckRun.startedAt
+  - CheckRun.completedAt
+  - CheckSuite.checkRuns(first:)
+  - Commit.checkSuites(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-023. Inspect check runs on the latest commit and compare start to completion durations.

@@ -1,0 +1,158 @@
+id: shop-038
+schemaId: shopify
+query: Show me how product translations look for our French and German storefronts.
+operation: |
+  query {
+    products(first: 5) {
+      nodes {
+        french: translations(locale: "fr") {
+          key
+          locale
+          value
+        }
+        german: translations(locale: "de") {
+          key
+          locale
+          value
+        }
+      }
+    }
+  }
+targetFields:
+  - Translation.key
+  - Translation.locale
+  - Translation.value
+targetTypes:
+  - Translation
+mustInclude:
+  - QueryRoot.products
+  - Product.translations
+  - Translation.key
+  - Translation.locale
+  - Translation.value
+  - Product.translations(locale:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Product translations for non-English storefronts.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          french:
+            type: array
+            items:
+              type: object
+              properties:
+                key:
+                  type: string
+                locale:
+                  type: string
+                value:
+                  type: string
+              required:
+                - key
+                - locale
+                - value
+              additionalProperties: false
+          german:
+            type: array
+            items:
+              type: object
+              properties:
+                key:
+                  type: string
+                locale:
+                  type: string
+                value:
+                  type: string
+              required:
+                - key
+                - locale
+                - value
+              additionalProperties: false
+        required:
+          - french
+          - german
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - french:
+        - key: tooltip.discount.applied
+          locale: es-ES
+          value: Featured Products This Week
+        - key: message.order.confirmation
+          locale: zh-CN
+          value: Learn about our hassle-free returns and exchange policy here.
+      german:
+        - key: tooltip.discount.applied
+          locale: es-ES
+          value: Featured Products This Week
+        - key: message.order.confirmation
+          locale: zh-CN
+          value: Learn about our hassle-free returns and exchange policy here.
+    - french:
+        - key: help.returns.policy
+          locale: pt-BR
+          value: Thank you for your order. You will receive a confirmation email shortly.
+        - key: notification.sale.started
+          locale: nl-NL
+          value: 2024 Shopify Inc. All rights reserved.
+      german:
+        - key: help.returns.policy
+          locale: pt-BR
+          value: Thank you for your order. You will receive a confirmation email shortly.
+        - key: notification.sale.started
+          locale: nl-NL
+          value: 2024 Shopify Inc. All rights reserved.
+    - french:
+        - key: heading.products.featured
+          locale: ja-JP
+          value: Expedited Shipping (2-3 business days)
+        - key: error.payment.declined
+          locale: de-DE
+          value: Summer Sale Now Live - Up to 50% Off
+      german:
+        - key: heading.products.featured
+          locale: ja-JP
+          value: Expedited Shipping (2-3 business days)
+        - key: error.payment.declined
+          locale: de-DE
+          value: Summer Sale Now Live - Up to 50% Off
+    - french:
+        - key: label.shipping.expedited
+          locale: it-IT
+          value: Discount successfully applied to your order
+        - key: placeholder.email.address
+          locale: ko-KR
+          value: Enter your email address
+      german:
+        - key: label.shipping.expedited
+          locale: it-IT
+          value: Discount successfully applied to your order
+        - key: placeholder.email.address
+          locale: ko-KR
+          value: Enter your email address
+    - french:
+        - key: footer.company.copyright
+          locale: en-US
+          value: Proceed to Checkout
+        - key: button.cart.checkout
+          locale: fr-CA
+          value: Your payment could not be processed. Please check your card details and
+            try again.
+      german:
+        - key: footer.company.copyright
+          locale: en-US
+          value: Proceed to Checkout
+        - key: button.cart.checkout
+          locale: fr-CA
+          value: Your payment could not be processed. Please check your card details and
+            try again.

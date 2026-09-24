@@ -1,0 +1,68 @@
+id: shop-053
+schemaId: shopify
+query: Show the tax-exempt status and exemption reasons for each B2B customer.
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        taxExempt
+        taxExemptions
+      }
+    }
+  }
+targetFields:
+  - Customer.taxExempt
+  - Customer.taxExemptions
+targetTypes:
+  - Customer
+mustInclude:
+  - QueryRoot.customers
+  - Customer.taxExempt
+  - Customer.taxExemptions
+  - QueryRoot.customers(first:)
+mustExclude:
+  - Mutation
+notes: Tax-exempt status and exemption reasons for B2B customers.
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          taxExempt:
+            type: boolean
+          taxExemptions:
+            type: array
+            items:
+              type: string
+        required:
+          - taxExempt
+          - taxExemptions
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false
+answer:
+  customers:
+    - taxExempt: true
+      taxExemptions:
+        - US_HI_RESELLER_EXEMPTION
+        - CA_NS_FARMER_EXEMPTION
+    - taxExempt: true
+      taxExemptions:
+        - US_NE_RESELLER_EXEMPTION
+        - US_WV_RESELLER_EXEMPTION
+    - taxExempt: false
+      taxExemptions:
+        - US_WY_RESELLER_EXEMPTION
+        - CA_MB_RESELLER_EXEMPTION
+    - taxExempt: false
+      taxExemptions:
+        - US_CT_RESELLER_EXEMPTION
+        - CA_MB_FARMER_EXEMPTION
+    - taxExempt: false
+      taxExemptions:
+        - US_HI_RESELLER_EXEMPTION
+        - US_CO_RESELLER_EXEMPTION

@@ -1,0 +1,23 @@
+{
+    "id": "budgeted-best-first",
+    "name": "Budgeted best-first (rooted PCST approximation)",
+    "description": "Self-contained eval port of the parent's budgeted-best-first strategy. Starts at a single root type (Query) and grows a connected subgraph by repeatedly picking the highest-scoring affordable field candidate under a token-budget cost model. Candidates are FIELD edges out of already-included types; their score blends cosine^2 with a lex bonus (BM25-/trigram-style overlap on field names). Cost varies per candidate: cheap for scalars/known-target types, expensive for fresh object types. Slice is naturally Query-rooted so no paths-to-root closure is needed by default.",
+    "defaultConfig": {
+        "startType": "Query",
+        "budget": 300,
+        "threshold": 0.01,
+        "batchSize": 16,
+        "cosWeight": 1.0,
+        "lexWeight": 5.0,
+        "structuralScore": 0.05,
+        "includeArguments": false,
+        "includeUnionsAndInterfaces": true,
+        "pathsToRoot": {
+            "mode": "off",
+            "maxPathsPerType": 5,
+            "maxDepth": 6,
+            "includeMutationPaths": false,
+            "expandConnectionWrappers": true
+        }
+    }
+}

@@ -1,0 +1,5 @@
+{
+    "id": "default",
+    "name": "Default agent prompt",
+    "description": "Full guidance: search-first strategy, accumulate-then-execute, explicit retry-on-missing-coordinates instructions."
+}

@@ -1,0 +1,6 @@
+{
+    "id": "coord-return",
+    "name": "Coord + return type",
+    "description": "\"Type.field -> ReturnType\". No description.",
+    "applies": ["field"]
+}

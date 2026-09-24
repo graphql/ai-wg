@@ -1,0 +1,6 @@
+{
+    "id": "sig",
+    "name": "Field signature",
+    "description": "Full \"Type.field(args): ReturnType\" signature. Note: arg list is omitted today — FieldDef carries no args (see README).",
+    "applies": ["field"]
+}

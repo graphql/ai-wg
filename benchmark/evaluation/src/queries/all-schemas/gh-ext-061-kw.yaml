@@ -1,0 +1,29 @@
+id: gh-ext-061-kw
+schemaId: github
+query: wiki enabled repositories pages
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          hasWikiEnabled
+          nameWithOwner
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.hasWikiEnabled
+  - Repository.nameWithOwner
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.hasWikiEnabled
+  - Repository.nameWithOwner
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-061. Repositories with wiki enabled; pages count is not in GraphQL.

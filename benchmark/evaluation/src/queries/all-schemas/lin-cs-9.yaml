@@ -1,0 +1,33 @@
+id: lin-cs-9
+schemaId: linear
+query: "How many customer-support ticket attachments does the issue with id
+  'issue-eng-1023' have?"
+operation: |
+  query {
+    issue(id: "issue-eng-1023") {
+      customerTicketCount
+    }
+  }
+targetFields:
+  - Issue.customerTicketCount
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.customerTicketCount
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+answer:
+  attachmentCount: 677
+answerSchema:
+  type: object
+  properties:
+    attachmentCount:
+      type: integer
+      description: The number of customer-support ticket attachments on the issue
+  required:
+    - attachmentCount
+  additionalProperties: false
+notes: Uses Issue.customerTicketCount which counts Attachment resources created
+  by customer support ticketing systems (e.g. Zendesk, Intercom).

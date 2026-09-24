@@ -1,0 +1,90 @@
+id: shop-031
+schemaId: shopify
+query: Which collections are smart collections with automatic rules, and what
+  conditions do they use?
+operation: |
+  query {
+    collections(first: 10) {
+      nodes {
+        title
+        ruleSet {
+          rules {
+            column
+            condition
+            relation
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Collection.title
+  - CollectionRule.column
+  - CollectionRule.condition
+  - CollectionRule.relation
+targetTypes:
+  - Collection
+  - CollectionRule
+mustInclude:
+  - QueryRoot.collections
+  - Collection.title
+  - Collection.ruleSet
+  - CollectionRuleSet.rules
+  - CollectionRule.column
+  - CollectionRule.condition
+  - CollectionRule.relation
+  - QueryRoot.collections(first:)
+mustExclude:
+  - Mutation
+notes: Smart collections with their automatic rule conditions.
+answerSchema:
+  type: object
+  properties:
+    collections:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          rules:
+            type: array
+            items:
+              type: object
+              properties:
+                column:
+                  type: string
+                condition:
+                  type: string
+                relation:
+                  type: string
+              required:
+                - column
+                - condition
+                - relation
+              additionalProperties: false
+        required:
+          - title
+          - rules
+        additionalProperties: false
+  required:
+    - collections
+  additionalProperties: false
+answer:
+  collections:
+    - title: Summer Sale Collection
+      rules:
+        - column: VARIANT_TITLE
+          condition: Vendor equals Acme Corp
+          relation: NOT_CONTAINS
+        - column: VARIANT_COMPARE_AT_PRICE
+          condition: Tag contains organic
+          relation: IS_NOT_SET
+    - title: Best Sellers
+      rules:
+        - column: VARIANT_PRICE
+          condition: Price greater than 50
+          relation: CONTAINS
+        - column: PRODUCT_CATEGORY_ID
+          condition: Product type is Apparel
+          relation: STARTS_WITH

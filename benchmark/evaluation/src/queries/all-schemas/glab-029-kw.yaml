@@ -1,0 +1,34 @@
+id: glab-029-kw
+schemaId: gitlab
+query: merge requests passed pipeline unresolved threads
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          headPipeline {
+            __typename
+          }
+          discussions(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Discussion
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.headPipeline
+  - MergeRequest.discussions
+  - MergeRequest.discussions(first:)
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-029. Maintainer: MRs with passing pipeline + unresolved discussions."

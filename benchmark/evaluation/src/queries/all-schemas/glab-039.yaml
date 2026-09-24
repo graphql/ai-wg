@@ -1,0 +1,82 @@
+id: glab-039
+schemaId: gitlab
+query: Show CI queueing history time series (p50, p75, p90, p95, p99) for group
+  group/project.
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      ciQueueingHistory {
+        timeSeries {
+          time
+          p50
+          p75
+          p90
+          p95
+          p99
+        }
+      }
+    }
+  }
+targetFields:
+  - QueueingHistoryTimeSeries.time
+  - QueueingHistoryTimeSeries.p50
+  - QueueingHistoryTimeSeries.p75
+  - QueueingHistoryTimeSeries.p90
+  - QueueingHistoryTimeSeries.p95
+  - QueueingHistoryTimeSeries.p99
+targetTypes:
+  - QueueingDelayHistory
+  - QueueingHistoryTimeSeries
+mustInclude:
+  - Query.group
+  - Group.ciQueueingHistory
+  - QueueingDelayHistory.timeSeries
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "DevOps: queue wait history for group shared runners."
+answerSchema:
+  type: object
+  properties:
+    timeSeries:
+      type: array
+      items:
+        type: object
+        properties:
+          time:
+            type: string
+          p50:
+            type: string
+          p75:
+            type: string
+          p90:
+            type: string
+          p95:
+            type: string
+          p99:
+            type: string
+        required:
+          - time
+          - p50
+          - p75
+          - p90
+          - p95
+          - p99
+        additionalProperties: false
+  required:
+    - timeSeries
+  additionalProperties: false
+answer:
+  timeSeries:
+    - time: 2025-05-29T00:00:00.000Z
+      p50: "12"
+      p75: "24"
+      p90: "45"
+      p95: "67"
+      p99: "120"
+    - time: 2025-05-30T00:00:00.000Z
+      p50: "10"
+      p75: "20"
+      p90: "38"
+      p95: "55"
+      p99: "98"

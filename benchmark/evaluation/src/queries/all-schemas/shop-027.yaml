@@ -1,0 +1,54 @@
+id: shop-027
+schemaId: shopify
+query: List products with no images so we can fix the catalog.
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        id
+        title
+        handle
+        mediaCount {
+          count
+          precision
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.id
+  - Product.title
+  - Product.handle
+  - Product.mediaCount
+targetTypes: []
+mustInclude:
+  - QueryRoot.products
+  - QueryRoot.products(first:)
+  - Product.id
+  - Product.title
+  - Product.handle
+  - Product.mediaCount
+mustExclude:
+  - Mutation
+notes: Products with no images so the catalog can be cleaned up.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          handle:
+            type: string
+        required:
+          - title
+          - handle
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products: []

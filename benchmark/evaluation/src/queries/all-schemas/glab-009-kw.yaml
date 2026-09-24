@@ -1,0 +1,26 @@
+id: glab-009-kw
+schemaId: gitlab
+query: todo items waiting for me
+operation: |
+  query {
+    currentUser {
+      todos(first: 10) {
+        nodes {
+          target {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Todoable
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.todos
+  - Todo.target
+  - CurrentUser.todos(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-009. Developer: my todo items. Current-user todos list."

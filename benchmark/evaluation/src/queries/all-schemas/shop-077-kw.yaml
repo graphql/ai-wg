@@ -1,0 +1,25 @@
+id: shop-077-kw
+schemaId: shopify
+query: marketing channels sessions this month
+operation: |
+  query {
+    marketingActivities(first: 10) {
+      nodes {
+        marketingChannelType
+        title
+      }
+    }
+  }
+targetFields:
+  - MarketingActivity.marketingChannelType
+  - MarketingActivity.title
+targetTypes:
+  - MarketingActivity
+mustInclude:
+  - QueryRoot.marketingActivities
+  - MarketingActivity.marketingChannelType
+  - MarketingActivity.title
+  - QueryRoot.marketingActivities(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-077. Top marketing channels driving sessions this month.

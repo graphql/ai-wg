@@ -1,0 +1,34 @@
+id: glab-028-kw
+schemaId: gitlab
+query: issue board lists iteration counts
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      boards(first: 10) {
+        nodes {
+          lists(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+          iteration {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Iteration
+mustInclude:
+  - Query.project
+  - Project.boards
+  - Board.lists
+  - Board.iteration
+  - Board.lists(first:)
+  - Project.boards(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-028. Maintainer: board lists for current iteration."

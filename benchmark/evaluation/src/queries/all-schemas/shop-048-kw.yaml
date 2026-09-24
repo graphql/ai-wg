@@ -1,0 +1,29 @@
+id: shop-048-kw
+schemaId: shopify
+query: customer events timeline notes comments
+operation: |
+  query {
+    customer(id: "gid://shopify/Object/1") {
+      events(first: 10) {
+        nodes {
+          message
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Event.message
+  - Event.createdAt
+targetTypes:
+  - Event
+mustInclude:
+  - QueryRoot.customer
+  - Customer.events
+  - Event.message
+  - Event.createdAt
+  - Customer.events(first:)
+  - QueryRoot.customer(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-048. Events / timeline entries logged on a specific customer.

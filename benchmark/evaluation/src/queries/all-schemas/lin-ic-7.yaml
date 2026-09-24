@@ -1,0 +1,70 @@
+id: lin-ic-7
+schemaId: linear
+query: Show me the full status change history for issue ENG-241.
+operation: |
+  query {
+    issue(id: "ENG-241") {
+      history(first: 10) {
+        nodes {
+          fromState {
+            id
+            name
+          }
+          toState {
+            id
+            name
+          }
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueHistory.createdAt
+  - WorkflowState.name
+targetTypes:
+  - IssueHistory
+  - Issue
+  - WorkflowState
+mustInclude:
+  - Query.issue
+  - Issue.history
+  - IssueHistory.fromState
+  - IssueHistory.toState
+  - IssueHistory.createdAt
+  - WorkflowState.name
+  - Issue.history(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+answer:
+  statusChanges:
+    - fromState: Todo
+      toState: In Progress
+      createdAt: 2025-05-01T00:00:00.000Z
+    - fromState: In Progress
+      toState: Done
+      createdAt: 2025-05-15T00:00:00.000Z
+answerSchema:
+  type: object
+  properties:
+    statusChanges:
+      type: array
+      items:
+        type: object
+        properties:
+          fromState:
+            type: string
+          toState:
+            type: string
+          createdAt:
+            type: string
+        required:
+          - fromState
+          - toState
+          - createdAt
+        additionalProperties: false
+  required:
+    - statusChanges
+  additionalProperties: false
+notes: IC pulls up history for an issue they own.

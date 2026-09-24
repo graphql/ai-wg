@@ -1,0 +1,95 @@
+id: glab-032
+schemaId: gitlab
+query: Who are the commenters and what are the notes on merge request
+  gid://gitlab/MergeRequest/1?
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      commenters(first: 10) {
+        nodes {
+          username
+          name
+        }
+      }
+      notes(first: 10) {
+        nodes {
+          author {
+            username
+          }
+          body
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - UserCore.username
+  - UserCore.name
+  - Note.body
+  - Note.createdAt
+targetTypes:
+  - UserCore
+  - Note
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.commenters
+  - MergeRequest.notes
+  - MergeRequest.commenters(first:)
+  - MergeRequest.notes(first:)
+  - Query.mergeRequest(id:)
+  - UserCore.username
+  - UserCore.name
+  - Note.body
+  - Note.createdAt
+mustExclude:
+  - Mutation
+notes: "Maintainer: top commenters + notes on MR."
+answerSchema:
+  type: object
+  properties:
+    commenters:
+      type: array
+      items:
+        type: object
+        properties:
+          username:
+            type: string
+          name:
+            type: string
+        required:
+          - username
+          - name
+        additionalProperties: false
+    notes:
+      type: array
+      items:
+        type: object
+        properties:
+          author:
+            type: string
+          body:
+            type: string
+          createdAt:
+            type: string
+        required:
+          - author
+          - body
+          - createdAt
+        additionalProperties: false
+  required:
+    - commenters
+    - notes
+  additionalProperties: false
+answer:
+  commenters:
+    - username: alice
+      name: Alice Johnson
+    - username: bob
+      name: Bob Smith
+  notes:
+    - author: alice
+      body: Please review the changes.
+      createdAt: 2025-05-19T00:00:00.000Z
+    - author: bob
+      body: Looks good to me.
+      createdAt: 2025-05-04T00:00:00.000Z

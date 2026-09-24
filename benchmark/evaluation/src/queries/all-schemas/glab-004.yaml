@@ -1,0 +1,58 @@
+id: glab-004
+schemaId: gitlab
+query: List the jobs and their statuses in a pipeline of the gitlab-org/gitlab
+  project.
+operation: |
+  query {
+    project(fullPath: "gitlab-org/gitlab") {
+      pipelines(first: 1) {
+        nodes {
+          jobs(first: 10) {
+            nodes {
+              name
+              status
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CiJob.name
+  - CiJob.status
+targetTypes:
+  - CiJob
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.jobs
+  - CiJob.name
+  - CiJob.status
+  - Pipeline.jobs(first:)
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Developer: jobs and their statuses in a project pipeline. Pipeline list
+  + nested job status."
+answerSchema:
+  type: object
+  properties:
+    jobs:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          status:
+            type: string
+        required:
+          - name
+          - status
+        additionalProperties: false
+  required:
+    - jobs
+  additionalProperties: false
+answer:
+  jobs: []

@@ -1,0 +1,52 @@
+id: shop-070
+schemaId: shopify
+query: Show the filter queries defined for customer segments.
+operation: |
+  query {
+    segments(first: 10) {
+      nodes {
+        query
+        name
+      }
+    }
+  }
+targetFields:
+  - Segment.query
+  - Segment.name
+targetTypes:
+  - Segment
+mustInclude:
+  - QueryRoot.segments
+  - Segment.query
+  - Segment.name
+  - QueryRoot.segments(first:)
+mustExclude:
+  - Mutation
+notes: Segment definition (query) for lapsed customers — no purchase in 6 months.
+answerSchema:
+  type: object
+  properties:
+    segments:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          query:
+            type: string
+        required:
+          - name
+          - query
+        additionalProperties: false
+  required:
+    - segments
+  additionalProperties: false
+answer:
+  segments:
+    - name: Newsletter unsubscribed
+      query: "customers where total_spent >= 500 AND created_at >= 2024-01-01"
+    - name: Email subscribers engaged
+      query: orders where status = cancelled AND reason = customer_request
+    - name: Customers with at least one order
+      query: "customers_with_orders_count > 0"

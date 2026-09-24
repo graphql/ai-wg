@@ -1,0 +1,52 @@
+id: shop-037-kw
+schemaId: shopify
+query: publication status products sales channels
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        resourcePublications(first: 10) {
+          nodes {
+            publication {
+              autoPublish
+            }
+            isPublished
+          }
+        }
+      }
+    }
+    app {
+      installation {
+        channel {
+          collectionPublicationsV3(first: 10) {
+            nodes {
+              publication {
+                collections(first: 10) {
+                  nodes {
+                    description
+                  }
+                }
+              }
+              isPublished
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ResourcePublication.isPublished
+targetTypes:
+  - ResourcePublication
+mustInclude:
+  - QueryRoot.products
+  - Product.resourcePublications
+  - ResourcePublication.publication
+  - ResourcePublication.isPublished
+  - Channel.collectionPublicationsV3(first:)
+  - Product.resourcePublications(first:)
+  - Publication.collections(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-037. Publication status of each product across sales channels.

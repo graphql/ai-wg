@@ -1,0 +1,36 @@
+id: lin-ic-16
+schemaId: linear
+query: "What is the suggested git branch name for issue ENG-512?"
+operation: |
+  query {
+    issue(id: "ENG-512") {
+      identifier
+      branchName
+      url
+    }
+  }
+targetFields:
+  - Issue.identifier
+  - Issue.branchName
+  - Issue.url
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.identifier
+  - Issue.branchName
+  - Issue.url
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+answer:
+  suggestedBranchName: fix-rate-limit
+answerSchema:
+  type: object
+  properties:
+    suggestedBranchName:
+      type: string
+  required:
+    - suggestedBranchName
+  additionalProperties: false
+notes: Get the git-branch name + url for an issue.

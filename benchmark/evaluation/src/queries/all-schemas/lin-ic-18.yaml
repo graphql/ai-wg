@@ -1,0 +1,50 @@
+id: lin-ic-18
+schemaId: linear
+query: Show me my unfinished issue drafts.
+operation: |
+  query {
+    viewer {
+      issueDrafts(first: 10) {
+        nodes {
+          id
+          title
+          updatedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueDraft.title
+  - IssueDraft.updatedAt
+targetTypes:
+  - IssueDraft
+mustInclude:
+  - Query.viewer
+  - User.issueDrafts
+  - IssueDraft.title
+  - IssueDraft.updatedAt
+  - User.issueDrafts(first:)
+mustExclude:
+  - Mutation
+notes: Drafts I started but never submitted.
+answerSchema:
+  type: object
+  properties:
+    drafts:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - drafts
+  additionalProperties: false
+answer:
+  drafts:
+    - title: Investigate memory leak in API service
+    - title: Add two-factor authentication support
+    - title: Refactor session management

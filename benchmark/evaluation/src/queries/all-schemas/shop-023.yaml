@@ -1,0 +1,71 @@
+id: shop-023
+schemaId: shopify
+query: What are the title, status, and total sales channel publication count for
+  each of the first 5 products in the shop?
+operation: |
+  query {
+    products(first: 5) {
+      nodes {
+        title
+        status
+        resourcePublicationsCount {
+          count
+        }
+      }
+    }
+  }
+targetFields:
+  - Product.title
+  - Product.status
+  - Product.resourcePublicationsCount
+targetTypes:
+  - Product
+mustInclude:
+  - QueryRoot.products
+  - QueryRoot.products(first:)
+  - Product.title
+  - Product.status
+  - Product.resourcePublicationsCount
+mustExclude:
+  - Mutation
+answer:
+  products:
+    - title: Phone Case
+      status: ARCHIVED
+      publicationCount: 71
+    - title: Leather Wallet
+      status: ARCHIVED
+      publicationCount: 518
+    - title: Wireless Headphones
+      status: DRAFT
+      publicationCount: 515
+    - title: Yoga Mat
+      status: ACTIVE
+      publicationCount: 75
+    - title: Smart Watch
+      status: ARCHIVED
+      publicationCount: 880
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          status:
+            type: string
+          publicationCount:
+            type: integer
+        required:
+          - title
+          - status
+          - publicationCount
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+notes: Lists first 5 products with their status and total sales channel
+  publication count.

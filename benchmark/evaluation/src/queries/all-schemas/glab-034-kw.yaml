@@ -1,0 +1,58 @@
+id: glab-034-kw
+schemaId: gitlab
+query: active not-paused runners gitlab-org/gitlab group last contacted
+operation: |
+  query {
+    group(fullPath: "gitlab-org/gitlab") {
+      runners(first: 10, paused: false) {
+        nodes {
+          id
+          contactedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - CiRunner.id
+  - CiRunner.contactedAt
+targetTypes:
+  - CiRunner
+mustInclude:
+  - Query.group
+  - Group.runners
+  - CiRunner.id
+  - CiRunner.contactedAt
+  - Group.runners(first:)
+  - Group.runners(paused:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+  - CiRunner.active
+notes: "Keyword variant of glab-034. DevOps: active (non-paused) runners + last-contact time for a group."
+answerSchema:
+  type: object
+  properties:
+    runners:
+      type: array
+      items:
+        type: object
+        properties:
+          runnerId:
+            type: string
+          lastContactedAt:
+            type: string
+        required:
+          - runnerId
+          - lastContactedAt
+        additionalProperties: false
+  required:
+    - runners
+  additionalProperties: false
+answer:
+  runners:
+    - runnerId: gitlab-org/gitlab/CiRunner/2
+      lastContactedAt: "2025-05-21T00:00:00.000Z"
+    - runnerId: gitlab-org/gitlab/CiRunner/3
+      lastContactedAt: "2024-08-16T00:00:00.000Z"
+    - runnerId: gitlab-org/gitlab/CiRunner/4
+      lastContactedAt: "2024-07-18T00:00:00.000Z"

@@ -1,0 +1,52 @@
+id: lin-ic-15
+schemaId: linear
+query: "Which issues in the workspace mention the phrase \"rate limit\"? Return
+  their title and identifier."
+operation: |
+  query {
+    searchIssues(term: "rate limit") {
+      nodes {
+        title
+        identifier
+      }
+    }
+  }
+targetFields:
+  - IssueSearchResult.title
+  - IssueSearchResult.identifier
+targetTypes:
+  - IssueSearchResult
+mustInclude:
+  - Query.searchIssues
+  - IssueSearchPayload.nodes
+  - IssueSearchResult.title
+  - IssueSearchResult.identifier
+  - Query.searchIssues(term:)
+mustExclude:
+  - Mutation
+notes: Full-text issue search.
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          identifier:
+            type: string
+        required:
+          - title
+          - identifier
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - title: Implement rate limiting on API gateway
+      identifier: ENG-99
+    - title: Fix rate limit bypass vulnerability
+      identifier: ENG-512

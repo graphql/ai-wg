@@ -1,0 +1,32 @@
+id: glab-071-kw
+schemaId: gitlab
+query: open epics start due dates group
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      epics(first: 10) {
+        nodes {
+          startDate
+          dueDate
+          state
+        }
+      }
+    }
+  }
+targetFields:
+  - Epic.startDate
+  - Epic.dueDate
+  - Epic.state
+targetTypes:
+  - Epic
+mustInclude:
+  - Query.group
+  - Group.epics
+  - Epic.startDate
+  - Epic.dueDate
+  - Epic.state
+  - Group.epics(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-071. PM: open epics with dates."

@@ -1,0 +1,28 @@
+id: shop-076-kw
+schemaId: shopify
+query: segments membership change 7 days
+operation: |
+  query {
+    segments(first: 10) {
+      nodes {
+        lastEditDate
+        query
+        name
+      }
+    }
+  }
+targetFields:
+  - Segment.lastEditDate
+  - Segment.query
+  - Segment.name
+targetTypes:
+  - Segment
+mustInclude:
+  - QueryRoot.segments
+  - Segment.lastEditDate
+  - Segment.query
+  - Segment.name
+  - QueryRoot.segments(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-076. Segments whose membership has changed in the past 7 days.

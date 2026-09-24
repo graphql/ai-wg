@@ -1,0 +1,32 @@
+id: glab-012-kw
+schemaId: gitlab
+query: merge requests unresolved review threads recent
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          discussions(first: 10) {
+            nodes {
+              resolved
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Discussion.resolved
+targetTypes:
+  - Discussion
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.discussions
+  - Discussion.resolved
+  - MergeRequest.discussions(first:)
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-012. Developer: MRs with unresolved review threads. MR list + nested discussions."

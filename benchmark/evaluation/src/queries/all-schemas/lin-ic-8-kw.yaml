@@ -1,0 +1,57 @@
+id: lin-ic-8-kw
+schemaId: linear
+query: my issues subtasks children
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          id
+          subIssueSortOrder
+          parent {
+            id
+            subIssueSortOrder
+            parent {
+              id
+            }
+            children(first: 10) {
+              nodes {
+                id
+              }
+            }
+          }
+          children(first: 10) {
+            nodes {
+              id
+              subIssueSortOrder
+              parent {
+                id
+              }
+              children(first: 10) {
+                nodes {
+                  id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.id
+  - Issue.subIssueSortOrder
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.subIssueSortOrder
+  - Issue.parent
+  - Issue.children
+  - IssueConnection.nodes
+  - Issue.children(first:)
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-8. My tasks and any sub-tasks beneath them.

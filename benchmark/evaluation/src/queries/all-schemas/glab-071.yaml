@@ -1,0 +1,75 @@
+id: glab-071
+schemaId: gitlab
+query: For the work items in the group whose fullPath is "group/project", list
+  the start dates and due dates recorded on each work item's start-and-due-date
+  widget.
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      workItems(first: 10) {
+        nodes {
+          widgets {
+            ... on WorkItemWidgetStartAndDueDate {
+              startDate
+              dueDate
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - WorkItemWidgetStartAndDueDate.startDate
+  - WorkItemWidgetStartAndDueDate.dueDate
+targetTypes:
+  - WorkItem
+  - WorkItemWidgetStartAndDueDate
+mustInclude:
+  - Query.group
+  - Group.workItems
+  - WorkItem.widgets
+  - WorkItemWidgetStartAndDueDate.startDate
+  - WorkItemWidgetStartAndDueDate.dueDate
+  - Group.workItems(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "PM: work-item start/due dates via the start-and-due-date widget
+  (non-deprecated WorkItem surface; Group.epics is deprecated)."
+answerSchema:
+  type: object
+  properties:
+    workItems:
+      type: array
+      items:
+        type: object
+        properties:
+          dates:
+            type: array
+            items:
+              type: object
+              properties:
+                startDate: &a1
+                  type: string
+                dueDate: *a1
+              required:
+                - startDate
+                - dueDate
+              additionalProperties: false
+        required:
+          - dates
+        additionalProperties: false
+  required:
+    - workItems
+  additionalProperties: false
+answer:
+  workItems:
+    - dates:
+        - startDate: 2024-08-14
+          dueDate: 2025-03-23
+    - dates:
+        - startDate: 2024-07-30
+          dueDate: 2024-07-12
+    - dates:
+        - startDate: 2024-11-25
+          dueDate: 2024-10-30

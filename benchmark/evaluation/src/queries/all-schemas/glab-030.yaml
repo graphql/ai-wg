@@ -1,0 +1,66 @@
+id: glab-030
+schemaId: gitlab
+query: For each project in group group/project, how many open merge requests are
+  there?
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      projects(first: 10) {
+        nodes {
+          name
+          mergeRequests(state: opened) {
+            count
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.name
+  - MergeRequestConnection.count
+targetTypes:
+  - Project
+  - MergeRequestConnection
+mustInclude:
+  - Query.group
+  - Group.projects
+  - Project.mergeRequests
+  - Project.name
+  - MergeRequestConnection.count
+  - Group.projects(first:)
+  - Project.mergeRequests(state:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Maintainer: group projects with most stale MRs."
+answerSchema:
+  type: object
+  properties:
+    projects:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          openMergeRequestsCount:
+            type: integer
+        required:
+          - name
+          - openMergeRequestsCount
+        additionalProperties: false
+  required:
+    - projects
+  additionalProperties: false
+answer:
+  projects:
+    - name: data-analytics
+      openMergeRequestsCount: 3
+    - name: testing-framework
+      openMergeRequestsCount: 3
+    - name: mobile-app
+      openMergeRequestsCount: 3
+    - name: notification-system
+      openMergeRequestsCount: 3
+    - name: web-frontend
+      openMergeRequestsCount: 3

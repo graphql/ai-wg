@@ -1,0 +1,25 @@
+id: lin-ic-28-kw
+schemaId: linear
+query: my snoozed issues snoozedUntilAt
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          snoozedUntilAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.snoozedUntilAt
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.snoozedUntilAt
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-28. Snoozed work that will resurface.

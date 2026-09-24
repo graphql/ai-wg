@@ -1,0 +1,26 @@
+id: glab-051-kw
+schemaId: gitlab
+query: manual vs push pipelines source
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(first: 10) {
+        nodes {
+          source
+        }
+      }
+    }
+  }
+targetFields:
+  - Pipeline.source
+targetTypes:
+  - Pipeline
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.source
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-051. DevOps: pipeline source breakdown."

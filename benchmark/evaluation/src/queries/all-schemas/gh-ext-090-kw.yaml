@@ -1,0 +1,33 @@
+id: gh-ext-090-kw
+schemaId: github
+query: external collaborators private repos
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          isPrivate
+          collaborators(first: 10) {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.isPrivate
+  - RepositoryCollaboratorEdge.permission
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.isPrivate
+  - Repository.collaborators
+  - RepositoryCollaboratorEdge.permission
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+  - Repository.collaborators(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-090. Private org repos and their outside collaborator edges.

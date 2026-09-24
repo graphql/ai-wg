@@ -1,0 +1,33 @@
+id: gh-ext-065-kw
+schemaId: github
+query: issues closed not planned
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10) {
+        nodes {
+          state
+          stateReason
+          closedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.state
+  - Issue.stateReason
+  - Issue.closedAt
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.state
+  - Issue.stateReason
+  - Issue.closedAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-065. Closed issues whose stateReason is NOT_PLANNED.

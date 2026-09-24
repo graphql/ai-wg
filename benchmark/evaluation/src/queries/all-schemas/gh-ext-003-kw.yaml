@@ -1,0 +1,33 @@
+id: gh-ext-003-kw
+schemaId: github
+query: pull requests modifying file path
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          files(first: 10) {
+            nodes {
+              path
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequestChangedFile.path
+targetTypes:
+  - PullRequestChangedFile
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.files
+  - PullRequestChangedFile.path
+  - PullRequest.files(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-003. Search across PRs and filter by a specific changed file path.

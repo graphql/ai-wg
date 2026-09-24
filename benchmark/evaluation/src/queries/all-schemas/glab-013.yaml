@@ -1,0 +1,68 @@
+id: glab-013
+schemaId: gitlab
+query: What's the diff for the head SHA of merge request
+  gid://gitlab/MergeRequest/1234?
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1234") {
+      diffHeadSha
+      diffStats {
+        path
+        additions
+        deletions
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    diffHeadSha:
+      type: string
+    diffStats:
+      type: array
+      items:
+        type: object
+        properties:
+          path:
+            type: string
+          additions:
+            type: integer
+          deletions:
+            type: integer
+        required:
+          - path
+          - additions
+          - deletions
+        additionalProperties: false
+  required:
+    - diffHeadSha
+    - diffStats
+  additionalProperties: false
+targetFields:
+  - MergeRequest.diffHeadSha
+  - DiffStats.path
+  - DiffStats.additions
+  - DiffStats.deletions
+targetTypes:
+  - MergeRequest
+  - DiffStats
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.diffStats
+  - MergeRequest.diffHeadSha
+  - Query.mergeRequest(id:)
+  - DiffStats.path
+  - DiffStats.additions
+  - DiffStats.deletions
+mustExclude:
+  - Mutation
+notes: "Developer: diff for the head SHA of an MR."
+answer:
+  diffHeadSha: a7f3e8c9d2b4f6e1a5c7d9b2e4f6a8c0d2e4f6a
+  diffStats:
+    - path: packages/shared/utils/helpers.ts
+      additions: 598
+      deletions: 936
+    - path: src/api/controllers/UserController.ts
+      additions: 300
+      deletions: 10

@@ -1,0 +1,63 @@
+id: glab-090
+schemaId: gitlab
+query: Which CI runners in the group/project group are paused, and what is each
+  runner's id, description, and status?
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      runners(first: 10, paused: true) {
+        nodes {
+          id
+          description
+          status
+        }
+      }
+    }
+  }
+targetFields:
+  - CiRunner.id
+  - CiRunner.description
+  - CiRunner.status
+targetTypes:
+  - CiRunner
+mustInclude:
+  - Query.group
+  - Group.runners
+  - CiRunner.id
+  - CiRunner.description
+  - CiRunner.status
+  - Group.runners(first:)
+  - Group.runners(paused:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+  - CiRunner.active
+notes: "Admin: paused CI runners in a specific group."
+answerSchema:
+  type: object
+  properties:
+    runners:
+      type: array
+      items:
+        type: object
+        properties:
+          id: &a1
+            type: string
+          description: *a1
+          status: *a1
+        required:
+          - id
+          - description
+          - status
+        additionalProperties: false
+  required:
+    - runners
+  additionalProperties: false
+answer:
+  runners:
+    - id: group/project/CiRunner/0
+      description: Paused runner 0
+      status: OFFLINE
+    - id: group/project/CiRunner/1
+      description: Paused runner 1
+      status: OFFLINE

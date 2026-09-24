@@ -1,0 +1,55 @@
+id: gh-ext-065
+schemaId: github
+query: Show me all issues in the octocat/example repository that were closed by
+  being marked as not planned.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      issues(first: 10, states: [CLOSED]) {
+        nodes {
+          state
+          stateReason
+          closedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.state
+  - Issue.stateReason
+  - Issue.closedAt
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.state
+  - Issue.stateReason
+  - Issue.closedAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.issues(first:)
+  - Repository.issues(states:)
+mustExclude:
+  - Mutation
+answer:
+  issues:
+    - closedAt: 2025-05-17T00:00:00.000Z
+    - closedAt: 2025-05-07T00:00:00.000Z
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          closedAt:
+            type: string
+        required:
+          - closedAt
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+notes: Closed issues whose stateReason is NOT_PLANNED.

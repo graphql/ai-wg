@@ -1,0 +1,31 @@
+id: shop-097-kw
+schemaId: shopify
+query: installed apps scopes
+operation: |
+  query {
+    appInstallations(first: 10) {
+      nodes {
+        app {
+          availableAccessScopes {
+            handle
+          }
+        }
+        accessScopes {
+          handle
+        }
+      }
+    }
+  }
+targetFields:
+  - AccessScope.handle
+targetTypes:
+  - AccessScope
+mustInclude:
+  - QueryRoot.appInstallations
+  - AppInstallation.app
+  - AppInstallation.accessScopes
+  - AccessScope.handle
+  - QueryRoot.appInstallations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-097. Installed apps and their granted access scopes.

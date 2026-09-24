@@ -1,0 +1,126 @@
+id: shop-013
+schemaId: shopify
+query: List the first 10 orders with their applied discount codes and discount
+  application details (allocation method, target selection, and target type).
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        discountCodes
+        discountApplications(first: 10) {
+          nodes {
+            allocationMethod
+            targetSelection
+            targetType
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.discountCodes
+  - DiscountApplication.allocationMethod
+  - DiscountApplication.targetSelection
+  - DiscountApplication.targetType
+targetTypes:
+  - Order
+  - DiscountApplication
+mustInclude:
+  - QueryRoot.orders
+  - Order.discountCodes
+  - Order.discountApplications
+  - Order.discountApplications(first:)
+  - QueryRoot.orders(first:)
+  - DiscountApplication.allocationMethod
+  - DiscountApplication.targetSelection
+  - DiscountApplication.targetType
+mustExclude:
+  - Mutation
+notes: Orders where the customer applied a discount code at checkout.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          discountCodes:
+            type: array
+            items:
+              type: string
+          discountApplications:
+            type: array
+            items:
+              type: object
+              properties:
+                allocationMethod:
+                  type: string
+                targetSelection:
+                  type: string
+                targetType:
+                  type: string
+              required:
+                - allocationMethod
+                - targetSelection
+                - targetType
+              additionalProperties: false
+        required:
+          - discountCodes
+          - discountApplications
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - discountCodes:
+        - SUMMER20
+        - WELCOME15
+      discountApplications:
+        - allocationMethod: ONE
+          targetSelection: ENTITLED
+          targetType: LINE_ITEM
+        - allocationMethod: ACROSS
+          targetSelection: EXPLICIT
+          targetType: LINE_ITEM
+    - discountCodes:
+        - SPRING10
+        - FREESHIP
+      discountApplications:
+        - allocationMethod: ONE
+          targetSelection: EXPLICIT
+          targetType: SHIPPING_LINE
+        - allocationMethod: ONE
+          targetSelection: ENTITLED
+          targetType: LINE_ITEM
+    - discountCodes:
+        - SAVE25
+        - LOYALTY5
+      discountApplications:
+        - allocationMethod: ONE
+          targetSelection: ENTITLED
+          targetType: LINE_ITEM
+        - allocationMethod: ONE
+          targetSelection: ENTITLED
+          targetType: SHIPPING_LINE
+    - discountCodes:
+        - FLASH30
+        - NEWYEAR20
+      discountApplications:
+        - allocationMethod: ACROSS
+          targetSelection: EXPLICIT
+          targetType: LINE_ITEM
+        - allocationMethod: ACROSS
+          targetSelection: EXPLICIT
+          targetType: LINE_ITEM
+    - discountCodes:
+        - CLEARANCE40
+        - VIP10
+      discountApplications:
+        - allocationMethod: ONE
+          targetSelection: ENTITLED
+          targetType: SHIPPING_LINE
+        - allocationMethod: ONE
+          targetSelection: EXPLICIT
+          targetType: LINE_ITEM

@@ -1,0 +1,35 @@
+id: lin-pm-18
+schemaId: linear
+query: "What stage is the release with id 'release-v3.0' currently in?"
+operation: |
+  query {
+    release(id: "release-v3.0") {
+      stage {
+        name
+      }
+    }
+  }
+targetFields:
+  - ReleaseStage.name
+targetTypes:
+  - ReleaseStage
+  - Release
+mustInclude:
+  - Query.release
+  - Release.stage
+  - ReleaseStage.name
+  - Query.release(id:)
+mustExclude:
+  - Mutation
+notes: Status of a release across stages.
+answerSchema:
+  type: object
+  properties:
+    stage:
+      type: string
+      description: Current release stage name
+  required:
+    - stage
+  additionalProperties: false
+answer:
+  stage: Production

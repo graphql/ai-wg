@@ -1,0 +1,112 @@
+id: lin-em-10
+schemaId: linear
+query: "Give me a snapshot of the organization: users and teams."
+operation: |
+  query {
+    organization {
+      users(first: 10) {
+        nodes {
+          id
+          name
+          email
+        }
+      }
+      teams(first: 10) {
+        nodes {
+          id
+          name
+          key
+        }
+      }
+    }
+  }
+targetFields:
+  - User.name
+  - User.email
+  - Team.name
+  - Team.key
+targetTypes:
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.users
+  - Organization.teams
+  - Organization.teams(first:)
+  - Organization.users(first:)
+  - User.name
+  - User.email
+  - Team.name
+  - Team.key
+mustExclude:
+  - Mutation
+notes: Org structure snapshot.
+answerSchema:
+  type: object
+  properties:
+    users:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+        required:
+          - name
+          - email
+        additionalProperties: false
+    teams:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          key:
+            type: string
+        required:
+          - name
+          - key
+        additionalProperties: false
+  required:
+    - users
+    - teams
+  additionalProperties: false
+answer:
+  users:
+    - name: Alice Johnson
+      email: alice@acme.com
+    - name: Bob Smith
+      email: bob@acme.com
+    - name: Carol White
+      email: carol@acme.com
+    - name: David Lee
+      email: david@acme.com
+    - name: Eva Martinez
+      email: eva@acme.com
+    - name: Frank Nguyen
+      email: frank@acme.com
+    - name: Grace Kim
+      email: grace@acme.com
+    - name: Henry Park
+      email: henry@acme.com
+    - name: Iris Chen
+      email: iris@acme.com
+    - name: Jack Brown
+      email: jack@acme.com
+  teams:
+    - name: Engineering
+      key: ENG
+    - name: Design
+      key: DES
+    - name: Backend
+      key: BACK
+    - name: Infrastructure
+      key: INFRA
+    - name: Platform
+      key: PLAT
+    - name: Frontend
+      key: FE
+    - name: Security
+      key: SEC

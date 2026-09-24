@@ -1,0 +1,24 @@
+id: glab-090-kw
+schemaId: gitlab
+query: audit events group last day
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      externalAuditEventStreamingDestinations(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - GroupAuditEventStreamingDestination
+mustInclude:
+  - Query.group
+  - Group.externalAuditEventStreamingDestinations
+  - Group.externalAuditEventStreamingDestinations(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-090. Admin: audit events from group recently."

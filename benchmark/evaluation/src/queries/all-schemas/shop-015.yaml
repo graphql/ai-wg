@@ -1,0 +1,66 @@
+id: shop-015
+schemaId: shopify
+query: Find orders that include gift cards in the basket and the recipient email.
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        email
+        lineItems(first: 10) {
+          nodes {
+            isGiftCard
+            name
+            customAttributes {
+              key
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.email
+  - Order.lineItems
+  - LineItem.isGiftCard
+  - LineItem.name
+  - LineItem.customAttributes
+  - Order.lineItems(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Orders that include gift cards with their recipient details.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          email:
+            type: string
+          giftCardItems:
+            type: array
+            items:
+              type: string
+        required:
+          - email
+          - giftCardItems
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - email: sarah420@shop.example.com
+      giftCardItems:
+        - Package J
+        - Package J
+    - email: rachel.b.orders@example.com
+      giftCardItems:
+        - Collection M
+        - Bundle K

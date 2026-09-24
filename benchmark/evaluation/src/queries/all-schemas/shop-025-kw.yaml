@@ -1,0 +1,29 @@
+id: shop-025-kw
+schemaId: shopify
+query: variants price SKU navy hoodie
+operation: |
+  query {
+    productByHandle(handle: "placeholder") {
+      variants(first: 10) {
+        nodes {
+          price
+          sku
+        }
+      }
+    }
+  }
+targetFields:
+  - ProductVariant.price
+  - ProductVariant.sku
+targetTypes:
+  - ProductVariant
+mustInclude:
+  - QueryRoot.productByHandle
+  - Product.variants
+  - ProductVariant.price
+  - ProductVariant.sku
+  - Product.variants(first:)
+  - QueryRoot.productByHandle(handle:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-025. All variants of a specific product with price and SKU.

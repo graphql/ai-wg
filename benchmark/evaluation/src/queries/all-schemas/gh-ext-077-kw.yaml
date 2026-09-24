@@ -1,0 +1,36 @@
+id: gh-ext-077-kw
+schemaId: github
+query: top discussion answerers
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          discussions(first: 10) {
+            nodes {
+              answer {
+                author {
+                  __typename
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Discussion
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.discussions
+  - Discussion.answer
+  - DiscussionComment.author
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+  - Repository.discussions(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-077. Across org repos, count discussion answer authors.

@@ -1,0 +1,77 @@
+id: gh-ext-070
+schemaId: github
+query: What vulnerability alerts are active for the owner-1/repo-1 repository?
+operation: |
+  query {
+    repository(owner: "owner-1", name: "repo-1") {
+      nameWithOwner
+      vulnerabilityAlerts(first: 10) {
+        nodes {
+          state
+          vulnerableManifestFilename
+          securityVulnerability {
+            package {
+              name
+            }
+            vulnerableVersionRange
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.nameWithOwner
+  - RepositoryVulnerabilityAlert.state
+  - RepositoryVulnerabilityAlert.vulnerableManifestFilename
+  - SecurityAdvisoryPackage.name
+  - SecurityVulnerability.vulnerableVersionRange
+targetTypes:
+  - Repository
+  - RepositoryVulnerabilityAlert
+  - RepositoryVulnerabilityAlertState
+  - SecurityAdvisoryPackage
+  - SecurityVulnerability
+mustInclude:
+  - Query.repository
+  - Repository.nameWithOwner
+  - Repository.vulnerabilityAlerts
+  - RepositoryVulnerabilityAlert.state
+  - RepositoryVulnerabilityAlert.vulnerableManifestFilename
+  - RepositoryVulnerabilityAlert.securityVulnerability
+  - SecurityVulnerability.package
+  - SecurityAdvisoryPackage.name
+  - SecurityVulnerability.vulnerableVersionRange
+mustExclude:
+  - Mutation
+notes: Cross-reference security vulnerabilities with repository dependency graph
+  entries.
+answerSchema:
+  type: object
+  properties:
+    vulnerabilityAlerts:
+      type: array
+      items:
+        type: object
+        properties:
+          packageName:
+            type: string
+          vulnerableVersionRange:
+            type: string
+          manifestFilename:
+            type: string
+        required:
+          - packageName
+          - vulnerableVersionRange
+          - manifestFilename
+        additionalProperties: false
+  required:
+    - vulnerabilityAlerts
+  additionalProperties: false
+answer:
+  vulnerabilityAlerts:
+    - packageName: axios
+      vulnerableVersionRange: < 2.0.0
+      manifestFilename: package.json
+    - packageName: express
+      vulnerableVersionRange: < 2.0.0
+      manifestFilename: package.json

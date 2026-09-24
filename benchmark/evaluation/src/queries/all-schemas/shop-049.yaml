@@ -1,0 +1,71 @@
+id: shop-049
+schemaId: shopify
+query: How many returns has each customer initiated in the last year?
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        displayName
+        orders(first: 10, query: "created_at:>2025-01-01") {
+          nodes {
+            returns(first: 10) {
+              nodes {
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.displayName
+  - Return.id
+targetTypes:
+  - Customer
+  - Order
+  - Return
+mustInclude:
+  - QueryRoot.customers
+  - Customer.orders
+  - Order.returns
+  - Customer.displayName
+  - Return.id
+  - Customer.orders(first:)
+  - Customer.orders(query:)
+  - Order.returns(first:)
+  - QueryRoot.customers(first:)
+mustExclude:
+  - Mutation
+notes: Returns initiated per customer in the last year.
+answer:
+  customers:
+    - displayName: Amelia Lopez
+      returnCount: 0
+    - displayName: Harper Young
+      returnCount: 0
+    - displayName: Logan Robinson
+      returnCount: 0
+    - displayName: Michael Chen
+      returnCount: 0
+    - displayName: Benjamin Clark
+      returnCount: 0
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          displayName:
+            type: string
+          returnCount:
+            type: integer
+        required:
+          - displayName
+          - returnCount
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false

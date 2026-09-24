@@ -1,0 +1,23 @@
+id: lin-pm-13-kw
+schemaId: linear
+query: search projects name keyword
+operation: |
+  query {
+    searchProjects(term: "<id>") {
+      nodes {
+        name
+      }
+    }
+  }
+targetFields:
+  - ProjectSearchResult.name
+targetTypes:
+  - ProjectSearchResult
+mustInclude:
+  - Query.searchProjects
+  - ProjectSearchPayload.nodes
+  - ProjectSearchResult.name
+  - Query.searchProjects(term:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-13. Project full-text search.

@@ -1,0 +1,72 @@
+id: lin-em-11
+schemaId: linear
+query: "What is the total story point estimate for each assigned engineer across
+  all issues (first 50)?"
+operation: |
+  query {
+    issues(first: 50) {
+      nodes {
+        estimate
+        assignee {
+          id
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.estimate
+  - User.name
+targetTypes:
+  - Issue
+  - User
+mustInclude:
+  - Query.issues
+  - Issue.estimate
+  - Issue.assignee
+  - User.name
+  - Query.issues(first:)
+mustExclude:
+  - Mutation
+answer:
+  engineers:
+    - name: Alice Johnson
+      totalPoints: 44
+    - name: Jack Brown
+      totalPoints: 26
+    - name: Eva Martinez
+      totalPoints: 18
+    - name: Grace Kim
+      totalPoints: 17
+    - name: Frank Nguyen
+      totalPoints: 13
+    - name: Iris Chen
+      totalPoints: 10
+    - name: Henry Park
+      totalPoints: 5
+    - name: Karen Davis
+      totalPoints: 2
+    - name: Carol White
+      totalPoints: 2
+answerSchema:
+  type: object
+  properties:
+    engineers:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: engineer name
+          totalPoints:
+            type: number
+            description: sum of story point estimates across the engineer's issues
+        required:
+          - name
+          - totalPoints
+        additionalProperties: false
+  required:
+    - engineers
+  additionalProperties: false
+notes: Story point estimates per assigned engineer across all workspace issues.

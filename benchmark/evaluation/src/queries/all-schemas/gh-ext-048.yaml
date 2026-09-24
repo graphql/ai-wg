@@ -1,0 +1,61 @@
+id: gh-ext-048
+schemaId: github
+query: Which users follow the authenticated viewer, and does the viewer also
+  follow each of them?
+operation: |
+  query {
+    viewer {
+      followers(first: 10) {
+        nodes {
+          login
+          viewerIsFollowing
+        }
+      }
+    }
+  }
+targetFields:
+  - User.login
+  - User.viewerIsFollowing
+targetTypes:
+  - User
+mustInclude:
+  - Query.viewer
+  - User.followers
+  - User.login
+  - User.viewerIsFollowing
+  - User.followers(first:)
+mustExclude:
+  - Mutation
+notes: For each follower, whether the viewer is also following them back
+  (User.viewerIsFollowing).
+answerSchema:
+  type: object
+  properties:
+    followers:
+      type: array
+      items:
+        type: object
+        properties:
+          login:
+            type: string
+          viewerIsFollowing:
+            type: boolean
+        required:
+          - login
+          - viewerIsFollowing
+        additionalProperties: false
+  required:
+    - followers
+  additionalProperties: false
+answer:
+  followers:
+    - login: dave
+      viewerIsFollowing: true
+    - login: eve
+      viewerIsFollowing: false
+    - login: frank
+      viewerIsFollowing: true
+    - login: grace
+      viewerIsFollowing: false
+    - login: henry
+      viewerIsFollowing: false

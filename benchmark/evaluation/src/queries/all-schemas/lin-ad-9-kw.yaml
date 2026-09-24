@@ -1,0 +1,29 @@
+id: lin-ad-9-kw
+schemaId: linear
+query: organization seats subscription plan
+operation: |
+  query {
+    organization {
+      userCount
+      createdAt
+      subscription {
+        seats
+      }
+    }
+  }
+targetFields:
+  - Organization.userCount
+  - Organization.createdAt
+  - PaidSubscription.seats
+targetTypes:
+  - Organization
+  - PaidSubscription
+mustInclude:
+  - Query.organization
+  - Organization.userCount
+  - Organization.createdAt
+  - Organization.subscription
+  - PaidSubscription.seats
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-9. Org-wide license / seat usage.

@@ -1,0 +1,50 @@
+id: gh-ext-085
+schemaId: github
+query: What teams is the authenticated user a member of across their organizations?
+operation: |
+  query {
+    viewer {
+      organizations(first: 10) {
+        nodes {
+          teams(first: 10, role: MEMBER) {
+            nodes {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Team.name
+targetTypes:
+  - Team
+mustInclude:
+  - Query.viewer
+  - User.organizations
+  - Organization.teams
+  - Team.name
+  - Organization.teams(role:)
+  - Organization.teams(first:)
+  - User.organizations(first:)
+mustExclude:
+  - Mutation
+notes: Teams the authenticated user is a member of, grouped by organization. The
+  role:MEMBER argument restricts the connection to teams the viewer belongs to
+  (TeamRole.MEMBER).
+answerSchema:
+  type: object
+  properties:
+    teams:
+      type: array
+      items:
+        type: string
+  required:
+    - teams
+  additionalProperties: false
+answer:
+  teams:
+    - example
+    - Developers
+    - Operations
+    - Security

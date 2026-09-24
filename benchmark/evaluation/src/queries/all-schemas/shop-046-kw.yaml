@@ -1,0 +1,31 @@
+id: shop-046-kw
+schemaId: shopify
+query: high value abandoned checkouts
+operation: |
+  query {
+    abandonedCheckouts(first: 10) {
+      nodes {
+        totalPriceSet {
+          presentmentMoney {
+            amount
+          }
+        }
+        lineItems(first: 10) {
+          edges {
+            cursor
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.abandonedCheckouts
+  - AbandonedCheckout.totalPriceSet
+  - AbandonedCheckout.lineItems
+  - AbandonedCheckout.lineItems(first:)
+  - QueryRoot.abandonedCheckouts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-046. Recent abandoned checkouts that include high-value items.

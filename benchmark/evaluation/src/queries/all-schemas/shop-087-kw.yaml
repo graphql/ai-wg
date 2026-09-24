@@ -1,0 +1,29 @@
+id: shop-087-kw
+schemaId: shopify
+query: tax overrides tax regions
+operation: |
+  query {
+    locations(first: 10) {
+      nodes {
+        suggestedAddresses {
+          address1
+        }
+      }
+    }
+    shop {
+      taxesIncluded
+    }
+  }
+targetFields:
+  - Shop.taxesIncluded
+targetTypes:
+  - Shop
+mustInclude:
+  - QueryRoot.locations
+  - Location.suggestedAddresses
+  - QueryRoot.shop
+  - Shop.taxesIncluded
+  - QueryRoot.locations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-087. Tax regions with configured overrides.

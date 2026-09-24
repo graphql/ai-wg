@@ -1,0 +1,29 @@
+id: glab-055-kw
+schemaId: gitlab
+query: dependency scanning by severity
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          reportType
+          severity
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.reportType
+  - Vulnerability.severity
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.reportType
+  - Vulnerability.severity
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-055. Security: dependency scanning by severity."

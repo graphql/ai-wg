@@ -1,0 +1,25 @@
+id: glab-072-kw
+schemaId: gitlab
+query: current milestone issues team
+operation: |
+  query {
+    milestone(id: "gid://gitlab/Milestone/1") {
+      title
+      report {
+        __typename
+      }
+    }
+  }
+targetFields:
+  - Milestone.title
+targetTypes:
+  - Milestone
+  - TimeboxReport
+mustInclude:
+  - Query.milestone
+  - Milestone.title
+  - Milestone.report
+  - Query.milestone(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-072. PM: current milestone + issues."

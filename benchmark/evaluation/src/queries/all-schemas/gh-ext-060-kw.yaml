@@ -1,0 +1,28 @@
+id: gh-ext-060-kw
+schemaId: github
+query: repository disk usage
+operation: |
+  query {
+    viewer {
+      repositories(first: 10) {
+        nodes {
+          diskUsage
+          nameWithOwner
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.diskUsage
+  - Repository.nameWithOwner
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.viewer
+  - User.repositories
+  - Repository.diskUsage
+  - Repository.nameWithOwner
+  - User.repositories(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-060. Disk usage per repository for the viewer.

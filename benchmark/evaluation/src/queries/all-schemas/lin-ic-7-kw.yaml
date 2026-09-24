@@ -1,0 +1,35 @@
+id: lin-ic-7-kw
+schemaId: linear
+query: issue history state changes
+operation: |
+  query {
+    issue(id: "<id>") {
+      history(first: 10) {
+        nodes {
+          fromState {
+            id
+          }
+          toState {
+            id
+          }
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueHistory.createdAt
+targetTypes:
+  - IssueHistory
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.history
+  - IssueHistory.fromState
+  - IssueHistory.toState
+  - IssueHistory.createdAt
+  - Issue.history(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-7. IC pulls up history for an issue they own.

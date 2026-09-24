@@ -1,0 +1,6 @@
+{
+    "id": "coord",
+    "name": "Coordinate only",
+    "description": "Just the bare \"Type.field\" string. Minimal embedding text.",
+    "applies": ["field"]
+}

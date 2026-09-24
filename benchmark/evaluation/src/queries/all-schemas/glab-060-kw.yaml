@@ -1,0 +1,26 @@
+id: glab-060-kw
+schemaId: gitlab
+query: vulnerabilities count by day group trend
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      vulnerabilitiesCountByDay(startDate: "2024-01-01", endDate: "2024-01-01", first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - VulnerabilitiesCountByDay
+mustInclude:
+  - Query.group
+  - Group.vulnerabilitiesCountByDay
+  - Group.vulnerabilitiesCountByDay(endDate:)
+  - Group.vulnerabilitiesCountByDay(first:)
+  - Group.vulnerabilitiesCountByDay(startDate:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-060. Security: vuln counts by day for trend."

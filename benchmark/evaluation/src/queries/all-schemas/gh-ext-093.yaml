@@ -1,0 +1,41 @@
+id: gh-ext-093
+schemaId: github
+query: What is the billing plan seat count for the example enterprise?
+operation: |
+  query {
+    enterprise(slug: "example") {
+      billingInfo {
+        allLicensableUsersCount
+        totalLicenses
+      }
+    }
+  }
+targetFields:
+  - EnterpriseBillingInfo.allLicensableUsersCount
+  - EnterpriseBillingInfo.totalLicenses
+targetTypes:
+  - EnterpriseBillingInfo
+  - Enterprise
+mustInclude:
+  - Query.enterprise
+  - Enterprise.billingInfo
+  - EnterpriseBillingInfo.allLicensableUsersCount
+  - EnterpriseBillingInfo.totalLicenses
+  - Query.enterprise(slug:)
+mustExclude:
+  - Mutation
+notes: Enterprise billing info with licensable user counts.
+answerSchema:
+  type: object
+  properties:
+    allLicensableUsersCount:
+      type: number
+    totalLicenses:
+      type: number
+  required:
+    - allLicensableUsersCount
+    - totalLicenses
+  additionalProperties: false
+answer:
+  allLicensableUsersCount: 9
+  totalLicenses: 959

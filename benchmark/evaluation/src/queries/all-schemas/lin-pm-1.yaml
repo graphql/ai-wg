@@ -1,0 +1,63 @@
+id: lin-pm-1
+schemaId: linear
+query: "What milestones are coming up in the mobile-app project and when are
+  they due?"
+operation: |
+  query {
+    project(id: "project-mobile-app") {
+      projectMilestones(first: 10) {
+        nodes {
+          name
+          targetDate
+          status
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectMilestone.name
+  - ProjectMilestone.targetDate
+  - ProjectMilestone.status
+targetTypes:
+  - ProjectMilestone
+  - Project
+mustInclude:
+  - Query.project
+  - Project.projectMilestones
+  - ProjectMilestone.name
+  - ProjectMilestone.targetDate
+  - ProjectMilestone.status
+  - Project.projectMilestones(first:)
+  - Query.project(id:)
+mustExclude:
+  - Mutation
+notes: >-
+  Upcoming (not-yet-completed) milestones of the mobile-app project. Selecting
+  ProjectMilestone.status distinguishes "coming up" milestones
+  (unstarted/next/overdue) from completed ones (done); only non-done milestones
+  answer the question.
+answerSchema:
+  type: object
+  properties:
+    milestones:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          dueDate:
+            type: string
+        required:
+          - name
+          - dueDate
+        additionalProperties: false
+  required:
+    - milestones
+  additionalProperties: false
+answer:
+  milestones:
+    - name: v2 Beta Launch
+      dueDate: 2025-05-15
+    - name: v2 General Availability
+      dueDate: 2025-06-15

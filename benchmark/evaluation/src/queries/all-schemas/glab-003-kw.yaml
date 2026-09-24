@@ -1,0 +1,23 @@
+id: glab-003-kw
+schemaId: gitlab
+query: head pipeline status latest mr
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      headPipeline {
+        status
+      }
+    }
+  }
+targetFields:
+  - Pipeline.status
+targetTypes:
+  - Pipeline
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.headPipeline
+  - Pipeline.status
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-003. Developer: head pipeline status on a single MR."

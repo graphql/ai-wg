@@ -1,0 +1,73 @@
+id: glab-049
+schemaId: gitlab
+query: For the group/project project, list the duration and stage names for each
+  of the 5 most recent pipelines.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(first: 5) {
+        nodes {
+          duration
+          stages(first: 10) {
+            nodes {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Pipeline.duration
+  - CiStage.name
+targetTypes:
+  - Pipeline
+  - CiStage
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.duration
+  - Pipeline.stages
+  - CiStage.name
+  - Pipeline.stages(first:)
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    pipelines:
+      type: array
+      items:
+        type: object
+        properties:
+          duration:
+            type: integer
+          stages:
+            type: array
+            items:
+              type: string
+        required:
+          - duration
+          - stages
+        additionalProperties: false
+  required:
+    - pipelines
+  additionalProperties: false
+notes: "DevOps: pipeline duration and stage names for recent pipelines."
+answer:
+  pipelines:
+    - duration: 514
+      stages:
+        - build
+        - test
+        - deploy
+    - duration: 917
+      stages: []
+    - duration: 928
+      stages: []
+    - duration: 135
+      stages: []
+    - duration: 734
+      stages: []

@@ -1,0 +1,28 @@
+id: gh-ext-050-kw
+schemaId: github
+query: license repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      licenseInfo {
+        name
+        spdxId
+      }
+    }
+  }
+targetFields:
+  - License.name
+  - License.spdxId
+targetTypes:
+  - License
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.licenseInfo
+  - License.name
+  - License.spdxId
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-050. Repository license info.

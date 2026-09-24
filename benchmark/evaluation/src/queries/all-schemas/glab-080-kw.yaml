@@ -1,0 +1,26 @@
+id: glab-080-kw
+schemaId: gitlab
+query: top upvoted issues group monthly
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      issues(first: 10) {
+        nodes {
+          upvotes
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.upvotes
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.group
+  - Group.issues
+  - Issue.upvotes
+  - Group.issues(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-080. PM: top upvoted issues in group."

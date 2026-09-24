@@ -1,0 +1,30 @@
+id: gh-ext-076-kw
+schemaId: github
+query: locked discussions
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      discussions(first: 10) {
+        nodes {
+          locked
+          title
+        }
+      }
+    }
+  }
+targetFields:
+  - Discussion.locked
+  - Discussion.title
+targetTypes:
+  - Discussion
+mustInclude:
+  - Query.repository
+  - Repository.discussions
+  - Discussion.locked
+  - Discussion.title
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.discussions(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-076. Locked discussions in a repository.

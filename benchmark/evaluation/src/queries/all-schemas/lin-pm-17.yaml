@@ -1,0 +1,65 @@
+id: lin-pm-17
+schemaId: linear
+query: "What release pipelines are configured and what are the stages of each?"
+operation: |
+  query {
+    releasePipelines(first: 10) {
+      nodes {
+        name
+        stages(first: 10) {
+          nodes {
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ReleasePipeline.name
+  - ReleaseStage.name
+targetTypes:
+  - ReleasePipeline
+  - ReleaseStage
+mustInclude:
+  - Query.releasePipelines
+  - ReleasePipeline.name
+  - ReleasePipeline.stages
+  - ReleaseStage.name
+  - Query.releasePipelines(first:)
+  - ReleasePipeline.stages(first:)
+mustExclude:
+  - Mutation
+notes: Release pipelines and their stages.
+answerSchema:
+  type: object
+  properties:
+    pipelines:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Release pipeline name
+          stages:
+            type: array
+            items:
+              type: string
+            description: Stage names in the pipeline
+        required:
+          - name
+          - stages
+        additionalProperties: false
+  required:
+    - pipelines
+  additionalProperties: false
+answer:
+  pipelines:
+    - name: Main Release Pipeline
+      stages:
+        - Staging
+        - Production
+    - name: Hotfix Pipeline
+      stages:
+        - QA
+        - Production

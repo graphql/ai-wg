@@ -1,0 +1,33 @@
+id: glab-042-kw
+schemaId: gitlab
+query: project ci variables vs inherited
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      ciVariables(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+      inheritedCiVariables(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields:
+  - CiVariable.key
+targetTypes:
+  - CiVariable
+mustInclude:
+  - Query.project
+  - Project.ciVariables
+  - Project.inheritedCiVariables
+  - CiVariable.key
+  - Project.ciVariables(first:)
+  - Project.inheritedCiVariables(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-042. DevOps: project vs inherited CI variables."

@@ -1,0 +1,35 @@
+id: gh-ext-079-kw
+schemaId: github
+query: blocked project items
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectsV2(first: 10) {
+        nodes {
+          items(first: 10) {
+            nodes {
+              fieldValues(first: 10) {
+                __typename
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Project
+mustInclude:
+  - Query.organization
+  - Organization.projectsV2
+  - ProjectV2.items
+  - ProjectV2Item.fieldValues
+  - ProjectV2ItemFieldValue
+  - Organization.projectsV2(first:)
+  - ProjectV2.items(first:)
+  - ProjectV2Item.fieldValues(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-079. Project items whose field values indicate blocked or flagged status.

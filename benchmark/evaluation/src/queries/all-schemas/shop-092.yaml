@@ -1,0 +1,70 @@
+id: shop-092
+schemaId: shopify
+query: List the most recent payouts from the Shopify Payments account, showing
+  each payout's issued date, transfer status, and net amount.
+operation: |
+  query {
+    shopifyPaymentsAccount {
+      payouts(first: 5) {
+        nodes {
+          issuedAt
+          status
+          net {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    payouts:
+      type: array
+      items:
+        type: object
+        properties:
+          issuedAt:
+            type: string
+          status:
+            type: string
+          netAmount:
+            type: string
+          currencyCode:
+            type: string
+        required:
+          - issuedAt
+          - status
+          - netAmount
+          - currencyCode
+        additionalProperties: false
+  required:
+    - payouts
+  additionalProperties: false
+answer:
+  payouts:
+    - issuedAt: "2025-03-17T00:00:00.000Z"
+      status: CANCELED
+      netAmount: "45.00"
+      currencyCode: VND
+    - issuedAt: "2024-06-11T00:00:00.000Z"
+      status: IN_TRANSIT
+      netAmount: "67.50"
+      currencyCode: ETB
+targetFields:
+  - ShopifyPaymentsPayout.issuedAt
+  - ShopifyPaymentsPayout.status
+targetTypes:
+  - ShopifyPaymentsPayout
+mustInclude:
+  - QueryRoot.shopifyPaymentsAccount
+  - ShopifyPaymentsAccount.payouts
+  - ShopifyPaymentsPayout.net
+  - ShopifyPaymentsPayout.issuedAt
+  - ShopifyPaymentsPayout.status
+  - ShopifyPaymentsAccount.payouts(first:)
+mustExclude:
+  - Mutation
+notes: Lists most recent payouts with issued date, status, and net amount; no
+  filter args since mock ignores them.

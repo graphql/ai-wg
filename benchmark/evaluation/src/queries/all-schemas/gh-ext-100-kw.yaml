@@ -1,0 +1,26 @@
+id: gh-ext-100-kw
+schemaId: github
+query: cross-referenced issues across repos
+operation: |
+  query {
+    search(query: "example", type: DISCUSSION, first: 10) {
+      nodes {
+        __typename
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.search
+  - SearchResultItemConnection.nodes
+  - Issue.timelineItems
+  - CrossReferencedEvent.source
+  - CrossReferencedEvent.target
+  - Query.search(first:)
+  - Query.search(query:)
+  - Query.search(type:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-100. Use issue timelines and cross-referenced events to find issues linked across repos.

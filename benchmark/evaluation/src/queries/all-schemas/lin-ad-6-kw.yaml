@@ -1,0 +1,25 @@
+id: lin-ad-6-kw
+schemaId: linear
+query: oauth applications scopes creator
+operation: |
+  query {
+    oauthApplications {
+      name
+      developer
+      redirectUris
+    }
+  }
+targetFields:
+  - OAuthApplication.name
+  - OAuthApplication.developer
+  - OAuthApplication.redirectUris
+targetTypes:
+  - OAuthApplication
+mustInclude:
+  - Query.oauthApplications
+  - OAuthApplication.name
+  - OAuthApplication.developer
+  - OAuthApplication.redirectUris
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-6. OAuth app inventory.

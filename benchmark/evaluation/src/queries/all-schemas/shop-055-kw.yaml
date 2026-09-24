@@ -1,0 +1,26 @@
+id: shop-055-kw
+schemaId: shopify
+query: saved payment methods customer
+operation: |
+  query {
+    customer(id: "gid://shopify/Object/1") {
+      paymentMethods(first: 10) {
+        nodes {
+          instrument {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.customer
+  - Customer.paymentMethods
+  - CustomerPaymentMethod.instrument
+  - Customer.paymentMethods(first:)
+  - QueryRoot.customer(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-055. Saved payment methods on file for a customer.

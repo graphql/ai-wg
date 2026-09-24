@@ -1,0 +1,84 @@
+id: shop-042
+schemaId: shopify
+query: Find customers whose carts were abandoned after 2026-06-05
+  (created_at:>2026-06-05) — show the checkout URL, time, and customer details.
+operation: |
+  query {
+    abandonedCheckouts(first: 10, query: "created_at:>2026-06-05") {
+      nodes {
+        abandonedCheckoutUrl
+        createdAt
+        customer {
+          displayName
+          email
+        }
+      }
+    }
+  }
+targetFields:
+  - AbandonedCheckout.abandonedCheckoutUrl
+  - AbandonedCheckout.createdAt
+  - Customer.displayName
+  - Customer.email
+targetTypes:
+  - AbandonedCheckout
+  - Customer
+mustInclude:
+  - QueryRoot.abandonedCheckouts
+  - AbandonedCheckout.abandonedCheckoutUrl
+  - AbandonedCheckout.createdAt
+  - AbandonedCheckout.customer
+  - Customer.displayName
+  - Customer.email
+  - QueryRoot.abandonedCheckouts(first:)
+  - QueryRoot.abandonedCheckouts(query:)
+mustExclude:
+  - Mutation
+notes: Abandoned carts within the past 48 hours.
+answerSchema:
+  type: object
+  properties:
+    abandonedCheckouts:
+      type: array
+      items:
+        type: object
+        properties:
+          checkoutUrl:
+            type: string
+          createdAt:
+            type: string
+          customerName:
+            type: string
+          customerEmail:
+            type: string
+        required:
+          - checkoutUrl
+          - createdAt
+          - customerName
+          - customerEmail
+        additionalProperties: false
+  required:
+    - abandonedCheckouts
+  additionalProperties: false
+answer:
+  abandonedCheckouts:
+    - checkoutUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzA=?key=1064
+      createdAt: 2024-12-18T00:00:00.000Z
+      customerName: Emma Williams
+      customerEmail: emma.w.shopping@example.com
+    - checkoutUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzQ=?key=9209
+      createdAt: 2025-04-05T00:00:00.000Z
+      customerName: Evelyn Scott
+      customerEmail: olivia.m.buyer@example.com
+    - checkoutUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzM=?key=7526
+      createdAt: 2024-07-14T00:00:00.000Z
+      customerName: Noah Davis
+      customerEmail: sophia.a.client@example.com
+    - checkoutUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzI=?key=6521
+      createdAt: 2025-05-24T00:00:00.000Z
+      customerName: Liam Green
+      customerEmail: david.t.shopper@example.com
+    - checkoutUrl: https://example-shop.myshopify.com/cart/c/Z2NwLXVzLWVhc3QxOjAxJjBjMGYwYzE=?key=5517
+      createdAt: 2025-02-22T00:00:00.000Z
+      customerName: Sophia Anderson
+      customerEmail: james.r.customer@example.com

@@ -1,0 +1,84 @@
+id: glab-087
+schemaId: gitlab
+query: Which epics in group/project are blocked by other epics (blocking epic
+  iid and title per blocked epic)?
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      epics(first: 10) {
+        nodes {
+          iid
+          title
+          blockedByEpics(first: 10) {
+            nodes {
+              iid
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Epic.iid
+  - Epic.title
+targetTypes:
+  - Epic
+mustInclude:
+  - Query.group
+  - Group.epics
+  - Epic.blockedByEpics
+  - Epic.blockedByEpics(first:)
+  - Group.epics(first:)
+  - Query.group(fullPath:)
+  - Epic.iid
+  - Epic.title
+mustExclude:
+  - Mutation
+notes: "PM: epics blocked by other epics."
+answerSchema:
+  type: object
+  properties:
+    epics:
+      type: array
+      items:
+        type: object
+        properties:
+          iid: &a1
+            type: string
+          title: *a1
+          blockedByEpics:
+            type: array
+            items:
+              type: object
+              properties:
+                iid: *a1
+                title: *a1
+              required:
+                - iid
+                - title
+              additionalProperties: false
+        required:
+          - iid
+          - title
+          - blockedByEpics
+        additionalProperties: false
+  required:
+    - epics
+  additionalProperties: false
+answer:
+  epics:
+    - iid: "1"
+      title: Platform Epic
+      blockedByEpics: []
+    - iid: "4"
+      title: Q3 Release Epic
+      blockedByEpics:
+        - iid: "5"
+          title: Security Hardening
+    - iid: "5"
+      title: Security Hardening
+      blockedByEpics: []
+    - iid: "6"
+      title: Mobile App Epic
+      blockedByEpics: []

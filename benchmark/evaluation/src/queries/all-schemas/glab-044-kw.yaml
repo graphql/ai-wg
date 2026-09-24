@@ -1,0 +1,24 @@
+id: glab-044-kw
+schemaId: gitlab
+query: pipeline schedules last run
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelineSchedules(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - PipelineSchedule
+mustInclude:
+  - Query.project
+  - Project.pipelineSchedules
+  - Project.pipelineSchedules(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-044. DevOps: pipeline schedules."

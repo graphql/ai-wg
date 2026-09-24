@@ -1,0 +1,29 @@
+id: shop-038-kw
+schemaId: shopify
+query: product translations French German
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        translations(locale: "placeholder") {
+          locale
+          value
+        }
+      }
+    }
+  }
+targetFields:
+  - Translation.locale
+  - Translation.value
+targetTypes:
+  - Translation
+mustInclude:
+  - QueryRoot.products
+  - Product.translations
+  - Translation.locale
+  - Translation.value
+  - Product.translations(locale:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-038. Product translations for non-English storefronts.

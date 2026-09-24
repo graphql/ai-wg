@@ -1,0 +1,34 @@
+id: gh-ext-063-kw
+schemaId: github
+query: issue comments mentioning user
+operation: |
+  query {
+    user(login: "octocat") {
+      issueComments(first: 10) {
+        nodes {
+          body
+          issue {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - IssueComment.body
+targetTypes:
+  - IssueComment
+  - Issue
+  - Comment
+  - User
+mustInclude:
+  - Query.user
+  - User.issueComments
+  - IssueCommentConnection.nodes
+  - IssueComment.body
+  - IssueComment.issue
+  - Query.user(login:)
+  - User.issueComments(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-063. Issue comments for a user; mentions are matched in the body text.

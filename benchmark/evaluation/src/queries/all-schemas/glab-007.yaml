@@ -1,0 +1,79 @@
+id: glab-007
+schemaId: gitlab
+query: Show commits authored by 'me' on the main branch of project group/project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      repository {
+        commits(ref: "main", author: "me", first: 10) {
+          nodes {
+            sha
+            title
+            authorName
+            authoredDate
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Commit.sha
+  - Commit.title
+  - Commit.authorName
+  - Commit.authoredDate
+targetTypes:
+  - Commit
+mustInclude:
+  - Query.project
+  - Project.repository
+  - Repository.commits
+  - Query.project(fullPath:)
+  - Repository.commits(first:)
+  - Repository.commits(ref:)
+  - Repository.commits(author:)
+  - Commit.sha
+  - Commit.title
+  - Commit.authorName
+  - Commit.authoredDate
+mustExclude:
+  - Mutation
+notes: "Developer: my recent commits on a project. Repo commits feed."
+answerSchema:
+  type: object
+  properties:
+    commits:
+      type: array
+      items:
+        type: object
+        properties:
+          sha:
+            type: string
+          title:
+            type: string
+          authorName:
+            type: string
+          authoredDate:
+            type: string
+        required:
+          - sha
+          - title
+          - authorName
+          - authoredDate
+        additionalProperties: false
+  required:
+    - commits
+  additionalProperties: false
+answer:
+  commits:
+    - sha: abc1234
+      title: Fix auth bug
+      authorName: Alice Johnson
+      authoredDate: 2025-05-30T00:00:00.000Z
+    - sha: def5678
+      title: Add rate limiting
+      authorName: Bob Smith
+      authoredDate: 2025-05-27T00:00:00.000Z
+    - sha: ghi9012
+      title: Refactor pipeline
+      authorName: Carol White
+      authoredDate: 2025-05-22T00:00:00.000Z

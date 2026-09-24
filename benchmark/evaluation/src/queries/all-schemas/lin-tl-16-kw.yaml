@@ -1,0 +1,33 @@
+id: lin-tl-16-kw
+schemaId: linear
+query: cycle completed canceled count
+operation: |
+  query {
+    cycle(id: "<id>") {
+      issues(first: 10) {
+        nodes {
+          estimate
+          completedAt
+          canceledAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.estimate
+  - Issue.completedAt
+  - Issue.canceledAt
+targetTypes:
+  - Issue
+  - Cycle
+mustInclude:
+  - Query.cycle
+  - Cycle.issues
+  - Issue.estimate
+  - Issue.completedAt
+  - Issue.canceledAt
+  - Cycle.issues(first:)
+  - Query.cycle(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-tl-16. Cycle outcomes — completed, canceled, scope sum."

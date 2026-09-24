@@ -1,0 +1,61 @@
+id: glab-061
+schemaId: gitlab
+query: Which dependencies in group/project have known vulnerabilities (name and
+  vulnerabilityCount)?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      dependencies(first: 10) {
+        nodes {
+          name
+          vulnerabilityCount
+        }
+      }
+    }
+  }
+targetFields:
+  - Dependency.name
+  - Dependency.vulnerabilityCount
+targetTypes:
+  - Dependency
+mustInclude:
+  - Query.project
+  - Project.dependencies
+  - Project.dependencies(first:)
+  - Query.project(fullPath:)
+  - Dependency.name
+  - Dependency.vulnerabilityCount
+mustExclude:
+  - Mutation
+notes: "Security: dependencies with advisories."
+answerSchema:
+  type: object
+  properties:
+    dependencies:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          vulnerabilityCount:
+            type: integer
+        required:
+          - name
+          - vulnerabilityCount
+        additionalProperties: false
+  required:
+    - dependencies
+  additionalProperties: false
+answer:
+  dependencies:
+    - name: lodash
+      vulnerabilityCount: 2
+    - name: express
+      vulnerabilityCount: 0
+    - name: axios
+      vulnerabilityCount: 1
+    - name: react
+      vulnerabilityCount: 0
+    - name: webpack
+      vulnerabilityCount: 3

@@ -1,0 +1,112 @@
+id: shop-066
+schemaId: shopify
+query: What are the buy-X-get-Y code discounts in the store, their status, and
+  which products must customers buy and which products do they get?
+operation: |
+  query {
+    discountNodes(first: 10, query: "type:bxgy") {
+      edges {
+        node {
+          discount {
+            ... on DiscountCodeBxgy {
+              title
+              status
+              customerBuys {
+                items {
+                  ... on DiscountProducts {
+                    products(first: 5) {
+                      edges {
+                        node {
+                          title
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              customerGets {
+                items {
+                  ... on DiscountProducts {
+                    products(first: 5) {
+                      edges {
+                        node {
+                          title
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscountCodeBxgy.title
+  - DiscountCodeBxgy.status
+  - DiscountCodeBxgy.customerBuys
+  - DiscountCodeBxgy.customerGets
+  - DiscountProducts.products
+  - Product.title
+targetTypes: []
+mustInclude:
+  - QueryRoot.discountNodes
+  - DiscountNode.discount
+  - DiscountCodeBxgy.title
+  - DiscountCodeBxgy.status
+  - DiscountCodeBxgy.customerBuys
+  - DiscountCodeBxgy.customerGets
+  - QueryRoot.discountNodes(first:)
+mustExclude:
+  - Mutation
+answer:
+  discounts:
+    - title: Buy 2 Get 1 Free
+      status: EXPIRED
+      customerBuys:
+        - Smart Watch
+        - Wireless Headphones
+      customerGets:
+        - Yoga Mat
+        - Wireless Headphones
+    - title: Bundle and Save Promotion
+      status: ACTIVE
+      customerBuys:
+        - Cotton T-Shirt
+        - Yoga Mat
+      customerGets:
+        - Cotton T-Shirt
+        - Cotton T-Shirt
+answerSchema:
+  type: object
+  properties:
+    discounts:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          status:
+            type: string
+          customerBuys:
+            type: array
+            items:
+              type: string
+          customerGets:
+            type: array
+            items:
+              type: string
+        required:
+          - title
+          - status
+          - customerBuys
+          - customerGets
+        additionalProperties: false
+  required:
+    - discounts
+  additionalProperties: false
+notes: Buy-X-get-Y code discounts and the products involved, via the
+  non-deprecated discountNodes field.

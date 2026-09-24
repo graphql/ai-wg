@@ -1,0 +1,61 @@
+id: glab-033
+schemaId: gitlab
+query: List pipelines for project group/project on the main branch updated after
+  2025-06-06.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      pipelines(ref: "main", updatedAfter: "2025-06-06T00:00:00Z", first: 10) {
+        nodes {
+          ref
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Pipeline.ref
+  - Pipeline.createdAt
+targetTypes:
+  - Pipeline
+mustInclude:
+  - Query.project
+  - Project.pipelines
+  - Pipeline.ref
+  - Pipeline.createdAt
+  - Project.pipelines(ref:)
+  - Project.pipelines(updatedAfter:)
+  - Project.pipelines(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "DevOps: pipelines on a branch in recent window."
+answerSchema:
+  type: object
+  properties:
+    pipelines:
+      type: array
+      items:
+        type: object
+        properties:
+          ref:
+            type: string
+          createdAt:
+            type: string
+        required:
+          - ref
+          - createdAt
+        additionalProperties: false
+  required:
+    - pipelines
+  additionalProperties: false
+answer:
+  pipelines:
+    - ref: main
+      createdAt: 2025-05-29T00:00:00.000Z
+    - ref: main
+      createdAt: 2025-05-27T00:00:00.000Z
+    - ref: main
+      createdAt: 2025-05-22T00:00:00.000Z
+    - ref: main
+      createdAt: 2025-05-25T00:00:00.000Z

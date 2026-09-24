@@ -1,0 +1,62 @@
+id: glab-045
+schemaId: gitlab
+query: Which deployments are pending approval in the production environment of
+  the group/project project?
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      environment(name: "production") {
+        deployments(first: 10) {
+          nodes {
+            iid
+            status
+            pendingApprovalCount
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Deployment.iid
+  - Deployment.status
+  - Deployment.pendingApprovalCount
+targetTypes:
+  - Deployment
+mustInclude:
+  - Query.project
+  - Project.environment
+  - Environment.deployments
+  - Deployment.iid
+  - Deployment.status
+  - Deployment.pendingApprovalCount
+  - Environment.deployments(first:)
+  - Project.environment(name:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "DevOps: deployments pending approval."
+answerSchema:
+  type: object
+  properties:
+    deployments:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          pendingApprovalCount:
+            type: integer
+        required:
+          - iid
+          - pendingApprovalCount
+        additionalProperties: false
+  required:
+    - deployments
+  additionalProperties: false
+answer:
+  deployments:
+    - iid: "86"
+      pendingApprovalCount: 1
+    - iid: "28"
+      pendingApprovalCount: 2

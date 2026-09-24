@@ -1,0 +1,6 @@
+{
+    "id": "sig-desc",
+    "name": "Signature + description",
+    "description": "Full signature plus description if present. Args omitted — FieldDef carries no args (see README).",
+    "applies": ["field"]
+}

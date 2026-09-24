@@ -1,0 +1,39 @@
+id: lin-tl-10-kw
+schemaId: linear
+query: triage rotation responsibility team
+operation: |
+  query {
+    team(id: "<id>") {
+      triageResponsibility {
+        id
+        manualSelection {
+          userIds
+          assignmentIndex
+        }
+        currentUser {
+          id
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - TriageResponsibility.id
+  - TriageResponsibilityManualSelection.userIds
+  - TriageResponsibilityManualSelection.assignmentIndex
+  - User.id
+  - User.name
+targetTypes:
+  - Team
+  - TriageResponsibility
+  - TriageResponsibilityManualSelection
+  - User
+mustInclude:
+  - Query.team
+  - Team.triageResponsibility
+  - TriageResponsibility.manualSelection
+  - TriageResponsibilityManualSelection.userIds
+  - Query.team(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-tl-10. Who is on triage duty for this team right now?"

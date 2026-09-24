@@ -1,0 +1,69 @@
+id: gh-ext-041
+schemaId: github
+query: List the repositories starred by octocat, including the star timestamp,
+  repository name, and URL for each.
+operation: |
+  query {
+    user(login: "octocat") {
+      starredRepositories(first: 10) {
+        edges {
+          starredAt
+          node {
+            nameWithOwner
+            url
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - StarredRepositoryEdge.starredAt
+  - Repository.nameWithOwner
+  - Repository.url
+targetTypes:
+  - User
+mustInclude:
+  - Query.user
+  - User.starredRepositories
+  - StarredRepositoryConnection.edges
+  - StarredRepositoryEdge.starredAt
+  - StarredRepositoryEdge.node
+  - Repository.nameWithOwner
+  - Repository.url
+  - Query.user(login:)
+  - User.starredRepositories(first:)
+mustExclude:
+  - Mutation
+notes: Starred repositories with the starredAt edge timestamp and repository
+  identity fields; callers filter by year client-side.
+answerSchema:
+  type: object
+  properties:
+    starredRepositories:
+      type: array
+      items:
+        type: object
+        properties:
+          starTimestamp:
+            type: string
+          repositoryName:
+            type: string
+            description: Full repository name in owner/name form (e.g. octocat/Hello-World)
+          repositoryUrl:
+            type: string
+        required:
+          - starTimestamp
+          - repositoryName
+          - repositoryUrl
+        additionalProperties: false
+  required:
+    - starredRepositories
+  additionalProperties: false
+answer:
+  starredRepositories:
+    - starTimestamp: 2024-09-10T00:00:00.000Z
+      repositoryName: octocat/example
+      repositoryUrl: https://github.com/octocat/example
+    - starTimestamp: 2025-02-15T00:00:00.000Z
+      repositoryName: octocat/Hello-World
+      repositoryUrl: https://github.com/octocat/Hello-World

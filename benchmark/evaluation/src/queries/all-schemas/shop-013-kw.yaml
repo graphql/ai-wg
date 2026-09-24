@@ -1,0 +1,29 @@
+id: shop-013-kw
+schemaId: shopify
+query: orders with discount code applied
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        discountCodes
+        discountApplications(first: 10) {
+          edges {
+            cursor
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.discountCodes
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.orders
+  - Order.discountCodes
+  - Order.discountApplications
+  - Order.discountApplications(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-013. Orders where the customer applied a discount code at checkout.

@@ -1,0 +1,30 @@
+id: glab-031-kw
+schemaId: gitlab
+query: change requesters open merge requests
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          changeRequesters(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - UserCore
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.changeRequesters
+  - MergeRequest.changeRequesters(first:)
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-031. Maintainer: change requesters on open MRs."

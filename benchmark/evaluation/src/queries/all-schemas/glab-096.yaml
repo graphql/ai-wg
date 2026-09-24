@@ -1,0 +1,42 @@
+id: glab-096
+schemaId: gitlab
+query: Show the stepUpAuthRequiredOauthProvider setting and billableMembersCount
+  for group/project.
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      namespaceSettings {
+        stepUpAuthRequiredOauthProvider
+      }
+      billableMembersCount
+    }
+  }
+targetFields:
+  - Group.billableMembersCount
+  - NamespaceSettings.stepUpAuthRequiredOauthProvider
+targetTypes:
+  - Group
+  - NamespaceSettings
+mustInclude:
+  - Query.group
+  - Group.namespaceSettings
+  - Group.billableMembersCount
+  - NamespaceSettings.stepUpAuthRequiredOauthProvider
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Admin: namespace settings + billable members."
+answerSchema:
+  type: object
+  properties:
+    stepUpAuthRequiredOauthProvider:
+      type: string
+    billableMembersCount:
+      type: integer
+  required:
+    - stepUpAuthRequiredOauthProvider
+    - billableMembersCount
+  additionalProperties: false
+answer:
+  stepUpAuthRequiredOauthProvider: google
+  billableMembersCount: 595

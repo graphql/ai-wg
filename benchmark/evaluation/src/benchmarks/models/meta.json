@@ -1,0 +1,10 @@
+{
+    "id": "models",
+    "name": "Model benchmark",
+    "description": "Vary the embedding model; fixed template + strategy=pure-knn (K=50). Headline: rank percentiles + recall@K on mustInclude coords.",
+    "variesAxis": "model",
+    "fixed": {
+        "template": "coord-return-desc",
+        "strategy": "pure-knn"
+    }
+}

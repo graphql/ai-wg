@@ -1,0 +1,80 @@
+id: gh-ext-020
+schemaId: github
+query: In the octocat/example repository, list the merged pull requests, and for
+  each give its number, title, the head branch it was merged from, and when it
+  was merged.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10, states: [MERGED]) {
+        nodes {
+          number
+          title
+          headRefName
+          mergedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.headRefName
+  - PullRequest.mergedAt
+targetTypes:
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.headRefName
+  - PullRequest.mergedAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+  - Repository.pullRequests(states:)
+mustExclude:
+  - Mutation
+notes: Merged pull requests (state MERGED) in octocat/example —
+  pullRequests(states:) is honored by the mock; headRefName is the branch each
+  PR merged from.
+answerSchema:
+  type: object
+  properties:
+    mergedPullRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+          headBranch:
+            type: string
+          mergedAt:
+            type: string
+        required:
+          - number
+          - title
+          - headBranch
+          - mergedAt
+        additionalProperties: false
+  required:
+    - mergedPullRequests
+  additionalProperties: false
+answer:
+  mergedPullRequests:
+    - number: 3
+      title: Update dependencies
+      headBranch: feature/pr-3
+      mergedAt: 2025-05-08T00:00:00.000Z
+    - number: 7
+      title: Add CI pipeline
+      headBranch: feature/pr-7
+      mergedAt: 2025-05-12T00:00:00.000Z
+    - number: 10
+      title: Refactor data layer
+      headBranch: feature/pr-10
+      mergedAt: 2025-05-12T00:00:00.000Z

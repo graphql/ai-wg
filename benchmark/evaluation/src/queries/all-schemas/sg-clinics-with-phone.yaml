@@ -1,0 +1,49 @@
+id: sg-clinics-with-phone
+schemaId: singapore
+query: Which clinics have a phone number listed?
+operation: |
+  query {
+    allClinics {
+      name
+      telephone
+      programmes
+    }
+  }
+targetFields:
+  - Clinic.telephone
+  - Clinic.name
+targetTypes:
+  - Clinic
+mustInclude:
+  - Query.allClinics
+  - Clinic.telephone
+mustExclude: []
+shouldInclude:
+  - Clinic.name
+  - Clinic.programmes
+notes: Standard list-with-filter shape.
+answerSchema:
+  type: object
+  properties:
+    clinicsWithPhone:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          telephone:
+            type: string
+        required:
+          - name
+          - telephone
+        additionalProperties: false
+  required:
+    - clinicsWithPhone
+  additionalProperties: false
+answer:
+  clinicsWithPhone:
+    - name: Tiong Bahru Family Clinic
+      telephone: +65 6552 3000
+    - name: Ang Mo Kio Medical Centre
+      telephone: +65 6474 9999

@@ -1,0 +1,53 @@
+id: gh-ext-011
+schemaId: github
+query: "In the octocat/example repository, how many lines were added and how many lines were deleted in pull request #42?"
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 42) {
+        number
+        additions
+        deletions
+      }
+    }
+  }
+targetFields:
+  - PullRequest.number
+  - PullRequest.additions
+  - PullRequest.deletions
+targetTypes:
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.number
+  - PullRequest.additions
+  - PullRequest.deletions
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+mustExclude:
+  - Mutation
+answer:
+  additions: 308
+  deletions: 302
+answerSchema:
+  type: object
+  properties:
+    additions:
+      type: integer
+    deletions:
+      type: integer
+  required:
+    - additions
+    - deletions
+  additionalProperties: false
+notes: |
+  Single named PR (#42) diff size. additions/deletions are non-deprecated Int! fields with
+  stable, deterministic mock values (308/302) that carry no semantic contradiction. The prior
+  "closed without merging" framing was unanswerable here: the mock's states filter stamps the
+  requested state onto freshly fabricated nodes (no real partition across states), totalCount
+  tracks min(first, 5) rather than a true population, and the merged/closed flags contradict the
+  CLOSED state (CLOSED nodes with merged=true and closed=false). No count-of-state question has a
+  stable, schema-coherent answer against this resolver, so the question was reframed to a single
+  PR's diff stats.

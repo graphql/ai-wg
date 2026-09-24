@@ -1,0 +1,29 @@
+id: glab-035-kw
+schemaId: gitlab
+query: deployments to production last week
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      environment {
+        deployments(first: 10) {
+          nodes {
+            finishedAt
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Deployment.finishedAt
+targetTypes:
+  - Deployment
+mustInclude:
+  - Query.project
+  - Project.environment
+  - Environment.deployments
+  - Deployment.finishedAt
+  - Environment.deployments(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-035. DevOps: production deployments past week."

@@ -1,0 +1,124 @@
+id: shop-040
+schemaId: shopify
+query: For each location, what inventory quantities (the state name and amount
+  of each) are recorded at each of its inventory levels?
+operation: |
+  query {
+    locations(first: 10) {
+      nodes {
+        name
+        inventoryLevels(first: 10) {
+          nodes {
+            quantities(names: ["available", "incoming", "committed", "on_hand", "reserved"]) {
+              name
+              quantity
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Location.name
+  - InventoryQuantity.name
+  - InventoryQuantity.quantity
+targetTypes:
+  - Location
+  - InventoryLevel
+  - InventoryQuantity
+mustInclude:
+  - QueryRoot.locations
+  - QueryRoot.locations(first:)
+  - Location.name
+  - Location.inventoryLevels
+  - Location.inventoryLevels(first:)
+  - InventoryLevel.quantities
+  - InventoryLevel.quantities(names:)
+  - InventoryQuantity.name
+  - InventoryQuantity.quantity
+mustExclude:
+  - Mutation
+notes: Inventory quantities (each state name and its amount) per inventory level
+  per location.
+answerSchema:
+  type: object
+  properties:
+    locations:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          quantities:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                quantity:
+                  type: integer
+              required:
+                - name
+                - quantity
+              additionalProperties: false
+        required:
+          - name
+          - quantities
+        additionalProperties: false
+  required:
+    - locations
+  additionalProperties: false
+answer:
+  locations:
+    - name: Airport Logistics
+      quantities:
+        - name: IL Center
+          quantity: 684
+        - name: OH Depot
+          quantity: 701
+        - name: GA Warehouse
+          quantity: 72
+        - name: CA Distribution
+          quantity: 725
+    - name: Industrial Park
+      quantities:
+        - name: OH Depot
+          quantity: 322
+        - name: NV Depot
+          quantity: 724
+        - name: CO Center
+          quantity: 880
+        - name: AZ Storage
+          quantity: 331
+    - name: West Fulfillment
+      quantities:
+        - name: GA Warehouse
+          quantity: 226
+        - name: WA Hub
+          quantity: 803
+        - name: FL Hub
+          quantity: 121
+        - name: TX Storage
+          quantity: 686
+    - name: Northern Facility
+      quantities:
+        - name: NV Depot
+          quantity: 995
+        - name: NV Depot
+          quantity: 711
+        - name: NV Depot
+          quantity: 185
+        - name: NV Depot
+          quantity: 674
+    - name: Downtown Store
+      quantities:
+        - name: NY Warehouse
+          quantity: 103
+        - name: WA Hub
+          quantity: 638
+        - name: MO Warehouse
+          quantity: 642
+        - name: GA Warehouse
+          quantity: 373

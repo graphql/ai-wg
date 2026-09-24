@@ -1,0 +1,28 @@
+id: shop-008-kw
+schemaId: shopify
+query: open orders unpaid balance
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        displayFinancialStatus
+        totalOutstandingSet {
+          presentmentMoney {
+            amount
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.displayFinancialStatus
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.orders
+  - Order.displayFinancialStatus
+  - Order.totalOutstandingSet
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-008. Open orders with outstanding balances customers haven't paid.

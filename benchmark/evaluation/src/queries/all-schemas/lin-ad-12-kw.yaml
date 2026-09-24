@@ -1,0 +1,25 @@
+id: lin-ad-12-kw
+schemaId: linear
+query: organization url slug release channel
+operation: |
+  query {
+    organization {
+      releaseChannel
+      urlKey
+      name
+    }
+  }
+targetFields:
+  - Organization.releaseChannel
+  - Organization.urlKey
+  - Organization.name
+targetTypes:
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.releaseChannel
+  - Organization.urlKey
+  - Organization.name
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-12. Org-level branding/release channel.

@@ -1,0 +1,35 @@
+id: shop-043-kw
+schemaId: shopify
+query: pending return requests approval
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        returns(first: 10) {
+          nodes {
+            status
+            returnLineItems(first: 10) {
+              edges {
+                cursor
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Return.status
+targetTypes:
+  - Return
+mustInclude:
+  - QueryRoot.orders
+  - Order.returns
+  - Return.status
+  - Return.returnLineItems
+  - Order.returns(first:)
+  - QueryRoot.orders(first:)
+  - Return.returnLineItems(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-043. Return requests still pending merchant approval.

@@ -1,0 +1,61 @@
+id: gh-ext-096
+schemaId: github
+query: What packages have been published to the octocat organization's package
+  registry, and what are their latest versions?
+operation: |
+  query {
+    organization(login: "octocat") {
+      packages(first: 10) {
+        nodes {
+          name
+          latestVersion {
+            version
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Package.name
+  - PackageVersion.version
+targetTypes:
+  - Package
+  - PackageVersion
+mustInclude:
+  - Query.organization
+  - Organization.packages
+  - Package.name
+  - Package.latestVersion
+  - PackageVersion.version
+  - Organization.packages(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Org packages and their latest versions.
+answerSchema:
+  type: object
+  properties:
+    packages:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          latestVersion:
+            type: string
+        required:
+          - name
+          - latestVersion
+        additionalProperties: false
+  required:
+    - packages
+  additionalProperties: false
+answer:
+  packages:
+    - name: example-package
+      latestVersion: 1.2.3
+    - name: example-lib
+      latestVersion: 2.0.0
+    - name: example-docker
+      latestVersion: latest

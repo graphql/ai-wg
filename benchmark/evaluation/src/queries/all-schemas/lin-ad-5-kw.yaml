@@ -1,0 +1,32 @@
+id: lin-ad-5-kw
+schemaId: linear
+query: private teams members visibility
+operation: |
+  query {
+    teams(first: 10) {
+      nodes {
+        members(first: 10) {
+          nodes {
+            id
+          }
+        }
+        visibility
+        private
+      }
+    }
+  }
+targetFields:
+  - Team.visibility
+  - Team.private
+targetTypes:
+  - Team
+mustInclude:
+  - Query.teams
+  - Team.members
+  - Team.visibility
+  - Team.private
+  - Query.teams(first:)
+  - Team.members(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ad-5. Team membership and visibility audit.

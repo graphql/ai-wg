@@ -1,0 +1,32 @@
+id: shop-001-kw
+schemaId: shopify
+query: orders awaiting fulfillment yesterday
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        displayFulfillmentStatus
+        createdAt
+        lineItems(first: 10) {
+          edges {
+            cursor
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.displayFulfillmentStatus
+  - Order.createdAt
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.orders
+  - Order.displayFulfillmentStatus
+  - Order.createdAt
+  - Order.lineItems
+  - Order.lineItems(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-001. Storefront-ops view of orders awaiting fulfillment placed yesterday; needs orders entry, fulfillment status and creation date.

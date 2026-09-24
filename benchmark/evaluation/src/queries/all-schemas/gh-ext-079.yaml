@@ -1,0 +1,64 @@
+id: gh-ext-079
+schemaId: github
+query: Which project items in the octocat organization are archived?
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectsV2(first: 10) {
+        nodes {
+          items(first: 10) {
+            nodes {
+              id
+              isArchived
+              type
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectV2Item.id
+  - ProjectV2Item.isArchived
+  - ProjectV2Item.type
+targetTypes:
+  - ProjectV2Item
+mustInclude:
+  - Query.organization
+  - Organization.projectsV2
+  - ProjectV2.items
+  - ProjectV2Item.id
+  - ProjectV2Item.isArchived
+  - ProjectV2Item.type
+  - Organization.projectsV2(first:)
+  - ProjectV2.items(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+answer:
+  archivedItems:
+    - id: pi-2
+      type: PULL_REQUEST
+    - id: pi-2
+      type: PULL_REQUEST
+answerSchema:
+  type: object
+  properties:
+    archivedItems:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          type:
+            type: string
+        required:
+          - id
+          - type
+        additionalProperties: false
+  required:
+    - archivedItems
+  additionalProperties: false
+notes: Project items where isArchived is true, across all projects in the
+  octocat organization.

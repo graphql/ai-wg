@@ -1,0 +1,30 @@
+id: lin-pm-4-kw
+schemaId: linear
+query: customer needs issues linked requests
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        needs {
+          body
+          issue {
+            id
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CustomerNeed.body
+targetTypes:
+  - CustomerNeed
+  - Customer
+mustInclude:
+  - Query.customers
+  - Customer.needs
+  - CustomerNeed.body
+  - CustomerNeed.issue
+  - Query.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-4. Specific customer wish list with linked issue context.

@@ -1,0 +1,26 @@
+id: glab-089-kw
+schemaId: gitlab
+query: top level groups visibility instance
+operation: |
+  query {
+    groups(first: 10) {
+      nodes {
+        visibility
+        parent {
+          __typename
+        }
+      }
+    }
+  }
+targetFields:
+  - Group.visibility
+targetTypes:
+  - Group
+mustInclude:
+  - Query.groups
+  - Group.visibility
+  - Group.parent
+  - Query.groups(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-089. Admin: top-level groups + visibility."

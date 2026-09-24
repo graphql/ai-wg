@@ -1,0 +1,10 @@
+{
+    "id": "templates",
+    "name": "Template benchmark",
+    "description": "Vary the field rendering template; fixed (model, strategy=pure-knn). Headline: recall@K + per-must rank.",
+    "variesAxis": "template",
+    "fixed": {
+        "model": "openai-3-small",
+        "strategy": "pure-knn"
+    }
+}

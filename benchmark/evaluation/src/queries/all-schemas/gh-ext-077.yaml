@@ -1,0 +1,53 @@
+id: gh-ext-077
+schemaId: github
+query: Who has answered discussions across the repositories in the octocat
+  organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          discussions(first: 10) {
+            nodes {
+              answer {
+                author {
+                  login
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Actor.login
+targetTypes:
+  - User
+  - Discussion
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.discussions
+  - Discussion.answer
+  - DiscussionComment.author
+  - Actor.login
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+  - Repository.discussions(first:)
+mustExclude:
+  - Mutation
+notes: Across org repos, count discussion answer authors.
+answerSchema:
+  type: object
+  properties:
+    answerers:
+      type: array
+      items:
+        type: string
+  required:
+    - answerers
+  additionalProperties: false
+answer:
+  answerers:
+    - alice

@@ -1,0 +1,30 @@
+id: lin-cs-3-kw
+schemaId: linear
+query: enterprise customers tier revenue
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        tier {
+          id
+        }
+        revenue
+        status {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.revenue
+targetTypes:
+  - Customer
+mustInclude:
+  - Query.customers
+  - Customer.tier
+  - Customer.revenue
+  - Customer.status
+  - Query.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-cs-3. CS overview of strategic accounts by tier and revenue.

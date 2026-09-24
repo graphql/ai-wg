@@ -1,0 +1,29 @@
+id: lin-tl-7-kw
+schemaId: linear
+query: team workflow states order
+operation: |
+  query {
+    workflowStates(first: 10) {
+      nodes {
+        type
+        team {
+          id
+        }
+        position
+      }
+    }
+  }
+targetFields:
+  - WorkflowState.type
+  - WorkflowState.position
+targetTypes:
+  - WorkflowState
+mustInclude:
+  - Query.workflowStates
+  - WorkflowState.type
+  - WorkflowState.team
+  - WorkflowState.position
+  - Query.workflowStates(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-7. Inspect workflow states (Todo/In Progress/Done) the team uses.

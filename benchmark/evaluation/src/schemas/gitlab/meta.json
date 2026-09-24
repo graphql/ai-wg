@@ -1,0 +1,5 @@
+{
+    "id": "gitlab",
+    "name": "GitLab",
+    "description": "GitLab API (~3MB SDL). No queries in v1 eval yet; available for new categories."
+}

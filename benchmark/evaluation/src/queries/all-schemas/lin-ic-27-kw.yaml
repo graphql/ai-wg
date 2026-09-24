@@ -1,0 +1,32 @@
+id: lin-ic-27-kw
+schemaId: linear
+query: issue stakeholders creator assignee subscribers
+operation: |
+  query {
+    issue(id: "<id>") {
+      subscribers(first: 10) {
+        nodes {
+          id
+        }
+      }
+      assignee {
+        id
+      }
+      creator {
+        id
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.subscribers
+  - Issue.assignee
+  - Issue.creator
+  - Issue.subscribers(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-27. Stakeholders on a single issue.

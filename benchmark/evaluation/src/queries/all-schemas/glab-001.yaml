@@ -1,0 +1,64 @@
+id: glab-001
+schemaId: gitlab
+query: Show me all merge requests I'm currently assigned to that are still open.
+operation: |
+  query {
+    currentUser {
+      assignedMergeRequests(first: 10, state: opened) {
+        nodes {
+          iid
+          title
+          state
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.state
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.assignedMergeRequests
+  - MergeRequest.iid
+  - MergeRequest.title
+  - MergeRequest.state
+  - CurrentUser.assignedMergeRequests(first:)
+  - CurrentUser.assignedMergeRequests(state:)
+mustExclude:
+  - Mutation
+notes: "Developer: my open assigned MRs. Filters by state: opened and returns
+  iid, title, state."
+answerSchema:
+  type: object
+  properties:
+    assignedMergeRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+        required:
+          - iid
+          - title
+        additionalProperties: false
+  required:
+    - assignedMergeRequests
+  additionalProperties: false
+answer:
+  assignedMergeRequests:
+    - iid: "5794"
+      title: "docs: update API documentation"
+    - iid: "108"
+      title: "perf: reduce memory footprint of serializer"
+    - iid: "7645"
+      title: "refactor: consolidate validation logic"
+    - iid: "4774"
+      title: "feat: add webhook retry mechanism"
+    - iid: "2623"
+      title: "fix: resolve race condition in cache layer"

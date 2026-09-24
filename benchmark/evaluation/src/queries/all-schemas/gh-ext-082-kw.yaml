@@ -1,0 +1,28 @@
+id: gh-ext-082-kw
+schemaId: github
+query: active project iterations items
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectV2(number: 1) {
+        field(name: "example") {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Project
+mustInclude:
+  - Query.organization
+  - Organization.projectV2
+  - ProjectV2.field
+  - ProjectV2IterationField.configuration
+  - ProjectV2IterationFieldConfiguration.iterations
+  - Organization.projectV2(number:)
+  - ProjectV2.field(name:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-082. Iteration field config and iterations for the project.

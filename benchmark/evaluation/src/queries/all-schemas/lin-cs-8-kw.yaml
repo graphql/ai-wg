@@ -1,0 +1,29 @@
+id: lin-cs-8-kw
+schemaId: linear
+query: churn risk customer status
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        status {
+          name
+        }
+        updatedAt
+      }
+    }
+  }
+targetFields:
+  - CustomerStatus.name
+  - Customer.updatedAt
+targetTypes:
+  - CustomerStatus
+  - Customer
+mustInclude:
+  - Query.customers
+  - Customer.status
+  - CustomerStatus.name
+  - Customer.updatedAt
+  - Query.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-cs-8. Churn-risk customer list.

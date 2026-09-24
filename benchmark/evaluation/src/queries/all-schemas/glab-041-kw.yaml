@@ -1,0 +1,24 @@
+id: glab-041-kw
+schemaId: gitlab
+query: deploy freezes production environment
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      environment {
+        deployFreezes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - CiFreezePeriod
+mustInclude:
+  - Query.project
+  - Project.environment
+  - Environment.deployFreezes
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-041. DevOps: deploy freezes on prod env."

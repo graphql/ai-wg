@@ -1,0 +1,84 @@
+id: gh-ext-016
+schemaId: github
+query: Which pull requests in the octocat/example repository have been reopened,
+  and who reopened them?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          number
+          title
+          timelineItems(first: 10, itemTypes: [REOPENED_EVENT]) {
+            nodes {
+              ... on ReopenedEvent {
+                createdAt
+                actor {
+                  login
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.number
+  - PullRequest.title
+  - ReopenedEvent.createdAt
+  - Actor.login
+targetTypes:
+  - PullRequest
+  - ReopenedEvent
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.timelineItems
+  - PullRequest.number
+  - PullRequest.title
+  - ReopenedEvent.actor
+  - ReopenedEvent.createdAt
+  - PullRequest.timelineItems(first:)
+  - PullRequest.timelineItems(itemTypes:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Detect reopen events on PRs through the timeline.
+answerSchema:
+  type: object
+  properties:
+    reopenedPullRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+          reopenings:
+            type: array
+            items:
+              type: object
+              properties:
+                reopenedBy:
+                  type: string
+                reopenedAt:
+                  type: string
+              required:
+                - reopenedBy
+                - reopenedAt
+              additionalProperties: false
+        required:
+          - number
+          - title
+          - reopenings
+        additionalProperties: false
+  required:
+    - reopenedPullRequests
+  additionalProperties: false
+answer:
+  reopenedPullRequests: []

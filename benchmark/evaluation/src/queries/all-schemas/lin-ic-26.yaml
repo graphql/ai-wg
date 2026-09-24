@@ -1,0 +1,94 @@
+id: lin-ic-26
+schemaId: linear
+query: "Which of my issues are in the current cycle vs. backlog?"
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10) {
+        nodes {
+          identifier
+          title
+          cycle {
+            name
+            isActive
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.identifier
+  - Issue.title
+  - Cycle.name
+  - Cycle.isActive
+targetTypes:
+  - Cycle
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.identifier
+  - Issue.title
+  - Issue.cycle
+  - Cycle.name
+  - Cycle.isActive
+  - User.assignedIssues(first:)
+mustExclude:
+  - Mutation
+notes: My issues grouped by cycle with active/backlog status.
+answerSchema:
+  type: object
+  properties:
+    currentCycle:
+      type: array
+      items:
+        type: object
+        properties:
+          identifier:
+            type: string
+          title:
+            type: string
+        required:
+          - identifier
+          - title
+        additionalProperties: false
+    backlog:
+      type: array
+      items:
+        type: object
+        properties:
+          identifier:
+            type: string
+          title:
+            type: string
+        required:
+          - identifier
+          - title
+        additionalProperties: false
+  required:
+    - currentCycle
+    - backlog
+  additionalProperties: false
+answer:
+  currentCycle:
+    - identifier: ENG-7
+      title: Fix authentication token refresh
+    - identifier: ENG-100
+      title: Update mobile app onboarding flow
+    - identifier: ENG-101
+      title: Resolve webpack bundle size issue
+    - identifier: ENG-102
+      title: Add dark mode support
+    - identifier: ENG-105
+      title: Upgrade dependencies to latest LTS
+  backlog:
+    - identifier: ENG-241
+      title: Refactor authentication middleware
+    - identifier: ENG-441
+      title: Customer reported login issue on mobile
+    - identifier: ENG-103
+      title: Fix CI pipeline flakiness
+    - identifier: ENG-104
+      title: Implement audit logging
+    - identifier: ENG-106
+      title: Write integration tests for auth service

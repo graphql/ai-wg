@@ -1,0 +1,29 @@
+id: sg-uv-index-by-region-kw
+schemaId: singapore
+query: uv index north region
+operation: |
+  query {
+    regionByName(name: NORTH) {
+      name
+      uvIndex {
+        value
+        descriptor
+        timestamp
+      }
+    }
+  }
+targetFields:
+  - UvIndex.value
+  - UvIndex.descriptor
+targetTypes:
+  - Region
+  - UvIndex
+mustInclude:
+  - Query.regionByName
+  - Region.uvIndex
+  - Query.regionByName(name:)
+mustExclude: []
+shouldInclude:
+  - UvIndex
+  - Region.name
+notes: Keyword variant of sg-uv-index-by-region. Generated assuming LLM-as-caller without schema knowledge. Top cosine match is likely Query.uvIndex (national). Correct answer is the per-region nested path.

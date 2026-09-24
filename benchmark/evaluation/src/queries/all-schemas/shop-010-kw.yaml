@@ -1,0 +1,41 @@
+id: shop-010-kw
+schemaId: shopify
+query: online store channel orders this month
+operation: |
+  query {
+    ordersCount {
+      count
+    }
+    abandonedCheckouts(first: 10) {
+      nodes {
+        customer {
+          companyContactProfiles {
+            company {
+              draftOrders(first: 10) {
+                nodes {
+                  order {
+                    sourceName
+                    createdAt
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.sourceName
+  - Order.createdAt
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.ordersCount
+  - Order.sourceName
+  - Order.createdAt
+  - Company.draftOrders(first:)
+  - QueryRoot.abandonedCheckouts(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-010. Order count from the Online Store sales channel this month.

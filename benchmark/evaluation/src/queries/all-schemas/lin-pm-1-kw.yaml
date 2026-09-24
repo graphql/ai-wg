@@ -1,0 +1,30 @@
+id: lin-pm-1-kw
+schemaId: linear
+query: project milestones target date upcoming
+operation: |
+  query {
+    project(id: "<id>") {
+      projectMilestones(first: 10) {
+        nodes {
+          targetDate
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectMilestone.targetDate
+  - ProjectMilestone.name
+targetTypes:
+  - ProjectMilestone
+  - Project
+mustInclude:
+  - Query.project
+  - Project.projectMilestones
+  - ProjectMilestone.targetDate
+  - ProjectMilestone.name
+  - Project.projectMilestones(first:)
+  - Query.project(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-1. Milestone status within a project.

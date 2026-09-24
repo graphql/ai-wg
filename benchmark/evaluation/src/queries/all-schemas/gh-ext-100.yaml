@@ -1,0 +1,101 @@
+id: gh-ext-100
+schemaId: github
+query: >-
+  In the octocat/Hello-World repository, for each of the first 3 issues, what
+  cross-referenced events appear in their timeline, and is each cross-reference
+  from a different repository (isCrossRepository)?
+operation: |
+  query {
+    repository(owner: "octocat", name: "Hello-World") {
+      issues(first: 3) {
+        nodes {
+          number
+          title
+          timelineItems(first: 10, itemTypes: [CROSS_REFERENCED_EVENT]) {
+            nodes {
+              __typename
+              ... on CrossReferencedEvent {
+                isCrossRepository
+                source {
+                  __typename
+                  ... on Issue {
+                    repository {
+                      nameWithOwner
+                    }
+                  }
+                  ... on PullRequest {
+                    repository {
+                      nameWithOwner
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.number
+  - Issue.title
+  - Issue.url
+  - CrossReferencedEvent.isCrossRepository
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.repository
+  - Repository.issues
+  - Issue.timelineItems
+  - CrossReferencedEvent.isCrossRepository
+  - CrossReferencedEvent.source
+  - Query.repository(owner:)
+  - Query.repository(name:)
+mustExclude:
+  - Mutation
+notes: Use repository.issues and Issue.timelineItems with CrossReferencedEvent
+  to inspect cross-repository references.
+answer:
+  issues:
+    - number: 131
+      title: Fix null reference exception in parser
+      crossReferences: []
+    - number: 641
+      title: Performance regression in query execution
+      crossReferences: []
+    - number: 360
+      title: Add support for custom headers
+      crossReferences: []
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: number
+          title:
+            type: string
+          crossReferences:
+            type: array
+            items:
+              type: object
+              properties:
+                repository:
+                  type: string
+                isCrossRepository:
+                  type: boolean
+              required:
+                - repository
+                - isCrossRepository
+              additionalProperties: false
+        required:
+          - number
+          - title
+          - crossReferences
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false

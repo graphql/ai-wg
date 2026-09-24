@@ -1,0 +1,57 @@
+id: gh-ext-045
+schemaId: github
+query: What repositories does the authenticated viewer have pinned, including
+  their names and descriptions?
+operation: |
+  query {
+    viewer {
+      pinnedItems(first: 10) {
+        nodes {
+          ... on Repository {
+            name
+            description
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.name
+  - Repository.description
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.viewer
+  - User.pinnedItems
+  - PinnableItemConnection.nodes
+  - Repository.name
+  - Repository.description
+  - User.pinnedItems(first:)
+mustExclude:
+  - Mutation
+notes: Pinned items of the viewer and their descriptions.
+answerSchema:
+  type: object
+  properties:
+    pinnedRepositories:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+        required:
+          - name
+          - description
+        additionalProperties: false
+  required:
+    - pinnedRepositories
+  additionalProperties: false
+answer:
+  pinnedRepositories:
+    - name: example
+      description: example repository
+    - name: Hello-World
+      description: Hello-World repository

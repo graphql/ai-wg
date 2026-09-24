@@ -1,0 +1,37 @@
+id: gh-ext-028-kw
+schemaId: github
+query: environments protection rules
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      environments(first: 10) {
+        nodes {
+          name
+          protectionRules(first: 10) {
+            nodes {
+              type
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Environment.name
+  - DeploymentProtectionRule.type
+targetTypes:
+  - Environment
+  - DeploymentProtectionRule
+mustInclude:
+  - Query.repository
+  - Repository.environments
+  - Environment.name
+  - Environment.protectionRules
+  - DeploymentProtectionRule.type
+  - Environment.protectionRules(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.environments(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-028. List environments and their protection rules.

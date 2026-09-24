@@ -1,0 +1,29 @@
+id: glab-014-kw
+schemaId: gitlab
+query: failed jobs failure reason last pipeline
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      headPipeline {
+        jobs(first: 10) {
+          nodes {
+            failureMessage
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CiJob.failureMessage
+targetTypes:
+  - CiJob
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.headPipeline
+  - Pipeline.jobs
+  - CiJob.failureMessage
+  - Pipeline.jobs(first:)
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-014. Developer: failed jobs and reasons on last pipeline."

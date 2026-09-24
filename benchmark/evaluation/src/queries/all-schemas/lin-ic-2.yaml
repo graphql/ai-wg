@@ -1,0 +1,73 @@
+id: lin-ic-2
+schemaId: linear
+query: "Which of my open issues are highest priority?"
+operation: |
+  query {
+    viewer {
+      assignedIssues(first: 10, filter: { state: { type: { in: ["unstarted", "started"] } } }) {
+        nodes {
+          title
+          priority
+          priorityLabel
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.title
+  - Issue.priority
+  - Issue.priorityLabel
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.assignedIssues
+  - Issue.title
+  - Issue.priority
+  - Issue.priorityLabel
+  - User.assignedIssues(first:)
+  - User.assignedIssues(filter:)
+mustExclude:
+  - Mutation
+notes: My triage view of urgent work.
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          priorityLabel:
+            type: string
+        required:
+          - title
+          - priorityLabel
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - title: Fix authentication token refresh
+      priorityLabel: High
+    - title: Customer reported login issue on mobile
+      priorityLabel: Urgent
+    - title: Update mobile app onboarding flow
+      priorityLabel: High
+    - title: Resolve webpack bundle size issue
+      priorityLabel: Medium
+    - title: Add dark mode support
+      priorityLabel: Low
+    - title: Fix CI pipeline flakiness
+      priorityLabel: High
+    - title: Implement audit logging
+      priorityLabel: Urgent
+    - title: Upgrade dependencies to latest LTS
+      priorityLabel: Medium
+    - title: Write integration tests for auth service
+      priorityLabel: High
+    - title: Optimize database query performance
+      priorityLabel: High

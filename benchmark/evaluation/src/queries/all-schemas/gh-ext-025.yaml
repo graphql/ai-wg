@@ -1,0 +1,72 @@
+id: gh-ext-025
+schemaId: github
+query: What are the check suite conclusions and associated workflow run numbers
+  for the HEAD commit of the octocat/example repository?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      object(expression: "HEAD") {
+        ... on Commit {
+          checkSuites(first: 10) {
+            nodes {
+              conclusion
+              workflowRun {
+                runNumber
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - WorkflowRun.runNumber
+  - CheckSuite.conclusion
+targetTypes:
+  - WorkflowRun
+  - CheckSuite
+  - Workflow
+mustInclude:
+  - Query.repository
+  - Repository.object
+  - Commit.checkSuites
+  - CheckSuite.workflowRun
+  - WorkflowRun.runNumber
+  - CheckSuite.conclusion
+  - Commit.checkSuites(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.object(expression:)
+mustExclude:
+  - Mutation
+answer:
+  checkSuites:
+    - conclusion: null
+      workflowRunNumber: 42
+    - conclusion: null
+      workflowRunNumber: 43
+    - conclusion: null
+      workflowRunNumber: 44
+    - conclusion: SUCCESS
+      workflowRunNumber: 41
+    - conclusion: null
+      workflowRunNumber: 45
+answerSchema:
+  type: object
+  properties:
+    checkSuites:
+      type: array
+      items:
+        type: object
+        properties:
+          conclusion:
+            type: string
+          workflowRunNumber:
+            type: integer
+        required:
+          - conclusion
+          - workflowRunNumber
+        additionalProperties: false
+  required:
+    - checkSuites
+  additionalProperties: false

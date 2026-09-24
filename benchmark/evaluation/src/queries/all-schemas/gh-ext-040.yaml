@@ -1,0 +1,59 @@
+id: gh-ext-040
+schemaId: github
+query: List forks of the octocat/example repository ordered by most recent push,
+  including name and last push time.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      forks(first: 10, orderBy: {field: PUSHED_AT, direction: DESC}) {
+        nodes {
+          nameWithOwner
+          pushedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.nameWithOwner
+  - Repository.pushedAt
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.forks
+  - Repository.nameWithOwner
+  - Repository.pushedAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.forks(first:)
+  - Repository.forks(orderBy:)
+mustExclude:
+  - Mutation
+notes: Fork repositories ordered by recent push activity.
+answerSchema:
+  type: object
+  properties:
+    forks:
+      type: array
+      items:
+        type: object
+        properties:
+          nameWithOwner:
+            type: string
+          pushedAt:
+            type: string
+        required:
+          - nameWithOwner
+          - pushedAt
+        additionalProperties: false
+  required:
+    - forks
+  additionalProperties: false
+answer:
+  forks:
+    - nameWithOwner: user1/example
+      pushedAt: 2025-05-30T00:00:00.000Z
+    - nameWithOwner: user2/example
+      pushedAt: 2025-05-27T00:00:00.000Z
+    - nameWithOwner: user3/example
+      pushedAt: 2025-05-22T00:00:00.000Z

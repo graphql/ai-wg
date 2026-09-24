@@ -1,0 +1,70 @@
+id: glab-009
+schemaId: gitlab
+query: "List my pending to-do items (state: pending) in GitLab."
+operation: |
+  query {
+    currentUser {
+      todos(first: 10, state: [pending]) {
+        nodes {
+          id
+          body
+          state
+          targetType
+          targetUrl
+        }
+      }
+    }
+  }
+targetFields:
+  - Todo.id
+  - Todo.body
+  - Todo.state
+  - Todo.targetType
+  - Todo.targetUrl
+targetTypes: []
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.todos
+  - Todo.id
+  - Todo.body
+  - Todo.state
+  - Todo.targetType
+  - Todo.targetUrl
+  - CurrentUser.todos(first:)
+  - CurrentUser.todos(state:)
+mustExclude:
+  - Mutation
+notes: "Developer: my todo items. Current-user todos list."
+answerSchema:
+  type: object
+  properties:
+    todos:
+      type: array
+      items:
+        type: object
+        properties:
+          body:
+            type: string
+          targetType:
+            type: string
+          targetUrl:
+            type: string
+        required:
+          - body
+          - targetType
+          - targetUrl
+        additionalProperties: false
+  required:
+    - todos
+  additionalProperties: false
+answer:
+  todos:
+    - body: "You were mentioned in a comment on issue #1234"
+      targetType: NAMESPACE
+      targetUrl: https://gitlab.example.com/group/project/-/issues/1234#note_5678
+    - body: Review requested for merge request !108
+      targetType: DUO_WORKFLOW
+      targetUrl: https://gitlab.example.com/group/project/-/merge_requests/108
+    - body: Pipeline failed for merge request !5794
+      targetType: NAMESPACE
+      targetUrl: https://gitlab.example.com/group/project/-/merge_requests/5794/pipelines

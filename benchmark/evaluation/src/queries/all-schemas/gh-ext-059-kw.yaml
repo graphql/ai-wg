@@ -1,0 +1,29 @@
+id: gh-ext-059-kw
+schemaId: github
+query: mirror repositories external
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          isMirror
+          mirrorUrl
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.isMirror
+  - Repository.mirrorUrl
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.isMirror
+  - Repository.mirrorUrl
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-059. Repositories where isMirror is true and their mirror URL.

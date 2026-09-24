@@ -1,0 +1,66 @@
+id: shop-067
+schemaId: shopify
+query: For the free shipping discount codes in the shop, what is each one's
+  title, status, and the number of times it has been used?
+operation: |
+  query {
+    discountNodes(first: 10) {
+      edges {
+        node {
+          discount {
+            ... on DiscountCodeFreeShipping {
+              title
+              status
+              asyncUsageCount
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscountCodeFreeShipping.title
+  - DiscountCodeFreeShipping.status
+  - DiscountCodeFreeShipping.asyncUsageCount
+targetTypes:
+  - DiscountCodeFreeShipping
+mustInclude:
+  - QueryRoot.discountNodes
+  - QueryRoot.discountNodes(first:)
+  - DiscountNode.discount
+  - DiscountCodeFreeShipping.title
+  - DiscountCodeFreeShipping.status
+  - DiscountCodeFreeShipping.asyncUsageCount
+mustExclude:
+  - Mutation
+answer:
+  discounts:
+    - title: Complimentary Shipping Offer
+      status: ACTIVE
+      usageCount: 381
+    - title: Free Shipping on Orders Over $50
+      status: EXPIRED
+      usageCount: 228
+answerSchema:
+  type: object
+  properties:
+    discounts:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          status:
+            type: string
+          usageCount:
+            type: integer
+        required:
+          - title
+          - status
+          - usageCount
+        additionalProperties: false
+  required:
+    - discounts
+  additionalProperties: false
+notes: Free shipping discount codes with their title, status, and usage count.

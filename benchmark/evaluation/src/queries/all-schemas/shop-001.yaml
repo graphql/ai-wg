@@ -1,0 +1,54 @@
+id: shop-001
+schemaId: shopify
+query: Which orders in the shop currently have a PENDING_FULFILLMENT status?
+  List their IDs and names.
+operation: |
+  query {
+    orders(first: 10, query: "fulfillment_status:pending") {
+      nodes {
+        id
+        name
+        displayFulfillmentStatus
+      }
+    }
+  }
+targetFields:
+  - Order.id
+  - Order.name
+  - Order.displayFulfillmentStatus
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.orders
+  - QueryRoot.orders(first:)
+  - QueryRoot.orders(query:)
+  - Order.id
+  - Order.name
+  - Order.displayFulfillmentStatus
+mustExclude:
+  - Mutation
+notes: Identifies orders with PENDING_FULFILLMENT status; tests orders entry
+  with fulfillment status filter and display.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+        required:
+          - id
+          - name
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - id: ord-3
+      name: Item 4308

@@ -1,0 +1,124 @@
+id: glab-073
+schemaId: gitlab
+query: For the group whose fullPath is "group/project", list its iteration
+  cadences with their id, title, and active status; and its iterations with
+  their id, title, state, start date, and due date.
+queries:
+  - iteration cadences (id, title, active status) for the group whose fullPath
+    is "group/project"
+  - iterations (id, title, state, start date, due date) for the group whose
+    fullPath is "group/project"
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      iterationCadences(first: 10) {
+        nodes {
+          id
+          title
+          active
+        }
+      }
+      iterations(first: 5) {
+        nodes {
+          id
+          title
+          state
+          startDate
+          dueDate
+        }
+      }
+    }
+  }
+targetFields:
+  - IterationCadence.id
+  - IterationCadence.title
+  - IterationCadence.active
+  - Iteration.id
+  - Iteration.title
+  - Iteration.state
+  - Iteration.startDate
+  - Iteration.dueDate
+targetTypes:
+  - Iteration
+  - IterationCadence
+mustInclude:
+  - Query.group
+  - Group.iterationCadences
+  - Group.iterations
+  - Group.iterationCadences(first:)
+  - Group.iterations(first:)
+  - Query.group(fullPath:)
+  - IterationCadence.id
+  - IterationCadence.title
+  - IterationCadence.active
+  - Iteration.id
+  - Iteration.title
+  - Iteration.state
+  - Iteration.startDate
+  - Iteration.dueDate
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    iterationCadences:
+      type: array
+      items:
+        type: object
+        properties:
+          id: &a1
+            type: string
+          title: *a1
+          active:
+            type: boolean
+        required:
+          - id
+          - title
+          - active
+        additionalProperties: false
+    iterations:
+      type: array
+      items:
+        type: object
+        properties:
+          id: *a1
+          title: *a1
+          state: *a1
+          startDate: *a1
+          dueDate: *a1
+        required:
+          - id
+          - title
+          - state
+          - startDate
+          - dueDate
+        additionalProperties: false
+  required:
+    - iterationCadences
+    - iterations
+  additionalProperties: false
+notes: "PM: iteration cadences + iterations for a named group."
+answer:
+  iterationCadences:
+    - id: gid://gitlab/IterationCadence/1
+      title: Two-week sprints
+      active: true
+    - id: gid://gitlab/IterationCadence/2
+      title: Monthly cadence
+      active: false
+  iterations:
+    - id: gid://gitlab/Iteration/201
+      title: Sprint 1
+      state: closed
+      startDate: 2025-03-01
+      dueDate: 2025-03-14
+    - id: gid://gitlab/Iteration/202
+      title: Sprint 2
+      state: opened
+      startDate: 2025-05-01
+      dueDate: 2025-05-14
+    - id: gid://gitlab/Iteration/203
+      title: Sprint 3
+      state: opened
+      startDate: 2025-06-01
+      dueDate: 2025-06-14

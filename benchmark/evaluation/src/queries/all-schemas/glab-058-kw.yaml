@@ -1,0 +1,27 @@
+id: glab-058-kw
+schemaId: gitlab
+query: vulnerabilities merge request introduced
+operation: |
+  query {
+    mergeRequest(id: "gid://gitlab/MergeRequest/1") {
+      hasSecurityReports
+      findingReportsComparer(reportType: SAST) {
+        status
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.hasSecurityReports
+  - FindingReportsComparer.status
+targetTypes:
+  - MergeRequest
+  - FindingReportsComparer
+mustInclude:
+  - Query.mergeRequest
+  - MergeRequest.hasSecurityReports
+  - MergeRequest.findingReportsComparer
+  - MergeRequest.findingReportsComparer(reportType:)
+  - Query.mergeRequest(id:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-058. Security: vulns introduced in MR."

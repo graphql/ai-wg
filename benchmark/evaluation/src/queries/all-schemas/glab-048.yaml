@@ -1,0 +1,62 @@
+id: glab-048
+schemaId: gitlab
+query: Show me the cluster agents authorized to access CI for the group/project
+  project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      ciAccessAuthorizedAgents(first: 10) {
+        nodes {
+          agent {
+            id
+            name
+          }
+          config
+        }
+      }
+    }
+  }
+targetFields:
+  - ClusterAgentAuthorizationCiAccess.agent
+  - ClusterAgent.id
+  - ClusterAgent.name
+  - ClusterAgentAuthorizationCiAccess.config
+targetTypes:
+  - ClusterAgentAuthorizationCiAccess
+mustInclude:
+  - Query.project
+  - Project.ciAccessAuthorizedAgents
+  - Project.ciAccessAuthorizedAgents(first:)
+  - Query.project(fullPath:)
+  - ClusterAgentAuthorizationCiAccess.agent
+  - ClusterAgent.id
+  - ClusterAgent.name
+  - ClusterAgentAuthorizationCiAccess.config
+mustExclude:
+  - Mutation
+answerSchema:
+  type: object
+  properties:
+    authorizedAgents:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          config:
+            type: string
+        required:
+          - name
+          - config
+        additionalProperties: false
+  required:
+    - authorizedAgents
+  additionalProperties: false
+notes: "DevOps: cluster agents authorized for CI."
+answer:
+  authorizedAgents:
+    - name: production-agent
+      config: '{"defaultNamespace":"default"}'
+    - name: staging-agent
+      config: '{"defaultNamespace":"default"}'

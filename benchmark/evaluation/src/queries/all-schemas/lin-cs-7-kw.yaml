@@ -1,0 +1,26 @@
+id: lin-cs-7-kw
+schemaId: linear
+query: customers segmented by size
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        size
+        tier {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.size
+targetTypes:
+  - Customer
+mustInclude:
+  - Query.customers
+  - Customer.size
+  - Customer.tier
+  - Query.customers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-cs-7. Account-size segmentation.

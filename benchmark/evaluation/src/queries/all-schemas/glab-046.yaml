@@ -1,0 +1,80 @@
+id: glab-046
+schemaId: gitlab
+query: "Show DORA metrics for project group/project from 2025-01-01 to
+  2025-03-31 (interval: ALL)."
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      dora {
+        metrics(startDate: "2025-01-01", endDate: "2025-03-31", interval: ALL) {
+          date
+          deploymentFrequency
+          leadTimeForChanges
+          changeFailureRate
+          timeToRestoreService
+        }
+      }
+    }
+  }
+targetFields:
+  - DoraMetric.date
+  - DoraMetric.deploymentFrequency
+  - DoraMetric.leadTimeForChanges
+  - DoraMetric.changeFailureRate
+  - DoraMetric.timeToRestoreService
+targetTypes:
+  - Dora
+  - DoraMetric
+mustInclude:
+  - Query.project
+  - Project.dora
+  - Dora.metrics
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "DevOps: DORA metrics for project."
+answerSchema:
+  type: object
+  properties:
+    doraMetrics:
+      type: array
+      items:
+        type: object
+        properties:
+          date:
+            type: string
+          deploymentFrequency:
+            type: number
+          leadTimeForChanges:
+            type: number
+          changeFailureRate:
+            type: number
+          timeToRestoreService:
+            type: number
+        required:
+          - date
+          - deploymentFrequency
+          - leadTimeForChanges
+          - changeFailureRate
+          - timeToRestoreService
+        additionalProperties: false
+  required:
+    - doraMetrics
+  additionalProperties: false
+answer:
+  doraMetrics:
+    - date: 2025-01-15
+      deploymentFrequency: 4.2
+      leadTimeForChanges: 2.1
+      changeFailureRate: 0.05
+      timeToRestoreService: 1.5
+    - date: 2025-02-15
+      deploymentFrequency: 3.8
+      leadTimeForChanges: 1.9
+      changeFailureRate: 0.04
+      timeToRestoreService: 1.2
+    - date: 2025-03-15
+      deploymentFrequency: 5.1
+      leadTimeForChanges: 1.7
+      changeFailureRate: 0.03
+      timeToRestoreService: 0.9

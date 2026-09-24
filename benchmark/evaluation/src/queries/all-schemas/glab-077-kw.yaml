@@ -1,0 +1,27 @@
+id: glab-077-kw
+schemaId: gitlab
+query: velocity issues per iteration
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      iterations(first: 10) {
+        nodes {
+          report {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - TimeboxReport
+mustInclude:
+  - Query.group
+  - Group.iterations
+  - Iteration.report
+  - Group.iterations(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-077. PM: velocity via iteration report."

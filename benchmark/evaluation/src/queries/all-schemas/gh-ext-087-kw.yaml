@@ -1,0 +1,33 @@
+id: gh-ext-087-kw
+schemaId: github
+query: team discussions private
+operation: |
+  query {
+    organization(login: "octocat") {
+      team(slug: "example") {
+        privacy
+        description
+        members(first: 10) {
+          __typename
+        }
+      }
+    }
+  }
+targetFields:
+  - Team.privacy
+  - Team.description
+targetTypes:
+  - Team
+  - Discussion
+mustInclude:
+  - Query.organization
+  - Organization.team
+  - Team.privacy
+  - Team.description
+  - Team.members
+  - Organization.team(slug:)
+  - Query.organization(login:)
+  - Team.members(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-087. Team discussions were sunset in GitHub GraphQL; nearest available surface is the private team metadata and member list.

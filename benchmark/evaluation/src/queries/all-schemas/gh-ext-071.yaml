@@ -1,0 +1,46 @@
+id: gh-ext-071
+schemaId: github
+query: What topics are tagged on each repository owned by the authenticated user?
+operation: |
+  query {
+    viewer {
+      repositories(first: 10) {
+        nodes {
+          repositoryTopics(first: 10) {
+            nodes {
+              topic {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Topic.name
+targetTypes:
+  - Topic
+mustInclude:
+  - Query.viewer
+  - User.repositories
+  - Repository.repositoryTopics
+  - RepositoryTopic.topic
+  - Topic.name
+  - Repository.repositoryTopics(first:)
+  - User.repositories(first:)
+mustExclude:
+  - Mutation
+notes: Repository topics per repo for the viewer.
+answerSchema:
+  type: object
+  properties:
+    topics:
+      type: array
+      items:
+        type: string
+  required:
+    - topics
+  additionalProperties: false
+answer:
+  topics: []

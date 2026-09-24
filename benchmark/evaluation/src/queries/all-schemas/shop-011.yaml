@@ -1,0 +1,57 @@
+id: shop-011
+schemaId: shopify
+query: List open draft orders (status:open) with their name, status, and
+  invoiceSentAt date.
+operation: |
+  query {
+    draftOrders(first: 10, query: "status:open") {
+      nodes {
+        name
+        status
+        invoiceSentAt
+      }
+    }
+  }
+targetFields:
+  - DraftOrder.name
+  - DraftOrder.status
+  - DraftOrder.invoiceSentAt
+targetTypes:
+  - DraftOrder
+mustInclude:
+  - QueryRoot.draftOrders
+  - DraftOrder.name
+  - DraftOrder.status
+  - DraftOrder.invoiceSentAt
+  - QueryRoot.draftOrders(first:)
+  - QueryRoot.draftOrders(query:)
+mustExclude:
+  - Mutation
+notes: Open draft orders not yet invoiced — filtered by status:open.
+answerSchema:
+  type: object
+  properties:
+    draftOrders:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          status:
+            type: string
+          invoiceSentAt:
+            type: string
+        required:
+          - name
+          - status
+          - invoiceSentAt
+        additionalProperties: false
+  required:
+    - draftOrders
+  additionalProperties: false
+answer:
+  draftOrders:
+    - name: "#DO-2024-1001"
+      status: OPEN
+      invoiceSentAt: 2024-07-07T00:00:00.000Z

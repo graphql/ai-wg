@@ -1,0 +1,81 @@
+id: lin-cs-4
+schemaId: linear
+query: "What are all the issue attachments in the workspace? List their title,
+  URL, and source type."
+operation: |
+  query {
+    attachments(first: 10) {
+      nodes {
+        title
+        url
+        sourceType
+      }
+    }
+  }
+answer:
+  attachments:
+    - title: Design mockup
+      url: https://figma.com/file/abc
+      sourceType: figma
+    - title: "Ticket #4521"
+      url: https://zendesk.com/ticket/4521
+      sourceType: zendesk
+    - title: "GitHub PR #789"
+      url: https://github.com/pr/789
+      sourceType: github
+    - title: Slack thread
+      url: https://slack.com/thread/xyz
+      sourceType: slack
+    - title: Notion doc
+      url: https://notion.so/doc/xyz
+      sourceType: notion
+    - title: Customer email
+      url: https://gmail.com/email/xyz
+      sourceType: gmail
+    - title: Linear doc
+      url: https://linear.app/doc/1
+      sourceType: linear
+    - title: Support ticket
+      url: https://intercom.com/t/2
+      sourceType: intercom
+answerSchema:
+  type: object
+  properties:
+    attachments:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+            description: The title of the attachment
+          url:
+            type: string
+            description: The URL of the attachment
+          sourceType:
+            type: string
+            description: The source type of the attachment
+        required:
+          - title
+          - url
+          - sourceType
+        additionalProperties: false
+  required:
+    - attachments
+  additionalProperties: false
+targetFields:
+  - Attachment.title
+  - Attachment.url
+  - Attachment.sourceType
+targetTypes:
+  - Attachment
+mustInclude:
+  - Query.attachments
+  - Attachment.title
+  - Attachment.url
+  - Attachment.sourceType
+  - Query.attachments(first:)
+mustExclude:
+  - Mutation
+notes: List all issue attachments in the workspace via the root
+  Query.attachments connection.

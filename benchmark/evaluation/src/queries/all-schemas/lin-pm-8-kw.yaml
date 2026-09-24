@@ -1,0 +1,31 @@
+id: lin-pm-8-kw
+schemaId: linear
+query: initiative on track target date projects
+operation: |
+  query {
+    initiative(id: "<id>") {
+      targetDate
+      projects(first: 10) {
+        nodes {
+          status {
+            id
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Initiative.targetDate
+targetTypes:
+  - Initiative
+  - Project
+mustInclude:
+  - Query.initiative
+  - Initiative.targetDate
+  - Initiative.projects
+  - Project.status
+  - Initiative.projects(first:)
+  - Query.initiative(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-8. Initiative health surfaced via its constituent projects.

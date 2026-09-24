@@ -1,0 +1,33 @@
+id: shop-009-kw
+schemaId: shopify
+query: shipped line items tracking carrier today
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        fulfillments(first: 10) {
+          trackingInfo(first: 10) {
+            number
+            company
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - FulfillmentTrackingInfo.number
+  - FulfillmentTrackingInfo.company
+targetTypes:
+  - FulfillmentTrackingInfo
+mustInclude:
+  - QueryRoot.orders
+  - Order.fulfillments
+  - Fulfillment.trackingInfo
+  - FulfillmentTrackingInfo.number
+  - FulfillmentTrackingInfo.company
+  - Fulfillment.trackingInfo(first:)
+  - Order.fulfillments(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-009. Today's shipments — tracking number and carrier per shipped line item.

@@ -1,0 +1,29 @@
+id: shop-003-kw
+schemaId: shopify
+query: order 1042 payment status total
+operation: |
+  query {
+    order(id: "gid://shopify/Object/1") {
+      name
+      displayFinancialStatus
+      totalPriceSet {
+        presentmentMoney {
+          amount
+        }
+      }
+    }
+  }
+targetFields:
+  - Order.name
+  - Order.displayFinancialStatus
+targetTypes:
+  - Order
+mustInclude:
+  - QueryRoot.order
+  - Order.name
+  - Order.displayFinancialStatus
+  - Order.totalPriceSet
+  - QueryRoot.order(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-003. Lookup of a single order by name — financial status plus total.

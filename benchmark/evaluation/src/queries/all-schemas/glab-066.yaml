@@ -1,0 +1,81 @@
+id: glab-066
+schemaId: gitlab
+query: List vulnerabilities (title, severity) in group/project with their
+  identifier external types and names.
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          title
+          severity
+          identifiers {
+            externalType
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.title
+  - Vulnerability.severity
+  - VulnerabilityIdentifier.externalType
+  - VulnerabilityIdentifier.name
+targetTypes:
+  - Vulnerability
+  - VulnerabilityIdentifier
+mustInclude:
+  - Query.group
+  - Group.vulnerabilities
+  - Vulnerability.title
+  - Vulnerability.identifiers
+  - VulnerabilityIdentifier.externalType
+  - VulnerabilityIdentifier.name
+  - Group.vulnerabilities(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Security: vulns by OWASP top 10 category."
+answerSchema:
+  type: object
+  properties:
+    vulnerabilities:
+      type: array
+      items:
+        type: object
+        properties:
+          title: &a1
+            type: string
+          severity: *a1
+          identifiers:
+            type: array
+            items:
+              type: object
+              properties:
+                externalType: *a1
+                name: *a1
+              required:
+                - externalType
+                - name
+              additionalProperties: false
+        required:
+          - title
+          - severity
+          - identifiers
+        additionalProperties: false
+  required:
+    - vulnerabilities
+  additionalProperties: false
+answer:
+  vulnerabilities:
+    - title: Group vuln 1
+      severity: HIGH
+      identifiers:
+        - externalType: cve
+          name: CVE-2024-001
+    - title: Group vuln 2
+      severity: CRITICAL
+      identifiers:
+        - externalType: cwe
+          name: CWE-89

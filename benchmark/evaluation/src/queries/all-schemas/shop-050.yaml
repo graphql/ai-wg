@@ -1,0 +1,97 @@
+id: shop-050
+schemaId: shopify
+query: Pull all refund line items for order gid://shopify/Object/1 to confirm
+  what was refunded.
+operation: |
+  query {
+    order(id: "gid://shopify/Object/1") {
+      refunds(first: 10) {
+        refundLineItems(first: 10) {
+          nodes {
+            quantity
+            priceSet {
+              shopMoney {
+                amount
+              }
+            }
+            lineItem {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - RefundLineItem.quantity
+  - RefundLineItem.priceSet
+  - LineItem.name
+targetTypes: []
+mustInclude:
+  - QueryRoot.order
+  - Order.refunds
+  - Refund.refundLineItems
+  - RefundLineItem.quantity
+  - RefundLineItem.priceSet
+  - RefundLineItem.lineItem
+  - LineItem.name
+  - Order.refunds(first:)
+  - QueryRoot.order(id:)
+  - Refund.refundLineItems(first:)
+mustExclude:
+  - Mutation
+notes: All refund line items for a single order.
+answerSchema:
+  type: object
+  properties:
+    refundLineItems:
+      type: array
+      items:
+        type: object
+        properties:
+          lineItem:
+            type: string
+          quantity:
+            type: integer
+          amount:
+            type: string
+        required:
+          - lineItem
+          - quantity
+          - amount
+        additionalProperties: false
+  required:
+    - refundLineItems
+  additionalProperties: false
+answer:
+  refundLineItems:
+    - lineItem: Collection M
+      quantity: 654
+      amount: "235.50"
+    - lineItem: Series N
+      quantity: 433
+      amount: "89.50"
+    - lineItem: Model E
+      quantity: 762
+      amount: "268.00"
+    - lineItem: Stock H
+      quantity: 93
+      amount: "99.95"
+    - lineItem: Package J
+      quantity: 786
+      amount: "28.00"
+    - lineItem: Range O
+      quantity: 84
+      amount: "225.50"
+    - lineItem: Product A
+      quantity: 640
+      amount: "37.25"
+    - lineItem: Collection M
+      quantity: 971
+      amount: "189.99"
+    - lineItem: Model E
+      quantity: 209
+      amount: "142.00"
+    - lineItem: Unit G
+      quantity: 579
+      amount: "105.00"

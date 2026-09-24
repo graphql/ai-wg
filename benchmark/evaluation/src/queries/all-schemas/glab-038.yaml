@@ -1,0 +1,122 @@
+id: glab-038
+schemaId: gitlab
+query: List CI runners with their id, description, maximumTimeout, and currently
+  running jobs (id, name, duration).
+operation: |
+  query {
+    runners(first: 10) {
+      nodes {
+        id
+        description
+        maximumTimeout
+        jobs(statuses: [RUNNING], first: 10) {
+          nodes {
+            ... on CiJob {
+              id
+              name
+              duration
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CiRunner.id
+  - CiRunner.description
+  - CiRunner.maximumTimeout
+  - CiJob.id
+  - CiJob.name
+  - CiJob.duration
+targetTypes:
+  - CiRunner
+  - CiJob
+mustInclude:
+  - Query.runners
+  - CiRunner.id
+  - CiRunner.description
+  - CiRunner.maximumTimeout
+  - CiRunner.jobs
+  - CiJob.duration
+  - CiRunner.jobs(statuses:)
+  - CiRunner.jobs(first:)
+  - Query.runners(first:)
+mustExclude:
+  - Mutation
+notes: "DevOps: runners with long-running jobs."
+answerSchema:
+  type: object
+  properties:
+    runners:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          description:
+            type: string
+          maximumTimeout:
+            type: integer
+          jobs:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                duration:
+                  type: integer
+              required:
+                - name
+                - duration
+              additionalProperties: false
+        required:
+          - id
+          - description
+          - maximumTimeout
+          - jobs
+        additionalProperties: false
+  required:
+    - runners
+  additionalProperties: false
+answer:
+  runners:
+    - id: CiRunner:root/CiRunner/0
+      description: Docker runner on Kubernetes cluster 1
+      maximumTimeout: 864
+      jobs:
+        - name: integration-tests
+          duration: 558
+        - name: deploy-production
+          duration: 809
+    - id: CiRunner:root/CiRunner/1
+      description: Dedicated machine runner for large builds
+      maximumTimeout: 151
+      jobs:
+        - name: run-unit-tests
+          duration: 840
+        - name: security-scan
+          duration: 533
+    - id: CiRunner:root/CiRunner/2
+      description: Auto-scaling runner for parallel jobs
+      maximumTimeout: 229
+      jobs:
+        - name: build-docker-image
+          duration: 419
+        - name: performance-benchmark
+          duration: 956
+    - id: CiRunner:root/CiRunner/3
+      description: Shell runner for shell scripts
+      maximumTimeout: 636
+      jobs:
+        - name: deploy-staging
+          duration: 291
+        - name: lint-and-format
+          duration: 348
+    - id: CiRunner:root/CiRunner/4
+      description: Windows runner for .NET builds
+      maximumTimeout: 248
+      jobs:
+        - name: static-code-analysis
+          duration: 845

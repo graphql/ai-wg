@@ -1,0 +1,29 @@
+id: gh-ext-042-kw
+schemaId: github
+query: watchers subscribers repository
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      watchers(first: 10) {
+        nodes {
+          login
+        }
+      }
+    }
+  }
+targetFields:
+  - User.login
+targetTypes:
+  - User
+  - Repository
+mustInclude:
+  - Query.repository
+  - Repository.watchers
+  - UserConnection.nodes
+  - User.login
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.watchers(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-042. GraphQL does not expose subscribe timestamps; nearest is the watchers connection of users.

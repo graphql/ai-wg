@@ -1,0 +1,78 @@
+id: lin-em-8
+schemaId: linear
+query: "Which teams have cycles enabled and what cadence are they on?"
+operation: |
+  query {
+    teams {
+      nodes {
+        name
+        cyclesEnabled
+        cycleDuration
+        cycleStartDay
+      }
+    }
+  }
+targetFields:
+  - Team.name
+  - Team.cyclesEnabled
+  - Team.cycleDuration
+  - Team.cycleStartDay
+targetTypes:
+  - Team
+  - TeamConnection
+mustInclude:
+  - Query.teams
+  - Team.name
+  - Team.cyclesEnabled
+  - Team.cycleDuration
+  - Team.cycleStartDay
+mustExclude:
+  - Mutation
+notes: Cycle cadence configuration audit.
+answerSchema:
+  type: object
+  properties:
+    teams:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          cycleDuration:
+            type: number
+            description: length of a cycle
+          cycleStartDay:
+            type: number
+            description: day a cycle starts
+        required:
+          - name
+          - cycleDuration
+          - cycleStartDay
+        additionalProperties: false
+  required:
+    - teams
+  additionalProperties: false
+answer:
+  teams:
+    - name: Engineering
+      cycleDuration: 2
+      cycleStartDay: 1
+    - name: Design
+      cycleDuration: 2
+      cycleStartDay: 1
+    - name: Backend
+      cycleDuration: 2
+      cycleStartDay: 1
+    - name: Infrastructure
+      cycleDuration: 2
+      cycleStartDay: 1
+    - name: Platform
+      cycleDuration: 2
+      cycleStartDay: 1
+    - name: Frontend
+      cycleDuration: 2
+      cycleStartDay: 1
+    - name: Security
+      cycleDuration: 2
+      cycleStartDay: 1

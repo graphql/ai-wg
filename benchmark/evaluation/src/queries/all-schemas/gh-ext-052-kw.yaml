@@ -1,0 +1,29 @@
+id: gh-ext-052-kw
+schemaId: github
+query: code of conduct repositories
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          codeOfConduct {
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - CodeOfConduct.name
+targetTypes:
+  - CodeOfConduct
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.codeOfConduct
+  - CodeOfConduct.name
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-052. Repositories whose codeOfConduct field is non-null.

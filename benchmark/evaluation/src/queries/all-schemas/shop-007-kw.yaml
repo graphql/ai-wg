@@ -1,0 +1,36 @@
+id: shop-007-kw
+schemaId: shopify
+query: returning customer orders last 30 days line items
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        customer {
+          numberOfOrders
+        }
+        lineItems(first: 10) {
+          nodes {
+            contract {
+              customer {
+                numberOfOrders
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.numberOfOrders
+targetTypes:
+  - Customer
+mustInclude:
+  - QueryRoot.orders
+  - Order.customer
+  - Customer.numberOfOrders
+  - Order.lineItems
+  - Order.lineItems(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-007. Orders by returning customers with their bought items in the last 30 days.

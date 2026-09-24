@@ -1,0 +1,47 @@
+id: shop-085
+schemaId: shopify
+query: Show payment terms templates for our wholesale accounts.
+operation: |
+  query {
+    paymentTermsTemplates {
+      name
+      dueInDays
+    }
+  }
+targetFields:
+  - PaymentTermsTemplate.name
+  - PaymentTermsTemplate.dueInDays
+targetTypes:
+  - PaymentTermsTemplate
+mustInclude:
+  - QueryRoot.paymentTermsTemplates
+  - PaymentTermsTemplate.name
+  - PaymentTermsTemplate.dueInDays
+mustExclude:
+  - Mutation
+notes: Payment terms templates for wholesale accounts.
+answerSchema:
+  type: object
+  properties:
+    paymentTermsTemplates:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          dueInDays:
+            type: integer
+        required:
+          - name
+          - dueInDays
+        additionalProperties: false
+  required:
+    - paymentTermsTemplates
+  additionalProperties: false
+answer:
+  paymentTermsTemplates:
+    - name: 2/10 Net 30
+      dueInDays: 935
+    - name: Net 30
+      dueInDays: 421

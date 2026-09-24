@@ -1,0 +1,29 @@
+id: glab-053-kw
+schemaId: gitlab
+query: critical unresolved vulnerabilities project
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          severity
+          state
+        }
+      }
+    }
+  }
+targetFields:
+  - Vulnerability.severity
+  - Vulnerability.state
+targetTypes:
+  - Vulnerability
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.severity
+  - Vulnerability.state
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-053. Security: critical unresolved vulns."

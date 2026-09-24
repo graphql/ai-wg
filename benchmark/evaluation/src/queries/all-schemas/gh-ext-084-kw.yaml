@@ -1,0 +1,34 @@
+id: gh-ext-084-kw
+schemaId: github
+query: project views filters
+operation: |
+  query {
+    organization(login: "octocat") {
+      projectV2(number: 1) {
+        views(first: 10) {
+          nodes {
+            filter
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ProjectV2View.filter
+  - ProjectV2View.name
+targetTypes:
+  - ProjectV2View
+  - Project
+mustInclude:
+  - Query.organization
+  - Organization.projectV2
+  - ProjectV2.views
+  - ProjectV2View.filter
+  - ProjectV2View.name
+  - Organization.projectV2(number:)
+  - ProjectV2.views(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-084. Project views with their filter string.

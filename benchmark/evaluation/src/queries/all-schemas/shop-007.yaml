@@ -1,0 +1,112 @@
+id: shop-007
+schemaId: shopify
+query: For orders placed in the past 30 days (created_at:>-30d), show each
+  customer's order count and the line items purchased.
+operation: |
+  query {
+    orders(first: 10, query: "created_at:>-30d") {
+      nodes {
+        customer {
+          numberOfOrders
+        }
+        lineItems(first: 10) {
+          nodes {
+            name
+            quantity
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.numberOfOrders
+  - LineItem.name
+  - LineItem.quantity
+targetTypes:
+  - Customer
+  - LineItem
+mustInclude:
+  - QueryRoot.orders
+  - QueryRoot.orders(first:)
+  - QueryRoot.orders(query:)
+  - Order.customer
+  - Customer.numberOfOrders
+  - Order.lineItems
+  - Order.lineItems(first:)
+  - LineItem.name
+  - LineItem.quantity
+mustExclude:
+  - Mutation
+notes: Orders by returning customers with their bought items in the last 30 days.
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          orderCount:
+            type: string
+          lineItems:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                quantity:
+                  type: integer
+              required:
+                - name
+                - quantity
+              additionalProperties: false
+        required:
+          - orderCount
+          - lineItems
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false
+answer:
+  customers:
+    - orderCount: "12"
+      lineItems: []
+    - orderCount: "3"
+      lineItems:
+        - name: Set L
+          quantity: 507
+        - name: Package J
+          quantity: 160
+        - name: Series N
+          quantity: 743
+        - name: Range O
+          quantity: 753
+        - name: Package J
+          quantity: 928
+    - orderCount: "5"
+      lineItems:
+        - name: Bundle K
+          quantity: 805
+        - name: Package J
+          quantity: 575
+        - name: Package J
+          quantity: 709
+        - name: Item B
+          quantity: 709
+        - name: Container I
+          quantity: 567
+    - orderCount: "15"
+      lineItems:
+        - name: Stock H
+          quantity: 539
+        - name: Collection M
+          quantity: 177
+        - name: Range O
+          quantity: 273
+        - name: Collection M
+          quantity: 734
+        - name: Bundle K
+          quantity: 816
+    - orderCount: "23"
+      lineItems: []

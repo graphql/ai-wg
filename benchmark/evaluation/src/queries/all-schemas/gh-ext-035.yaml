@@ -1,0 +1,58 @@
+id: gh-ext-035
+schemaId: github
+query: List dismissed vulnerability alerts in the octocat/example repository
+  with their dismissal reason and timestamp.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      vulnerabilityAlerts(first: 10, states: [DISMISSED]) {
+        nodes {
+          dismissReason
+          dismissedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - RepositoryVulnerabilityAlert.dismissReason
+  - RepositoryVulnerabilityAlert.dismissedAt
+targetTypes:
+  - RepositoryVulnerabilityAlert
+mustInclude:
+  - Query.repository
+  - Repository.vulnerabilityAlerts
+  - RepositoryVulnerabilityAlert.dismissReason
+  - RepositoryVulnerabilityAlert.dismissedAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.vulnerabilityAlerts(first:)
+  - Repository.vulnerabilityAlerts(states:)
+mustExclude:
+  - Mutation
+notes: Secret scanning is not exposed; nearest is vulnerability alerts dismissed
+  with a reason in a date window.
+answerSchema:
+  type: object
+  properties:
+    dismissedAlerts:
+      type: array
+      items:
+        type: object
+        properties:
+          dismissReason:
+            type: string
+          dismissedAt:
+            type: string
+        required:
+          - dismissReason
+          - dismissedAt
+        additionalProperties: false
+  required:
+    - dismissedAlerts
+  additionalProperties: false
+answer:
+  dismissedAlerts:
+    - dismissReason: NOT_USED
+      dismissedAt: 2025-04-26T00:00:00.000Z
+    - dismissReason: NO_BANDWIDTH
+      dismissedAt: 2025-04-25T00:00:00.000Z

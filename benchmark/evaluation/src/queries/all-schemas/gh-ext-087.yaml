@@ -1,0 +1,70 @@
+id: gh-ext-087
+schemaId: github
+query: What is the privacy setting and member list of the "example" team in the
+  "octocat" organization?
+operation: |
+  query {
+    organization(login: "octocat") {
+      team(slug: "example") {
+        name
+        privacy
+        members(first: 10) {
+          nodes {
+            login
+            name
+          }
+        }
+      }
+    }
+  }
+answer:
+  privacy: SECRET
+  members:
+    - login: alice
+      name: Alice Dev
+    - login: bob
+      name: Bob Coder
+answerSchema:
+  type: object
+  properties:
+    privacy:
+      type: string
+    members:
+      type: array
+      items:
+        type: object
+        properties:
+          login:
+            type: string
+          name:
+            type: string
+        required:
+          - login
+          - name
+        additionalProperties: false
+  required:
+    - privacy
+    - members
+  additionalProperties: false
+targetFields:
+  - Team.name
+  - Team.privacy
+  - User.login
+  - User.name
+targetTypes:
+  - Team
+  - User
+mustInclude:
+  - Query.organization
+  - Organization.team
+  - Team.name
+  - Team.privacy
+  - Team.members
+  - TeamMemberConnection.nodes
+  - Organization.team(slug:)
+  - Query.organization(login:)
+  - Team.members(first:)
+mustExclude:
+  - Mutation
+notes: Team discussions were sunset in GitHub GraphQL; question rewritten to ask
+  about team privacy and members — the available Team surface.

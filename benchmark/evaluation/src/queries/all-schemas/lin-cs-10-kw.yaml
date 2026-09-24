@@ -1,0 +1,27 @@
+id: lin-cs-10-kw
+schemaId: linear
+query: customer owner slack channel domains
+operation: |
+  query {
+    customer(id: "<id>") {
+      owner {
+        id
+      }
+      slackChannelId
+      domains
+    }
+  }
+targetFields:
+  - Customer.slackChannelId
+  - Customer.domains
+targetTypes:
+  - Customer
+mustInclude:
+  - Query.customer
+  - Customer.owner
+  - Customer.slackChannelId
+  - Customer.domains
+  - Query.customer(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-cs-10. Customer owner / slack channel directory.

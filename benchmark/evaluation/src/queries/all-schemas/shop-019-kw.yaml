@@ -1,0 +1,28 @@
+id: shop-019-kw
+schemaId: shopify
+query: high risk orders fraud assessment
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        risk {
+          assessments {
+            facts {
+              description
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.risk
+  - OrderRiskSummary.assessments
+  - OrderRiskAssessment.facts
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-019. Risk assessment for orders flagged as high risk.

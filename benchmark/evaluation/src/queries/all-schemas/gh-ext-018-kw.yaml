@@ -1,0 +1,33 @@
+id: gh-ext-018-kw
+schemaId: github
+query: pull requests failing required checks
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          statusCheckRollup {
+            state
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - StatusCheckRollup.state
+  - BranchProtectionRule.requiredStatusCheckContexts
+targetTypes:
+  - StatusCheckRollup
+  - BranchProtectionRule
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.statusCheckRollup
+  - StatusCheckRollup.state
+  - BranchProtectionRule.requiredStatusCheckContexts
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-018. Cross-reference required status check contexts with the rollup state of PRs.

@@ -1,0 +1,33 @@
+id: lin-em-3-kw
+schemaId: linear
+query: cross team projects lead target date
+operation: |
+  query {
+    projects(first: 10) {
+      nodes {
+        teams(first: 10) {
+          nodes {
+            id
+          }
+        }
+        lead {
+          id
+        }
+        targetDate
+      }
+    }
+  }
+targetFields:
+  - Project.targetDate
+targetTypes:
+  - Project
+mustInclude:
+  - Query.projects
+  - Project.teams
+  - Project.lead
+  - Project.targetDate
+  - Project.teams(first:)
+  - Query.projects(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-3. Cross-team projects with leads and dates.

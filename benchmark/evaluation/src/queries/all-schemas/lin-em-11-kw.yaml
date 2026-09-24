@@ -1,0 +1,32 @@
+id: lin-em-11-kw
+schemaId: linear
+query: story points completed per engineer monthly
+operation: |
+  query {
+    issues(first: 10) {
+      nodes {
+        estimate
+        completedAt
+        assignee {
+          id
+        }
+        startedAt
+      }
+    }
+  }
+targetFields:
+  - Issue.estimate
+  - Issue.completedAt
+  - Issue.startedAt
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.issues
+  - Issue.estimate
+  - Issue.completedAt
+  - Issue.assignee
+  - Issue.startedAt
+  - Query.issues(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-em-11. Throughput by points completed per engineer.

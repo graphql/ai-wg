@@ -1,0 +1,26 @@
+id: shop-079-kw
+schemaId: shopify
+query: fulfillment locations addresses
+operation: |
+  query {
+    locations(first: 10) {
+      nodes {
+        name
+        address {
+          address1
+        }
+      }
+    }
+  }
+targetFields:
+  - Location.name
+targetTypes:
+  - Location
+mustInclude:
+  - QueryRoot.locations
+  - Location.name
+  - Location.address
+  - QueryRoot.locations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-079. All fulfillment locations and their addresses.

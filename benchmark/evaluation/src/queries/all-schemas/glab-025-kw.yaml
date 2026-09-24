@@ -1,0 +1,26 @@
+id: glab-025-kw
+schemaId: gitlab
+query: merge requests with conflicts target branch
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      mergeRequests(first: 10) {
+        nodes {
+          conflicts
+        }
+      }
+    }
+  }
+targetFields:
+  - MergeRequest.conflicts
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.project
+  - Project.mergeRequests
+  - MergeRequest.conflicts
+  - Project.mergeRequests(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-025. Maintainer: conflicting MRs."

@@ -1,0 +1,16 @@
+{
+    "id": "gpt-5-nano",
+    "name": "GPT-5 nano",
+    "description": "OpenAI GPT-5 nano — cheapest GPT-5 tier; tool calling + automatic prompt caching. Reasoning model: only default temperature.",
+    "provider": "openai",
+    "modelName": "gpt-5-nano",
+    "maxTokens": 8192,
+    "supportsCacheControl": false,
+    "supportsTemperature": false,
+    "pricing": {
+        "inputPerMillion": 0.05,
+        "outputPerMillion": 0.4,
+        "cacheWritePerMillion": 0.0,
+        "cacheReadPerMillion": 0.005
+    }
+}

@@ -1,0 +1,91 @@
+id: lin-pm-9
+schemaId: linear
+query: Break down our customers by lifecycle status and tier.
+operation: |
+  query {
+    customers(first: 10) {
+      nodes {
+        name
+        status {
+          name
+        }
+        tier {
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - Customer.name
+  - CustomerStatus.name
+  - CustomerTier.name
+targetTypes:
+  - Customer
+  - CustomerStatus
+  - CustomerTier
+mustInclude:
+  - Query.customers
+  - Customer.status
+  - Customer.tier
+  - Customer.name
+  - CustomerStatus.name
+  - CustomerTier.name
+  - Query.customers(first:)
+mustExclude:
+  - Mutation
+notes: Customer book grouped by status and tier.
+answerSchema:
+  type: object
+  properties:
+    customers:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          status:
+            type: string
+            description: Lifecycle status
+          tier:
+            type: string
+        required:
+          - name
+          - status
+          - tier
+        additionalProperties: false
+  required:
+    - customers
+  additionalProperties: false
+answer:
+  customers:
+    - name: Globex Corporation
+      status: Active
+      tier: Enterprise
+    - name: Initech
+      status: Active
+      tier: Pro
+    - name: Widgets Inc
+      status: Churn Risk
+      tier: Pro
+    - name: Acme Solutions
+      status: Active
+      tier: Enterprise
+    - name: Startup XYZ
+      status: Trial
+      tier: Free
+    - name: MegaCorp Industries
+      status: Active
+      tier: Enterprise
+    - name: TechPlus
+      status: Active
+      tier: Pro
+    - name: SmallBiz LLC
+      status: Active
+      tier: Free
+    - name: EnterpriseOne
+      status: Active
+      tier: Enterprise
+    - name: GrowthCo
+      status: Trial
+      tier: Pro

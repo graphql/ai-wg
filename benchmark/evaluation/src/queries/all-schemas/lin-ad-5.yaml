@@ -1,0 +1,69 @@
+id: lin-ad-5
+schemaId: linear
+query: "Which teams are private (visibility = private) and who are their members?"
+operation: |
+  query {
+    teams(first: 10) {
+      nodes {
+        name
+        visibility
+        members(first: 10) {
+          nodes {
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Team.name
+  - Team.visibility
+  - User.name
+targetTypes:
+  - Team
+  - User
+mustInclude:
+  - Query.teams
+  - Team.members
+  - Team.name
+  - Team.visibility
+  - User.name
+  - Query.teams(first:)
+  - Team.members(first:)
+mustExclude:
+  - Mutation
+answer:
+  privateTeams:
+    - teamName: Design
+      members:
+        - Carol White
+        - Karen Davis
+        - Liam Wilson
+    - teamName: Security
+      members:
+        - David Lee
+        - Will Turner
+        - Xena Blake
+answerSchema:
+  type: object
+  properties:
+    privateTeams:
+      type: array
+      items:
+        type: object
+        properties:
+          teamName:
+            type: string
+          members:
+            type: array
+            items:
+              type: string
+        required:
+          - teamName
+          - members
+        additionalProperties: false
+  required:
+    - privateTeams
+  additionalProperties: false
+notes: Team membership and visibility audit; uses Team.visibility
+  (non-deprecated) to identify private teams.

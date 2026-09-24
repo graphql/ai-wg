@@ -1,0 +1,51 @@
+id: sg-hawker-photos
+schemaId: singapore
+query: List all hawker centres with their name and photo URL
+operation: |
+  query {
+    allHawkerCentres {
+      name
+      photoUrl
+    }
+  }
+targetFields:
+  - HawkerCentre.photoUrl
+  - HawkerCentre.name
+targetTypes:
+  - HawkerCentre
+mustInclude:
+  - Query.allHawkerCentres
+  - HawkerCentre.photoUrl
+mustExclude: []
+shouldInclude:
+  - HawkerCentre.name
+notes: Simple single-root flat path. Floor case for any working algorithm.
+answerSchema:
+  type: object
+  properties:
+    hawkerCentres:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          photo:
+            type: string
+        required:
+          - name
+          - photo
+        additionalProperties: false
+  required:
+    - hawkerCentres
+  additionalProperties: false
+answer:
+  hawkerCentres:
+    - name: Golden Mile Food Centre
+      photo: https://photos.data.gov.sg/hawker/golden-mile-fc.jpg
+    - name: Bedok Corner Market
+      photo: https://photos.data.gov.sg/hawker/bedok-corner-market.jpg
+    - name: Maxwell Food Centre
+      photo: null
+    - name: Lau Pa Sat
+      photo: null

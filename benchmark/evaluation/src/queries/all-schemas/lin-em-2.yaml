@@ -1,0 +1,82 @@
+id: lin-em-2
+schemaId: linear
+query: List all workspace initiatives and the projects rolled up under each one.
+operation: |
+  query {
+    initiatives(first: 10) {
+      nodes {
+        id
+        name
+        projects(first: 10) {
+          nodes {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Initiative.name
+  - Project.name
+targetTypes:
+  - Initiative
+  - Project
+mustInclude:
+  - Query.initiatives
+  - Query.initiatives(first:)
+  - Initiative.name
+  - Initiative.projects
+  - Initiative.projects(first:)
+  - Project.name
+mustExclude:
+  - Mutation
+notes: Initiatives roll up multiple projects; useful for strategic reporting.
+answer:
+  initiatives:
+    - name: Platform Refactor
+      projects:
+        - name: Mobile App
+        - name: Data Pipeline
+    - name: AI Platform
+      projects:
+        - name: Auth Redesign
+        - name: Billing Portal
+    - name: Security Hardening
+      projects:
+        - name: Security Audit
+    - name: Developer Experience
+      projects:
+        - name: Design System
+        - name: Onboarding Flow
+    - name: MLOps Infrastructure
+      projects: []
+    - name: LLM Integration
+      projects: []
+answerSchema:
+  type: object
+  properties:
+    initiatives:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          projects:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+              additionalProperties: false
+        required:
+          - name
+          - projects
+        additionalProperties: false
+  required:
+    - initiatives
+  additionalProperties: false

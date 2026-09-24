@@ -1,0 +1,54 @@
+id: shop-089-kw
+schemaId: shopify
+query: wholesale contracts price lists customer
+operation: |
+  query {
+    company(id: "gid://shopify/Object/1") {
+      draftOrders(first: 10) {
+        nodes {
+          customer {
+            companyContactProfiles {
+              orders(first: 10) {
+                nodes {
+                  channel {
+                    handle
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      orders(first: 10) {
+        nodes {
+          channel {
+            app {
+              banner {
+                translations(locale: "placeholder") {
+                  market {
+                    assignedCustomization(customizationId: "gid://shopify/Object/1")
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.company
+  - Company.draftOrders
+  - Company.orders
+  - Catalog.priceList
+  - Company.draftOrders(first:)
+  - Company.orders(first:)
+  - CompanyContact.orders(first:)
+  - Image.translations(locale:)
+  - Market.assignedCustomization(customizationId:)
+  - QueryRoot.company(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-089. Contracts and price lists tied to a wholesale customer.

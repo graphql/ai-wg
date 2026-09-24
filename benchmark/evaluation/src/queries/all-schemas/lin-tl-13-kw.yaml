@@ -1,0 +1,33 @@
+id: lin-tl-13-kw
+schemaId: linear
+query: design team workflow states
+operation: |
+  query {
+    team(id: "<id>") {
+      states(first: 10) {
+        nodes {
+          name
+          color
+          type
+        }
+      }
+    }
+  }
+targetFields:
+  - WorkflowState.name
+  - WorkflowState.color
+  - WorkflowState.type
+targetTypes:
+  - WorkflowState
+  - Team
+mustInclude:
+  - Query.team
+  - Team.states
+  - WorkflowState.name
+  - WorkflowState.color
+  - WorkflowState.type
+  - Query.team(id:)
+  - Team.states(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-tl-13. Per-team workflow customization.

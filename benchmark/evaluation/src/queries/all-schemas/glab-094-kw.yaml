@@ -1,0 +1,29 @@
+id: glab-094-kw
+schemaId: gitlab
+query: group registered runners tags status
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      runners(first: 10) {
+        nodes {
+          tagList
+          status
+        }
+      }
+    }
+  }
+targetFields:
+  - CiRunner.tagList
+  - CiRunner.status
+targetTypes:
+  - CiRunner
+mustInclude:
+  - Query.group
+  - Group.runners
+  - CiRunner.tagList
+  - CiRunner.status
+  - Group.runners(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-094. Admin: group runners + tags + status."

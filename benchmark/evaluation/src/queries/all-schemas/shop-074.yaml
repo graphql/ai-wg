@@ -1,0 +1,102 @@
+id: shop-074
+schemaId: shopify
+query: List the first 5 automatic basic discounts in the shop — for each, show
+  its title, minimum subtotal requirement (amount and currency), and the
+  discount percentage customers get.
+operation: |
+  query {
+    discountNodes(first: 5, query: "method:automatic discount_type:percentage") {
+      edges {
+        node {
+          discount {
+            ... on DiscountAutomaticBasic {
+              title
+              minimumRequirement {
+                ... on DiscountMinimumSubtotal {
+                  greaterThanOrEqualToSubtotal {
+                    amount
+                    currencyCode
+                  }
+                }
+                ... on DiscountMinimumQuantity {
+                  greaterThanOrEqualToQuantity
+                }
+              }
+              customerGets {
+                value {
+                  ... on DiscountPercentage {
+                    percentage
+                  }
+                  ... on DiscountAmount {
+                    amount {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - DiscountAutomaticBasic.title
+  - DiscountAutomaticBasic.minimumRequirement
+  - DiscountAutomaticBasic.customerGets
+  - DiscountMinimumSubtotal.greaterThanOrEqualToSubtotal
+  - DiscountMinimumQuantity.greaterThanOrEqualToQuantity
+  - DiscountPercentage.percentage
+  - DiscountAmount.amount
+targetTypes:
+  - DiscountAutomaticBasic
+  - DiscountMinimumSubtotal
+  - DiscountMinimumQuantity
+  - DiscountPercentage
+  - DiscountAmount
+mustInclude:
+  - QueryRoot.discountNodes
+  - QueryRoot.discountNodes(first:)
+  - QueryRoot.discountNodes(query:)
+  - DiscountNode.discount
+  - DiscountAutomaticBasic.minimumRequirement
+  - DiscountAutomaticBasic.customerGets
+mustExclude:
+  - Mutation
+notes: Price-rule / discount conditions for automatic basic discounts.
+answerSchema:
+  type: object
+  properties:
+    discounts:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          minimumSubtotal:
+            type: string
+          currencyCode:
+            type: string
+          percentage:
+            type: number
+        required:
+          - title
+          - minimumSubtotal
+          - currencyCode
+          - percentage
+        additionalProperties: false
+  required:
+    - discounts
+  additionalProperties: false
+answer:
+  discounts:
+    - title: Loyalty Reward
+      minimumSubtotal: "77.50"
+      currencyCode: KZT
+      percentage: 30
+    - title: New Customer Welcome
+      minimumSubtotal: "84.99"
+      currencyCode: SOS
+      percentage: 78.3

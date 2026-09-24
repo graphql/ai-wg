@@ -1,0 +1,29 @@
+id: lin-pm-11-kw
+schemaId: linear
+query: documents recently updated creator
+operation: |
+  query {
+    documents(first: 10) {
+      nodes {
+        title
+        creator {
+          id
+        }
+        updatedAt
+      }
+    }
+  }
+targetFields:
+  - Document.title
+  - Document.updatedAt
+targetTypes:
+  - Document
+mustInclude:
+  - Query.documents
+  - Document.title
+  - Document.creator
+  - Document.updatedAt
+  - Query.documents(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-pm-11. Workspace docs / wikis.

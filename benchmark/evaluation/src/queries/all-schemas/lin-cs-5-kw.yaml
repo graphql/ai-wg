@@ -1,0 +1,29 @@
+id: lin-cs-5-kw
+schemaId: linear
+query: customer linked issues status
+operation: |
+  query {
+    customer(id: "<id>") {
+      needs {
+        issue {
+          state {
+            id
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Customer
+  - CustomerNeed
+  - Issue
+mustInclude:
+  - Query.customer
+  - Customer.needs
+  - CustomerNeed.issue
+  - Issue.state
+  - Query.customer(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-cs-5. Status of work being done for a customer.

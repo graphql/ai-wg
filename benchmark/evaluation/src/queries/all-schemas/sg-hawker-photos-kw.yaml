@@ -1,0 +1,23 @@
+id: sg-hawker-photos-kw
+schemaId: singapore
+query: hawker centres photos
+operation: |
+  query {
+    allHawkerCentres {
+      name
+      photoUrl
+      status
+    }
+  }
+targetFields:
+  - HawkerCentre.photoUrl
+  - HawkerCentre.name
+targetTypes:
+  - HawkerCentre
+mustInclude:
+  - Query.allHawkerCentres
+  - HawkerCentre.photoUrl
+mustExclude: []
+shouldInclude:
+  - HawkerCentre.name
+notes: Keyword variant of sg-hawker-photos. Generated assuming LLM-as-caller without schema knowledge. Simple single-root flat path. Floor case for any working algorithm.

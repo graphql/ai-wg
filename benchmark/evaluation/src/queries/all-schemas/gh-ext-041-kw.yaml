@@ -1,0 +1,27 @@
+id: gh-ext-041-kw
+schemaId: github
+query: stars by user this year
+operation: |
+  query {
+    user(login: "octocat") {
+      starredRepositories(first: 10) {
+        edges {
+          starredAt
+        }
+      }
+    }
+  }
+targetFields:
+  - StarredRepositoryEdge.starredAt
+targetTypes:
+  - User
+mustInclude:
+  - Query.user
+  - User.starredRepositories
+  - StarredRepositoryConnection.edges
+  - StarredRepositoryEdge.starredAt
+  - Query.user(login:)
+  - User.starredRepositories(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-041. Starred repositories with the starredAt edge timestamp.

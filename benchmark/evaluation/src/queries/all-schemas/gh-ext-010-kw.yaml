@@ -1,0 +1,40 @@
+id: gh-ext-010-kw
+schemaId: github
+query: protected tags push permissions
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      refs(refPrefix: "example", first: 10) {
+        __typename
+      }
+      branchProtectionRules(first: 10) {
+        nodes {
+          pattern
+          pushAllowances(first: 10) {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - BranchProtectionRule.pattern
+targetTypes:
+  - BranchProtectionRule
+  - Tag
+  - Push
+mustInclude:
+  - Query.repository
+  - Repository.refs
+  - Repository.branchProtectionRules
+  - BranchProtectionRule.pattern
+  - BranchProtectionRule.pushAllowances
+  - BranchProtectionRule.pushAllowances(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.branchProtectionRules(first:)
+  - Repository.refs(first:)
+  - Repository.refs(refPrefix:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-010. GraphQL does not surface protected tags directly; nearest available is branch protection patterns plus push allowances on tag refs.

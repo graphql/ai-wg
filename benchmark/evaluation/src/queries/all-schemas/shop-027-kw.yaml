@@ -1,0 +1,32 @@
+id: shop-027-kw
+schemaId: shopify
+query: products missing images catalog
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        images(first: 10) {
+          edges {
+            cursor
+          }
+        }
+        media(first: 10) {
+          edges {
+            cursor
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.products
+  - Product.images
+  - Product.media
+  - Product.images(first:)
+  - Product.media(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-027. Products with no images so the catalog can be cleaned up.

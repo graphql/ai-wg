@@ -1,0 +1,62 @@
+id: shop-090
+schemaId: shopify
+query: List the first 5 assigned fulfillment orders, showing each order's
+  assigned location name and current status.
+operation: |
+  query {
+    assignedFulfillmentOrders(first: 5) {
+      nodes {
+        assignedLocation {
+          name
+        }
+        status
+      }
+    }
+  }
+targetFields:
+  - FulfillmentOrder.status
+  - FulfillmentOrderAssignedLocation.name
+targetTypes:
+  - FulfillmentOrder
+  - FulfillmentOrderAssignedLocation
+mustInclude:
+  - QueryRoot.assignedFulfillmentOrders
+  - FulfillmentOrder.assignedLocation
+  - FulfillmentOrderAssignedLocation.name
+  - FulfillmentOrder.status
+  - QueryRoot.assignedFulfillmentOrders(first:)
+mustExclude:
+  - Mutation
+answer:
+  fulfillmentOrders:
+    - assignedLocation: Central Fulfillment Center
+      status: ON_HOLD
+    - assignedLocation: West Coast Hub
+      status: SCHEDULED
+    - assignedLocation: Main Warehouse
+      status: IN_PROGRESS
+    - assignedLocation: East Coast Distribution
+      status: SCHEDULED
+    - assignedLocation: International Shipping Depot
+      status: SCHEDULED
+answerSchema:
+  type: object
+  properties:
+    fulfillmentOrders:
+      type: array
+      items:
+        type: object
+        properties:
+          assignedLocation:
+            type: string
+          status:
+            type: string
+        required:
+          - assignedLocation
+          - status
+        additionalProperties: false
+  required:
+    - fulfillmentOrders
+  additionalProperties: false
+notes: Assigned fulfillment orders with their location name and status; mock
+  ignores filter args so no location/status filter applied.

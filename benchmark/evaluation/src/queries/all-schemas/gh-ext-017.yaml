@@ -1,0 +1,68 @@
+id: gh-ext-017
+schemaId: github
+query: How many total comments did each merged pull request in the
+  octocat/example repository receive?
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10, states: MERGED) {
+        nodes {
+          number
+          title
+          totalCommentsCount
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.totalCommentsCount
+targetTypes:
+  - PullRequest
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.number
+  - PullRequest.title
+  - PullRequest.totalCommentsCount
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+  - Repository.pullRequests(states:)
+mustExclude:
+  - Mutation
+notes: Merged PRs and their cumulative comment counts.
+answerSchema:
+  type: object
+  properties:
+    mergedPullRequests:
+      type: array
+      items:
+        type: object
+        properties:
+          number:
+            type: integer
+          title:
+            type: string
+          totalComments:
+            type: integer
+        required:
+          - number
+          - title
+          - totalComments
+        additionalProperties: false
+  required:
+    - mergedPullRequests
+  additionalProperties: false
+answer:
+  mergedPullRequests:
+    - number: 3
+      title: Update dependencies
+      totalComments: 14
+    - number: 7
+      title: Add CI pipeline
+      totalComments: 10
+    - number: 10
+      title: Refactor data layer
+      totalComments: 0

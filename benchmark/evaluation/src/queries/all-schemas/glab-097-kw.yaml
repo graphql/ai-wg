@@ -1,0 +1,17 @@
+id: glab-097-kw
+schemaId: gitlab
+query: add on purchases namespace
+operation: |
+  query {
+    addOnPurchases {
+      __typename
+    }
+  }
+targetFields: []
+targetTypes:
+  - AddOnPurchase
+mustInclude:
+  - Query.addOnPurchases
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-097. Admin: add-on purchases for namespace."

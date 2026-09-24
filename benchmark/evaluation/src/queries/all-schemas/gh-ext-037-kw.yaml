@@ -1,0 +1,30 @@
+id: gh-ext-037-kw
+schemaId: github
+query: published security advisories cve
+operation: |
+  query {
+    securityAdvisories(first: 10) {
+      nodes {
+        identifiers {
+          value
+        }
+        publishedAt
+      }
+    }
+  }
+targetFields:
+  - SecurityAdvisoryIdentifier.value
+  - SecurityAdvisory.publishedAt
+targetTypes:
+  - SecurityAdvisoryIdentifier
+  - SecurityAdvisory
+mustInclude:
+  - Query.securityAdvisories
+  - SecurityAdvisoryConnection.nodes
+  - SecurityAdvisory.identifiers
+  - SecurityAdvisoryIdentifier.value
+  - SecurityAdvisory.publishedAt
+  - Query.securityAdvisories(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-037. Top-level security advisories listing with their CVE identifiers (the schema only exposes GitHub Security Advisory Database entries; per-repo advisories are reachable through Query.securityAdvisories).

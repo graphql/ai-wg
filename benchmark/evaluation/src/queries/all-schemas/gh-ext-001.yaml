@@ -1,0 +1,72 @@
+id: gh-ext-001
+schemaId: github
+query: Show me the commit history for the main branch of the octocat/example
+  repository over the past two weeks, including author and commit message.
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      defaultBranchRef {
+        target {
+          ... on Commit {
+            history(first: 10, since: "2026-05-24T00:00:00Z") {
+              nodes {
+                author {
+                  name
+                  email
+                }
+                message
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Commit.message
+  - GitActor.name
+  - GitActor.email
+targetTypes:
+  - Commit
+  - GitActor
+mustInclude:
+  - Query.repository
+  - Repository.defaultBranchRef
+  - Ref.target
+  - Commit.history
+  - CommitHistoryConnection.nodes
+  - GitActor.name
+  - GitActor.email
+  - Commit.message
+  - Commit.history(first:)
+  - Commit.history(since:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+mustExclude:
+  - Mutation
+notes: Walk default branch to commit history with authors and messages, filtered
+  to the past two weeks via the since argument.
+answerSchema:
+  type: object
+  properties:
+    commits:
+      type: array
+      items:
+        type: object
+        properties:
+          authorName:
+            type: string
+          authorEmail:
+            type: string
+          message:
+            type: string
+        required:
+          - authorName
+          - authorEmail
+          - message
+        additionalProperties: false
+  required:
+    - commits
+  additionalProperties: false
+answer:
+  commits: []

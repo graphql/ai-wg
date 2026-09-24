@@ -1,0 +1,32 @@
+id: shop-006-kw
+schemaId: shopify
+query: refunds last week orders amount
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        refunds(first: 10) {
+          totalRefundedSet {
+            presentmentMoney {
+              amount
+            }
+          }
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Refund.createdAt
+targetTypes:
+  - Refund
+mustInclude:
+  - QueryRoot.orders
+  - Order.refunds
+  - Refund.totalRefundedSet
+  - Refund.createdAt
+  - Order.refunds(first:)
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-006. Refunds aggregated last week, scoped per order.

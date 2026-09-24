@@ -1,0 +1,74 @@
+id: gh-ext-052
+schemaId: github
+query: Which repositories in the octocat organization have a code of conduct file?
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          name
+          codeOfConduct {
+            name
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Repository.name
+  - CodeOfConduct.name
+targetTypes:
+  - Repository
+  - CodeOfConduct
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.name
+  - Repository.codeOfConduct
+  - CodeOfConduct.name
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Repositories whose codeOfConduct field is non-null.
+answerSchema:
+  type: object
+  properties:
+    repositories:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          codeOfConduct:
+            type: string
+        required:
+          - name
+          - codeOfConduct
+        additionalProperties: false
+  required:
+    - repositories
+  additionalProperties: false
+answer:
+  repositories:
+    - name: example
+      codeOfConduct: Contributor Covenant
+    - name: private-repo
+      codeOfConduct: Contributor Covenant
+    - name: archived-old
+      codeOfConduct: Contributor Covenant
+    - name: legacy-app
+      codeOfConduct: Contributor Covenant
+    - name: disabled-repo
+      codeOfConduct: Contributor Covenant
+    - name: mirror-of-linux
+      codeOfConduct: Contributor Covenant
+    - name: wiki-enabled
+      codeOfConduct: Contributor Covenant
+    - name: Hello-World
+      codeOfConduct: Contributor Covenant
+    - name: example
+      codeOfConduct: Contributor Covenant
+    - name: example
+      codeOfConduct: Contributor Covenant

@@ -1,0 +1,29 @@
+id: lin-ic-3-kw
+schemaId: linear
+query: my unread notifications inbox
+operation: |
+  query {
+    notifications(first: 10) {
+      nodes {
+        type
+        readAt
+        actor {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Notification.type
+  - Notification.readAt
+targetTypes:
+  - Notification
+mustInclude:
+  - Query.notifications
+  - Notification.type
+  - Notification.readAt
+  - Notification.actor
+  - Query.notifications(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-3. Unread inbox notifications.

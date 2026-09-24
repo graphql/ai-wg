@@ -1,0 +1,82 @@
+id: glab-011
+schemaId: gitlab
+query: List the issues across the projects I contribute to.
+operation: |
+  query {
+    currentUser {
+      contributedProjects(first: 10) {
+        nodes {
+          issues(first: 10) {
+            nodes {
+              iid
+              title
+              state
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.iid
+  - Issue.title
+  - Issue.state
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.contributedProjects
+  - Project.issues
+  - CurrentUser.contributedProjects(first:)
+  - Project.issues(first:)
+mustExclude:
+  - Mutation
+notes: "Developer: issues across projects I contribute to."
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          iid:
+            type: string
+          title:
+            type: string
+          state:
+            type: string
+        required:
+          - iid
+          - title
+          - state
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - iid: "1"
+      title: Fix authentication timeout on expired tokens
+      state: opened
+    - iid: "2766"
+      title: Add support for SAML 2.0 single sign-on
+      state: closed
+    - iid: "167"
+      title: Implement dark mode UI theme
+      state: locked
+    - iid: "7841"
+      title: Add export to CSV functionality
+      state: opened
+    - iid: "3392"
+      title: Optimize database query performance
+      state: opened
+    - iid: "5504"
+      title: Refactor legacy authentication module
+      state: opened
+    - iid: "101"
+      title: Improve CI performance
+      state: opened
+    - iid: "102"
+      title: Fix merge conflict detection
+      state: opened

@@ -1,0 +1,31 @@
+id: lin-tl-6-kw
+schemaId: linear
+query: cycle spillover uncompleted issues carry over
+operation: |
+  query {
+    team(id: "<id>") {
+      cycles(first: 10) {
+        nodes {
+          uncompletedIssuesUponClose(first: 10) {
+            nodes {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Team
+  - Cycle
+mustInclude:
+  - Query.team
+  - Team.cycles
+  - Cycle.uncompletedIssuesUponClose
+  - Cycle.uncompletedIssuesUponClose(first:)
+  - Query.team(id:)
+  - Team.cycles(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of lin-tl-6. Spill-over analysis: issues left over after a cycle closes."

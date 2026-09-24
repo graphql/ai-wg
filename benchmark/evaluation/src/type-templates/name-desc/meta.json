@@ -1,0 +1,5 @@
+{
+    "id": "name-desc",
+    "name": "Name + description",
+    "description": "Default type template. Renders \"<Type> — <description>\" matching the previous hardcoded type rendering; drops the suffix when there is no description."
+}

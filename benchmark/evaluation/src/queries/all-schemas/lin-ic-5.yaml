@@ -1,0 +1,71 @@
+id: lin-ic-5
+schemaId: linear
+query: "What issues have I created recently?"
+operation: |
+  query {
+    viewer {
+      createdIssues(first: 10) {
+        nodes {
+          id
+          title
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.title
+  - Issue.createdAt
+targetTypes:
+  - Issue
+mustInclude:
+  - Query.viewer
+  - User.createdIssues
+  - Issue.id
+  - Issue.title
+  - Issue.createdAt
+  - User.createdIssues(first:)
+mustExclude:
+  - Mutation
+notes: Issues I personally filed.
+answerSchema:
+  type: object
+  properties:
+    createdIssues:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          createdAt:
+            type: string
+        required:
+          - title
+          - createdAt
+        additionalProperties: false
+  required:
+    - createdIssues
+  additionalProperties: false
+answer:
+  createdIssues:
+    - title: Implement rate limiting on API gateway
+      createdAt: 2025-05-02T00:00:00.000Z
+    - title: Migrate database to PostgreSQL 16
+      createdAt: 2025-05-02T00:00:00.000Z
+    - title: Add unit tests for payment module
+      createdAt: 2025-05-02T00:00:00.000Z
+    - title: Add dark mode support
+      createdAt: 2025-05-02T00:00:00.000Z
+    - title: Fix CI pipeline flakiness
+      createdAt: 2025-05-02T00:00:00.000Z
+    - title: Optimize database query performance
+      createdAt: 2025-05-02T00:00:00.000Z
+    - title: Fix token refresh endpoint
+      createdAt: 2025-05-02T00:00:00.000Z
+    - title: Update token refresh tests
+      createdAt: 2025-05-02T00:00:00.000Z
+    - title: Implement pagination for user list
+      createdAt: 2025-05-02T00:00:00.000Z
+    - title: Add caching layer for frequent queries
+      createdAt: 2025-05-02T00:00:00.000Z

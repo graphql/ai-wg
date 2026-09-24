@@ -1,0 +1,26 @@
+id: gh-ext-033-kw
+schemaId: github
+query: oidc cloud trust repositories
+operation: |
+  query {
+    enterprise(slug: "example") {
+      ownerInfo {
+        oidcProvider {
+          providerType
+        }
+      }
+    }
+  }
+targetFields:
+  - OIDCProvider.providerType
+targetTypes:
+  - OIDCProvider
+mustInclude:
+  - Query.enterprise
+  - Enterprise.ownerInfo
+  - EnterpriseOwnerInfo.oidcProvider
+  - OIDCProvider.providerType
+  - Query.enterprise(slug:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-033. Inspect the enterprise OIDC provider configuration.

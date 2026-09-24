@@ -1,0 +1,27 @@
+id: lin-ic-19-kw
+schemaId: linear
+query: issue subscribers followers
+operation: |
+  query {
+    issue(id: "<id>") {
+      subscribers(first: 10) {
+        nodes {
+          name
+        }
+      }
+    }
+  }
+targetFields:
+  - User.name
+targetTypes:
+  - User
+  - Issue
+mustInclude:
+  - Query.issue
+  - Issue.subscribers
+  - User.name
+  - Issue.subscribers(first:)
+  - Query.issue(id:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-19. Who is subscribed to follow updates on an issue.

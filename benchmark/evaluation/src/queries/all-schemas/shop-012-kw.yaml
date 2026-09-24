@@ -1,0 +1,32 @@
+id: shop-012-kw
+schemaId: shopify
+query: draft orders custom price customer
+operation: |
+  query {
+    draftOrders(first: 10) {
+      nodes {
+        lineItems(first: 10) {
+          nodes {
+            customAttributes {
+              key
+            }
+          }
+        }
+        customer {
+          canDelete
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.draftOrders
+  - DraftOrder.lineItems
+  - DraftOrderLineItem.customAttributes
+  - DraftOrder.customer
+  - DraftOrder.lineItems(first:)
+  - QueryRoot.draftOrders(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-012. Draft orders with custom-priced items and assigned customer.

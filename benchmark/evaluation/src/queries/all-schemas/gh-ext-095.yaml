@@ -1,0 +1,67 @@
+id: gh-ext-095
+schemaId: github
+query: Show me packages published from the octocat organization's repositories,
+  grouped by registry type.
+operation: |
+  query {
+    organization(login: "octocat") {
+      packages(first: 10) {
+        nodes {
+          packageType
+          name
+          repository {
+            nameWithOwner
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Package.packageType
+  - Package.name
+  - Repository.nameWithOwner
+targetTypes:
+  - Package
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.packages
+  - Package.packageType
+  - Package.name
+  - Package.repository
+  - Repository.nameWithOwner
+  - Organization.packages(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Org packages grouped by their packageType (registry).
+answer:
+  packagesByRegistry:
+    - packageType: NPM
+      packages:
+        - example-package
+        - example-lib
+    - packageType: DOCKER
+      packages:
+        - example-docker
+answerSchema:
+  type: object
+  properties:
+    packagesByRegistry:
+      type: array
+      items:
+        type: object
+        properties:
+          packageType:
+            type: string
+          packages:
+            type: array
+            items:
+              type: string
+        required:
+          - packageType
+          - packages
+        additionalProperties: false
+  required:
+    - packagesByRegistry
+  additionalProperties: false

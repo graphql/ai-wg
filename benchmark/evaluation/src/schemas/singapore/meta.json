@@ -1,0 +1,5 @@
+{
+    "id": "singapore",
+    "name": "Singapore",
+    "description": "Public-data API surface (regions, weather, transport, civic data). Small, hub-heavy — Area type connects to many tangential entities. The motivating 'bedok cascade' lives here."
+}

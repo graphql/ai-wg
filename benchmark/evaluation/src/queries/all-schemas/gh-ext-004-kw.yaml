@@ -1,0 +1,38 @@
+id: gh-ext-004-kw
+schemaId: github
+query: lines added deleted per contributor release
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequests(first: 10) {
+        nodes {
+          author {
+            __typename
+          }
+          additions
+          deletions
+          mergedAt
+        }
+      }
+    }
+  }
+targetFields:
+  - PullRequest.additions
+  - PullRequest.deletions
+  - PullRequest.mergedAt
+targetTypes:
+  - PullRequest
+  - Release
+mustInclude:
+  - Query.repository
+  - Repository.pullRequests
+  - PullRequest.author
+  - PullRequest.additions
+  - PullRequest.deletions
+  - PullRequest.mergedAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequests(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-004. Aggregate additions and deletions per author across merged PRs.

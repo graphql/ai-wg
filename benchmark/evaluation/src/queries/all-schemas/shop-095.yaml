@@ -1,0 +1,69 @@
+id: shop-095
+schemaId: shopify
+query: Which products have a back-in-stock date assigned via incoming inventory?
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        id
+        title
+        variants(first: 5) {
+          nodes {
+            inventoryItem {
+              inventoryLevels(first: 5) {
+                nodes {
+                  scheduledChanges(first: 5) {
+                    nodes {
+                      expectedAt
+                      fromName
+                      toName
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - InventoryScheduledChange.expectedAt
+  - InventoryScheduledChange.fromName
+  - InventoryScheduledChange.toName
+targetTypes:
+  - InventoryScheduledChange
+mustInclude:
+  - QueryRoot.products(first:)
+  - QueryRoot.products
+  - Product.variants(first:)
+  - ProductVariant.inventoryItem
+  - InventoryItem.inventoryLevels(first:)
+  - InventoryItem.inventoryLevels
+  - InventoryLevel.scheduledChanges(first:)
+  - InventoryScheduledChange.expectedAt
+mustExclude:
+  - Mutation
+notes: Products with a back-in-stock date via incoming inventory
+  (scheduledChanges.expectedAt).
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+        required:
+          - title
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - title: Leather Wallet
+    - title: Wireless Headphones
+    - title: Yoga Mat

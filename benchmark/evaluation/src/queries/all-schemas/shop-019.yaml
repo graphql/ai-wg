@@ -1,0 +1,112 @@
+id: shop-019
+schemaId: shopify
+query: Pull the risk assessments for the first 10 orders in the shop.
+operation: |
+  query {
+    orders(first: 10) {
+      nodes {
+        risk {
+          assessments {
+            riskLevel
+            facts {
+              description
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes: []
+mustInclude:
+  - QueryRoot.orders
+  - Order.risk
+  - OrderRiskSummary.assessments
+  - OrderRiskAssessment.riskLevel
+  - OrderRiskAssessment.facts
+  - QueryRoot.orders(first:)
+mustExclude:
+  - Mutation
+notes: Risk assessments for the first 10 orders.
+answerSchema:
+  type: object
+  properties:
+    orders:
+      type: array
+      items:
+        type: object
+        properties:
+          assessments:
+            type: array
+            items:
+              type: object
+              properties:
+                riskLevel:
+                  type: string
+                facts:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - riskLevel
+                - facts
+              additionalProperties: false
+        required:
+          - assessments
+        additionalProperties: false
+  required:
+    - orders
+  additionalProperties: false
+answer:
+  orders:
+    - assessments:
+        - riskLevel: NONE
+          facts:
+            - Payment method declined by processor due to invalid card information.
+            - Customer billing address in high-risk country not matching shipping
+              location.
+        - riskLevel: PENDING
+          facts:
+            - Customer email address associated with known fraud ring.
+            - Order contains suspicious combination of high-value and low-value
+              items.
+    - assessments:
+        - riskLevel: NONE
+          facts:
+            - Customer phone number could not be verified through validation
+              service.
+            - Unusual spike in order quantity for bulk purchase.
+        - riskLevel: MEDIUM
+          facts:
+            - First purchase from customer with no previous order history.
+            - Email domain associated with temporary email service provider.
+    - assessments:
+        - riskLevel: NONE
+          facts:
+            - Delivery address in rural area with limited fulfillment coverage.
+            - Shipping address is known to have high chargeback rate.
+        - riskLevel: NONE
+          facts:
+            - Customer IP address detected in multiple high-risk transactions
+              today.
+            - Customer created account and made purchase within 5 minutes of
+              signup.
+    - assessments:
+        - riskLevel: PENDING
+          facts:
+            - Order exceeds the typical purchase value threshold for this customer.
+            - Multiple failed payment attempts using different credit cards.
+        - riskLevel: LOW
+          facts:
+            - Order flagged for potential payment fraud based on IP geolocation
+              mismatch.
+            - Velocity check failed - too many transactions in short timeframe.
+    - assessments:
+        - riskLevel: HIGH
+          facts:
+            - Unusual purchasing pattern detected for this customer account.
+            - Shipping address differs significantly from billing address on file.
+        - riskLevel: NONE
+          facts:
+            - Customer account shows signs of being compromised or hacked.
+            - Payment method flagged by bank as potentially compromised.

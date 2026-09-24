@@ -1,0 +1,44 @@
+id: gh-ext-032
+schemaId: github
+query: Which repositories in the octocat organization are disabled? List their names.
+operation: |
+  query {
+    organization(login: "octocat") {
+      repositories(first: 10) {
+        nodes {
+          name
+          isDisabled
+        }
+      }
+    }
+  }
+answer:
+  disabledRepositories:
+    - disabled-repo
+answerSchema:
+  type: object
+  properties:
+    disabledRepositories:
+      type: array
+      items:
+        type: string
+  required:
+    - disabledRepositories
+  additionalProperties: false
+targetFields:
+  - Repository.name
+  - Repository.isDisabled
+targetTypes:
+  - Repository
+mustInclude:
+  - Query.organization
+  - Organization.repositories
+  - Repository.name
+  - Repository.isDisabled
+  - Organization.repositories(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: GraphQL exposes Repository.isDisabled but not per-feature Actions
+  toggles; nearest field is the disabled flag. The answer includes only
+  repositories where isDisabled is true.

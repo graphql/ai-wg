@@ -1,0 +1,37 @@
+id: gh-ext-029-kw
+schemaId: github
+query: production deployment history service
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      deployments(first: 10) {
+        nodes {
+          environment
+          latestStatus {
+            __typename
+          }
+          createdAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Deployment.environment
+  - Environment.name
+  - Deployment.createdAt
+targetTypes:
+  - Deployment
+  - Environment
+mustInclude:
+  - Query.repository
+  - Repository.deployments
+  - Deployment.environment
+  - Environment.name
+  - Deployment.latestStatus
+  - Deployment.createdAt
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.deployments(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-029. Deployment history filtered to production, grouped client-side.

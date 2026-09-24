@@ -1,0 +1,41 @@
+id: glab-036-kw
+schemaId: gitlab
+query: protected environments current deployment
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      environments(first: 10) {
+        nodes {
+          name
+          protectedEnvironments(first: 10) {
+            nodes {
+              name
+            }
+          }
+          lastDeployment(status: SUCCESS) {
+            status
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Environment.name
+  - ProtectedEnvironment.name
+  - Deployment.status
+targetTypes:
+  - Environment
+  - ProtectedEnvironment
+  - Deployment
+mustInclude:
+  - Query.project
+  - Project.environments
+  - Environment.protectedEnvironments
+  - Environment.lastDeployment
+  - Environment.lastDeployment(status:)
+  - Environment.protectedEnvironments(first:)
+  - Project.environments(first:)
+  - Query.project(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-036. DevOps: protected environments + current deployment."

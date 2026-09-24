@@ -1,0 +1,29 @@
+id: shop-088-kw
+schemaId: shopify
+query: B2B catalog per company location
+operation: |
+  query {
+    companyLocations(first: 10) {
+      nodes {
+        catalogs(first: 10) {
+          edges {
+            cursor
+          }
+        }
+        name
+      }
+    }
+  }
+targetFields:
+  - CompanyLocation.name
+targetTypes:
+  - CompanyLocation
+mustInclude:
+  - QueryRoot.companyLocations
+  - CompanyLocation.catalogs
+  - CompanyLocation.name
+  - CompanyLocation.catalogs(first:)
+  - QueryRoot.companyLocations(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-088. Catalog assigned to each B2B company location.

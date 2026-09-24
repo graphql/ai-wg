@@ -1,0 +1,26 @@
+id: shop-032-kw
+schemaId: shopify
+query: collections product count sorted
+operation: |
+  query {
+    collections(first: 10) {
+      nodes {
+        productsCount {
+          count
+        }
+        title
+      }
+    }
+  }
+targetFields:
+  - Collection.title
+targetTypes:
+  - Collection
+mustInclude:
+  - QueryRoot.collections
+  - Collection.productsCount
+  - Collection.title
+  - QueryRoot.collections(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of shop-032. Collections sorted by product count.

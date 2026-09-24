@@ -1,0 +1,77 @@
+id: gh-ext-034
+schemaId: github
+query: List the teams in the octocat organization and which repositories each
+  team can access.
+operation: |
+  query {
+    organization(login: "octocat") {
+      teams(first: 5) {
+        nodes {
+          name
+          slug
+          repositories(first: 5) {
+            nodes {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+answer:
+  teams:
+    - name: example
+      repositories:
+        - example
+        - Hello-World
+    - name: Developers
+      repositories:
+        - example
+    - name: Operations
+      repositories:
+        - example
+        - private-repo
+    - name: Security
+      repositories:
+        - private-repo
+answerSchema:
+  type: object
+  properties:
+    teams:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          repositories:
+            type: array
+            items:
+              type: string
+        required:
+          - name
+          - repositories
+        additionalProperties: false
+  required:
+    - teams
+  additionalProperties: false
+targetFields:
+  - Team.name
+  - Team.slug
+  - Repository.name
+targetTypes:
+  - Team
+  - Repository
+  - Organization
+mustInclude:
+  - Query.organization
+  - Organization.teams
+  - Team.name
+  - Team.slug
+  - Team.repositories
+  - Repository.name
+  - Organization.teams(first:)
+  - Query.organization(login:)
+  - Team.repositories(first:)
+mustExclude:
+  - Mutation

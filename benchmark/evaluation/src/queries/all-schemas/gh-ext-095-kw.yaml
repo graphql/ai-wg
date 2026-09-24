@@ -1,0 +1,33 @@
+id: gh-ext-095-kw
+schemaId: github
+query: packages by registry org
+operation: |
+  query {
+    organization(login: "octocat") {
+      packages(first: 10) {
+        nodes {
+          packageType
+          name
+          repository {
+            __typename
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Package.packageType
+  - Package.name
+targetTypes:
+  - Package
+mustInclude:
+  - Query.organization
+  - Organization.packages
+  - Package.packageType
+  - Package.name
+  - Package.repository
+  - Organization.packages(first:)
+  - Query.organization(login:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-095. Org packages grouped by their packageType (registry).

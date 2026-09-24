@@ -1,0 +1,29 @@
+id: glab-099-kw
+schemaId: gitlab
+query: group projects visibility last activity
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      projects(first: 10) {
+        nodes {
+          visibility
+          lastActivityAt
+        }
+      }
+    }
+  }
+targetFields:
+  - Project.visibility
+  - Project.lastActivityAt
+targetTypes:
+  - Project
+mustInclude:
+  - Query.group
+  - Group.projects
+  - Project.visibility
+  - Project.lastActivityAt
+  - Group.projects(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-099. Admin: projects in group + visibility + activity."

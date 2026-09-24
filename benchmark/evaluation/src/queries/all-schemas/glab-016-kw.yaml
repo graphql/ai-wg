@@ -1,0 +1,23 @@
+id: glab-016-kw
+schemaId: gitlab
+query: my snippets this quarter
+operation: |
+  query {
+    currentUser {
+      snippets(first: 10) {
+        nodes {
+          __typename
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - Snippet
+mustInclude:
+  - Query.currentUser
+  - CurrentUser.snippets
+  - CurrentUser.snippets(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-016. Developer: my snippets."

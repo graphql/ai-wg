@@ -1,0 +1,30 @@
+id: glab-030-kw
+schemaId: gitlab
+query: group projects stale open merge requests
+operation: |
+  query {
+    group(fullPath: "group/project") {
+      projects(first: 10) {
+        nodes {
+          mergeRequests(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - MergeRequest
+mustInclude:
+  - Query.group
+  - Group.projects
+  - Project.mergeRequests
+  - Group.projects(first:)
+  - Project.mergeRequests(first:)
+  - Query.group(fullPath:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-030. Maintainer: group projects with most stale MRs."

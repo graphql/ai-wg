@@ -1,0 +1,35 @@
+id: gh-ext-019-kw
+schemaId: github
+query: codeowners review requests pr
+operation: |
+  query {
+    repository(name: "example", owner: "octocat") {
+      pullRequest(number: 1) {
+        reviewRequests(first: 10) {
+          nodes {
+            asCodeOwner
+            requestedReviewer {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - ReviewRequest.asCodeOwner
+targetTypes:
+  - ReviewRequest
+mustInclude:
+  - Query.repository
+  - Repository.pullRequest
+  - PullRequest.reviewRequests
+  - ReviewRequest.asCodeOwner
+  - ReviewRequest.requestedReviewer
+  - PullRequest.reviewRequests(first:)
+  - Query.repository(name:)
+  - Query.repository(owner:)
+  - Repository.pullRequest(number:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of gh-ext-019. PR review requests filtered to codeowner-flagged ones.

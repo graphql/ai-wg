@@ -1,0 +1,30 @@
+id: lin-ic-12-kw
+schemaId: linear
+query: comments reactions emoji popular
+operation: |
+  query {
+    comments(first: 10) {
+      nodes {
+        reactions {
+          emoji
+        }
+        user {
+          id
+        }
+      }
+    }
+  }
+targetFields:
+  - Reaction.emoji
+targetTypes:
+  - Reaction
+  - Comment
+mustInclude:
+  - Query.comments
+  - Comment.reactions
+  - Reaction.emoji
+  - Comment.user
+  - Query.comments(first:)
+mustExclude:
+  - Mutation
+notes: Keyword variant of lin-ic-12. Reactions on individual comments.

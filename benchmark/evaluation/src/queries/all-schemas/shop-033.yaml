@@ -1,0 +1,101 @@
+id: shop-033
+schemaId: shopify
+query: What custom metafields are attached to each product and what values?
+operation: |
+  query {
+    products(first: 10) {
+      nodes {
+        metafields(first: 10) {
+          nodes {
+            namespace
+            key
+            value
+          }
+        }
+      }
+    }
+  }
+targetFields:
+  - Metafield.namespace
+  - Metafield.key
+  - Metafield.value
+targetTypes:
+  - Metafield
+mustInclude:
+  - QueryRoot.products
+  - Product.metafields
+  - Metafield.namespace
+  - Metafield.key
+  - Metafield.value
+  - Product.metafields(first:)
+  - QueryRoot.products(first:)
+mustExclude:
+  - Mutation
+notes: Custom metafields attached to each product with values.
+answerSchema:
+  type: object
+  properties:
+    products:
+      type: array
+      items:
+        type: object
+        properties:
+          metafields:
+            type: array
+            items:
+              type: object
+              properties:
+                namespace:
+                  type: string
+                key:
+                  type: string
+                value:
+                  type: string
+              required:
+                - namespace
+                - key
+                - value
+              additionalProperties: false
+        required:
+          - metafields
+        additionalProperties: false
+  required:
+    - products
+  additionalProperties: false
+answer:
+  products:
+    - metafields:
+        - namespace: marketing
+          key: custom_field_1
+          value: Configuration setting
+        - namespace: custom
+          key: custom_field_1
+          value: Customer note
+    - metafields:
+        - namespace: inventory
+          key: product_details
+          value: Internal comment
+        - namespace: custom
+          key: shipping_info
+          value: Important information
+    - metafields:
+        - namespace: social
+          key: header_label
+          value: Configuration setting
+        - namespace: custom
+          key: page_title
+          value: Configuration setting
+    - metafields:
+        - namespace: fulfillment
+          key: custom_field_1
+          value: Product specification
+        - namespace: shipping
+          key: custom_field_1
+          value: Important information
+    - metafields:
+        - namespace: shipping
+          key: page_title
+          value: Customer note
+        - namespace: shipping
+          key: header_label
+          value: Important information

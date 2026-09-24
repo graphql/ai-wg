@@ -1,0 +1,73 @@
+id: glab-088
+schemaId: gitlab
+query: Show release evidences for the latest release of the group/project project.
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      releases(first: 1) {
+        nodes {
+          evidences(first: 10) {
+            nodes {
+              id
+              sha
+              filepath
+              collectedAt
+            }
+          }
+        }
+      }
+    }
+  }
+answerSchema:
+  type: object
+  properties:
+    evidences:
+      type: array
+      items:
+        type: object
+        properties:
+          id: &a1
+            type: string
+          sha: *a1
+          filepath: *a1
+          collectedAt: *a1
+        required:
+          - id
+          - sha
+          - filepath
+          - collectedAt
+        additionalProperties: false
+  required:
+    - evidences
+  additionalProperties: false
+targetFields:
+  - ReleaseEvidence.id
+  - ReleaseEvidence.sha
+  - ReleaseEvidence.filepath
+  - ReleaseEvidence.collectedAt
+targetTypes:
+  - ReleaseEvidence
+mustInclude:
+  - Query.project
+  - Project.releases
+  - Release.evidences
+  - Project.releases(first:)
+  - Query.project(fullPath:)
+  - Release.evidences(first:)
+  - ReleaseEvidence.id
+  - ReleaseEvidence.sha
+  - ReleaseEvidence.filepath
+  - ReleaseEvidence.collectedAt
+mustExclude:
+  - Mutation
+notes: "PM: release evidences."
+answer:
+  evidences:
+    - id: ReleaseEvidenceConnection.nodes[0]#25071954
+      sha: d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e
+      filepath: evidence/sbom-v2.0.0.json
+      collectedAt: 2025-05-20T14:32:01Z
+    - id: ReleaseEvidenceConnection.nodes[1]#41849573
+      sha: c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d
+      filepath: evidence/build-log-v2.0.0.txt
+      collectedAt: 2025-05-10T09:15:33Z

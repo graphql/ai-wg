@@ -1,0 +1,5 @@
+{
+    "id": "github",
+    "name": "Github",
+    "description": "Full GitHub GraphQL API (~1.5MB SDL). Largest single-schema eval cohort (118 queries)."
+}

@@ -1,0 +1,75 @@
+id: sg-region-forecast
+schemaId: singapore
+query: What is the forecast for the central region tomorrow?
+operation: |
+  query {
+    regionByName(name: CENTRAL) {
+      name
+      forecast {
+        forecast
+        temperatureHigh
+        temperatureLow
+        humidityHigh
+        humidityLow
+        windDirection
+        windSpeed
+      }
+    }
+  }
+targetFields:
+  - RegionForecast.forecast
+targetTypes:
+  - Region
+  - RegionForecast
+mustInclude:
+  - Query.regionByName
+  - Region.forecast
+  - Query.regionByName(name:)
+mustExclude: []
+shouldInclude:
+  - Query.regionByName(name:)
+  - RegionForecast
+  - Region.name
+notes: Single-question multi-hop. Tests entity-anchored entry-point selection on
+  a small schema.
+answerSchema:
+  type: object
+  properties:
+    forecast:
+      type: object
+      properties:
+        forecast:
+          type: string
+        temperatureHigh:
+          type: integer
+        temperatureLow:
+          type: integer
+        humidityHigh:
+          type: integer
+        humidityLow:
+          type: integer
+        windDirection:
+          type: string
+        windSpeed:
+          type: string
+      required:
+        - forecast
+        - temperatureHigh
+        - temperatureLow
+        - humidityHigh
+        - humidityLow
+        - windDirection
+        - windSpeed
+      additionalProperties: false
+  required:
+    - forecast
+  additionalProperties: false
+answer:
+  forecast:
+    forecast: Partly cloudy with isolated showers
+    temperatureHigh: 637
+    temperatureLow: 947
+    humidityHigh: 288
+    humidityLow: 788
+    windDirection: Southwest
+    windSpeed: "12"

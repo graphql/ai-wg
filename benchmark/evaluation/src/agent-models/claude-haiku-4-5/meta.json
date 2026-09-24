@@ -1,0 +1,15 @@
+{
+    "id": "claude-haiku-4-5",
+    "name": "Claude Haiku 4.5",
+    "description": "Anthropic Haiku 4.5 — fast, cheap chat model with prompt caching.",
+    "provider": "anthropic",
+    "modelName": "claude-haiku-4-5-20251001",
+    "maxTokens": 8192,
+    "supportsCacheControl": true,
+    "pricing": {
+        "inputPerMillion": 1.0,
+        "outputPerMillion": 5.0,
+        "cacheWritePerMillion": 1.25,
+        "cacheReadPerMillion": 0.1
+    }
+}

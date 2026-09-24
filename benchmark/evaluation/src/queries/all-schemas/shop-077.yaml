@@ -1,0 +1,50 @@
+id: shop-077
+schemaId: shopify
+query: What are the channel types and titles of all marketing activities in the shop?
+operation: |
+  query {
+    marketingActivities(first: 10) {
+      nodes {
+        marketingChannelType
+        title
+      }
+    }
+  }
+targetFields:
+  - MarketingActivity.marketingChannelType
+  - MarketingActivity.title
+targetTypes:
+  - MarketingActivity
+mustInclude:
+  - QueryRoot.marketingActivities
+  - MarketingActivity.marketingChannelType
+  - MarketingActivity.title
+  - QueryRoot.marketingActivities(first:)
+mustExclude:
+  - Mutation
+answer:
+  marketingActivities:
+    - channelType: SOCIAL
+      title: Copper Grilling Set
+    - channelType: REFERRAL
+      title: Vintage Denim Jacket
+answerSchema:
+  type: object
+  properties:
+    marketingActivities:
+      type: array
+      items:
+        type: object
+        properties:
+          channelType:
+            type: string
+          title:
+            type: string
+        required:
+          - channelType
+          - title
+        additionalProperties: false
+  required:
+    - marketingActivities
+  additionalProperties: false
+notes: List of marketing activities with their channel type and title.

@@ -1,0 +1,71 @@
+id: lin-tl-4
+schemaId: linear
+query: "Which issues are tracked by the Engineering team (team ID:
+  team-engineering)? List each issue's key and title."
+operation: |
+  query {
+    team(id: "team-engineering") {
+      issues(first: 10) {
+        nodes {
+          identifier
+          title
+        }
+      }
+    }
+  }
+targetFields:
+  - Issue.identifier
+  - Issue.title
+targetTypes:
+  - Team
+  - Issue
+mustInclude:
+  - Query.team
+  - Team.issues
+  - Issue.identifier
+  - Issue.title
+  - Query.team(id:)
+  - Team.issues(first:)
+mustExclude:
+  - Mutation
+notes: "Team issue list: fetches issues belonging to the Engineering team."
+answerSchema:
+  type: object
+  properties:
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          identifier: &a1
+            type: string
+          title: *a1
+        required:
+          - identifier
+          - title
+        additionalProperties: false
+  required:
+    - issues
+  additionalProperties: false
+answer:
+  issues:
+    - identifier: ENG-7
+      title: Fix authentication token refresh
+    - identifier: ENG-99
+      title: Implement rate limiting on API gateway
+    - identifier: ENG-200
+      title: Migrate database to PostgreSQL 16
+    - identifier: ENG-241
+      title: Refactor authentication middleware
+    - identifier: ENG-321
+      title: Add unit tests for payment module
+    - identifier: ENG-512
+      title: Fix rate limit bypass vulnerability
+    - identifier: ENG-902
+      title: Performance regression in search results
+    - identifier: ENG-441
+      title: Customer reported login issue on mobile
+    - identifier: ENG-1023
+      title: API documentation update needed
+    - identifier: ENG-100
+      title: Update mobile app onboarding flow

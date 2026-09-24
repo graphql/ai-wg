@@ -1,0 +1,26 @@
+id: glab-081-kw
+schemaId: gitlab
+query: timelogs by author sprint issues
+operation: |
+  query {
+    timelogs(first: 10) {
+      nodes {
+        user {
+          __typename
+        }
+        timeSpent
+      }
+    }
+  }
+targetFields:
+  - Timelog.timeSpent
+targetTypes:
+  - Timelog
+mustInclude:
+  - Query.timelogs
+  - Timelog.user
+  - Timelog.timeSpent
+  - Query.timelogs(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-081. PM: timelogs by author for sprint."

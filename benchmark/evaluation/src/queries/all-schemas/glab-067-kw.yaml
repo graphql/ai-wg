@@ -1,0 +1,30 @@
+id: glab-067-kw
+schemaId: gitlab
+query: vulnerabilities linked issues open
+operation: |
+  query {
+    project(fullPath: "group/project") {
+      vulnerabilities(first: 10) {
+        nodes {
+          issueLinks(first: 10) {
+            nodes {
+              __typename
+            }
+          }
+        }
+      }
+    }
+  }
+targetFields: []
+targetTypes:
+  - VulnerabilityIssueLink
+mustInclude:
+  - Query.project
+  - Project.vulnerabilities
+  - Vulnerability.issueLinks
+  - Project.vulnerabilities(first:)
+  - Query.project(fullPath:)
+  - Vulnerability.issueLinks(first:)
+mustExclude:
+  - Mutation
+notes: "Keyword variant of glab-067. Security: vulns linked to issues."
