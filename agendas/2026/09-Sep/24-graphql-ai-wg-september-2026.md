@@ -26,6 +26,7 @@
 | Jeff Auriemma     | @bignimbus    | Apollo             | Monroe, CT, US        |
 | Raymie Stata      | @rstata       | Airbnb             | San Francisco, CA, US |
 | Michael Staib     | @michaelstaib | ChilliCream        | Zurich, CH            |
+| Dale Seo          | @DaleSeo.     | Apollo             | Toronto, ON, CA       |
 
 
 ## Agenda
