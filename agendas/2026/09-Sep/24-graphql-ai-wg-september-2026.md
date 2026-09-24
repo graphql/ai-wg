@@ -22,9 +22,10 @@
 <!-- prettier-ignore -->
 | Name              | GitHub        | Organization       | Location              |
 | :---------------- | :------------ | :----------------- | :-------------------- |
-| Pascal Senn (Host)| PascalSenn.   | ChilliCream.       | Zurich, CH            |
+| Pascal Senn (Host)| @PascalSenn   | ChilliCream        | Zurich, CH            |
 | Jeff Auriemma     | @bignimbus    | Apollo             | Monroe, CT, US        |
-| Raymie Stata      | @rstata.      | Airbnb             | San Francisco, CA, US |
+| Raymie Stata      | @rstata       | Airbnb             | San Francisco, CA, US |
+| Michael Staib     | @michaelstaib | ChilliCream        | Zurich, CH            |
 | Dale Seo          | @DaleSeo.     | Apollo             | Toronto, ON, CA       |
 
 
