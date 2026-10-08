@@ -21,7 +21,7 @@
 
 <!-- prettier-ignore --> 
 | Name                  | GitHub              | Organization   | Location              |
-|-:---------------------|-:-------------------|-:--------------|-:---------------------|
+|:----------------------|:--------------------|:---------------|:----------------------|
 | Kewei Qu (Host)       | @Keweiqu            | Meta Platforms | Menlo Park, CA, USA   |
 | Anastasia Finogenova  | @AnastasiaRainMaker	| Meta Platforms | Texas, USA            |
 | Michael Rebello       | @rebello95          | Airbnb         | San Diego, CA, USA    |
@@ -29,7 +29,7 @@
 | Mark Larah            | @magicmark          | Yelp           | Austin, TX, USA       |
 | Jeff Auriemma         | @bignimbus          | Apollo         | Monroe, CT, US        |
 | Pascal Senn           | @pascalsenn         | ChilliCream    | Zurich, CH            |
-| Hugh Nguyen           |                     | Meta Platforms | Menlo Park, CA, US    | 
+| Hugh Nguyen           | -                   | Meta Platforms | Menlo Park, CA, US    | 
 
 ## Agenda
 
