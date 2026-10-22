@@ -22,6 +22,7 @@
 <!-- prettier-ignore -->
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
+| Pascal Senn(Host)| @pascalsenn   | ChilliCream        | Zurich, CH            |
 | Dale Seo         | @DaleSeo      | Apollo             | Toronto, ON, CA       |
 | Željko Kozina    | @zkozina      | Chronomill         | Dublin, ROI           |
 | Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
