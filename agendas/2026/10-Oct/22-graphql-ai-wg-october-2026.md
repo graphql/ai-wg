@@ -26,6 +26,7 @@
 | Dale Seo         | @DaleSeo      | Apollo             | Toronto, ON, CA       |
 | Željko Kozina    | @zkozina      | Chronomill         | Dublin, ROI           |
 | Jeff Auriemma    | @bignimbus    | Apollo             | Monroe, CT, US        |
+| Mark Larah       | @magicmark    | Yelp               | Austin, TX, US        |
 
 
 ## Agenda
