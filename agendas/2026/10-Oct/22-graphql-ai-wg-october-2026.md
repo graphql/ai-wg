@@ -23,6 +23,7 @@
 | Name             | GitHub        | Organization       | Location              |
 | :--------------- | :------------ | :----------------- | :-------------------- |
 | Dale Seo         | @DaleSeo      | Apollo             | Toronto, ON, CA       |
+| Željko Kozina    | @zkozina      | Chronomill         | Dublin, ROI           |
 
 
 ## Agenda
