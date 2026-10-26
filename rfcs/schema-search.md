@@ -467,9 +467,9 @@ these rules:
 - A union keeps only the members that are in the slice. If no member remains,
   the service drops the union.
 - A field keeps all its required arguments, and an input type keeps all its
-  required fields. Default values and `@oneOf` stay as they are. Without these
-  rules, an operation can validate against the slice and fail against the full
-  schema.
+  required fields. A slice MAY omit an optional argument or an optional input
+  field. Default values and `@oneOf` stay as they are. Without these rules, an
+  operation can validate against the slice and fail against the full schema.
 - If the slice applies a directive, the slice also defines that directive.
 - Each type, field, argument, input field and enum value in the slice exists in
   the full schema with the same name and type.
