@@ -294,10 +294,10 @@ the contract natively. Both are out of scope here.
 
 ### 2. Request parameters
 
-| Parameter | Required | Meaning                                                                                                  |
-| --------- | -------- | -------------------------------------------------------------------------------------------------------- |
-| `q`       | No       | A natural language description of the capability the client needs. MAY be repeated; see below.           |
-| `v`       | No       | The GraphQL specification edition whose SDL syntax the client understands, for example `september-2025`. |
+| Parameter | Required | Meaning                                                                                                 |
+| --------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `q`       | No       | A natural language description of the capability the client needs. MAY be repeated; see below.          |
+| `v`       | No       | The GraphQL specification edition whose SDL syntax the client understands, for example `September2025`. |
 
 In a `GET` request, the client encodes the parameters in the query component of
 the URL, as for a GraphQL-over-HTTP `GET` request. The encoding is
@@ -365,13 +365,10 @@ The status codes in one place:
 #### Why these names
 
 `v` names the GraphQL specification edition. It is short like `q`, so the two
-parameters read as a pair. Its values are edition names, for example
-`october-2021` (or `2021-10`) and `september-2025` (or `2025-09`). These names
-match how the GraphQL specification is published. Hot Chocolate accepts the same
-values today under the name `spec-version` ([Hot Chocolate endpoint
-docs][hc-endpoints]). A service that already accepts `spec-version` can accept
-both names. In other URLs, `v` often means an API version or a cache key. On
-this endpoint, it means only the specification edition.
+parameters read as a pair. Its values are the edition tags of the specification,
+for example `October2021` and `September2025`, as in the URLs of the published
+editions. In other URLs, `v` often means an API version or a cache key. On this
+endpoint, it means only the specification edition.
 
 `q` is the conventional name for a search query in a URL. It also avoids
 `query`, which already has a different meaning here. GraphQL over HTTP uses the
@@ -379,9 +376,6 @@ this endpoint, it means only the specification edition.
 `/graphql/schema?query=…` looks like a GraphQL operation that a client sends to
 the schema endpoint. `search` also avoids this conflict, and it is a reasonable
 alternative.
-
-[hc-endpoints]:
-  https://github.com/ChilliCream/graphql-platform/blob/main/website/content/docs/hotchocolate/server/endpoints.md
 
 ### 3. Response
 
@@ -572,7 +566,7 @@ schema:
 HTTP/1.1 204 No Content
 ```
 
-A request with an unknown edition, for example `?q=...&v=march-2019`, gets an
+A request with an unknown edition, for example `?q=...&v=March2019`, gets an
 error in the GraphQL over HTTP format:
 
 ```http
@@ -582,7 +576,7 @@ Content-Type: application/graphql-response+json
 {
   "errors": [
     {
-      "message": "The edition 'march-2019' is not supported. Supported editions: october-2021, september-2025."
+      "message": "The edition 'March2019' is not supported. Supported editions: October2021, September2025."
     }
   ]
 }
