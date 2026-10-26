@@ -249,13 +249,11 @@ service appends `/schema` to the path. For the endpoint
 GET https://api.example.com/graphql/schema
 ```
 
-For a request without `q`, a service MAY return the full schema as SDL. This
-response is useful on its own, because it gives tools a standard place to get
-the SDL without an introspection query. A service that keeps its schema private,
-for example a service that disables introspection, can offer search without the
-full schema. It then responds with `400` to a request without `q`. Repeated
-searches can still reconstruct much of a schema. So search does not keep a
-schema secret.
+For a request without `q`, the service MUST return the full schema as SDL. This
+response gives tools a standard place to get the SDL without an introspection
+query. A service that keeps its schema private protects this endpoint as it
+protects its GraphQL endpoint, for example with authentication. Search does not
+keep a schema secret anyway, because repeated searches reconstruct much of it.
 
 A request with a `q` parameter returns a schema slice:
 
@@ -263,27 +261,36 @@ A request with a `q` parameter returns a schema slice:
 GET https://api.example.com/graphql/schema?q=latest+commit+in+a+repository
 ```
 
-The endpoint uses `GET` for three reasons. The request is a read with no side
-effects. A cache can store the responses. And a URL is the simplest request for
-an agent harness to construct.
+The service MUST accept `GET`. A URL is the simplest request for an agent
+harness to construct.
 
-Services MAY also accept a request with a body when the parameters are too large
-for a URL. The preferred method is `QUERY` ([RFC 10008][rfc-10008]). Like `GET`,
-it is safe, and a cache can store its responses. But it carries the parameters
-in the body. GraphQL over HTTP is adding `QUERY` for operations in
-[graphql-over-http#411][gqlhttp-411]. Services MAY also accept `POST` for
-clients and intermediaries that do not support `QUERY`.
+The service MUST also accept the parameters in a request body, with `POST`. A
+body has no length limit, and it keeps intents out of URLs, which proxies and
+servers log. The service SHOULD also accept `QUERY` ([RFC 10008][rfc-10008]).
+`QUERY` is safe like `GET`, so a cache can store its responses. GraphQL over
+HTTP is adding `QUERY` for operations in [graphql-over-http#411][gqlhttp-411]. A
+client SHOULD use `QUERY` when the service and the intermediaries support it,
+and `POST` otherwise. A search seldom repeats, because intents are free text, so
+a client loses little cache benefit when it sends a `POST`.
 
-For both methods, the body MUST be JSON (`Content-Type: application/json`), as
-for a GraphQL-over-HTTP `POST` request. The members of the body are the
-parameters: `q` as an array of strings and `v` as a string. Form-encoded bodies
-are not allowed. GraphQL over HTTP explains that browsers send form-encoded
-bodies without a CORS preflight. This behavior exposes servers to cross-site
-request forgery. Browsers always send a CORS preflight before a `QUERY` request.
-The JSON rule applies to `QUERY` too, so both methods share one body format.
+The body MUST be JSON (`Content-Type: application/json`), as for a
+GraphQL-over-HTTP `POST` request. Its members are the parameters: `q` as an
+array of strings and `v` as a string. The service MUST reject form-encoded
+bodies. As GraphQL over HTTP explains, browsers send form-encoded bodies without
+a CORS preflight, which exposes servers to cross-site request forgery. Browsers
+always send a preflight before a `QUERY` request. The JSON rule still applies to
+`QUERY`, so both methods share one body format.
 
 [rfc-10008]: https://www.rfc-editor.org/rfc/rfc10008.html
 [gqlhttp-411]: https://github.com/graphql/graphql-over-http/pull/411
+
+This document does not define how a client discovers schema search. A client
+that knows the GraphQL endpoint tries the search URL. The service capabilities
+proposal ([graphql-spec#1208][spec-1208]) lets a service advertise support and
+point to a different URL, even on another host. Agent harnesses can also support
+the contract natively. Both are out of scope here.
+
+[spec-1208]: https://github.com/graphql/graphql-spec/pull/1208
 
 ### 2. Request parameters
 
@@ -334,19 +341,26 @@ this way to an unknown `spec-version`. GraphQL over HTTP lets a server refuse
 any request with the relevant status code, for example to require
 authentication. A schema search service MAY do the same.
 
+A successful response and an error response have different media types. A client
+that sends an `Accept` header SHOULD list both `text/plain` and
+`application/graphql-response+json`, as in the examples in
+[section 3](#3-response). Otherwise the service cannot return an error body that
+the client accepts. A service MUST treat a request without `Accept` as a request
+that accepts both.
+
 The status codes in one place:
 
-| Status                       | When                                                                                                                     | Source                                                     |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
-| `200 OK`                     | The response is a slice, or the full schema for a request without `q`                                                    | [Sections 1](#1-endpoint) and [3](#3-response)             |
-| `204 No Content`             | No intent matches                                                                                                        | [Section 3](#3-response)                                   |
-| `400 Bad Request`            | No `q` on a service that does not offer the full schema, an unknown `v`, or nothing that matches can be expressed in `v` | [Sections 1](#1-endpoint) and [2](#2-request-parameters)   |
-| `405 Method Not Allowed`     | The service does not support the method, for example `QUERY` or `POST`. The `Allow` header lists the supported methods.  | GraphQL over HTTP                                          |
-| `406 Not Acceptable`         | The `Accept` header excludes the media type of the response                                                              | GraphQL over HTTP (see [open question 2](#open-questions)) |
-| `413 Content Too Large`      | The body of a `QUERY` or `POST` request is too large                                                                     | GraphQL over HTTP                                          |
-| `414 URI Too Long`           | The URL of a `GET` request is too long                                                                                   | GraphQL over HTTP                                          |
-| `415 Unsupported Media Type` | The body is not JSON, for example a form-encoded body                                                                    | GraphQL over HTTP                                          |
-| Other `4xx` or `5xx`         | The service refuses the request, for example for authentication or rate limits                                           | GraphQL over HTTP                                          |
+| Status                       | When                                                                                                                                 | Source                                         |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- |
+| `200 OK`                     | The response is a slice, or the full schema for a request without `q`                                                                | [Sections 1](#1-endpoint) and [3](#3-response) |
+| `204 No Content`             | No intent matches                                                                                                                    | [Section 3](#3-response)                       |
+| `400 Bad Request`            | An unknown `v`, or nothing that matches can be expressed in `v`                                                                      | [Section 2](#2-request-parameters)             |
+| `405 Method Not Allowed`     | The method is not `GET`, `POST` or `QUERY`, or the service does not support `QUERY`. The `Allow` header lists the supported methods. | GraphQL over HTTP                              |
+| `406 Not Acceptable`         | The `Accept` header excludes the media type of the response                                                                          | GraphQL over HTTP                              |
+| `413 Content Too Large`      | The body of a `QUERY` or `POST` request is too large                                                                                 | GraphQL over HTTP                              |
+| `414 URI Too Long`           | The URL of a `GET` request is too long                                                                                               | GraphQL over HTTP                              |
+| `415 Unsupported Media Type` | The body is not JSON, for example a form-encoded body                                                                                | GraphQL over HTTP                              |
+| Other `4xx` or `5xx`         | The service refuses the request, for example for authentication or rate limits                                                       | GraphQL over HTTP                              |
 
 #### Why these names
 
@@ -371,13 +385,24 @@ alternative.
 
 ### 3. Response
 
-A successful search returns `200 OK` with a schema slice in SDL. If none of the
-requested intents matches, the service MUST return `204 No Content` with no
-body. A client MUST NOT try to parse that response as SDL. If only some intents
-match, the service returns a slice for those matches. The response does not tell
-the client which intents matched. Errors follow
-[section 2](#2-request-parameters), including requests whose matches cannot be
-expressed in the requested specification edition.
+The goal is that one response is enough. The client reads the slice, writes an
+operation and executes it, with no second search. Each extra search costs an LLM
+round trip and puts another slice into the context. In the experiments of the
+working group, sessions with several searches filled the context, and smaller
+models lost track of the task. So a service aims to answer all intents in one
+response, and requirement 5 gives it room to add nearby context.
+
+A successful search returns `200 OK` with a schema slice in SDL. The media type
+of the response is `text/plain; charset=utf-8` for now. SDL has no registered
+media type, and the response is not a GraphQL response, so
+`application/graphql-response+json` does not apply. A later edition can define a
+dedicated media type without a change to the body. If none of the requested
+intents matches, the service MUST return `204 No Content` with no body. A client
+MUST NOT try to parse that response as SDL. If only some intents match, the
+service returns a slice for those matches. The response does not tell the client
+which intents matched. Errors follow [section 2](#2-request-parameters),
+including requests whose matches cannot be expressed in the requested
+specification edition.
 
 The requirements below apply to every returned slice. The base contract does not
 include patches or the `known` parameter.
@@ -455,15 +480,46 @@ trim output enum values or union members. Then a response can contain values
 that the slice does not declare. A client that generates exhaustive code from a
 slice must allow for unknown values.
 
+The first rule follows the September 2025 edition, which requires an object or
+interface type to define at least one field. The GraphQL working group is
+relaxing this rule in [graphql-spec#1227][spec-1227], [#1228][spec-1228] and
+[#1229][spec-1229], partly for schema subsets for AI. Under an edition that
+adopts these changes, a slice can keep an empty referenced type, such as
+`type Book {}`, instead of dropping it. Such a slice is valid only under that
+edition, so a client that parses an older edition says so with `v`
+([section 2](#2-request-parameters)). This document requires neither behavior.
+
+[spec-1227]: https://github.com/graphql/graphql-spec/pull/1227
+[spec-1228]: https://github.com/graphql/graphql-spec/pull/1228
+[spec-1229]: https://github.com/graphql/graphql-spec/pull/1229
+
 #### Example
 
 Request:
 
+```http
+GET /graphql/schema?q=latest+commit+on+the+default+branch+of+a+repository HTTP/1.1
+Host: api.example.com
+Accept: text/plain, application/graphql-response+json
 ```
-GET /graphql/schema?q=latest+commit+on+the+default+branch+of+a+repository
+
+The same search as a `POST` request:
+
+```http
+POST /graphql/schema HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Accept: text/plain, application/graphql-response+json
+
+{ "q": ["latest commit on the default branch of a repository"] }
 ```
 
 Response (abbreviated), for a GitHub-like schema:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+```
 
 ```graphql
 type Query {
@@ -509,6 +565,29 @@ The full `Repository` type has over a hundred fields, and the slice keeps two.
 The intents did not match the `history` field. The service included it under the
 size budget, because a client needs it to ask for more than one commit.
 
+A search that matches nothing, for example `?q=weather+forecast` on the same
+schema:
+
+```http
+HTTP/1.1 204 No Content
+```
+
+A request with an unknown edition, for example `?q=...&v=march-2019`, gets an
+error in the GraphQL over HTTP format:
+
+```http
+HTTP/1.1 400 Bad Request
+Content-Type: application/graphql-response+json
+
+{
+  "errors": [
+    {
+      "message": "The edition 'march-2019' is not supported. Supported editions: october-2021, september-2025."
+    }
+  ]
+}
+```
+
 ### 4. What the specification does not define
 
 The specification does not say how a service decides what is relevant. The
@@ -539,8 +618,11 @@ implementations.
 
 ### 5. Building up a slice across requests
 
-This section is non-normative. It records the design space and a candidate
-design for a future extension. It does not set a requirement.
+This section is non-normative. [Section 3](#3-response) sets the goal that one
+response is enough, and the working group prefers to improve the first response
+before it adds a second request. This section records the design space for that
+second request and a candidate design for a future extension. It does not set a
+requirement.
 
 Sometimes the first slice is not enough. While the model writes a query, it can
 find that it needs a field that the slice does not include. With semantic
@@ -700,8 +782,7 @@ before a patch extension can be specified:
   extensions.
 - URL length. A slice holds about 800 coordinates on average. The `known` list
   for it is tens of kilobytes. This size is far over the URL limits of common
-  servers and proxies. So a service that supports `known` must also accept
-  `QUERY` or `POST`.
+  servers and proxies. So a client that sends `known` uses `QUERY` or `POST`.
 - Caching. `known` lists rarely repeat, so a cache gains little.
 
 The bench did not measure how often a first slice needs expansion. It also did
@@ -755,8 +836,8 @@ and it returns that part of the schema.
 
 A parameter can include or exclude descriptions explicitly. A client that wants
 the smallest slice can exclude them. A client that wants documentation can
-include them. In early experiments, dropping descriptions cut the token count by
-about half.
+include them. Requirement 6 in [section 3](#3-response) already lets a service
+omit them.
 
 ### C. Non-schema results
 
@@ -777,54 +858,16 @@ the user perceives.
 
 ## Open Questions
 
-1. Is `q` the right name for the search parameter, or is `search` better? The
-   public `/graphql/schema` endpoint of Hot Chocolate accepts `spec-version` and
-   `types`. It does not accept a search parameter yet. Which name does the
-   search implementation of ChilliCream use? And must the specification also
-   standardize `types`, which gets named types?
-2. What is the media type of the response? The response is SDL. GraphQL over
-   HTTP recognizes only JSON media types, and `application/graphql` is not one
-   of them. Does SDL need a registered media type, or is `text/plain` enough?
-   Errors use `application/graphql-response+json`. So the specification must
-   also say which `Accept` header a client sends to receive both types.
-3. Is known coordinates plus a patch the right combination to build up a slice
-   ([section 5](#5-building-up-a-slice-across-requests))? Does a patch response
-   need its own media type, so that a client cannot take it for a complete
-   schema?
-4. Is one request enough, or are two requests better? Some members want a search
-   step that returns a lightweight index of coordinates. A definitions step then
-   returns SDL. This document proposes one request. In the agent run of the
-   bench, the model answered 85% of questions end to end, with a median of 3
-   turns (search, execute, answer). The model usually searched once, and more
-   than half of the questions succeeded with the first query. These results
-   suggest that one search is often enough. But the bench tested only one
-   strategy and one model.
-5. How does a client learn that a service supports schema search, other than by
-   trying the URL?
-6. Are the edge-case behaviors in [section 3](#3-response) right? When nothing
-   matches, the service returns `204 No Content`. When only some intents match,
-   it returns a slice and does not say which intents matched. When a match is
-   only in `Mutation` or `Subscription`, it keeps a minimal query root.
-7. Do weaker models need more help? The bench used GPT-4.1 Mini. Local models
-   can do worse when they write operations from a slice. Must
-   [extension C](#c-non-schema-results), which returns a ready-made operation,
-   be in the base specification for these models?
-8. How does a client select a schema? A service can serve several schemas or
-   variants on one endpoint, and it needs a way to select one.
-9. How does a service derive the search URL when its GraphQL endpoint is `/` or
-   carries a query string ([section 1](#1-endpoint))?
+1. The `/graphql/schema` endpoint of Hot Chocolate accepts `types`, which
+   returns named types. Must the specification standardize it too?
+2. Are the edge-case behaviors in [section 3](#3-response) right? When only some
+   intents match, the service returns a slice and does not say which intents
+   matched. When a match is only in `Mutation` or `Subscription`, it keeps a
+   minimal query root.
 
 ---
 
 ## Feedback Requested
 
-- Does a schema subset in SDL give your agents what they need? Or do you need
-  the ranked list that semantic introspection returns?
-- Is `GET` as the main binding, with optional `QUERY` and `POST` requests, the
-  right split?
 - Do you prefer to get the same slice from an introspection field, not from an
   HTTP endpoint (see [Alternatives considered](#alternatives-considered))?
-- Is returning whole slices sufficient for an initial version? What evidence
-  must the working group see before it adds incremental expansion
-  ([section 5](#5-building-up-a-slice-across-requests))?
-- If you run a GraphQL service, what stops you from exposing this endpoint?
